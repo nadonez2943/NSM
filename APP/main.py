@@ -26,5 +26,13 @@ def h():
 def login():
     return render_template('login.html')
 
+@app.route('/addproject')
+def addproject():
+    return render_template('addproject.html')
+
+@app.route('/กรรมการ')
+def k():
+    return render_template('กรรมการ.html')
+
 if __name__ == "__main__":
     app.run(debug=True)
