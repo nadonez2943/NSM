@@ -7,6 +7,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 @app.route('/')
 def new():
     return render_template('login.html')
+
+@app.route('/x')
+def x():
+    return render_template('addproject.html')
     
 @app.route('/login', methods =['GET', 'POST'])
 def login():
