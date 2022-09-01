@@ -6,6 +6,10 @@ from app import app
 def home():
     return render_template('home.html')
 
+@app.route('/project')
+def project():
+    return render_template('project.html')
+
 @app.route('/draft')
 def draft():
     return render_template('draft.html')
