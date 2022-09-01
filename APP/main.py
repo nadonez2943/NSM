@@ -23,7 +23,7 @@ def login():
 			session['user_fname'] = account['user_fname']
 			session['user_role'] = account['user_role']
 			msg = 'Logged in successfully !'
-			return render_template('home.html', msg = msg)
+			return redirect('/datamain')
 		else:
 			msg = 'Incorrect username / password !'
 	return render_template('login.html', msg = msg)  
@@ -37,7 +37,21 @@ def logout():
     session.pop('password', None)
     return render_template('login.html')  
 
-# return redirect ('/login')
+@app.route('/datamain')
+def datamain():
+    conn = None
+    cursor = None
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM  projects")
+        row = cursor.fetchall()
+        return render_template('home.html', row=row,) 
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        conn.close()
 
 
 if __name__ == "__main__":
