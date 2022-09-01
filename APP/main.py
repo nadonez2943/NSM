@@ -20,7 +20,7 @@ def login():
 		if account:
 			session['loggedin'] = True
 			session['user_id'] = account['user_id']
-			session['user_name'] = account['user_name']
+			session['user_fname'] = account['user_fname']
 			session['user_role'] = account['user_role']
 			msg = 'Logged in successfully !'
 			return render_template('home.html', msg = msg)
@@ -28,40 +28,17 @@ def login():
 			msg = 'Incorrect username / password !'
 	return render_template('login.html', msg = msg)  
 
-@app.route('/add', methods=['POST'])
-def user():
-    conn = None
-    cursor = None
-    try:
-        first_name = request.form['inputfirst_name']
-        last_name = request.form['inputlast_name']
-        gender = request.form['inputgender']
-        lavel = request.form['inputlavel']
-        password = request.form['inputpassword']
-# validate the received values
-        if  first_name and last_name and gender and lavel and password and request.method == 'POST':
-#do not save password as a plain text
-            _hashed_password = generate_password_hash(password)
-# save edits
-            sql = "INSERT INTO user (first_name, last_name, gender, lavel, password) VALUES(%s, %s, %s, %s, %s)"
-            data = (first_name,last_name,gender,lavel,password,)
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            cursor.execute(sql, data)
-            conn.commit()
-            flash('User added successfully!')
-            return redirect('/login')
-        else:
-            return 'Error while adding user'
-    except Exception as e:
-           print(e)
-    finally:
-           cursor.close() 
-           conn.close()
+@app.route('/logout')
+def logout():
+    session.pop('loggedin', None)
+    session.pop('user_id', None)
+    session.pop('user_fname', None)
+    session.pop('user_role', None)
+    session.pop('password', None)
+    return render_template('login.html')  
 
+# return redirect ('/login')
 
-if __name__ == '__main__':
-    app.run(debug=True)
 
 if __name__ == "__main__":
     app.run(debug=True)
