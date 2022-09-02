@@ -26,6 +26,7 @@ def login():
 			session['user_id'] = account['user_id']
 			session['user_fname'] = account['user_fname']
 			session['user_role'] = account['user_role']
+			session['user_name'] = account['user_name']
 			msg = 'Logged in successfully !'
 			return redirect('/datamain')
 		else:
@@ -38,6 +39,7 @@ def logout():
     session.pop('user_id', None)
     session.pop('user_fname', None)
     session.pop('user_role', None)
+    session.pop('user_name', None)
     session.pop('password', None)
     return render_template('login.html')  
 #โปรเจ็คหน้าหลัก
@@ -87,6 +89,10 @@ def user():
     finally:
            cursor.close() 
            conn.close()
+
+@app.route('/mydata')
+def y():
+    return render_template('mydata.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
