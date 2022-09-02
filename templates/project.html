@@ -1,0 +1,148 @@
+<doctype html>
+  {% extends 'layout.html' %}
+  
+  {% block body %}
+  <style>
+      * {
+        box-sizing: border-box;
+      }   
+      /* Create two unequal columns that floats next to each other */
+      /* Left column */
+      .leftcolumn {   
+        float: left;
+        width: 75%;
+      }
+      
+      /* Right column */
+      .rightcolumn {
+        float: left;
+        width: 25%;
+        background-color: #f1f1f1;
+        padding-left: 20px;
+      }
+      
+      /* Fake image */
+      .fakeimg {
+        background-color: #aaa;
+        width: 100%;
+        padding: 20px;
+      }
+      
+      /* Add a card effect for articles */
+      .card {
+        background-color: white;
+        padding: 20px;
+        margin-top: 20px;
+      }
+      
+      /* Clear floats after the columns */
+      .row:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+      
+      /* Footer */
+      .footer {
+        padding: 20px;
+        text-align: center;
+        background: #ddd;
+        margin-top: 20px;
+      }
+      
+      /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
+      @media screen and (max-width: 800px) {
+        .leftcolumn, .rightcolumn {   
+          width: 100%;
+          padding: 0;
+        }
+      }
+      
+      /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
+      @media screen and (max-width: 400px) {
+        .topnav a {
+          float: none;
+          width: 100%;
+        }
+      }
+      </style>
+      <body>
+      
+      <div class="row">
+        <p>
+          <br><h1>ร่างโครงการ และราคากลาง</h1>
+        </p>
+        <div class="leftcolumn">
+          <div class="card">
+              
+            <h align="right" >เลขสารบัญ สก12345</h>
+            <h5>ชื่อโครงการ</h5><br>
+            <h5>ผู้รับผิดชอบโครงการ</h5>
+            <p>
+              <h5>คณะกรรมการ</h5>
+            </p>
+            <h5>วันที่เริ่มโครงการ</h5><br>
+            <h5>งบประมาณ</h5>
+            <p>
+              <h5>รายละเอียด</h5>
+            </p>
+            <div class="card">
+              <div class="card-group">
+              <div  class="jumbotron">
+                <style>
+                       h1{
+                        font-weight: bold;
+                        Font-size: 16px;
+                       }
+                </style>
+              <center>
+              <h1>ร่างโครงการ</h4>
+              <progress id="file" value="100" max="100"> 100% </progress>    
+              <br>
+              <br>
+              <label for="file">อนุมัติ</label>
+              <p><a href="draft" class="card-link">  ดูเพิ่มเติม</a></p>
+              </center>
+              </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="jumbotron">
+              <center>
+                <h1>พิจารณาโครงการ</h1>
+                <progress id="file" value="40" max="100"> 40% </progress>    
+                <br>
+                <br>
+                <label for="file">รอพิจารณาผล</label>
+                <p><a href="draft" class="card-link">  ดูเพิ่มเติม</a></p>
+                </center>
+              </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <div  class="jumbotron">
+                <center>
+                  <h1>ตรวจรับโครงการ</h1>
+                  <progress id="file" value="0" max="100"> 0% </progress>    
+                  <br>
+                  <br>
+                  <label for="file">ยังไม่ดำเนินการ</label>
+                  <p><a href="draft" class="card-link">  ดูเพิ่มเติม</a></p>
+                  </center>
+                </div>
+            </div>
+
+          </div>
+          </div>
+        </div>
+        <div class="rightcolumn" style="background-color:#ffffff;">
+          <div class="card">
+            <center>
+            <h1>สถานะ</h1>
+            <progress id="file" value="32" max="100"> 32% </progress>    
+            <br>
+            <br>
+            <label for="file">รอพิจารณาผล</label>
+            </center>
+          </div>
+          <div class="card">
+            <h3>Event</h3>
+            <p>นัดประชุมร่างโครงการวันที่ 15/01/21</p>
+          </div>
+        </div>
+      </div>
+  {% endblock %}
