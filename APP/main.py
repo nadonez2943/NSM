@@ -11,7 +11,7 @@ def new():
 @app.route('/x')
 def x():
     return render_template('addproject.html')
-    
+# login   
 @app.route('/login', methods =['GET', 'POST'])
 def login():
 	msg = ''
@@ -31,7 +31,7 @@ def login():
 		else:
 			msg = 'Incorrect username / password !'
 	return render_template('login.html', msg = msg)  
-
+# logout
 @app.route('/logout')
 def logout():
     session.pop('loggedin', None)
@@ -40,7 +40,7 @@ def logout():
     session.pop('user_role', None)
     session.pop('password', None)
     return render_template('login.html')  
-
+#โปรเจ็คหน้าหลัก
 @app.route('/datamain')
 def datamain():
     conn = None
@@ -57,6 +57,36 @@ def datamain():
         cursor.close()
         conn.close()
 
+@app.route('/addproject', methods=['POST'])
+def user():
+    conn = None
+    cursor = None
+    try:
+        refNumber = request.form['refNumber']
+        office = request.form['office']
+        divition = request.form['divition']
+        type = request.form['radio']
+        name = request.form['name']
+        amount = request.form['amount']
+        detail = request.form['detail']
+        financeAmount = request.form['financeAmount']
+        budgetSource = request.form['budgetSource']
+        budgetYears = request.form['budgetYears']
+        if  refNumber and office and divition and type and name and amount and detail and financeAmount and budgetSource and budgetYears and request.method == 'POST':
+            sql = "INSERT INTO projects (pj_refNumber, pj_office, pj_division, pj_type, pj_name, pj_amount, pj_detail, pj_financeAmount, pj_budgetSource, pj_budgetYears) VALUES(%s, %s, %s, %s, %s,%s, %s, %s, %s, %s)"
+            data = (refNumber,office,divition,type,name,amount,detail,financeAmount,budgetSource,budgetYears,)
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute(sql, data)
+            conn.commit()
+            return redirect('/datamain')
+        else:
+            return 'Error'
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close()
 
 if __name__ == "__main__":
     app.run(debug=True)
