@@ -42,14 +42,51 @@
           clear: both;
         }
         
-        /* Footer */
-        .footer {
-          padding: 20px;
-          text-align: center;
-          background: #ddd;
-          margin-top: 20px;
+        input[type=text], select, textarea {
+          width: 100%;
+          padding: 12px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          resize: vertical;
         }
-        
+
+        label {
+          padding: 12px 12px 12px 0;
+          display: inline-block;
+        }
+
+        input[type=submit] {
+          background-color: #04AA6D;
+          color: white;
+          padding: 12px 20px;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          float: right;
+        }
+
+        input[type=submit]:hover {
+          background-color: #45a049;
+        }
+
+        .container {
+          border-radius: 5px;
+          background-color: #f2f2f2;
+          padding: 20px;
+        }
+
+        .col-25 {
+          float: left;
+          width: 25%;
+          margin-top: 6px;
+        }
+
+        .col-75 {
+          float: left;
+          width: 75%;
+          margin-top: 6px;
+        }
+
         /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
         @media screen and (max-width: 800px) {
           .leftcolumn, .rightcolumn {   
@@ -65,6 +102,14 @@
             width: 100%;
           }
         }
+
+        /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+        @media screen and (max-width: 600px) {
+          .col-25, .col-75, input[type=submit] {
+            width: 100%;
+            margin-top: 0;
+          }
+        }
         </style>
         <body>
         
@@ -74,21 +119,67 @@
           </p>
           <div class="leftcolumn">
             <div class="card">
-              <h align="right" >เลขสารบัญ สก12345</h>
-              <h5>ชื่อโครงการ</h5><br>
-              <h5>ผู้รับผิดชอบโครงการ</h5>
-              <p>
-                <h5>คณะกรรมการ</h5>
-                <div class="container mt-3" align="center">
-                <a href="กรรมการ" role="button"> เพิ่มกรรมการ</a>
-                </div>
-              </p>
-              <h5>วันที่เริ่มโครงการ</h5><br>
-              <h5>งบประมาณ</h5>
-              <p>
-                <h5>รายละเอียด</h5>
-              </p>
+              <div class="container">
+                <form action="/action_page.php">
+                  <div class="row">
+                    <h align="right" >เลขสารบัญ สก12345</h>
+                  </div>
+                  <div class="row">
+                    <div class="col-25">
+                      <label>ชื่อโครงการ</label>
+                    </div>
+                    <div class="col-75">
+                      <label>โครงการจัดซื้อ Maxbook Pro M2</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-25">
+                      <label>ผู้รับผิดชอบโครงการ</label>
+                    </div>
+                    <div class="col-75">
+                      <label>นฤดล บุญทอง</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-25">
+                      <label>คณะกรรมการ</label>
+                    </div>
+                    <div class="col-75">
+                      <div class="row"><div class="col-75"><label>1.พรียูร์   บุตรชู</label></div><div class="col-25"><label >ประธาน</label></div></div>
+                      <div class="row"><div class="col-75"><label>2.พงศกร  แผ่นทอง</label></div><div class="col-25"><label >กรรมการ</label></div></div>
+                      <div class="row"><div class="col-75"><label>3.ปาริฉัตร แสงทอง</label></div><div class="col-25"><label >เลขาธิการ</label></div></div>
+                      <center><a href="กรรมการ" role="button"> เพิ่มกรรมการ</a></center>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-25">
+                      <label>วันที่เริ่มโครงการ</label>
+                    </div>
+                    <div class="col-75">
+                      <label>11/11/2022</label>
+                    </div>
+                  </div><div class="row">
+                    <div class="col-25">
+                      <label>งบประมาณ</label>
+                    </div>
+                    <div class="col-75">
+                      <label>70000 บาท</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-25">
+                      <label>รายละเอียด</label>
+                    </div>
+                    <div class="col-75">
+                      <label>โครงการจัดซื้อ Maxbook Pro M2 เพื่อใช้ในการ-------------------------------------
+                        -------------------------------------------------------------------------------
+                      </label>
+                    </div>
+                  </div>
+                </form>
+              </div>
             </div>
+            
           </div>
           <div class="rightcolumn" style="background-color:#ffffff;">
             <div class="card">
@@ -106,4 +197,4 @@
             </div>
           </div>
         </div>
-    {% endblock %}
+      {% endblock %}
