@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <doctype html>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       {% extends 'layout.html' %}
@@ -46,4 +47,54 @@
             </div>
           </div>
         </center>
+=======
+<doctype html>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      {% extends 'layout.html' %}
+      {% block body %}
+      <div class="container mt-3">
+        <div id="child1">
+          <div class="jumbotron">
+            <div class="container mt-3">
+              <h2>โครงการของฉัน</h2>
+              <div class="table-responsive">
+                <!-- <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>ลำดับ</th>
+                      <th>เลขสารบัญ</th>
+                      <th>ชื่อโครงการ</th>
+                      <th>ประเภทโครงการ</th>
+                      <th>สำนักงาน</th>
+                      <th>กอง </th>      
+                      <th>รายละเอียด</th>
+                      <th>จำนวนงาน</th>
+                      <th>วงเงิน</th>
+                      <th>โดยใช้งบประมาณ</th>
+                      <th>งบประมาณประจำปี</th>
+                    </tr>
+                  </thead>
+                  {% for row in row %}
+                  <tbody>
+                    <tr>
+                      <td>{{ row[0] }}</td>
+                      <td>{{ row[1] }}</td>
+                      <td>{{  row[5] }}</td>
+                      <td>{{ row[4] }}</td>
+                      <td>{{  row[2] }}</td>
+                      <td>{{  row[3] }}</td>
+                      <td>{{  row[7] }}</td>
+                      <td>{{  row[6] }}</td>
+                      <td>{{  row[8] }}</td>
+                      <td>{{  row[9] }}</td>
+                      <td>{{  row[10] }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table> -->
+              </div>
+            </div>
+          </div>
+        </center>
+>>>>>>> 411040a09fdad03c38a068072dfffd69a71dbd06
       {% endblock %}
