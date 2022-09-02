@@ -68,15 +68,16 @@ def user():
         office = request.form['office']
         divition = request.form['divition']
         type = request.form['radio']
+        projace_m = request.form['projace_m']
         name = request.form['name']
         amount = request.form['amount']
         detail = request.form['detail']
         financeAmount = request.form['financeAmount']
         budgetSource = request.form['budgetSource']
         budgetYears = request.form['budgetYears']
-        if  refNumber and office and divition and type and name and amount and detail and financeAmount and budgetSource and budgetYears and request.method == 'POST':
-            sql = "INSERT INTO projects (pj_refNumber, pj_office, pj_division, pj_type, pj_name, pj_amount, pj_detail, pj_financeAmount, pj_budgetSource, pj_budgetYears) VALUES(%s, %s, %s, %s, %s,%s, %s, %s, %s, %s)"
-            data = (refNumber,office,divition,type,name,amount,detail,financeAmount,budgetSource,budgetYears,)
+        if  refNumber and office and divition and type and name and amount and detail and financeAmount and budgetSource and budgetYears and projace_m and request.method == 'POST':
+            sql = "INSERT INTO projects (pj_refNumber, pj_office, pj_division, pj_type, pj_manage, pj_name, pj_amount, pj_detail, pj_financeAmount, pj_budgetSource, pj_budgetYears) VALUES(%s, %s, %s, %s, %s,%s, %s, %s, %s, %s)"
+            data = (refNumber,office,divition,type,projace_m,name,amount,detail,financeAmount,budgetSource,budgetYears,)
             conn = mysql.connect()
             cursor = conn.cursor()
             cursor.execute(sql, data)
@@ -93,6 +94,26 @@ def user():
 @app.route('/mydata')
 def y():
     return render_template('mydata.html')
+
+# @app.route('/mydata')
+# def mydata():
+#     conn = None
+#     cursor = None
+#     pj = session['user_name']
+#     try:
+#         conn = mysql.connect()
+#         cursor = conn.cursor()
+#         cursor.execute("SELECT pj_refNumber,pj_name,pj_detail,pj_amount FROM projects WHERE =%s", pj)
+#         row = cursor.fetchall()
+#         if row:
+#             return render_template('mydata.html', row=row,)
+#         else:
+#             return 'Error loading #{id}'.format(id=id)
+#     except Exception as e:
+#         print(e)
+#     finally:
+#         cursor.close()
+#         conn.close()
 
 if __name__ == "__main__":
     app.run(debug=True)
