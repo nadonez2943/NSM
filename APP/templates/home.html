@@ -16,17 +16,17 @@
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th>#</th>
-                    <th>refNumber</th>
-                    <th>office</th>
-                    <th>divition </th>
-                    <th>type</th>
-                    <th>name</th>
-                    <th>amount</th>
-                    <th>detail</th>
-                    <th>financeAmount</th>
-                    <th>budgetSource</th>
-                    <th>budgetYears</th>
+                    <th>ลำดับ</th>
+                    <th>เลขสารบัญ</th>
+                    <th>ชื่อโครงการ</th>
+                    <th>ประเภทโครงการ</th>
+                    <th>สำนักงาน</th>
+                    <th>กอง </th>      
+                    <th>รายละเอียด</th>
+                    <th>จำนวนงาน</th>
+                    <th>วงเงิน</th>
+                    <th>โดยใช้งบประมาณ</th>
+                    <th>งบประมาณประจำปี</th>
                   </tr>
                 </thead>
                 {% for row in row %}
@@ -34,12 +34,12 @@
                   <tr>
                     <td>{{ row[0] }}</td>
                     <td>{{ row[1] }}</td>
-                    <td>{{  row[2] }}</td>
-                    <td>{{ row[3] }}</td>
-                    <td>{{  row[4] }}</td>
                     <td>{{  row[5] }}</td>
-                    <td>{{  row[6] }}</td>
+                    <td>{{ row[4] }}</td>
+                    <td>{{  row[2] }}</td>
+                    <td>{{  row[3] }}</td>
                     <td>{{  row[7] }}</td>
+                    <td>{{  row[6] }}</td>
                     <td>{{  row[8] }}</td>
                     <td>{{  row[9] }}</td>
                     <td>{{  row[10] }}</td>
