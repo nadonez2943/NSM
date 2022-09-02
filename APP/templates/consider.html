@@ -35,19 +35,37 @@
           margin-top: 20px;
         }
         
-        /* Clear floats after the columns */
-        .row:after {
-          content: "";
-          display: table;
-          clear: both;
-        }
-        
         /* Footer */
         .footer {
           padding: 20px;
           text-align: center;
           background: #ddd;
           margin-top: 20px;
+        }
+
+        input[type=text], select, textarea {
+          width: 100%;
+          padding: 12px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          resize: vertical;
+        }
+        
+        label {
+          padding: 12px 12px 12px 0;
+          display: inline-block;
+        }
+        
+        .col-25 {
+          float: left;
+          width: 25%;
+          margin-top: 6px;
+        }
+        
+        .col-75 {
+          float: left;
+          width: 75%;
+          margin-top: 6px;
         }
         
         /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
@@ -74,28 +92,124 @@
           </p>
           <div class="leftcolumn">
             <div class="card">
-              <h align="right" >เลขสารบัญ สก๑๒๓๔</h>
-              <h5>ชื่อโครงการ</h5><br>
-              <h5>ผู้รับผิดชอบโครงการ</h5>
-              <p>
-                <h5>คณะกรรมการ</h5>
-              </p>
-              <h5>วันที่เริ่มโครงการ</h5><br>
-              <h5>งบประมาณ</h5>
-              <p>
-                <h5>รายละเอียด</h5>
-              </p>
+              <div >
+                <form action="/action_page.php">
+                  <div class="row">
+                    <h align="right" >เลขสารบัญ สก12345</h>
+                  </div>
+                  <div class="row">
+                    <div class="col-25">
+                      <label>ชื่อโครงการ</label>
+                    </div>
+                    <div class="col-75">
+                      <label>โครงการจัดซื้อ Maxbook Pro M2</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-25">
+                      <label>ผู้รับผิดชอบโครงการ</label>
+                    </div>
+                    <div class="col-75">
+                      <label>นฤดล บุญทอง</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-25">
+                      <label>คณะกรรมการ</label>
+                    </div>
+                    <div class="col-75">
+                      <div class="row"><div class="col-75"><label>1.พรียูร์   บุตรชู</label></div><div class="col-25"><label >ประธาน</label></div></div>
+                      <div class="row"><div class="col-75"><label>2.พงศกร  แผ่นทอง</label></div><div class="col-25"><label >กรรมการ</label></div></div>
+                      <div class="row"><div class="col-75"><label>3.ปาริฉัตร แสงทอง</label></div><div class="col-25"><label >เลขาธิการ</label></div></div>
+                      <center><a href="กรรมการ" role="button"> เพิ่มกรรมการ</a></center>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-25">
+                      <label>วันที่เริ่มโครงการ</label>
+                    </div>
+                    <div class="col-75">
+                      <label>11/11/2022</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-25">
+                      <label>งบประมาณ</label>
+                    </div>
+                    <div class="col-75">
+                      <label>70000 บาท</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-25">
+                      <label>รายละเอียด</label>
+                    </div>
+                    <div class="col-75">
+                      <label>โครงการจัดซื้อ Maxbook Pro M2 เพื่อใช้ในการ-------------------------------------
+                        -------------------------------------------------------------------------------
+                      </label>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <a href="#" align="right">แก้ไข</a>
             </div>
             <div class="card">
-              <h5>วันที่ประกาศผลบริษัทผู้รับเหมา</h5>
-              <h5>บริษัทผู้รับเหมา</h5>
-              <h5>ค่ารับเหมา</h5>
-              <h5>ระยะเวลา</h5>
-              <h5>วันเวลาที่เริ่ม</h5>
-              <h5>วันเวลาที่สิ้นสุด</h5>
-              <h5>จำนวนงวด</h5>
+              <div class="row">
+                <div class="col-25">
+                  <label>วันที่ประกาศผลบริษัทผู้รับเหมา</label>
+                </div>
+                <div class="col-75">
+                  <label>10/12/2022</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>บริษัทผู้รับเหมา</label>
+                </div>
+                <div class="col-75">
+                  <label>บริษัทบานาน่าไอที เซอร์วิส จำกัด</label>
+                </div>
+              </div><div class="row">
+                <div class="col-25">
+                  <label>ค่ารับเหมา</label>
+                </div>
+                <div class="col-75">
+                  <label>68009 บาท</label>
+                </div>
+              </div><div class="row">
+                <div class="col-25">
+                  <label>ระยะเวลา</label>
+                </div>
+                <div class="col-75">
+                  <label>30 วัน</label>
+                </div>
+              </div><div class="row">
+                <div class="col-25">
+                  <label>วันเวลาที่เริ่ม</label>
+                </div>
+                <div class="col-75">
+                  <label>15/12/2022</label>
+                </div>
+              </div><div class="row">
+                <div class="col-25">
+                  <label>วันเวลาที่สิ้นสุด</label>
+                </div>
+                <div class="col-75">
+                  <label>19/12/2022</label>
+                </div>
+              </div><div class="row">
+                <div class="col-25">
+                  <label>จำนวนงวด</label>
+                </div>
+                <div class="col-75">
+                  <label>1</label>
+                </div>
+              </div>
+              <a href="#" align="right">แก้ไข</a>
             </div>
           </div>
+
           <div class="rightcolumn" style="background-color:#ffffff;">
             <div class="card">
               <center>
