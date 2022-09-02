@@ -22,6 +22,10 @@ def consider():
 def examine():
     return render_template('examine.html')
 
+@app.route('/event')
+def event():
+    return render_template('event.html')
+
 @app.route('/t')
 def h():
     return render_template('test.html')
