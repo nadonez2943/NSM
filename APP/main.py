@@ -26,6 +26,14 @@ def examine():
 def event():
     return render_template('event.html')
 
+@app.route('/addevent')
+def addevent():
+    return render_template('addevent.html')
+
+@app.route('/editevent')
+def editevent():
+    return render_template('editevent.html')
+
 @app.route('/t')
 def h():
     return render_template('test.html')
@@ -37,6 +45,10 @@ def login():
 @app.route('/addproject')
 def addproject():
     return render_template('addproject.html')
+
+@app.route('/addboard')
+def addboard():
+    return render_template('addboard.html')
 
 @app.route('/กรรมการ')
 def k():

@@ -1,0 +1,83 @@
+<doctype html>
+    {% extends 'layout.html' %}
+    {% block body %}
+    <style>
+    
+        /* Create two unequal columns that floats next to each other */
+        /* Left column */
+        .leftcolumn {   
+          float: left;
+          width: 75%;
+        }
+        
+        /* Right column */
+        .rightcolumn {
+          float: left;
+          width: 25%;
+          padding-left: 20px;
+        }
+
+        input[type=text], select, textarea {
+          width: 100%;
+          padding: 12px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          resize: vertical;
+        }
+        
+        label {
+          padding: 12px 12px 12px 0;
+          display: inline-block;
+        }
+        
+        .col-25 {
+          float: left;
+          width: 25%;
+          margin-top: 6px;
+        }
+        
+        .col-75 {
+          float: left;
+          width: 75%;
+          margin-top: 6px;
+        }
+       
+        /* Clear floats after the columns */
+        .row:after {
+          content: "";
+          display: table;
+          clear: both;
+        }
+    </style>
+    <br>
+    <div class="jumbotron">
+        <center><h1>Event</h1></center>
+        <br>
+        <div class="row">
+            <div class="col-25">
+              <label>ชื่อ</label>
+            </div>
+            <div class="col-75">
+                <p> <input name="" value="" type="text" style="width:700px; " placeholder="ชื่อกิจกรรม" autocomplete="off" required> </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+            <label>รายละเอียด</label>
+            </div>
+            <div class="col-75">
+            <p> <input name="" value="" type="text" style="width:700px; height: 88;  " placeholder="รายละเอียด " autocomplete="off" required> </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+              <label>วันที่</label>
+            </div>
+            <div class="col-75">
+            <input name="" value="" type="date"></input>
+            </div>
+        </div>
+    </div>
+    <center><button type="button" class="btn btn-primary btn-lg">เพิ่มกิจกรรม</button></center>
+    </div>
+    {% endblock %}

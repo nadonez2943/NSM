@@ -12,7 +12,7 @@
         border: 1px solid #ddd;
         padding: 8px;
     }
-    
+
     #customers tr:nth-child(even){background-color: #f2f2f2;}
     
     #customers tr:hover {background-color: #ddd;}
@@ -21,13 +21,14 @@
         padding-top: 12px;
         padding-bottom: 12px;
         text-align: left;
-        background-color: #04AA6D;
+        background-color: #4bb6f5;
         color: white;
     }
     </style>
-    <hr>
+    <br>
     <div class="jumbotron">
-    <h3 align="center">Event</h3>
+    <center><h1>Event</h1></center>
+    <hr>
         
     <table id="customers">
         <tr>
@@ -35,27 +36,31 @@
         <th>ชื่ออีเวนท์</th>
         <th>รายละเอียด</th>
         <th>วันที่</th>
-        <th></th>
+        <th>แก้ไข</th>
         </tr>
         <tr>
         <td>1</td>
         <td>ประชุมครั้งที่1</td>
         <td>ประชุมร่างโครงการ และราคากลางครั้งที่1</td>
         <td>11/11/2022</td>
+        <td><button type="button" class="btn btn-danger">แก้ไข</button></td>
         </tr>
         <tr>
         <td>2</td>
         <td>ประชุมครั้งที่2</td>
         <td>ประชุมร่างโครงการ และราคากลางครั้งที่2</td>
         <td>21/11/2022</td>
+        <td><button type="button" class="btn btn-danger">แก้ไข</button></td>
         </tr>
         <tr>
         <td>3</td>
         <td>ประชุมครั้งที่3</td>
         <td>ประชุมร่างโครงการ และราคากลางครั้งที่3</td>
         <td>30/11/2022</td>
+        <td><a type="button" class="btn btn-danger" href="editevent">แก้ไข</a></td>
         </tr>
     </table>
-
+    <hr>
+    <center><a type="button" class="btn btn-primary btn-lg" href="addevent">เพิ่มกิจกรรม</a></center>
     </div>
     {% endblock %}
