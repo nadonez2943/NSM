@@ -101,6 +101,7 @@ def user():
 #     elif session['user_role']=='คณะกรรมการ' :
 #        return render_template('addproject.html')
 
+print("เห้อ")
 
 if __name__ == "__main__":
     app.run(debug=True)
