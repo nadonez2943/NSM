@@ -24,9 +24,9 @@ def login():
 		if account:
 			session['loggedin'] = True
 			session['user_id'] = account['user_id']
+			session['user_name'] = account['user_name']
 			session['user_fname'] = account['user_fname']
 			session['user_role'] = account['user_role']
-			session['user_name'] = account['user_name']
 			msg = 'Logged in successfully !'
 			return redirect('/datamain')
 		else:
@@ -37,9 +37,9 @@ def login():
 def logout():
     session.pop('loggedin', None)
     session.pop('user_id', None)
+    session.pop('user_name', None)
     session.pop('user_fname', None)
     session.pop('user_role', None)
-    session.pop('user_name', None)
     session.pop('password', None)
     return render_template('login.html')  
 #โปรเจ็คหน้าหลัก
@@ -91,29 +91,26 @@ def user():
            cursor.close() 
            conn.close()
 
-@app.route('/mydata')
-def y():
-    return render_template('mydata.html')
+# @app.route('/mydata', methods=['GET'])
+# def y():
+#     return render_template('mydata.html')
 
-# @app.route('/mydata')
-# def mydata():
-#     conn = None
-#     cursor = None
-#     pj = session['user_name']
-#     try:
-#         conn = mysql.connect()
-#         cursor = conn.cursor()
-#         cursor.execute("SELECT pj_refNumber,pj_name,pj_detail,pj_amount FROM projects WHERE =%s", pj)
-#         row = cursor.fetchall()
-#         if row:
-#             return render_template('mydata.html', row=row,)
-#         else:
-#             return 'Error loading #{id}'.format(id=id)
-#     except Exception as e:
-#         print(e)
-#     finally:
-#         cursor.close()
-#         conn.close()
+@app.route('/mydata',methods=['GET'])
+def mydata():
+    conn = None
+    cursor = None
+    name = session['user_fname']
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        cursor.execute("SELECT * FROM projects where pj_manager =%s ",name)
+        row = cursor.fetchall()
+        return render_template('mydata.html', row=row)
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close() 
+        conn.close()
 
 if __name__ == "__main__":
     app.run(debug=True)
