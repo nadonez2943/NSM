@@ -1,0 +1,63 @@
+
+<doctype html>
+    {% extends 'layout.html' %}
+     
+     {% block body %}
+   <br>
+   <br>
+ <center>
+   <h1 class="display-4">โครงการใหม่</h1>
+   </center> 
+   <br>
+   
+ <div class="jumbotron">
+   <style>
+   h1{
+    Font-family: Inter;
+    Font-style: Medium;
+    Font-size: 40px;
+    Line-height: 48px;
+    Line-height: 100%;
+      }
+ 
+ body{ background-color: #ffffff	}
+ </style>
+ <form action="/addboaed" method="post">
+   <br>
+        <CENTER>  
+            <dl>
+             <p>
+                ชื่อ: <input name="" value="" type="text" style="width:200px; " placeholder="ชื่อ" autocomplete="off" required> 
+             </p>
+             
+              <p>
+                นามสกุล: <input name="" value="" type="text" style="width: 180px;;" placeholder="นามสกุล" autocomplete="off" required> 
+             </p>
+             <label for="cars">PROSITION:</label>
+                <select name="cars" id="cars">
+                <option value="volvo">หัวหน้า</option>
+                <option value="saab">เลขา</option>
+                <option value="mercedes">คณะกรรมการ</option>
+              </select>
+             <br>
+             <br>
+             <br>
+             <CENTER><p>
+                <input type="submit" class="btn" value="เพิ่มโครงการ">
+                </p></CENTER>
+            </dl>
+            <style>
+             .btn {
+               padding: 10px 40px;
+               background-color: rgba(10, 39, 97, 0.83); 
+               color: #FFFFFF;
+               font-weight: bold;
+               font-size: 18px;
+               }
+           </style>
+           <br>
+        </CENTER> 
+ </div>   
+ </form>
+ {% endblock %}
+ 

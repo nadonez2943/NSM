@@ -91,26 +91,16 @@ def user():
            cursor.close() 
            conn.close()
 
-# @app.route('/mydata', methods=['GET'])
-# def y():
-#     return render_template('mydata.html')
+# โลทางเลือกยังไม่ได้ยัด
+# @app.route('/way')
+# def way():
+#     if session['user_role']=='Boss' :
+#        return render_template('add.html')
+#     elif session['user_role']=='เลขา' :
+#        return render_template('add.html')
+#     elif session['user_role']=='คณะกรรมการ' :
+#        return render_template('addproject.html')
 
-@app.route('/mydata',methods=['GET'])
-def mydata():
-    conn = None
-    cursor = None
-    name = session['user_fname']
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT * FROM projects where pj_manager =%s ",name)
-        row = cursor.fetchall()
-        return render_template('mydata.html', row=row)
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close() 
-        conn.close()
 
 if __name__ == "__main__":
     app.run(debug=True)
