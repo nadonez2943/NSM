@@ -27,8 +27,7 @@ def login():
 			session['user_name'] = account['user_name']
 			session['user_fname'] = account['user_fname']
 			session['user_role'] = account['user_role']
-			msg = 'Logged in successfully !'
-			return redirect('/datamain')
+			return redirect('/way')
 		else:
 			msg = 'Incorrect username / password !'
 	return render_template('login.html', msg = msg)  
@@ -42,22 +41,23 @@ def logout():
     session.pop('user_role', None)
     session.pop('password', None)
     return render_template('login.html')  
-#โปรเจ็คหน้าหลัก
-@app.route('/datamain')
-def datamain():
-    conn = None
-    cursor = None
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM  projects")
-        row = cursor.fetchall()
-        return render_template('home.html', row=row,) 
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close()
-        conn.close()
+
+# ไม่เอา
+# @app.route('/datamain')
+# def datamain():
+#     conn = None
+#     cursor = None
+#     try:
+#         conn = mysql.connect()
+#         cursor = conn.cursor()
+#         cursor.execute("SELECT * FROM  projects")
+#         row = cursor.fetchall()
+#         return render_template('home.html', row=row,) 
+#     except Exception as e:
+#         print(e)
+#     finally:
+#         cursor.close()
+#         conn.close()
 
 @app.route('/addproject', methods=['POST'])
 def user():
@@ -68,16 +68,16 @@ def user():
         office = request.form['office']
         divition = request.form['divition']
         type = request.form['radio']
-        projace_m = request.form['projace_m']
+        # projace_m = request.form['projace_m']
         name = request.form['name']
         amount = request.form['amount']
         detail = request.form['detail']
         financeAmount = request.form['financeAmount']
         budgetSource = request.form['budgetSource']
         budgetYears = request.form['budgetYears']
-        if  refNumber and office and divition and type and name and amount and detail and financeAmount and budgetSource and budgetYears and projace_m and request.method == 'POST':
-            sql = "INSERT INTO projects (pj_refNumber, pj_office, pj_division, pj_type, pj_manage, pj_name, pj_amount, pj_detail, pj_financeAmount, pj_budgetSource, pj_budgetYears) VALUES(%s, %s, %s, %s, %s,%s, %s, %s, %s, %s)"
-            data = (refNumber,office,divition,type,projace_m,name,amount,detail,financeAmount,budgetSource,budgetYears,)
+        if  refNumber and office and divition and type and name and amount and detail and financeAmount and budgetSource and budgetYears and  request.method == 'POST':
+            sql = "INSERT INTO projects (pj_refNumber, pj_office, pj_division, pj_type, pj_name, pj_amount, pj_detail, pj_financeAmount, pj_budgetSource, pj_budgetYears) VALUES(%s, %s, %s, %s, %s,%s, %s, %s, %s)"
+            data = (refNumber,office,divition,type,name,amount,detail,financeAmount,budgetSource,budgetYears,)
             conn = mysql.connect()
             cursor = conn.cursor()
             cursor.execute(sql, data)
@@ -92,16 +92,67 @@ def user():
            conn.close()
 
 # โลทางเลือกยังไม่ได้ยัด
-# @app.route('/way')
-# def way():
-#     if session['user_role']=='Boss' :
-#        return render_template('add.html')
-#     elif session['user_role']=='เลขา' :
-#        return render_template('add.html')
-#     elif session['user_role']=='คณะกรรมการ' :
-#        return render_template('addproject.html')
+@app.route('/way')
+def way():
+    if session['user_role']=='Boss' :
+       return redirect('/datamainM')
+    elif session['user_role']=='secretary'or'board' :
+       return redirect('/datamainS')
+    elif session['user_role']=='addmin' :
+       return redirect('/datamainA')
 
-print("เห้อ")
+
+#โปรเจ็คหน้าหลักโปรเจค
+@app.route('/datamainM')
+def datamainsM():
+    conn = None
+    cursor = None
+    id = session['user_id']
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM projects INNER JOIN manager ON  projects.pj_id = manager.pj_id where manager.pj_id = %s",id)
+        row = cursor.fetchall()
+        return render_template('home.html', row=row) 
+    except Exception as e:
+        print(e)
+    finally: 
+        cursor.close()
+        conn.close()
+
+# #โปรเจ็คหน้าหลักเลขา
+@app.route('/datamainS')
+def datamainS():
+    conn = None
+    cursor = None
+    id = session['user_id']
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM projects INNER JOIN board ON  projects.pj_id = board.pj_id where board.pj_id = %s",id)
+        row = cursor.fetchall()
+        return render_template('home_sec.html', row=row,) 
+    except Exception as e:
+        print(e)
+    finally: 
+        cursor.close()
+        conn.close()
+
+@app.route('/datamainA')
+def datamain():
+    conn = None
+    cursor = None
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM  projects")
+        row = cursor.fetchall()
+        return render_template('homeA.html', row=row,) 
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        conn.close()
 
 if __name__ == "__main__":
     app.run(debug=True)
