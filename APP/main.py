@@ -96,11 +96,14 @@ def user():
 def way():
     if session['user_role']=='Boss' :
        return redirect('/datamainM')
-    elif session['user_role']=='secretary'or'board' :
+    elif session['user_role']=='secretary' :
+       return redirect('/datamainS')
+    elif session['user_role']=='board' :
        return redirect('/datamainS')
     elif session['user_role']=='addmin' :
        return redirect('/datamainA')
-
+    else :
+       return render_template('login.html')
 
 #โปรเจ็คหน้าหลักโปรเจค
 @app.route('/datamainM')
@@ -111,7 +114,7 @@ def datamainsM():
     try:
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM projects INNER JOIN manager ON  projects.pj_id = manager.pj_id where manager.pj_id = %s",id)
+        cursor.execute("SELECT * FROM projects  INNER JOIN manager ON ( projects.pj_id = manager.pj_id ) INNER JOIN users ON ( manager.user_id = users.user_id) where users.user_id = %s",id)
         row = cursor.fetchall()
         return render_template('home.html', row=row) 
     except Exception as e:
@@ -129,7 +132,7 @@ def datamainS():
     try:
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM projects INNER JOIN board ON  projects.pj_id = board.pj_id where board.pj_id = %s",id)
+        cursor.execute("SELECT * FROM projects  INNER JOIN board ON ( projects.pj_id = board.pj_id ) INNER JOIN users ON ( board.user_id = users.user_id) where users.user_id = %s",id)
         row = cursor.fetchall()
         return render_template('home_sec.html', row=row,) 
     except Exception as e:
@@ -153,6 +156,27 @@ def datamain():
     finally:
         cursor.close()
         conn.close()
+
+@app.route('/showsearchs' , methods=['POST', 'GET'])
+def showsearchs():
+    conn = None
+    cursor = None
+    if request.method == 'POST':
+        key = request.form['search']
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            sql = "SELECT * FROM projects WHERE pj_refNumber = '%s' OR pj_name = '%s' OR pj_budgetYears = '%s' OR pj_type = '%s'" % (key,key,key,key)
+            sql = sql.encode('utf-8')
+            try:
+                cursor.execute(sql)
+                rows = cursor.fetchall()
+                return render_template("showsearch.html", rows=rows)
+            except:
+                cursor.rollback()
+                print('ผิดพลาด')
+        except Exception as e:
+            print(e)
 
 if __name__ == "__main__":
     app.run(debug=True)
