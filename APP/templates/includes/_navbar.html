@@ -8,13 +8,13 @@
       <body>
       <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        
-        <hr style="position: relative; top: 140px ; color:#ffffff;">
-        <a href="/home"style="position: relative; top: 140px;"class="glyphicon glyphicon-home">หน้าหลัก</a>
-        <a href="#" style="position: relative; top: 140px;">โครงการของฉัน</a>
+        <h1 style="color:#f1f1f1;">{{session.user_name}}</h1>
+        <hr style="position: relative; top: 20px ; color:#ffffff;">
+        <a href="/home"style="position: relative; top: 20px;"class="glyphicon glyphicon-home">หน้าหลัก</a>
+        <a href="#" style="position: relative; top: 20px;">โครงการของฉัน</a>
       </hr>
-        <hr style="position: relative; top:480px; color:#ffffff;">
-        <a href="{{url_for('logout')}}" style="position: relative; top:480px;">ออกจากระบบ</a>
+        <hr style="position: relative; top:400px; color:#ffffff;">
+        <a href="{{url_for('logout')}}" style="position: relative; top:400px;">ออกจากระบบ</a>
       </hr>
       </div>
       </body>
