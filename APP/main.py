@@ -141,6 +141,7 @@ def datamainS():
         cursor.close()
         conn.close()
 
+#โปรเจ็คหน้าหลักเเอดมิน
 @app.route('/datamainA')
 def datamain():
     conn = None
@@ -157,6 +158,7 @@ def datamain():
         cursor.close()
         conn.close()
 
+#ค้นหา
 @app.route('/showsearchs' , methods=['POST', 'GET'])
 def showsearchs():
     conn = None
@@ -177,6 +179,10 @@ def showsearchs():
                 print('ผิดพลาด')
         except Exception as e:
             print(e)
+# แก้ส่งค่าhtml
+@app.route('/darft')
+def d_darft():
+    return render_template('draft.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
