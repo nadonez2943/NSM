@@ -21,6 +21,23 @@
           padding-left: 20px;
         }
         
+        label {
+          padding: 12px 12px 12px 0;
+          display: inline-block;
+        }
+        
+        .col-25 {
+          float: left;
+          width: 25%;
+          margin-top: 6px;
+        }
+        
+        .col-75 {
+          float: left;
+          width: 75%;
+          margin-top: 6px;
+        }
+
         /* Fake image */
         .fakeimg {
           background-color: #aaa;
@@ -74,31 +91,104 @@
           </p>
           <div class="leftcolumn">
             <div class="card">
-                
-              <h align="right" >เลขสารบัญ สก12345</h>
-              <h5>ชื่อโครงการ</h5><br>
-              <h5>ผู้รับผิดชอบโครงการ</h5>
-              <p>
-                <h5>คณะกรรมการ</h5>
-              </p>
-              <h5>วันที่เริ่มโครงการ</h5><br>
-              <h5>งบประมาณ</h5>
-              <p>
-                <h5>รายละเอียด</h5>
-              </p>
-            
+              <div class="row">
+                <h align="right" >เลขสารบัญ สก12345</h>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>ชื่อโครงการ</label>
+                </div>
+                <div class="col-75">
+                  <label>โครงการจัดซื้อ Maxbook Pro M2</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>ผู้รับผิดชอบโครงการ</label>
+                </div>
+                <div class="col-75">
+                  <label>นฤดล บุญทอง</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>คณะกรรมการ</label>
+                </div>
+                <div class="col-75">
+                  <div class="row"><div class="col-75"><label>1.พรียูร์   บุตรชู</label></div><div class="col-25"><label >ประธาน</label></div></div>
+                  <div class="row"><div class="col-75"><label>2.พงศกร  แผ่นทอง</label></div><div class="col-25"><label >กรรมการ</label></div></div>
+                  <div class="row"><div class="col-75"><label>3.ปาริฉัตร แสงทอง</label></div><div class="col-25"><label >เลขาธิการ</label></div></div>
+                  <center><a href="addboard" role="button"> เพิ่มกรรมการ</a></center>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>วันที่เริ่มโครงการ</label>
+                </div>
+                <div class="col-75">
+                  <label>11/11/2022</label>
+                </div>
+              </div><div class="row">
+                <div class="col-25">
+                  <label>งบประมาณ</label>
+                </div>
+                <div class="col-75">
+                  <label>70000 บาท</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>รายละเอียด</label>
+                </div>
+                <div class="col-75">
+                  <label>โครงการจัดซื้อ Maxbook Pro M2 เพื่อใช้ในการ-------------------------------------
+                    -------------------------------------------------------------------------------
+                  </label>
+                </div>
+              </div>
               <div class="card">
-                <center>
-                <h1>สถานะ</h1>
-                <progress id="file" value="32" max="100"> 32% </progress>    
-                <br>
-                <br>
-                <label for="file">กำลังร่างอนุมัติโครงการ</label>
-                </center>
+                <div class="card-group">
+                  <div  class="jumbotron">
+                    <style>
+                      h1{
+                      font-weight: bold;
+                      Font-size: 16px;
+                      }
+                    </style>
+                    <center>
+                    <h1>ร่างโครงการ</h4>
+                    <progress id="file" value="100" max="100"> 100% </progress>    
+                    <br>
+                    <br>
+                    <label for="file">อนุมัติ</label>
+                    <p><a href="draft" class="card-link">  ดูเพิ่มเติม</a></p>
+                    </center>
+                  </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <div class="jumbotron">
+                    <center>
+                      <h1>พิจารณาโครงการ</h1>
+                      <progress id="file" value="40" max="100"> 40% </progress>    
+                      <br>
+                      <br>
+                      <label for="file">รอพิจารณาผล</label>
+                      <p><a href="draft" class="card-link">  ดูเพิ่มเติม</a></p>
+                    </center>
+                  </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <div  class="jumbotron">
+                    <center>
+                      <h1>ตรวจรับโครงการ</h1>
+                      <progress id="file" value="0" max="100"> 0% </progress>    
+                      <br>
+                      <br>
+                      <label for="file">ยังไม่ดำเนินการ</label>
+                      <p><a href="draft" class="card-link">  ดูเพิ่มเติม</a></p>
+                    </center>
+                  </div>
+                </div>
               </div>
             </div>
-            
           </div>
+        
           <div class="rightcolumn" style="background-color:#ffffff;">
             <div class="card">
               <center>

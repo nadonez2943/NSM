@@ -19,7 +19,7 @@ def home():
         cursor.close() 
         conn.close()
 
-
+ 
 @app.route('/project')
 def project():
     return render_template('project.html')
@@ -82,6 +82,7 @@ def login():
 			session['loggedin'] = True
 			session['user_id'] = account['user_id']
 			session['user_name'] = account['user_name']
+			session['user_fullname'] = account['user_fullname']
 			msg = 'Logged in successfully !'
 			return redirect('/home')
 		else:
@@ -93,6 +94,7 @@ def logout():
 	session.pop('loggedin', None)
 	session.pop('user_id', None)
 	session.pop('user_name', None)
+	session.pop('user_fullname', None)
 	return redirect(url_for('login'))
 
 if __name__ == "__main__":
