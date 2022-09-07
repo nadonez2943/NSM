@@ -11,8 +11,6 @@
           </form>
           <div class="jumbotron">
             <div class="container mt-3">
-              <h2>Responsive Table</h2>
-              <p>The .table-responsive class adds a scrollbar to the table when needed:</p>
               
               <div class="table-responsive">
                 <table class="table table-bordered">
@@ -20,48 +18,28 @@
                     <tr>
                       <th>ลำดับ</th>
                       <th>ชื่อโครงการ</th>
-                      <th>ประเภทงาน</th>
-                      <th>วันที่ร่างประกาศ</th>
+                      <th>เลขสารบัญ</th>
                       <th>รายละเอียด</th>
-                      <th>ประจำปีงบประมาณ</th>
-                      <th>วงเงินงบประมาณ</th>
+                      <th>ผู้รับผิดชอบ</th>
+                      <th>ตำแหน่งที่เกี่ยวข้อง</th>
+                      <th>กิจกรรม</th>
                       <th>สถาณะโครงการ</th>
-                      <th>Example</th>
-                      <th>Example</th>
-                      <th>Example</th>
-                      <th>Example</th>
-                      <th>Example</th>
-                      <th>Example</th>
-                      <th>Example</th>
-                      <th>Example</th>
-                      <th>Example</th>
-                      <th>Example</th>
-                      <th>Example</th>
                     </tr>
                   </thead>
+                  {% for result in row %}
                   <tbody>
                     <tr>
                       <td>1</td>
-                      <td>Anna</td>
-                      <td>Pitt</td>
-                      <td>35</td>
-                      <td>New York</td>
-                      <td>USA</td>
-                      <td>Female</td>
-                      <td>Yes</td>
-                      <td>Yes</td>
-                      <td>Yes</td>
-                      <td>Yes</td>
-                      <td>Yes</td>
-                      <td>Yes</td>
-                      <td>Yes</td>
-                      <td>Yes</td>
-                      <td>Yes</td>
-                      <td>Yes</td>
-                      <td>Yes</td>
-                      <td>Yes</td>
+                      <td>{{result['pj_name']}}</td>
+                      <td>{{result['pj_refNumber']}}</td>
+                      <td>{{result['pj_detail']}}</td>
+                      <td>{{result['user_name']}}</td>
+                      <td>{{result['pj_refNumber']}}</td>
+                      <td>{{result['pj_refNumber']}}</td>
+                      <td>{{result['pj_refNumber']}}</td>
                     </tr>
                   </tbody>
+                  {% endfor %}
                 </table>
               </div>
             </div>
