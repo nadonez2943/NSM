@@ -1,0 +1,56 @@
+
+<doctype html>
+    {% extends 'layout.html' %}
+     
+     {% block body %}
+   <br>
+   <br>
+ <center>
+   <h1 class="display-4">เพิ่ม Event</h1>
+   </center> 
+   <br>
+   
+ 
+   <style>
+   h1{
+   
+    Font-style: Medium;
+    Font-size: 40px;
+    Line-height: 48px;
+    Line-height: 100%;
+      }
+ 
+ body{ background-color: #ffffff	}
+ </style>
+  <div class="jumbotron">
+   <br> 
+            <dl>
+             
+              <p>
+                ชื่อ: <input name="" value="" type="text" style="width:351px;" placeholder="ชื่อกิจกรรม" autocomplete="off" required> 
+               
+             </p> 
+             <p>รายละเอียด: <input name="" value="" type="text" style="width:401px;" placeholder="รายละเอียดกิจกรรม" autocomplete="off" required> </p>
+            <p>
+                วันที่นัดหมาย: <input name="" value="" type="date"  autocomplete="off" required> 
+             </p>
+             
+             
+             
+            </dl>
+            <style>
+             .btn {
+               padding: 10px 40px;
+               background-color: rgba(10, 39, 97, 0.83); 
+               color: #FFFFFF;
+               font-weight: bold;
+               font-size: 18px;
+               }
+           </style>
+           <br>
+   <center><p4>  <input type="submit" class="btn " value="เพิ่มEvent"> </p4>
+            <p class="lead"></p></center>
+ </div>   
+    
+ {% endblock %}
+ </form>
