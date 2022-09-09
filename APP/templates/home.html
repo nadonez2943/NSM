@@ -6,7 +6,7 @@
         <div id="child1">
           <a>ค้นหาโครงการ</a>
           <form action="/">
-              <input type="text" class="btn btn-outline-dark" placeholder="Search.." name="search">
+              <input type="text" placeholder="Search.." name="search">
               <button type="submit" class="btn btn-primary">Search</button>
           </form>
           <div class="jumbotron">
@@ -29,9 +29,9 @@
                   {% for result in row %}
                   <tbody>
                     <tr>
-                      <td>1</td>
-                      <td>{{result['pj_name']}}</td>
-                      <td>{{result['pj_refNumber']}}</td>
+                      <td>1++</td>
+                      <td><a href = "/draft/{{result['pj_id']}}">{{result['pj_name']}}</a></td>
+                      <td> {{result['pj_refNumber']}}</td>
                       <td>{{result['pj_detail']}}</td>
                       <td>{{result['user_name']}}</td>
                       <td>{{result['pj_refNumber']}}</td>
@@ -48,9 +48,11 @@
         <center>
         
         <a class="btn btn-primary btn-lg" href="addproject" role="button">เพิ่มโครงการใหม่</a>
-        <a class="btn btn-primary btn-lg" href="consider" role="button"> consider</a>
+        <!-- <a class="btn btn-primary btn-lg" href="consider" role="button"> consider</a>
         <a class="btn btn-primary btn-lg" href="login" role="button"> login</a>
-        <a class="btn btn-primary btn-lg" href="กรรมการ" role="button"> กรรมการ</a>
+        <a class="btn btn-primary btn-lg" href="event" role="button"> กรรมการ</a>
+        <a class="btn btn-primary btn-lg" href="draft" role="button"> draft</a>
+        <a class="btn btn-primary btn-lg" href="addboard" role="button"> addboard</a> -->
       </center>
-        </center>
+      </center>
       {% endblock %}

@@ -1,160 +1,96 @@
 <doctype html>
-{% extends 'layout.html' %}
+  {% extends 'layout.html' %}
+  
+  {% block body %}
+      <body>
 
-{% block body %}
-<style>
-  * {
-    box-sizing: border-box;
-  }   
-  /* Create two unequal columns that floats next to each other */
-  /* Left column */
-  .leftcolumn {   
-    float: left;
-    width: 75%;
-  }
-  
-  /* Right column */
-  .rightcolumn {
-    float: left;
-    width: 25%;
-    background-color: #f1f1f1;
-    padding-left: 20px;
-  }
-  
-  
-  /* Add a card effect for articles */
-  .card {
-    background-color: white;
-    padding: 20px;
-    margin-top: 20px;
-  }
-  
-  
-  input[type=text], select, textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: vertical;
-  }
-  
-  label {
-    padding: 12px 12px 12px 0;
-    display: inline-block;
-  }
-  
-  .col-25 {
-    float: left;
-    width: 25%;
-    margin-top: 6px;
-  }
-  
-  .col-75 {
-    float: left;
-    width: 75%;
-    margin-top: 6px;
-  }
-  
-  /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
-  @media screen and (max-width: 800px) {
-    .leftcolumn, .rightcolumn {   
-      width: 100%;
-      padding: 0;
-    }
-  }
-  
-  /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
-  @media screen and (max-width: 600px) {
-    .col-25, .col-75, input[type=submit] {
-      width: 100%;
-      margin-top: 0;
-    }
-  }
-  </style>
-  <div>
-    <p>
-      <br><h1>ร่างโครงการ และราคากลาง</h1>
-    </p>
-    <div class="leftcolumn">
-      <div class="card">
-        <div >
-          <form action="/action_page.php">
-            <div class="row">
-              <h align="right" >เลขสารบัญ สก12345</h>
+      <div class="row">
+        <p>
+          <br><h1>ร่างโครงการ และราคากลาง</h1>
+        </p>
+        <div class="leftcolumn">
+          <div class="card">
+            <div class="container">
+              <!-- <form action="/action_page.php"> -->
+                <div class="row">
+                    <h align="right" >เลขสารบัญ {{row[0]['pj_refNumber']}}</h>
+                  </div>
+                <div class="row">
+                  <div class="col-25">
+                    <label>ชื่อโครงการ</label>
+                  </div>
+                  <div class="col-75">
+                    <label>{{row[0]['pj_name']}}</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-25">
+                    <label>ผู้รับผิดชอบโครงการ</label>
+                  </div>
+                  <div class="col-75">
+                    <label>{{rows[0]['user_fullname']}}</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-25">
+                    <label>คณะกรรมการ</label>
+                  </div>
+                  <div class="col-75">
+                    {% for result in row %}
+                    <div class="row"><div class="col-75"><label>{{result['user_fullname']}}</label></div><div class="col-25"><label >{{result['role_name']}}</label></div></div>
+                    {% endfor %}
+                    <div align="Right"><a href="addboard" role="button"> เพิ่มกรรมการ</a></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-25">
+                    <label>วันที่เริ่มโครงการ</label>
+                  </div>
+                  <div class="col-75">
+                    <label>{{row[0]['startproject_date']}}</label>
+                  </div>
+                </div><div class="row">
+                  <div class="col-25">
+                    <label>งบประมาณ</label>
+                  </div>
+                  <div class="col-75">
+                    <label>{{row[0]['pj_amount']}}</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-25">
+                    <label>รายละเอียด</label>
+                  </div>
+                  <div class="col-75">
+                    <label>{{row[0]['pj_detail']}}
+                    </label>
+                  </div>
+                </div>
+              <!-- </form> -->
             </div>
-            <div class="row">
-              <div class="col-25">
-                <label>ชื่อโครงการ</label>
-              </div>
-              <div class="col-75">
-                <label>โครงการจัดซื้อ Maxbook Pro M2</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-25">
-                <label>ผู้รับผิดชอบโครงการ</label>
-              </div>
-              <div class="col-75">
-                <label>นฤดล บุญทอง</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-25">
-                <label>คณะกรรมการ</label>
-              </div>
-              <div class="col-75">
-                <div class="row"><div class="col-75"><label>1.พรียูร์   บุตรชู</label></div><div class="col-25"><label >ประธาน</label></div></div>
-                <div class="row"><div class="col-75"><label>2.พงศกร  แผ่นทอง</label></div><div class="col-25"><label >กรรมการ</label></div></div>
-                <div class="row"><div class="col-75"><label>3.ปาริฉัตร แสงทอง</label></div><div class="col-25"><label >เลขาธิการ</label></div></div>
-                <center><a href="addboard" role="button"> เพิ่มกรรมการ</a></center>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-25">
-                <label>วันที่เริ่มโครงการ</label>
-              </div>
-              <div class="col-75">
-                <label>11/11/2022</label>
-              </div>
-            </div><div class="row">
-              <div class="col-25">
-                <label>งบประมาณ</label>
-              </div>
-              <div class="col-75">
-                <label>70000 บาท</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-25">
-                <label>รายละเอียด</label>
-              </div>
-              <div class="col-75">
-                <label>โครงการจัดซื้อ Maxbook Pro M2 เพื่อใช้ในการ-------------------------------------
-                  -------------------------------------------------------------------------------
-                </label>
-              </div>
-            </div>
-          </form>
+          </div>
+          
         </div>
-        <a href="#" align="right">แก้ไข</a>
+        <div class="rightcolumn" style="background-color:#ffffff;">
+          <div class="card">
+            <center>
+            <h1>สถานะ</h1>
+            <progress id="file" value="{{row[0]['st_percent']}}" max="100"> </progress>    
+            <br>
+            <br>
+            <label for="file">{{row[0]['st_name']}}</label>
+            </center>
+            <div align="Right"><a href ="/" >อัพเดทสถานะ</a></div>
+          </div>
+          <div class="card">
+            <h3>Event</h3>
+            <p>{{row[0]['ev_name']}}</p>
+            <p>{{row[0]['ev_date']}}</p>
+            <a align="right" href="event">ดูเพิ่มเติม</a>
+          </div>
+        </div>
       </div>
-      
-    </div>
-    <div class="rightcolumn" style="background-color:#ffffff;">
-      <div class="card">
-        <center>
-        <h1>สถานะ</h1>
-        <progress id="file" value="32" max="100"> 32% </progress>    
-        <br>
-        <br>
-        <label for="file">กำลังร่างอนุมัติโครงการ</label>
-        </center>
-      </div>
-      <div class="card">
-        <h3>Event</h3>
-        <p>นัดประชุมร่างโครงการวันที่ 15/01/21</p>
-      </div>
-    </div>
-  </div>
-{% endblock %}
-
+      <br>
+      <a  class="btn btn-primary btn-lg" href ="/" >ย้อนกลับ</a>
+      <a  class="btn btn-primary btn-lg" href ="/" >ถัดไป</a> 
+    {% endblock %}

@@ -2,87 +2,6 @@
     {% extends 'layout.html' %}
     
     {% block body %}
-    <style>
-        * {
-          box-sizing: border-box;
-        }   
-        /* Create two unequal columns that floats next to each other */
-        /* Left column */
-        .leftcolumn {   
-          float: left;
-          width: 75%;
-        }
-        
-        /* Right column */
-        .rightcolumn {
-          float: left;
-          width: 25%;
-          background-color: #f1f1f1;
-          padding-left: 20px;
-        }
-        
-        label {
-          padding: 12px 12px 12px 0;
-          display: inline-block;
-        }
-        
-        .col-25 {
-          float: left;
-          width: 25%;
-          margin-top: 6px;
-        }
-        
-        .col-75 {
-          float: left;
-          width: 75%;
-          margin-top: 6px;
-        }
-
-        /* Fake image */
-        .fakeimg {
-          background-color: #aaa;
-          width: 100%;
-          padding: 20px;
-        }
-        
-        /* Add a card effect for articles */
-        .card {
-          background-color: white;
-          padding: 20px;
-          margin-top: 20px;
-        }
-        
-        /* Clear floats after the columns */
-        .row:after {
-          content: "";
-          display: table;
-          clear: both;
-        }
-        
-        /* Footer */
-        .footer {
-          padding: 20px;
-          text-align: center;
-          background: #ddd;
-          margin-top: 20px;
-        }
-        
-        /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
-        @media screen and (max-width: 800px) {
-          .leftcolumn, .rightcolumn {   
-            width: 100%;
-            padding: 0;
-          }
-        }
-        
-        /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
-        @media screen and (max-width: 400px) {
-          .topnav a {
-            float: none;
-            width: 100%;
-          }
-        }
-        </style>
         <body>
         
         <div class="row">
@@ -118,7 +37,7 @@
                   <div class="row"><div class="col-75"><label>1.พรียูร์   บุตรชู</label></div><div class="col-25"><label >ประธาน</label></div></div>
                   <div class="row"><div class="col-75"><label>2.พงศกร  แผ่นทอง</label></div><div class="col-25"><label >กรรมการ</label></div></div>
                   <div class="row"><div class="col-75"><label>3.ปาริฉัตร แสงทอง</label></div><div class="col-25"><label >เลขาธิการ</label></div></div>
-                  <center><a href="addboard" role="button"> เพิ่มกรรมการ</a></center>
+                  <div align="Right"><a href="addboard" role="button"> เพิ่มกรรมการ</a></div>
                 </div>
               </div>
               <div class="row">
@@ -170,7 +89,7 @@
             <div class="card">
               <h3>Event</h3>
               <p>นัดประชุมร่างโครงการวันที่ 15/01/21</p>
-              <a align="right" href="event">ประวัติ</a>
+              <a align="right" href="event">ดูเพิ่มเติม</a>
             </div>
             <div class="card">
               <h3>การตรวจงาน</h3>
