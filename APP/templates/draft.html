@@ -72,6 +72,7 @@
     }
     </style>
     <div>
+      {% for row in row %}
       <p>
         <br><h1>ร่างโครงการ และราคากลาง</h1>
       </p>
@@ -80,20 +81,21 @@
           <div >
             <form action="/action_page.php">
               <div class="row">
-                <h align="right" >เลขสารบัญ สก12345</h>
+                <h align="right" >{{ row[0] }}/h>
               </div>
               <div class="row">
                 <div class="col-25">
-                  <label>ชื่อโครงการ</label>
+                  <label>{{ row[1] }}</label>
                 </div>
                 <div class="col-75">
-                  <label>โครงการจัดซื้อ Maxbook Pro M2</label>
+                  <label>{{ row[5] }}</label>
                 </div>
               </div>
+              {% endfor %}
               <div class="row">
-                <div class="col-25">
+                <!-- <div class="col-25">
                   <label>ผู้รับผิดชอบโครงการ</label>
-                </div>
+                </div> -->
                 <div class="col-75">
                   <label>นฤดล บุญทอง</label>
                 </div>
@@ -101,12 +103,6 @@
               <div class="row">
                 <div class="col-25">
                   <label>คณะกรรมการ</label>
-                </div>
-                <div class="col-75">
-                  <div class="row"><div class="col-75"><label>1.พรียูร์   บุตรชู</label></div><div class="col-25"><label >ประธาน</label></div></div>
-                  <div class="row"><div class="col-75"><label>2.พงศกร  แผ่นทอง</label></div><div class="col-25"><label >กรรมการ</label></div></div>
-                  <div class="row"><div class="col-75"><label>3.ปาริฉัตร แสงทอง</label></div><div class="col-25"><label >เลขาธิการ</label></div></div>
-                  <center><a href="addboard" role="button"> เพิ่มกรรมการ</a></center>
                 </div>
               </div>
               <div class="row">

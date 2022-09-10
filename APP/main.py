@@ -25,7 +25,7 @@ def login():
 			session['loggedin'] = True
 			session['user_id'] = account['user_id']
 			session['user_name'] = account['user_name']
-			session['user_fname'] = account['user_fname']
+			session['user_fullname'] = account['user_fullname']
 			session['user_role'] = account['user_role']
 			return redirect('/way')
 		else:
@@ -37,7 +37,7 @@ def logout():
     session.pop('loggedin', None)
     session.pop('user_id', None)
     session.pop('user_name', None)
-    session.pop('user_fname', None)
+    session.pop('user_fullname', None)
     session.pop('user_role', None)
     session.pop('password', None)
     return render_template('login.html')  
@@ -94,37 +94,31 @@ def user():
 # โลทางเลือกยังไม่ได้ยัด
 @app.route('/way')
 def way():
-    if session['user_role']=='Boss' :
-       return redirect('/datamainM')
-    elif session['user_role']=='secretary' :
-       return redirect('/datamainS')
-    elif session['user_role']=='board' :
-       return redirect('/datamainS')
+    if session['user_role']=='user' :
+       return redirect('/datamainU')
     elif session['user_role']=='addmin' :
        return redirect('/datamainA')
-    else :
-       return render_template('login.html')
 
-#โปรเจ็คหน้าหลักโปรเจค
-@app.route('/datamainM')
-def datamainsM():
+#
+@app.route('/datamain')
+def datamain():
     conn = None
     cursor = None
     id = session['user_id']
     try:
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM projects  INNER JOIN manager ON ( projects.pj_id = manager.pj_id ) INNER JOIN users ON ( manager.user_id = users.user_id) where users.user_id = %s",id)
+        cursor.execute("SELECT projects.pj_id, projects.pj_name , projects.pj_type,projects.pj_budgetYears,mn_role,st_name FROM projects  INNER JOIN process ON ( projects.pj_id = process.pj_id ) INNER JOIN status ON ( process.st_id = status.st_id) INNER JOIN manager ON ( projects.pj_id = manager.pj_id) where user_id = %s ",id)
         row = cursor.fetchall()
-        return render_template('home.html', row=row) 
+        return render_template('home_a.html', row=row,) 
     except Exception as e:
         print(e)
     finally: 
         cursor.close()
         conn.close()
 
-# #โปรเจ็คหน้าหลักเลขา
-@app.route('/datamainS')
+# 
+@app.route('/datamainU')
 def datamainS():
     conn = None
     cursor = None
@@ -132,9 +126,9 @@ def datamainS():
     try:
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM projects  INNER JOIN board ON ( projects.pj_id = board.pj_id ) INNER JOIN users ON ( board.user_id = users.user_id) where users.user_id = %s",id)
+        cursor.execute("SELECT projects.pj_id, projects.pj_name , projects.pj_type,projects.pj_budgetYears, tbl_role.role_name,st_name FROM projects  INNER JOIN process ON ( projects.pj_id = process.pj_id ) INNER JOIN status ON ( process.st_id = status.st_id) INNER JOIN board ON ( projects.pj_id = board.pj_id) INNER JOIN tbl_role ON ( board.role_id = tbl_role.role_id)  where user_id = %s ",id)
         row = cursor.fetchall()
-        return render_template('home_sec.html', row=row,) 
+        return render_template('home_u.html', row=row,) 
     except Exception as e:
         print(e)
     finally: 
@@ -143,15 +137,15 @@ def datamainS():
 
 #โปรเจ็คหน้าหลักเเอดมิน
 @app.route('/datamainA')
-def datamain():
+def datamainA():
     conn = None
     cursor = None
     try:
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM  projects")
+        cursor.execute("SELECT projects.pj_id,projects.pj_refNumber,projects.pj_name,projects.pj_type,projects.pj_amount,pj_budgetYears,st_name FROM projects  INNER JOIN process ON ( projects.pj_id = process.pj_id ) INNER JOIN status ON ( process.st_id = status.st_id)")
         row = cursor.fetchall()
-        return render_template('homeA.html', row=row,) 
+        return render_template('home_a.html', row=row,) 
     except Exception as e:
         print(e)
     finally:
@@ -179,10 +173,29 @@ def showsearchs():
                 print('ผิดพลาด')
         except Exception as e:
             print(e)
-# แก้ส่งค่าhtml
-@app.route('/darft')
-def d_darft():
-    return render_template('draft.html')
+#  แก้ส่งค่าhtml
+# @app.route('/darft')
+# def d_darft():
+#     return render_template('draft.html')
+
+# @app.route('/darft/<int:id>')
+# def play(id):
+#     conn = None
+#     cursor = None
+#     try:
+#         conn = mysql.connect()
+#         cursor = conn.cursor()
+#         cursor.execute("SELECT * FROM projects WHERE pj_id=%s", id)
+#         row = cursor.fetchall()
+#         if row:
+#             return render_template('darft.html', row=row,)
+#         else:
+#             return 'Error loading #{id}'.format(id=id)
+#     except Exception as e:
+#         print(e)
+#     finally:
+#         cursor.close()
+#         conn.close()
 
 if __name__ == "__main__":
     app.run(debug=True)
