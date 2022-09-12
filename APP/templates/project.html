@@ -4,10 +4,9 @@
     {% block body %}
     
         <body>
-        
         <div class="row">
           <p>
-            <br><h1>ร่างโครงการ และราคากลาง</h1>
+            <br><h1>ร่างโครงการ และราคากลาง {{id}}</h1>
           </p>
           <div class="leftcolumn">
             <div class="card">
@@ -19,7 +18,7 @@
                   <label>ชื่อโครงการ</label>
                 </div>
                 <div class="col-75">
-                  <label>โครงการจัดซื้อ Maxbook Pro M2</label>
+                  <label>{{row[id]['pj_name']}}</label>
                 </div>
               </div>
               <div class="row">
@@ -74,7 +73,7 @@
                       <progress id="file" value="100" max="100"> 100% </progress>    
                       <br><br>
                       <p for="file">อนุมัติ</p>
-                      <p><a href="draft" class="card-link">ดูเพิ่มเติม</a></p>
+                      <p><a href="{{id}}/draft" class="card-link">ดูเพิ่มเติม</a></p>
                     </center>
                   </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <div class="jumbotron">
@@ -83,7 +82,7 @@
                       <progress id="file" value="40" max="100"> 40% </progress>    
                       <br><br>
                       <p for="file">รอพิจารณาผล</p>
-                      <p><a href="draft" class="card-link">ดูเพิ่มเติม</a></p>
+                      <p><a href="{{id}}/consider" class="card-link">ดูเพิ่มเติม</a></p>
                     </center>
                   </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <div  class="jumbotron">
@@ -92,7 +91,7 @@
                       <progress id="file" value="0" max="100"> 0% </progress>    
                       <br><br>
                       <p for="file">ยังไม่ดำเนินการ</p>
-                      <p><a href="draft" class="card-link">ดูเพิ่มเติม</a></p>
+                      <p><a href="{{id}}/examine" class="card-link">ดูเพิ่มเติม</a></p>
                     </center>
                   </div>
                 </div>

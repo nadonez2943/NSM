@@ -37,12 +37,8 @@ def home():
 #         cursor.close()
 #         conn.close()
  
-@app.route('/project')
-def project():
-    return render_template('project.html')
-
-@app.route('/draft/<int:id>', methods=[ 'GET'])
-def draft(id):
+@app.route('/project/<int:id>', methods=[ 'GET'])
+def project(id):
     conn = None
     cursor = None
     try:
@@ -51,6 +47,28 @@ def draft(id):
         cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status ON nsm_project.process.st_id = nsm_project.status.st_id LEFT JOIN nsm_project.events ON nsm_project.process.ev_id = nsm_project.events.ev_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id order by nsm_project.tbl_role.role_id")
         row = cursor.fetchall()
         cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id")
+        rows = cursor.fetchall()
+        if rows:
+            return render_template('project.html', row=row , rows=rows , id=id )
+        else:
+            return 'Error loading #{id}'.format(id=id)
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        conn.close()
+    
+
+@app.route('/project/<int:id>/draft', methods=[ 'GET'])
+def draft(id):
+    conn = None
+    cursor = None
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status ON nsm_project.process.st_id = nsm_project.status.st_id LEFT JOIN nsm_project.events ON nsm_project.process.ev_id = nsm_project.events.ev_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id order by nsm_project.tbl_role.role_id")
+        row = cursor.fetchall()
+        cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s ", id)
         rows = cursor.fetchall()
         if rows:
             return render_template('draft.html', row=row , rows=rows ,id=id)
@@ -62,13 +80,47 @@ def draft(id):
         cursor.close()
         conn.close()
 
-@app.route('/consider')
-def consider():
-    return render_template('consider.html')
+@app.route('/project/<int:id>/consider', methods=[ 'GET'])
+def consider(id):
+    conn = None
+    cursor = None
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status ON nsm_project.process.st_id = nsm_project.status.st_id LEFT JOIN nsm_project.events ON nsm_project.process.ev_id = nsm_project.events.ev_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id order by nsm_project.tbl_role.role_id")
+        row = cursor.fetchall()
+        cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id")
+        rows = cursor.fetchall()
+        if rows:
+            return render_template('consider.html', row=row , rows=rows ,id=id)
+        else:
+            return 'Error loading #{id}'.format(id=id)
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        conn.close()
 
-@app.route('/examine')
-def examine():
-    return render_template('examine.html')
+@app.route('/project/<int:id>/examine', methods=[ 'GET'])
+def examine(id):
+    conn = None
+    cursor = None
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status ON nsm_project.process.st_id = nsm_project.status.st_id LEFT JOIN nsm_project.events ON nsm_project.process.ev_id = nsm_project.events.ev_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id order by nsm_project.tbl_role.role_id")
+        row = cursor.fetchall()
+        cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id ")
+        rows = cursor.fetchall()
+        if rows:
+            return render_template('examine.html', row=row , rows=rows ,id=id)
+        else:
+            return 'Error loading #{id}'.format(id=id)
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        conn.close()   
 
 @app.route('/event')
 def event():
