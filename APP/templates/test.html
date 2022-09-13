@@ -1,15 +1,62 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-<title>ThaiCreate.Com Tutorial</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Portal</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
 </head>
+
 <body>
-<body>
-	<form name="frmMain" method="post" action="upload.php">
-		 <input type="file" name="filUpload" style="display: none;">
-		  <input type="text" name="tmpPath" size="50">
-		  <strong><a href="#" onClick="filUpload.click();tmpPath.value=filUpload.value;">Click here</a></strong>
-		  <br>
-		  <input type="submit" name="btnSubmit" value="Submit">
-	</form>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Portal</h1>
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr class="bg-primary text-white">
+                                <th>No...</th>
+                                <th>Name</th>
+                                <th>Status</th>
+                                <th>Age</th>
+                                <th>Address</th>
+                                <th>Department</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="table-primary">
+                                <td>1</td>
+                                <td>Benz</td>
+                                <td>Normal</td>
+                                <td>35</td>
+                                <td>Bangkok 10000</td>
+                                <td>IT</td>
+                            </tr>
+                            <tr class="table-warning">
+                                <td>2</td>
+                                <td>Namnueng</td>
+                                <td>NA</td>
+                                <td>35</td>
+                                <td>Bangkok 10000</td>
+                                <td>IT</td>
+                            </tr>
+                            <tr class="table-info">
+                                <td>3</td>
+                                <td>Pare</td>
+                                <td>NA</td>
+                                <td>35</td>
+                                <td>Bangkok 10000</td>
+                                <td>IT</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
