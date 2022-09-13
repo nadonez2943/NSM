@@ -42,56 +42,7 @@ def logout():
     session.pop('password', None)
     return render_template('login.html')  
 
-# ไม่เอา
-# @app.route('/datamain')
-# def datamain():
-#     conn = None
-#     cursor = None
-#     try:
-#         conn = mysql.connect()
-#         cursor = conn.cursor()
-#         cursor.execute("SELECT * FROM  projects")
-#         row = cursor.fetchall()
-#         return render_template('home.html', row=row,) 
-#     except Exception as e:
-#         print(e)
-#     finally:
-#         cursor.close()
-#         conn.close()
-
-@app.route('/addproject', methods=['POST'])
-def user():
-    conn = None
-    cursor = None
-    try:
-        refNumber = request.form['refNumber']
-        office = request.form['office']
-        divition = request.form['divition']
-        type = request.form['radio']
-        # projace_m = request.form['projace_m']
-        name = request.form['name']
-        amount = request.form['amount']
-        detail = request.form['detail']
-        financeAmount = request.form['financeAmount']
-        budgetSource = request.form['budgetSource']
-        budgetYears = request.form['budgetYears']
-        if  refNumber and office and divition and type and name and amount and detail and financeAmount and budgetSource and budgetYears and  request.method == 'POST':
-            sql = "INSERT INTO projects (pj_refNumber, pj_office, pj_division, pj_type, pj_name, pj_amount, pj_detail, pj_financeAmount, pj_budgetSource, pj_budgetYears) VALUES(%s, %s, %s, %s, %s,%s, %s, %s, %s)"
-            data = (refNumber,office,divition,type,name,amount,detail,financeAmount,budgetSource,budgetYears,)
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            cursor.execute(sql, data)
-            conn.commit()
-            return redirect('/datamain')
-        else:
-            return 'Error'
-    except Exception as e:
-           print(e)
-    finally:
-           cursor.close() 
-           conn.close()
-
-# โลทางเลือกยังไม่ได้ยัด
+# โลทางเลือก
 @app.route('/way')
 def way():
     if session['user_role']=='user' :
@@ -99,7 +50,7 @@ def way():
     elif session['user_role']=='addmin' :
        return redirect('/datamainA')
 
-#
+#โครงการของฉัน
 @app.route('/datamain')
 def datamain():
     conn = None
@@ -110,14 +61,14 @@ def datamain():
         cursor = conn.cursor()
         cursor.execute("SELECT projects.pj_id, projects.pj_name , projects.pj_type,projects.pj_budgetYears,mn_role,st_name FROM projects  INNER JOIN process ON ( projects.pj_id = process.pj_id ) INNER JOIN status ON ( process.st_id = status.st_id) INNER JOIN manager ON ( projects.pj_id = manager.pj_id) where user_id = %s ",id)
         row = cursor.fetchall()
-        return render_template('home_a.html', row=row,) 
+        return render_template('home.html', row=row,) 
     except Exception as e:
         print(e)
     finally: 
         cursor.close()
         conn.close()
 
-# 
+# โครงการที่เกี่ยวข้องของuser
 @app.route('/datamainU')
 def datamainS():
     conn = None
@@ -152,6 +103,7 @@ def datamainA():
         cursor.close()
         conn.close()
 
+
 #ค้นหา
 @app.route('/showsearchs' , methods=['POST', 'GET'])
 def showsearchs():
@@ -173,29 +125,38 @@ def showsearchs():
                 print('ผิดพลาด')
         except Exception as e:
             print(e)
-#  แก้ส่งค่าhtml
-# @app.route('/darft')
-# def d_darft():
-#     return render_template('draft.html')
 
-# @app.route('/darft/<int:id>')
-# def play(id):
-#     conn = None
-#     cursor = None
-#     try:
-#         conn = mysql.connect()
-#         cursor = conn.cursor()
-#         cursor.execute("SELECT * FROM projects WHERE pj_id=%s", id)
-#         row = cursor.fetchall()
-#         if row:
-#             return render_template('darft.html', row=row,)
-#         else:
-#             return 'Error loading #{id}'.format(id=id)
-#     except Exception as e:
-#         print(e)
-#     finally:
-#         cursor.close()
-#         conn.close()
+# เพิ่มโปรเจค
+@app.route('/addproject', methods=['POST'])
+def user():
+    conn = None
+    cursor = None
+    try:
+        refNumber = request.form['refNumber']
+        office = request.form['office']
+        divition = request.form['divition']
+        type = request.form['radio']
+        name = request.form['name']
+        amount = request.form['amount']
+        detail = request.form['detail']
+        financeAmount = request.form['financeAmount']
+        budgetSource = request.form['budgetSource']
+        budgetYears = request.form['budgetYears']
+        if  refNumber and office and divition and type and name and amount and detail and financeAmount and budgetSource and budgetYears and  request.method == 'POST':
+            sql = "INSERT INTO projects (pj_refNumber, pj_office, pj_division, pj_type, pj_name, pj_amount, pj_detail, pj_financeAmount, pj_budgetSource, pj_budgetYears) VALUES(%s, %s, %s, %s, %s,%s, %s, %s, %s, %s)"
+            data = (refNumber,office,divition,type,name,amount,detail,financeAmount,budgetSource,budgetYears,)
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute(sql, data)
+            conn.commit()
+            return redirect('/datamain')
+        else:
+            return 'Error'
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close()
 
 if __name__ == "__main__":
     app.run(debug=True)
