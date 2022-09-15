@@ -13,7 +13,7 @@
             <div class="container">
               <!-- <form action="/action_page.php"> -->
                 <div class="row">
-                    <h align="right" >เลขสารบัญ {{row[id-1]['pj_refNumber']}}</h>
+                    <h align="right" >เลขสารบัญ {{row[id-2]['pj_refNumber']}}</h>
                   </div>
                 <div class="row">
                   <div class="col-25">
@@ -28,7 +28,7 @@
                     <label>ผู้รับผิดชอบโครงการ</label>
                   </div>
                   <div class="col-75">
-                    <label>{{rows[id-1]['user_fullname']}}</label>
+                    <label>{{rows[id-2]['user_fullname']}}</label>
                   </div>
                 </div>
                 <div class="row">
@@ -47,14 +47,14 @@
                     <label>วันที่เริ่มโครงการ</label>
                   </div>
                   <div class="col-75">
-                    <label>{{row[id-1]['startproject_date']}}</label>
+                    <label>{{row[id-2]['startproject_date']}}</label>
                   </div>
                 </div><div class="row">
                   <div class="col-25">
                     <label>งบประมาณ</label>
                   </div>
                   <div class="col-75">
-                    <label>{{row[id-1]['pj_amount']}}</label>
+                    <label>{{row[id-2]['pj_amount']}}</label>
                   </div>
                 </div>
                 <div class="row">
@@ -62,7 +62,7 @@
                     <label>รายละเอียด</label>
                   </div>
                   <div class="col-75">
-                    <label>{{row[id-1]['pj_detail']}}
+                    <label>{{row[id-2]['pj_detail']}}
                     </label>
                   </div>
                 </div>
@@ -78,14 +78,14 @@
             <progress id="file" value="{{row[0]['st_percent']}}" max="100"> </progress>    
             <br>
             <br>
-            <label for="file">{{row[id-1]['st_name']}}</label>
+            <label for="file">{{row[id-2]['st_name']}}</label>
             </center>
             <div align="Right"><a href ="/" >อัพเดทสถานะ</a></div>
           </div>
           <div class="card">
             <h3>Event</h3>
-            <p>{{row[id-1]['ev_name']}}</p>
-            <p>{{row[id-1]['ev_date']}}</p>
+            <p>{{row[id-2]['ev_name']}}</p>
+            <p>{{row[id-2]['ev_date']}}</p>
             <a align="right" href="event">ดูเพิ่มเติม</a>
           </div>
         </div>
