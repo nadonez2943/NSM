@@ -62,7 +62,7 @@ def homeadd():
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id INNER JOIN nsm_project.status ON nsm_project.process.st_id = nsm_project.status.st_id INNER JOIN nsm_project.events ON nsm_project.process.ev_id = nsm_project.events.ev_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id INNER JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.mn_id  LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id")
         row = cursor.fetchall()
-        cursor.execute("SELECT user_id FROM nsm_project.users where user_id = %s",id)
+        cursor.execute("SELECT user_id FROM nsm_project.users where user_id = %s",id) #แก้บรรทัดนี้ใหม่ด้วยแค่ลองเฉยๆ
         rows = cursor.fetchall()         
         return render_template('homeadd.html', row=row,rows=rows )
     except Exception as e:
@@ -116,6 +116,7 @@ def showsearchs():
 @app.route('/addproject',methods=['GET'])
 def addproject():
     return render_template('addproject.html')
+
 # เพิ่มโปรเจคแต่ยังเก็บผู้รับผิดชอบไม่ได้ ตอนกดมันไม่ส่งไปเก็บในฐานข้อมูล***เพราะยังไม่ได้ทำ :( 
 @app.route('/addproject', methods=['POST'])
 def addprojects():
