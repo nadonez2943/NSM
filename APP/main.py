@@ -113,9 +113,12 @@ def showsearchs():
         except Exception as e:
             print(e)
 
+@app.route('/addproject',methods=['GET'])
+def addproject():
+    return render_template('addproject.html')
 # เพิ่มโปรเจคแต่ยังเก็บผู้รับผิดชอบไม่ได้ ตอนกดมันไม่ส่งไปเก็บในฐานข้อมูล***เพราะยังไม่ได้ทำ :( 
 @app.route('/addproject', methods=['POST'])
-def user():
+def addprojects():
     conn = None
     cursor = None
     try:
