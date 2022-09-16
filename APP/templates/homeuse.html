@@ -1,0 +1,58 @@
+<doctype html>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    {% extends 'layout.html' %}
+    {% block body %}
+    <div class="container mt-3">
+      <div id="child1">
+        <a>ค้นหาโครงการ</a>
+        <form action = "/showsearchs" method = "POST">
+            <input type="text" " placeholder="Search.." name="search">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+        <div class="jumbotron">
+          <div class="container mt-3">
+            
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>ลำดับ</th>
+                    <th>ชื่อโครงการ</th>
+                    <th>เลขสารบัญ</th>
+                    <th>รายละเอียด</th>
+                    <th>ผู้รับผิดชอบ</th>
+                    <th>ตำแหน่งที่เกี่ยวข้อง</th>
+                    <th>กิจกรรม</th>
+                    <th>สถาณะโครงการ</th>
+                  </tr>
+                </thead>
+                {% for result in row %}
+                <tbody>
+                  <tr>
+                    <td>{{result['']}}</td>
+                    <td><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>
+                    <td> {{result['pj_refNumber']}}</td>
+                    <td>{{result['pj_detail']}}</td>
+                    <td>{{result['user_name']}}</td>
+                    <td>{{result['pj_refNumber']}}</td>
+                    <td>{{result['pj_refNumber']}}</td>
+                    <td>{{result['pj_refNumber']}}</td>
+                  </tr>
+                </tbody>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+        </div>
+        
+        <center>
+        
+        <a class="btn btn-primary btn-lg" href="addproject" role="button">เพิ่มโครงการใหม่</a>
+        <a class="btn btn-primary btn-lg" href="consider" role="button"> consider</a>
+        <a class="btn btn-primary btn-lg" href="login" role="button"> login</a>
+        <a class="btn btn-primary btn-lg" href="event" role="button"> กรรมการ</a>
+        <a class="btn btn-primary btn-lg" href="draft" role="button"> draft</a>
+        <a class="btn btn-primary btn-lg" href="addexamine" role="button"> ex</a>
+      </center>
+      </center>
+      {% endblock %}

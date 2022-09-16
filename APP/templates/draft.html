@@ -1,109 +1,96 @@
 <doctype html>
-    {% extends 'layout.html' %}
-    
-    {% block body %}
-    <style>
-        * {
-          box-sizing: border-box;
-        }   
-        /* Create two unequal columns that floats next to each other */
-        /* Left column */
-        .leftcolumn {   
-          float: left;
-          width: 75%;
-        }
-        
-        /* Right column */
-        .rightcolumn {
-          float: left;
-          width: 25%;
-          background-color: #f1f1f1;
-          padding-left: 20px;
-        }
-        
-        /* Fake image */
-        .fakeimg {
-          background-color: #aaa;
-          width: 100%;
-          padding: 20px;
-        }
-        
-        /* Add a card effect for articles */
-        .card {
-          background-color: white;
-          padding: 20px;
-          margin-top: 20px;
-        }
-        
-        /* Clear floats after the columns */
-        .row:after {
-          content: "";
-          display: table;
-          clear: both;
-        }
-        
-        /* Footer */
-        .footer {
-          padding: 20px;
-          text-align: center;
-          background: #ddd;
-          margin-top: 20px;
-        }
-        
-        /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
-        @media screen and (max-width: 800px) {
-          .leftcolumn, .rightcolumn {   
-            width: 100%;
-            padding: 0;
-          }
-        }
-        
-        /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
-        @media screen and (max-width: 400px) {
-          .topnav a {
-            float: none;
-            width: 100%;
-          }
-        }
-        </style>
-        <body>
-        
-        <div class="row">
-          <p>
-            <br><h1>ร่างโครงการ และราคากลาง</h1>
-          </p>
-          <div class="leftcolumn">
-            <div class="card">
-              <h align="right" >เลขสารบัญ สก12345</h>
-              <h5>ชื่อโครงการ</h5><br>
-              <h5>ผู้รับผิดชอบโครงการ</h5>
-              <p>
-                <h5>คณะกรรมการ</h5>
-                <div class="container mt-3" align="center">
-                <a href="กรรมการ" role="button"> เพิ่มกรรมการ</a>
+  {% extends 'layout.html' %}
+  
+  {% block body %}
+      <body>
+
+      <div class="row">
+        <p>
+          <br><h1>ร่างโครงการ และราคากลาง</h1>
+        </p>
+        <div class="leftcolumn">
+          <div class="card">
+            <div class="container">
+              <!-- <form action="/action_page.php"> -->
+                <div class="row">
+                    <h align="right" >เลขสารบัญ {{row[id-2]['pj_refNumber']}}</h>
+                  </div>
+                <div class="row">
+                  <div class="col-25">
+                    <label>ชื่อโครงการ</label>
+                  </div>
+                  <div class="col-75">
+                    <label>{{row[id-1]['pj_name']}}</label>
+                  </div>
                 </div>
-              </p>
-              <h5>วันที่เริ่มโครงการ</h5><br>
-              <h5>งบประมาณ</h5>
-              <p>
-                <h5>รายละเอียด</h5>
-              </p>
+                <div class="row">
+                  <div class="col-25">
+                    <label>ผู้รับผิดชอบโครงการ</label>
+                  </div>
+                  <div class="col-75">
+                    <label>{{rows[id-2]['user_fullname']}}</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-25">
+                    <label>คณะกรรมการ</label>
+                  </div>
+                  <div class="col-75">
+                    {% for result in row %}
+                    <div class="row"><div class="col-75"><label>{{result['user_fullname']}}</label></div><div class="col-25"><label >{{result['role_name']}}</label></div></div>
+                    {% endfor %}
+                    <div align="Right"><a href="addboard" role="button"> เพิ่มกรรมการ</a></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-25">
+                    <label>วันที่เริ่มโครงการ</label>
+                  </div>
+                  <div class="col-75">
+                    <label>{{row[id-2]['startproject_date']}}</label>
+                  </div>
+                </div><div class="row">
+                  <div class="col-25">
+                    <label>งบประมาณ</label>
+                  </div>
+                  <div class="col-75">
+                    <label>{{row[id-2]['pj_amount']}}</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-25">
+                    <label>รายละเอียด</label>
+                  </div>
+                  <div class="col-75">
+                    <label>{{row[id-2]['pj_detail']}}
+                    </label>
+                  </div>
+                </div>
+              <!-- </form> -->
             </div>
           </div>
-          <div class="rightcolumn" style="background-color:#ffffff;">
-            <div class="card">
-              <center>
-              <h1>สถานะ</h1>
-              <progress id="file" value="32" max="100"> 32% </progress>    
-              <br>
-              <br>
-              <label for="file">กำลังร่างอนุมัติโครงการ</label>
-              </center>
-            </div>
-            <div class="card">
-              <h3>Event</h3>
-              <p>นัดประชุมร่างโครงการวันที่ 15/01/21</p>
-            </div>
+          
+        </div>
+        <div class="rightcolumn" style="background-color:#ffffff;">
+          <div class="card">
+            <center>
+            <h1>สถานะ</h1>
+            <progress id="file" value="{{row[0]['st_percent']}}" max="100"> </progress>    
+            <br>
+            <br>
+            <label for="file">{{row[id-2]['st_name']}}</label>
+            </center>
+            <div align="Right"><a href ="/" >อัพเดทสถานะ</a></div>
+          </div>
+          <div class="card">
+            <h3>Event</h3>
+            <p>{{row[id-2]['ev_name']}}</p>
+            <p>{{row[id-2]['ev_date']}}</p>
+            <a align="right" href="event">ดูเพิ่มเติม</a>
           </div>
         </div>
+      </div>
+      <br>
+      <a  class="btn btn-primary btn-lg" href ="/" >ย้อนกลับ</a>
+      <a  class="btn btn-primary btn-lg" href ="/" >ถัดไป</a> 
     {% endblock %}
