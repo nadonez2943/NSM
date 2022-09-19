@@ -4,6 +4,7 @@ from app import app
 from db_config import mysql
 from flask import flash, render_template, request, redirect, session
 from werkzeug.security import generate_password_hash, check_password_hash
+
 @app.route('/')
 def new():
     return render_template('login.html')
@@ -149,7 +150,7 @@ def user():
             cursor = conn.cursor()
             cursor.execute(sql, data)
             conn.commit()
-            return redirect('/datamain')
+            return redirect('/runm')
         else:
             return 'Error'
     except Exception as e:
@@ -157,6 +158,48 @@ def user():
     finally:
            cursor.close() 
            conn.close()
+
+# ทดลอง
+@app.route('/runm')
+def runm():
+    conn = None
+    cursor = None
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT pj_id FROM projects ORDER BY pj_id DESC LIMIT 1;")
+        row = cursor.fetchall()
+        return redirect('/runp/'+row) 
+    except Exception as e:
+        print(e)
+    finally: 
+        cursor.close()
+        conn.close()
+
+@app.route('/runp/<int:id>')
+def runp(id):
+    conn = None
+    cursor = None
+    user = session['user_id']
+    try:
+        sql = "UPDATE manager SET user_id=%s, pj_id=%s"
+        data = data = (id,user)
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute(sql, data)
+        conn.commit()
+        sql = "UPDATE process SET pj_id=%s"
+        data = data = (id)
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute(sql)
+        conn.commit()
+        return redirect('/datamain')
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        conn.close()  
 
 if __name__ == "__main__":
     app.run(debug=True)
