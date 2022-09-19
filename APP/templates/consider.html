@@ -13,14 +13,14 @@
             <div >
               <form action="/action_page.php">
                 <div class="row">
-                  <h align="right" >เลขสารบัญ สก12345</h>
+                  <h align="right" >เลขสารบัญ {{row[id-1]['pj_refNumber']}}</h>
                 </div>
                 <div class="row">
                   <div class="col-25">
                     <label>ชื่อโครงการ</label>
                   </div>
                   <div class="col-75">
-                    <label>โครงการจัดซื้อ Maxbook Pro M2</label>
+                    <label>{{row[id-1]['pj_name']}}</label>
                   </div>
                 </div>
                 <div class="row">
@@ -28,7 +28,7 @@
                     <label>ผู้รับผิดชอบโครงการ</label>
                   </div>
                   <div class="col-75">
-                    <label>นฤดล บุญทอง</label>
+                    <label>{{rows[id-1]['user_fullname']}}</label>
                   </div>
                 </div>
                 <div class="row">
@@ -36,9 +36,9 @@
                     <label>คณะกรรมการ</label>
                   </div>
                   <div class="col-75">
-                    <div class="row"><div class="col-75"><label>1.พรียูร์   บุตรชู</label></div><div class="col-25"><label >ประธาน</label></div></div>
-                    <div class="row"><div class="col-75"><label>2.พงศกร  แผ่นทอง</label></div><div class="col-25"><label >กรรมการ</label></div></div>
-                    <div class="row"><div class="col-75"><label>3.ปาริฉัตร แสงทอง</label></div><div class="col-25"><label >เลขาธิการ</label></div></div>
+                    {% for result in row %}
+                    <div class="row"><div class="col-75"><label>{{result['user_fullname']}}</label></div><div class="col-25"><label >{{result['role_name']}}</label></div></div>
+                    {% endfor %}
                     <div align="Right"><a href="addboard" role="button"> เพิ่มกรรมการ</a></div>
                   </div>
                 </div>
@@ -47,7 +47,7 @@
                     <label>วันที่เริ่มโครงการ</label>
                   </div>
                   <div class="col-75">
-                    <label>11/11/2022</label>
+                    <label>{{row[id-1]['startproject_date']}}</label>
                   </div>
                 </div>
                 <div class="row">
@@ -55,7 +55,7 @@
                     <label>งบประมาณ</label>
                   </div>
                   <div class="col-75">
-                    <label>70000 บาท</label>
+                    <label>{{row[id-1]['pj_amount']}}</label>
                   </div>
                 </div>
                 <div class="row">
@@ -63,8 +63,7 @@
                     <label>รายละเอียด</label>
                   </div>
                   <div class="col-75">
-                    <label>โครงการจัดซื้อ Maxbook Pro M2 เพื่อใช้ในการ-------------------------------------
-                      -------------------------------------------------------------------------------
+                    <label>{{row[id-1]['pj_detail']}}
                     </label>
                   </div>
                 </div>
@@ -78,7 +77,7 @@
                 <label>วันที่ประกาศผลบริษัทผู้รับเหมา</label>
               </div>
               <div class="col-75">
-                <label>10/12/2022</label>
+                <label>{{row[id-1]['contt_date']}}</label>
               </div>
             </div>
             <div class="row">
@@ -86,43 +85,36 @@
                 <label>บริษัทผู้รับเหมา</label>
               </div>
               <div class="col-75">
-                <label>บริษัทบานาน่าไอที เซอร์วิส จำกัด</label>
+                <label>{{row[id-1]['contt_name']}}</label>
               </div>
             </div><div class="row">
               <div class="col-25">
                 <label>ค่ารับเหมา</label>
               </div>
               <div class="col-75">
-                <label>68009 บาท</label>
+                <label>{{row[id-1]['contt_fee']}}</label>
               </div>
             </div><div class="row">
               <div class="col-25">
-                <label>ระยะเวลา</label>
+                <label>วันที่เริ่ม</label>
               </div>
               <div class="col-75">
-                <label>30 วัน</label>
+                <label>{{row[id-1]['contt_start']}}</label>
               </div>
             </div><div class="row">
               <div class="col-25">
-                <label>วันเวลาที่เริ่ม</label>
+                <label>วันที่สิ้นสุด</label>
               </div>
               <div class="col-75">
-                <label>15/12/2022</label>
+                <label>{{row[id-1]['contt_end']}}</label>
               </div>
             </div><div class="row">
               <div class="col-25">
-                <label>วันเวลาที่สิ้นสุด</label>
-              </div>
-              <div class="col-75">
-                <label>19/12/2022</label>
-              </div>
-            </div><div class="row">
-              <div class="col-25">
-                <label>จำนวนงวด</label>
+                <label>ระยะเวลาคงเหลือ</label>
                 
               </div>
               <div class="col-75">
-                <label>1</label>
+                <label>พันล้านปี</label>
               </div>
             </div>
             <a href="#" align="right"> แก้ไข</a>
@@ -133,16 +125,17 @@
           <div class="card">
             <center>
             <h1>สถานะ</h1>
-            <progress id="file" value="32" max="100"> 32% </progress>    
+            <progress id="file" value="{{row[id-1]['stcon_percent']}}" max="100"></progress>    
             <br>
             <br>
-            <label for="file">กำลังตรวจรับโครงการ</label>
+            <label for="file">{{row[id-1]['stcon_name']}}</label>
             </center>
             <div align="Right"><a href ="/" >อัพเดทสถานะ</a></div>
           </div>
           <div class="card">
             <h3>Event</h3>
-            <p>นัดประชุมร่างโครงการวันที่ 15/01/21</p>
+            <p>{{row[id-1]['ev_name']}}</p>
+            <p>{{row[id-1]['ev_date']}}</p>
             <a align="right" href="event">ดูเพิ่มเติม</a>
           </div>
           

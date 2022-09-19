@@ -1,24 +1,24 @@
 <doctype html>
-    {% extends 'layout.html' %}
-    
-    {% block body %}
-        <body>
-        
-        <div class="row">
-          <p>
-            <br><h1>ตรวจรับโครงการ</h1>
-          </p>
-          <div class="leftcolumn">
-            <div class="card">
-              <div class="row">
-                <h align="right" >เลขสารบัญ สก12345</h>
+  {% extends 'layout.html' %}
+  
+  {% block body %}
+      <body>
+      
+      <div class="row">
+        <p>
+          <br><h1>ตรวจรับโครงการ</h1>
+        </p>
+        <div class="leftcolumn">
+          <div class="card">
+            <div class="row">
+              <h align="right" >เลขสารบัญ {{row[id-1]['pj_refNumber']}}</h>
               </div>
               <div class="row">
                 <div class="col-25">
                   <label>ชื่อโครงการ</label>
                 </div>
                 <div class="col-75">
-                  <label>โครงการจัดซื้อ Maxbook Pro M2</label>
+                  <label>{{row[id-1]['pj_name']}}</label>
                 </div>
               </div>
               <div class="row">
@@ -26,7 +26,7 @@
                   <label>ผู้รับผิดชอบโครงการ</label>
                 </div>
                 <div class="col-75">
-                  <label>นฤดล บุญทอง</label>
+                  <label>{{rows[id-1]['user_fullname']}}</label>
                 </div>
               </div>
               <div class="row">
@@ -34,9 +34,9 @@
                   <label>คณะกรรมการ</label>
                 </div>
                 <div class="col-75">
-                  <div class="row"><div class="col-75"><label>1.พรียูร์   บุตรชู</label></div><div class="col-25"><label >ประธาน</label></div></div>
-                  <div class="row"><div class="col-75"><label>2.พงศกร  แผ่นทอง</label></div><div class="col-25"><label >กรรมการ</label></div></div>
-                  <div class="row"><div class="col-75"><label>3.ปาริฉัตร แสงทอง</label></div><div class="col-25"><label >เลขาธิการ</label></div></div>
+                  {% for result in row %}
+                  <div class="row"><div class="col-75"><label>{{result['user_fullname']}}</label></div><div class="col-25"><label >{{result['role_name']}}</label></div></div>
+                  {% endfor %}
                   <div align="Right"><a href="addboard" role="button"> เพิ่มกรรมการ</a></div>
                 </div>
               </div>
@@ -45,7 +45,7 @@
                   <label>วันที่เริ่มโครงการ</label>
                 </div>
                 <div class="col-75">
-                  <label>11/11/2022</label>
+                  <label>{{row[id-1]['startproject_date']}}</label>
                 </div>
               </div>
               <div class="row">
@@ -53,7 +53,7 @@
                   <label>งบประมาณ</label>
                 </div>
                 <div class="col-75">
-                  <label>70000 บาท</label>
+                  <label>{{row[id-1]['pj_amount']}}</label>
                 </div>
               </div>
               <div class="row">
@@ -61,47 +61,88 @@
                   <label>รายละเอียด</label>
                 </div>
                 <div class="col-75">
-                  <label>โครงการจัดซื้อ Maxbook Pro M2 เพื่อใช้ในการ-------------------------------------
-                    -------------------------------------------------------------------------------
-                  </label>
-                </div>
+                  <label>{{row[id-1]['pj_detail']}}
+                </label>
               </div>
             </div>
-            <div class="card">
-              <h5>บริษัทผู้รับเหมา</h5>
-              <h5>ค่ารับเหมา</h5>
-              <h5>ระยะเวลา</h5>
-              <h5>วันเวลาที่เริ่ม</h5>
-              <h5>วันเวลาที่สิ้นสุด</h5>
-              <h5>จำนวนงวด</h5>
-            </div>
           </div>
-          <div class="rightcolumn" style="background-color:#ffffff;">
-            <div class="card">
-              <center>
-              <h1>สถานะ</h1>
-              <progress id="file" value="32" max="100"> 32% </progress>    
-              <br>
-              <br>
-              <label for="file">กำลังตรวจรับโครงการ</label>
-              </center>
+          <div class="card">
+            <div class="row">
+              <div class="col-25">
+                <label>วันที่ประกาศผลบริษัทผู้รับเหมา</label>
+              </div>
+              <div class="col-75">
+                <label>{{row[id-1]['contt_date']}}</label>
+              </div>
             </div>
-            <div class="card">
-              <h3>Event</h3>
-              <p>นัดประชุมร่างโครงการวันที่ 15/01/21</p>
-              <a align="right" href="event">ดูเพิ่มเติม</a>
+            <div class="row">
+              <div class="col-25">
+                <label>บริษัทผู้รับเหมา</label>
+              </div>
+              <div class="col-75">
+                <label>{{row[id-1]['contt_name']}}</label>
+              </div>
+            </div><div class="row">
+              <div class="col-25">
+                <label>ค่ารับเหมา</label>
+              </div>
+              <div class="col-75">
+                <label>{{row[id-1]['contt_fee']}}</label>
+              </div>
+            </div><div class="row">
+              <div class="col-25">
+                <label>วันที่เริ่ม</label>
+              </div>
+              <div class="col-75">
+                <label>{{row[id-1]['contt_start']}}</label>
+              </div>
+            </div><div class="row">
+              <div class="col-25">
+                <label>วันที่สิ้นสุด</label>
+              </div>
+              <div class="col-75">
+                <label>{{row[id-1]['contt_end']}}</label>
+              </div>
+            </div><div class="row">
+              <div class="col-25">
+                <label>ระยะเวลาคงเหลือ</label>
+                
+              </div>
+              <div class="col-75">
+                <label>พันล้านปี</label>
+              </div>
             </div>
-            <div class="card">
-              <h3>การตรวจงาน</h3>
-              <p>
-                <a>งวดที่ 5</a><br>
-                <a>ประจำวันที่ 15/01/21</a>
-                <p>
-                  <a>รายละเอียด</a>
-                </p>
-              </p>
-              <a align="right" href="check">ทั้งหมด</a>
-            </div>
+            <a href="#" align="right"> แก้ไข</a>
           </div>
         </div>
-    {% endblock %}
+        <div class="rightcolumn" style="background-color:#ffffff;">
+          <div class="card">
+            <center>
+            <h1>สถานะ</h1>
+            <progress id="file" value="{{row[id-1]['stex_percent']}}" max="100"></progress>    
+            <br>
+            <br>
+            <label for="file">{{row[id-1]['stex_name']}}</label>
+            </center>
+          </div>
+          <div class="card">
+            <h3>Event</h3>
+            <p>{{row[id-1]['ev_name']}}</p>
+            <p>{{row[id-1]['ev_date']}}</p>
+            <a align="right" href="event">ดูเพิ่มเติม</a>
+          </div>
+          <div class="card">
+            <h3>การตรวจงาน</h3>
+            <p>
+              <a>งวดที่ {{dis[0]['ins_no']}}</a><br>
+              <a>ประจำวันที่ {{dis[0]['ins_date']}}</a>
+              <p>
+                <a>รายละเอียด</a>
+                <a>{{dis[0]['dis_detail']}}</a>
+              </p>
+            </p>
+            <a align="right" href="check">ทั้งหมด</a>
+          </div>
+        </div>
+      </div>
+  {% endblock %}
