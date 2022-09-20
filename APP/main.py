@@ -4,6 +4,7 @@ from db_config import mysql
 from app import app
 import pymysql
 
+# log in
 @app.route('/')
 @app.route('/login', methods =['GET', 'POST'])
 def login():
@@ -25,6 +26,7 @@ def login():
 			msg = 'Incorrect username / password !'
 	return render_template('login.html', msg = msg)
 
+#log out
 @app.route('/logout')
 def logout():
 	session.pop('loggedin', None)
@@ -33,6 +35,7 @@ def logout():
 	session.pop('user_fullname', None)
 	return redirect(url_for('login'))
 
+#หน้าหลัก
 @app.route('/home')
 def home():
     a=session['user_id']
@@ -50,6 +53,7 @@ def home():
         cursor.close() 
         conn.close()
 
+#โครงการของฉัน
 @app.route('/myproject')
 def myproject():
     m=session['user_id']
@@ -69,6 +73,7 @@ def myproject():
         cursor.close() 
         conn.close()
 
+#ทดสอบ
 @app.route('/t')
 def h():
     # a=session['user_id']
@@ -78,7 +83,7 @@ def h():
     # row = cursor.fetchall()
     return render_template('test.html' )
         
- 
+ #หน้าโครงการ
 @app.route('/project/<int:id>', methods=[ 'GET'])
 def project(id):
     conn = None
@@ -100,7 +105,7 @@ def project(id):
         cursor.close()
         conn.close()
     
-
+#หน้าร่างโครงการ
 @app.route('/project/<int:id>/draft', methods=[ 'GET'])
 def draft(id):
     conn = None
@@ -122,6 +127,7 @@ def draft(id):
         cursor.close()
         conn.close()
 
+#หน้าพิจารณาโครงการ
 @app.route('/project/<int:id>/consider', methods=[ 'GET'])
 def consider(id):
     conn = None
@@ -143,6 +149,7 @@ def consider(id):
         cursor.close()
         conn.close()
 
+#หน้าตรวจสอบโครงการ
 @app.route('/project/<int:id>/examine', methods=[ 'GET'])
 def examine(id):
     conn = None
@@ -166,6 +173,7 @@ def examine(id):
         cursor.close()
         conn.close()   
 
+#หน้าเพิ่มคณะกรรมการ
 @app.route('/project/<int:id>/addboard',methods=[ 'GET'])
 def addboard(id):
     conn = None
@@ -185,18 +193,22 @@ def addboard(id):
         cursor.close()
         conn.close()
 
+#หน้ากิจกรรม
 @app.route('/event')
 def event():
     return render_template('event.html')
 
+#หน้าเพิ่มกิจกรรม
 @app.route('/addevent')
 def addevent():
     return render_template('addevent.html')
 
+#หน้าแก้ไขกิจกรรม
 @app.route('/editevent')
 def editevent():
     return render_template('editevent.html')
 
+#หน้าทดสอบการนับถอยหลัง
 @app.route('/countdown')
 def countdown():
     conn = None
@@ -213,15 +225,10 @@ def countdown():
         cursor.close() 
         conn.close()
 
+#หน้าเพิ่มโครงการ
 @app.route('/addproject')
 def addproject():
     return render_template('addproject.html')
-
-
-
-@app.route('/กรรมการ')
-def k():
-    return render_template('กรรมการ.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
