@@ -161,7 +161,7 @@ def user():
            cursor.close() 
            conn.close()
 
-# ทดลอง
+# ก่อนเอาไอดีpjไปเก็บ
 @app.route('/s')
 def runm():
     conn = None
@@ -180,6 +180,7 @@ def runm():
         cursor.close()
         conn.close()
 
+# เอาไอดี pj ไปเก็บ manager กับ process
 @app.route('/runp/<int:id>')
 def runp(id):
     conn = None
