@@ -23,8 +23,10 @@
 body{ background-color: #ffffff	}
 </style>
 <form action="/addproject" method="post">
-  <br>
-  
+  <br>      
+            <p>
+                เลข: <input name="id" value="{{rows[0]}}" type="text" style="width:100px; " placeholder="เลขสรรบัญ" autocomplete="off" required> 
+            </p>
            <dl>
             <p>
                เลขสรรบัญ: <input name="refNumber" value="" type="text" style="width:100px; " placeholder="เลขสรรบัญ" autocomplete="off" required> 

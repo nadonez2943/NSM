@@ -160,46 +160,46 @@ def user():
            conn.close()
 
 # ทดลอง
-@app.route('/runm')
+@app.route('/s')
 def runm():
     conn = None
     cursor = None
     try:
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("SELECT pj_id FROM projects ORDER BY pj_id DESC LIMIT 1;")
-        row = cursor.fetchall()
-        return redirect('/runp/'+row) 
+        cursor.execute("SELECT pj_id FROM projects ORDER BY pj_id DESC LIMIT 1")
+        rows = cursor.fetchone()
+        return render_template("addproject.html", rows=rows) 
     except Exception as e:
         print(e)
     finally: 
         cursor.close()
         conn.close()
 
-@app.route('/runp/<int:id>')
-def runp(id):
-    conn = None
-    cursor = None
-    user = session['user_id']
-    try:
-        sql = "UPDATE manager SET user_id=%s, pj_id=%s"
-        data = data = (id,user)
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor.execute(sql, data)
-        conn.commit()
-        sql = "UPDATE process SET pj_id=%s"
-        data = data = (id)
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor.execute(sql)
-        conn.commit()
-        return redirect('/datamain')
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close()
-        conn.close()  
+# @app.route('/runp/<int:id>')
+# def runp(id):
+#     conn = None
+#     cursor = None
+#     user = session['user_id']
+#     try:
+#         sql = "UPDATE manager SET user_id=%s, pj_id=%s"
+#         data = data = (id,user)
+#         conn = mysql.connect()
+#         cursor = conn.cursor()
+#         cursor.execute(sql, data)
+#         conn.commit()
+#         sql = "UPDATE process SET pj_id=%s"
+#         data = data = (id)
+#         conn = mysql.connect()
+#         cursor = conn.cursor()
+#         cursor.execute(sql)
+#         conn.commit()
+#         return redirect('/datamain')
+#     except Exception as e:
+#         print(e)
+#     finally:
+#         cursor.close()
+#         conn.close()  
 
 if __name__ == "__main__":
     app.run(debug=True)
