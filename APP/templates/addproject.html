@@ -23,10 +23,7 @@
 body{ background-color: #ffffff	}
 </style>
 <form action="/addproject" method="post">
-  <br>      
-            <p>
-                เลข: <input name="id" value="{{rows[0]}}" type="text" style="width:100px; " placeholder="เลขสรรบัญ" autocomplete="off" required> 
-            </p>
+  <br>         
            <dl>
             <p>
                เลขสรรบัญ: <input name="refNumber" value="" type="text" style="width:100px; " placeholder="เลขสรรบัญ" autocomplete="off" required> 
@@ -59,6 +56,9 @@ body{ background-color: #ffffff	}
                วงเงิน:<input name="financeAmount" value="" type="text" style="width:170px; " placeholder="วงเงิน " autocomplete="off" required>บาท&nbsp;&nbsp; &nbsp;
                โดยใช้งบประมาณ:<input name="budgetSource" value="" type="text" style="width:153px; " placeholder="โดยใช้งบประมาณ " autocomplete="off" required>  &nbsp;&nbsp;
                ประจำปีงบประมาณ:<input name="budgetYears" value="" type="text" style="width:156px; " placeholder="ประจำปีงบประมาณ " autocomplete="off" required>
+            </p>
+            <p>
+               <input name="id" value="{{rows[0]}}" type="hidden" style="width:100px; " placeholder="เลขสรรบัญ" autocomplete="off" required> 
             </p>
             <br>
             <br>

@@ -133,6 +133,7 @@ def user():
     conn = None
     cursor = None
     try:
+        id = request.form['id']
         refNumber = request.form['refNumber']
         office = request.form['office']
         divition = request.form['divition']
@@ -150,7 +151,7 @@ def user():
             cursor = conn.cursor()
             cursor.execute(sql, data)
             conn.commit()
-            return redirect('/runm')
+            return redirect('/runp/'+id)
         else:
             return 'Error'
     except Exception as e:
@@ -169,6 +170,8 @@ def runm():
         cursor = conn.cursor()
         cursor.execute("SELECT pj_id FROM projects ORDER BY pj_id DESC LIMIT 1")
         rows = cursor.fetchone()
+        id = rows 
+        print(id)
         return render_template("addproject.html", rows=rows) 
     except Exception as e:
         print(e)
@@ -176,30 +179,31 @@ def runm():
         cursor.close()
         conn.close()
 
-# @app.route('/runp/<int:id>')
-# def runp(id):
-#     conn = None
-#     cursor = None
-#     user = session['user_id']
-#     try:
-#         sql = "UPDATE manager SET user_id=%s, pj_id=%s"
-#         data = data = (id,user)
-#         conn = mysql.connect()
-#         cursor = conn.cursor()
-#         cursor.execute(sql, data)
-#         conn.commit()
-#         sql = "UPDATE process SET pj_id=%s"
-#         data = data = (id)
-#         conn = mysql.connect()
-#         cursor = conn.cursor()
-#         cursor.execute(sql)
-#         conn.commit()
-#         return redirect('/datamain')
-#     except Exception as e:
-#         print(e)
-#     finally:
-#         cursor.close()
-#         conn.close()  
+@app.route('/runp/<int:id>')
+def runp(id):
+    conn = None
+    cursor = None
+    x = id+1
+    user = session['user_id']
+    try:
+        sql = "INSERT INTO manager (user_id, pj_id) VALUES(%s, %s)"
+        data = (user,x)
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute(sql, data)
+        conn.commit()
+        sql = "INSERT INTO process (pj_id) VALUES(%s)"
+        data2 = (x)
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute(sql, data2)
+        conn.commit()
+        return redirect('/datamain')
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        conn.close()  
 
 if __name__ == "__main__":
     app.run(debug=True)
