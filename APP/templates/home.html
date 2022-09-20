@@ -2,12 +2,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     {% extends 'layout.html' %}
     {% block body %}
+      <br>
       <p align="right">
         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for project names.." title="Type in a name">
       </p>
       <div class="jumbotron">
         <table class="table" id="customers">
-          
             <tr>
               <th>ลำดับ</th>
               <th>ชื่อโครงการ</th>
@@ -15,26 +15,23 @@
               <th>รายละเอียด</th>
               <th>ผู้รับผิดชอบ</th>
               <th>กิจกรรม</th>
-              <th>สถาณะโครงการ</th>
+              <th>ความคืบหน้า</th>
             </tr>
-          
-          
             {% for result in row %}
             <tr>
               <td>{{result['row_num']}}</td>
-              <td><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>
+              <td><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
               <td> {{result['pj_refNumber']}}</td>
               <td>{{result['pj_detail']}}</td>
-              <td>{{result['user_name']}}</td>
-              <td>{{result['pj_refNumber']}}</td>
-              <td>{{result['pj_refNumber']}}</td>
+              <td>{{result['user_fullname']}}</td>
+              <td>{{result['ev_name']}}</td>
+              <td>{{result['x']}} %</td>        
             </tr>
             {% endfor %}
-          
         </table>
       </div>
       <center>
-      <a class="btn btn-primary btn-lg" href="addproject" role="button">เพิ่มโครงการใหม่</a>
+      <a class="btn btn-primary btn-lg" href="/addNewProject" role="button">เพิ่มโครงการใหม่</a>
       </center>
       <script>
         function myFunction() {

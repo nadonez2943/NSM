@@ -11,14 +11,14 @@
         <div class="leftcolumn">
           <div class="card">
             <div class="row">
-              <h align="right" >เลขสารบัญ {{row[id-1]['pj_refNumber']}}</h>
+              <h align="right" >เลขสารบัญ {{row[0]['pj_refNumber']}}</h>
               </div>
               <div class="row">
                 <div class="col-25">
                   <label>ชื่อโครงการ</label>
                 </div>
                 <div class="col-75">
-                  <label>{{row[id-1]['pj_name']}}</label>
+                  <label>{{row[0]['pj_name']}}</label>
                 </div>
               </div>
               <div class="row">
@@ -26,7 +26,7 @@
                   <label>ผู้รับผิดชอบโครงการ</label>
                 </div>
                 <div class="col-75">
-                  <label>{{rows[id-1]['user_fullname']}}</label>
+                  <label>{{rows[0]['user_fullname']}}</label>
                 </div>
               </div>
               <div class="row">
@@ -45,7 +45,7 @@
                   <label>วันที่เริ่มโครงการ</label>
                 </div>
                 <div class="col-75">
-                  <label>{{row[id-1]['startproject_date']}}</label>
+                  <label>{{row[0]['startproject_date']}}</label>
                 </div>
               </div>
               <div class="row">
@@ -53,7 +53,7 @@
                   <label>งบประมาณ</label>
                 </div>
                 <div class="col-75">
-                  <label>{{row[id-1]['pj_amount']}}</label>
+                  <label>{{row[0]['pj_amount']}}</label>
                 </div>
               </div>
               <div class="row">
@@ -61,7 +61,7 @@
                   <label>รายละเอียด</label>
                 </div>
                 <div class="col-75">
-                  <label>{{row[id-1]['pj_detail']}}
+                  <label>{{row[0]['pj_detail']}}
                 </label>
               </div>
             </div>
@@ -72,7 +72,7 @@
                 <label>วันที่ประกาศผลบริษัทผู้รับเหมา</label>
               </div>
               <div class="col-75">
-                <label>{{row[id-1]['contt_date']}}</label>
+                <label>{{row[0]['contt_date']}}</label>
               </div>
             </div>
             <div class="row">
@@ -80,28 +80,28 @@
                 <label>บริษัทผู้รับเหมา</label>
               </div>
               <div class="col-75">
-                <label>{{row[id-1]['contt_name']}}</label>
+                <label>{{row[0]['contt_name']}}</label>
               </div>
             </div><div class="row">
               <div class="col-25">
                 <label>ค่ารับเหมา</label>
               </div>
               <div class="col-75">
-                <label>{{row[id-1]['contt_fee']}}</label>
+                <label>{{row[0]['contt_fee']}}</label>
               </div>
             </div><div class="row">
               <div class="col-25">
                 <label>วันที่เริ่ม</label>
               </div>
               <div class="col-75">
-                <label>{{row[id-1]['contt_start']}}</label>
+                <label>{{row[0]['contt_start']}}</label>
               </div>
             </div><div class="row">
               <div class="col-25">
                 <label>วันที่สิ้นสุด</label>
               </div>
               <div class="col-75">
-                <label>{{row[id-1]['contt_end']}}</label>
+                <label>{{row[0]['contt_end']}}</label>
               </div>
             </div><div class="row">
               <div class="col-25">
@@ -119,16 +119,16 @@
           <div class="card">
             <center>
             <h1>สถานะ</h1>
-            <progress id="file" value="{{row[id-1]['stex_percent']}}" max="100"></progress>    
+            <progress id="file" value="{{row[0]['stex_percent']}}" max="100"></progress>    
             <br>
             <br>
-            <label for="file">{{row[id-1]['stex_name']}}</label>
+            <label for="file">{{row[0]['stex_name']}}</label>
             </center>
           </div>
           <div class="card">
             <h3>Event</h3>
-            <p>{{row[id-1]['ev_name']}}</p>
-            <p>{{row[id-1]['ev_date']}}</p>
+            <p>{{row[0]['ev_name']}}</p>
+            <p>{{row[0]['ev_date']}}</p>
             <a align="right" href="event">ดูเพิ่มเติม</a>
           </div>
           <div class="card">

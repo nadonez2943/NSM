@@ -1,52 +1,65 @@
-
 <doctype html>
    {% extends 'layout.html' %}
-    {% block body %}
-  <br><br>
-      <center>
-         <h1 class="display-4">โครงการใหม่</h1>
-      </center> <br>
+   {% block body %}
+   <br>
+   <br>
+   <center>
+      <h1 class="display-4">โครงการใหม่</h1>
+   </center> 
+   <br>
+  
    <div class="jumbotron">
-      <form action="/addproject" method="post">
-      <br>
+   <form action="/addproject" method="post">
+      <br>         
       <dl>
-         <p>เลขสรรบัญ: <input name="refNumber" value="" type="text" style="width:100px; " placeholder="เลขสรรบัญ" autocomplete="off" required> </p>
-         <p>
-            กอง: <input name="office" value="" type="text" style="width:351px;" placeholder="กอง" autocomplete="off" required> &nbsp;&nbsp; &nbsp;&nbsp; 
-            สำนัก: <input name="divition" value="" type="text" style="width:401px;" placeholder="สำนัก" autocomplete="off" required> 
-         </p>
-         <!-- <p>
-            ผู้รับผิดชอบ: <input name="projace_m" value="" type="text" style="width:100px; " placeholder="ผู้รับผิดชอบ" autocomplete="off" required> 
-         </p> -->
-         <p>
-            ชื่อโครงการ: <input name="name" value="" type="text" style="width:814px;" placeholder="ชื่อโครงการ" autocomplete="off" required> 
-         </p>
-         <p>ประเภทโครงการ 
-            <a class="container">&nbsp;&nbsp;&nbsp;
-               <input type="radio" checked="checked" name="radio"  value="จัดซื้อ"> จัดซื้อ
-               <span class="checkmark"></span>
-            </a>&nbsp;&nbsp;&nbsp;
-            <a class="container">
-               <input type="radio" name="radio" value="จัดจ้าง">จัดจ้าง
-               <span class="checkmark"></span>
-            </a>&nbsp;&nbsp;&nbsp;&nbsp;
-               จำนวนงาน:<input name="amount" value="" type="text" style="width:300px;"placeholder="จำนวนงาน" autocomplete="off" required>
-         </p>
-         <p>รายละเอียดโครงการ(พอสังเขป)</p> 
-         <p> <input name="detail" value="" type="text" style="width:900px; height: 88;  " placeholder="รายละเอียด " autocomplete="off" required> </p>
-         <p>
-            วงเงิน:<input name="financeAmount" value="" type="text" style="width:170px; " placeholder="วงเงิน " autocomplete="off" required>บาท&nbsp;&nbsp; &nbsp;
-            โดยใช้งบประมาณ:<input name="budgetSource" value="" type="text" style="width:153px; " placeholder="โดยใช้งบประมาณ " autocomplete="off" required>  &nbsp;&nbsp;
-            ประจำปีงบประมาณ:<input name="budgetYears" value="" type="text" style="width:156px; " placeholder="ประจำปีงบประมาณ " autocomplete="off" required>
-         </p>
-            <br><brใ<br>
-         <CENTER>
-            <p>
-               <input type="submit" class="btn" value="เพิ่มโครงการ">
-            </p>
-         </CENTER>
+      <p>
+         เลขสรรบัญ: <input name="refNumber" value="" type="text" style="width:100px; " placeholder="เลขสรรบัญ" autocomplete="off" required> 
+      </p>
+      <p>
+         กอง: <input name="office" value="" type="text" style="width:351px;" placeholder="กอง" autocomplete="off" required> &nbsp;&nbsp; &nbsp;&nbsp; 
+         สำนัก: <input name="divition" value="" type="text" style="width:401px;" placeholder="สำนัก" autocomplete="off" required> 
+      </p>
+      <!-- <p>
+         ผู้รับผิดชอบ: <input name="projace_m" value="" type="text" style="width:100px; " placeholder="ผู้รับผิดชอบ" autocomplete="off" required> 
+      </p> -->
+      <p>
+         ชื่อโครงการ: <input name="name" value="" type="text" style="width:814px;" placeholder="ชื่อโครงการ" autocomplete="off" required> 
+      </p>
+      <p>ประเภทโครงการ 
+         <a class="container">&nbsp;&nbsp;&nbsp;
+            <input type="radio" checked="checked" name="radio"  value="จัดซื้อ"> จัดซื้อ
+            <span class="checkmark"></span>
+         </a>&nbsp;&nbsp;&nbsp;
+         <a class="container">
+            <input type="radio" name="radio" value="จัดจ้าง">จัดจ้าง
+            <span class="checkmark"></span>
+         </a>&nbsp;&nbsp;&nbsp;&nbsp;
+         จำนวนงาน:
+         <input name="amount" value="" type="text" style="width:300px;"placeholder="จำนวนงาน" autocomplete="off" required>
+      </p>
+      <p>
+         รายละเอียดโครงการ(พอสังเขป)
+      </p> 
+      <p> 
+         <input name="detail" value="" type="text" style="width:900px; height: 88;  " placeholder="รายละเอียด " autocomplete="off" required> 
+      </p>
+      <p>
+         วงเงิน:<input name="financeAmount" value="" type="text" style="width:170px; " placeholder="วงเงิน " autocomplete="off" required>บาท&nbsp;&nbsp; &nbsp;
+         โดยใช้งบประมาณ:<input name="budgetSource" value="" type="text" style="width:153px; " placeholder="โดยใช้งบประมาณ " autocomplete="off" required>  &nbsp;&nbsp;
+         ประจำปีงบประมาณ:<input name="budgetYears" value="" type="text" style="width:156px; " placeholder="ประจำปีงบประมาณ " autocomplete="off" required>
+      </p>
+      <p>
+         <input name="id" value="{{rows[0]}}" type="hidden" style="width:100px; " placeholder="เลขสรรบัญ" autocomplete="off" required> 
+      </p>
+      <br>
+      <br>
+      <br>
+      <CENTER>
+      <p>
+         <input type="submit" class="btn" value="เพิ่มโครงการ">
+      </p>
+      </CENTER>
       </dl>
-          <br>
    </div>   
 </form>
 {% endblock %}

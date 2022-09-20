@@ -6,7 +6,7 @@
     <br>
     <h1 align="center">คณะกรรมการ</h1>
     <br>
-    <form autocomplete="off" action="/action_page.php">
+    <form action="/addboard" method="post">
         <center>
         <p>
         <div class="autocomplete" style="width:300px;">
@@ -21,43 +21,4 @@
         <input type="submit" value="เพิ่มคณะกรรมการ">
         </center>
     </form>
-    
-    
-
-    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
-
-    <ul id="myUL">
-      {% for result in row %}
-      <li><a href="#">{{result['user_fullname']}}</a></li>
-      {% endfor %}
-      
-      <li><a href="#">Agnes</a></li>
-
-      <li><a href="#">Billy</a></li>
-      <li><a href="#">Bob</a></li>
-
-      <li><a href="#">Calvin</a></li>
-      <li><a href="#">Christina</a></li>
-      <li><a href="#">Cindy</a></li>
-    </ul>
-
-    <script>
-    function myFunction() {
-        var input, filter, ul, li, a, i, txtValue;
-        input = document.getElementById("myInput");
-        filter = input.value.toUpperCase();
-        ul = document.getElementById("myUL");
-        li = ul.getElementsByTagName("li");
-        for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName("a")[0];
-            txtValue = a.textContent || a.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                li[i].style.display = "";
-            } else {
-                li[i].style.display = "none";
-            }
-        }
-    }
-    </script>
-
     {% endblock %}
