@@ -4,15 +4,13 @@
     {% block body %}
     <div class="container mt-3">
       <div id="child1">
-        <a>ค้นหาโครงการ</a>
-        <form action="/">
-            <input type="text" placeholder="Search.." name="search">
-            <button type="submit" class="btn btn-primary">Search</button>
-        </form>
+        <p>
+          <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for project names.." title="Type in a name">
+        </p>
         <div class="jumbotron">
           <div class="container mt-3">
             <div class="table-responsive">
-              <table class="table table-bordered">
+              <table class="table table-bordered" id="myTable">
                 <thead class="table-primary">
                   <tr>
                     <th>ชื่อโครงการ</th>
@@ -41,9 +39,7 @@
             </div>
           </div>
         </div>
-      
       <center>
-      
       <a class="btn btn-primary btn-lg" href="addproject" role="button">เพิ่มโครงการใหม่</a>
       <!-- <a class="btn btn-primary btn-lg" href="consider" role="button"> consider</a>
       <a class="btn btn-primary btn-lg" href="login" role="button"> login</a>
@@ -52,4 +48,24 @@
       <a class="btn btn-primary btn-lg" href="addboard" role="button"> addboard</a> -->
     </center>
     </center>
+    <script>
+      function myFunction() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName("td")[0];
+          if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = "";
+            } else {
+              tr[i].style.display = "none";
+            }
+          }       
+        }
+      }
+      </script>
     {% endblock %}

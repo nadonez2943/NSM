@@ -2,54 +2,58 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     {% extends 'layout.html' %}
     {% block body %}
-    <div class="container mt-3">
-      <div id="child1">
-        <a>ค้นหาโครงการ</a>
-        <form action="/">
-            <input type="text" placeholder="Search.." name="search">
-            <button type="submit" class="btn btn-primary">Search</button>
-        </form>
-        <div class="jumbotron">
-          <div class="container mt-3">
-            <div class="table-responsive">
-              <table class="table table-bordered">
-                <thead class="table-primary">
-                  <tr>
-                    <th>ชื่อโครงการ</th>
-                    <th>เลขสารบัญ</th>
-                    <th>รายละเอียด</th>
-                    <th>ผู้รับผิดชอบ</th>
-                    <th>ตำแหน่งที่เกี่ยวข้อง</th>
-                    <th>กิจกรรม</th>
-                    <th>สถาณะโครงการ</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for result in row %}
-                  <tr>
-                    <td><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>
-                    <td> {{result['pj_refNumber']}}</td>
-                    <td>{{result['pj_detail']}}</td>
-                    <td>{{result['user_name']}}</td>
-                    <td>{{result['pj_refNumber']}}</td>
-                    <td>{{result['pj_refNumber']}}</td>
-                    <td>{{result['pj_refNumber']}}</td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      
+      <p align="right">
+        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for project names.." title="Type in a name">
+      </p>
+      <div class="jumbotron">
+        <table class="table" id="customers">
+          
+            <tr>
+              <th>ลำดับ</th>
+              <th>ชื่อโครงการ</th>
+              <th>เลขสารบัญ</th>
+              <th>รายละเอียด</th>
+              <th>ผู้รับผิดชอบ</th>
+              <th>กิจกรรม</th>
+              <th>สถาณะโครงการ</th>
+            </tr>
+          
+          
+            {% for result in row %}
+            <tr>
+              <td>{{result['row_num']}}</td>
+              <td><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>
+              <td> {{result['pj_refNumber']}}</td>
+              <td>{{result['pj_detail']}}</td>
+              <td>{{result['user_name']}}</td>
+              <td>{{result['pj_refNumber']}}</td>
+              <td>{{result['pj_refNumber']}}</td>
+            </tr>
+            {% endfor %}
+          
+        </table>
+      </div>
       <center>
-      
       <a class="btn btn-primary btn-lg" href="addproject" role="button">เพิ่มโครงการใหม่</a>
-      <!-- <a class="btn btn-primary btn-lg" href="consider" role="button"> consider</a>
-      <a class="btn btn-primary btn-lg" href="login" role="button"> login</a>
-      <a class="btn btn-primary btn-lg" href="event" role="button"> กรรมการ</a>
-      <a class="btn btn-primary btn-lg" href="draft" role="button"> draft</a>
-      <a class="btn btn-primary btn-lg" href="addboard" role="button"> addboard</a> -->
-    </center>
-    </center>
+      </center>
+      <script>
+        function myFunction() {
+          var input, filter, table, tr, td, i, txtValue;
+          input = document.getElementById("myInput");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("customers");
+          tr = table.getElementsByTagName("tr");
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+              txtValue = td.textContent || td.innerText;
+              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
+              }
+            }       
+          }
+        }
+        </script>
     {% endblock %}
