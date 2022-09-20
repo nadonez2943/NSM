@@ -35,6 +35,7 @@ def login():
 # logout
 @app.route('/logout')
 def logout():
+    session['loggedin'] = False
     session.pop('loggedin', None)
     session.pop('user_id', None)
     session.pop('user_name', None)
