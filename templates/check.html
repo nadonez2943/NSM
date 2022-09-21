@@ -1,0 +1,33 @@
+<doctype html>
+    {% extends 'layout.html' %}
+    
+    {% block body %}
+        <body>
+        
+        <div class="row">
+          <p>
+            <br><h1>ตรวจรับโครงการ</h1>
+          </p>
+        
+          <p><a class="btn btn-primary btn-lg" href="/addcheck" role="button">เพิ่มการตรวจ</a></p>
+          
+          <div id="list">
+              <div class="card">
+                <div class="row">
+                  <label>งวดที่ 1 เบิกจ่าย</label>   
+                  <label>วันที่เบิกจ่าย </label>
+                  <label>ยอดเบิกจ่าย </label>
+                  <label>รายละเอียด</label>
+                  <label>งบประมาณคงเหลือ</label>
+                </div>
+            </div>
+            <input type="button" value="เพิ่ม div" id="btn">
+            <script>
+              let no = 2;
+              $("#btn").click( function(){
+                  $("list").append("<div class='card'>"+no+"</div>");
+                  no++;
+              });
+          </script>
+          </body>
+{% endblock %}

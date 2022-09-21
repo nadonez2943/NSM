@@ -1,109 +1,108 @@
 <doctype html>
-{% extends 'layout.html' %}  
-{% block body %}
-<body>      
-    <div class="row"><br>
-        <p><h1>ร่างโครงการ และราคากลาง</h1></p>
+  {% extends 'layout.html' %}
+  
+  {% block body %}
+  
+      <body>
+      <div class="row">
+        <p>
+          <br><h1>รายละเอียดโครงการ</h1>
+        </p>
         <div class="leftcolumn">
-          {% for row in row %}
-          <div class="card"> 
-            <p align="right" >เลขสารบัญ {{ row[] }}</p>
+          <div class="card">
+            <div class="row">
+              <h align="right" >เลขสารบัญ {{row[0]['pj_refNumber']}}</h>
+            </div>
             <div class="row">
               <div class="col-25">
                 <label>ชื่อโครงการ</label>
               </div>
               <div class="col-75">
-                <label>{{ row[] }}</label>
+                <label>{{row[0]['pj_name']}}</label>
               </div>
             </div>
             <div class="row">
               <div class="col-25">
-                <label>ผู้รับผิดชอบโครงการ </label>
+                <label>ผู้รับผิดชอบโครงการ</label>
               </div>
               <div class="col-75">
-                <label>{{ row[] }}</label>
+                <label>{{rows[0]['user_fullname']}}</label>
               </div>
             </div>
             <div class="row">
               <div class="col-25">
-                <label>คณะกรรมการ</label>
+                <label>วันที่เริ่มโครงการ</label>
               </div>
               <div class="col-75">
-                <label>{{ row[] }}</label>
+                <label>{{row[0]['startproject_date']}}</label>
+              </div>
+            </div><div class="row">
+              <div class="col-25">
+                <label>งบประมาณ</label>
+              </div>
+              <div class="col-75">
+                <label>{{row[0]['pj_amount']}}</label>
               </div>
             </div>
             <div class="row">
               <div class="col-25">
-                <label>วันที่เริ่มโครงการ </label>
+                <label>รายละเอียด</label>
               </div>
               <div class="col-75">
-                <label>{{ row[] }}</label>
+                <label>{{row[0]['pj_detail']}}
+                </label>
               </div>
             </div>
-            <div class="row">
-              <div class="col-25">
-                <label>งบประมาณ </label>
-              </div>
-              <div class="col-75">
-                <label>{{ row[] }}</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-25">
-                <label>รายละเอียด </label>
-              </div>
-              <div class="col-75">
-                <label>{{ row[] }}</label>
-              </div>
-            </div>
-            {% endfor %}
             <div class="card">
               <div class="card-group">
                 <div  class="jumbotron">
                   <center>
                     <h5 >ร่างโครงการ</h5>
-                    <progress id="file" value="100" max="100"> 100% </progress>    
+                    <progress id="file" value="{{row[0]['stdraft_percent']}}" max="100"></progress>    
                     <br><br>
-                    <p for="file">อนุมัติ</p>
-                    <p><a href="draft" class="card-link">ดูเพิ่มเติม</a></p>
+                    <p for="file">{{row[0]['stdraft_name']}}</p>
+                    <p><a href="{{id}}/draft" class="card-link">ดูเพิ่มเติม</a></p>
                   </center>
                 </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <div class="jumbotron">
                   <center>
                     <h5>พิจารณาโครงการ</h5>
-                    <progress id="file" value="40" max="100"> 40% </progress>    
+                    <progress id="file" value="{{row[0]['stcon_percent']}}" max="100"></progress>    
                     <br><br>
-                    <p for="file">รอพิจารณาผล</p>
-                    <p><a href="draft" class="card-link">ดูเพิ่มเติม</a></p>
+                    <p for="file">{{row[0]['stcon_name']}}</p>
+                    <p><a href="{{id}}/consider" class="card-link">ดูเพิ่มเติม</a></p>
                   </center>
                 </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <div  class="jumbotron">
                   <center>
                     <h5>ตรวจรับโครงการ</h5>
-                    <progress id="file" value="0" max="100"> 0% </progress>    
+                    <progress id="file" value="{{row[0]['stex_percent']}}" max="100"> 0% </progress>    
                     <br><br>
-                    <p for="file">ยังไม่ดำเนินการ</p>
-                    <p><a href="draft" class="card-link">ดูเพิ่มเติม</a></p>
+                    <p for="file">{{row[0]['stex_name']}}</p>
+                    <p><a href="{{id}}/examine" class="card-link">ดูเพิ่มเติม</a></p>
                   </center>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="rightcolumn" style="background-color:#ffffff;">
-        <div class="card">
-          <center>
-            <h1>สถานะ</h1>
-            <progress id="file" value="32" max="100"> 32% </progress>    
-            <br><br>
-            <label for="file">รอพิจารณาผล</label>
-          </center>
-            <p><a href ="/" >อัพเดทสถานะ</a>
+      
+        <div class="rightcolumn" style="background-color:#ffffff;">
+          <div class="card">
+            <center>
+            <h2>ความคืบหน้า</h2>
+            <progress id="file" value="{{row[0]['x']}}" max="100"></progress>    
+            <br>
+            <!-- <br> -->
+            <label for="file">{{row[0]['x']}} %</label>
+            </center>
+          </div>
+          <div class="card">
+            <h3>กิจกรรม</h3>
+            <p>{{row[0]['ev_name']}}</p>
+          <p>{{row[0]['ev_date']}}</p>
+          </div>
         </div>
-        <div class="card">
-          <h3>Event</h3>
-          <p>นัดประชุมร่างโครงการวันที่ 15/01/21</p>
-        </div>
       </div>
-    </div>
   {% endblock %}
+  

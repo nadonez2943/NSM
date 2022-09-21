@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+    {% block body %}
+    <br>
+    <div class="jumbotron">
+        <center><h1>การตรวจงวดงาน</h1></center>
+        <form action="/addchecks" method="post">
+        <br>
+        <div class="row">
+            <div class="col-25">
+              <label>งวดที่เบิกจ่าย</label>
+            </div>
+            <div class="col-75">
+                <p> <input name="ins_no" value="" type="text" style="width:700px; " placeholder="ชื่อกิจกรรม" autocomplete="off" required> </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+            <label>รายละเอียด</label>
+            </div>
+            <div class="col-75">
+            <p> <input name="dis_detail" value="" type="text" style="width:700px; height: 88;  " placeholder="รายละเอียด " autocomplete="off" required> </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+              <label>วันที่เบิกจ่าย</label>
+            </div>
+            <div class="col-75">
+            <input name="ins_date" value="" type="date"></input>
+            </div>
+        </div>
+    </div>
+    <center><input type="submit" class="btn" value="เพิ่ม"></center>
+    </div>
+</form>
+    {% endblock %}
