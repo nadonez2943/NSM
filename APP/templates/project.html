@@ -1,0 +1,120 @@
+<doctype html>
+    {% extends 'layout.html' %}
+    
+    {% block body %}
+    
+        <body>
+        <div class="row">
+          <p>
+            <br><h1>ร่างโครงการ และราคากลาง {{id}}</h1>
+          </p>
+          <div class="leftcolumn">
+            <div class="card">
+              <div class="row">
+                <h align="right" >เลขสารบัญ สก12345</h>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>ชื่อโครงการ</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[id-1]['pj_name']}}</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>ผู้รับผิดชอบโครงการ</label>
+                </div>
+                <div class="col-75">
+                  <label>นฤดล บุญทอง</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>คณะกรรมการ</label>
+                </div>
+                <div class="col-75">
+                  <div class="row"><div class="col-75"><label>1.พรียูร์   บุตรชู</label></div><div class="col-25"><label >ประธาน</label></div></div>
+                  <div class="row"><div class="col-75"><label>2.พงศกร  แผ่นทอง</label></div><div class="col-25"><label >กรรมการ</label></div></div>
+                  <div class="row"><div class="col-75"><label>3.ปาริฉัตร แสงทอง</label></div><div class="col-25"><label >เลขาธิการ</label></div></div>
+                  <div align="Right"><a href="addboard" role="button"> เพิ่มกรรมการ</a></div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>วันที่เริ่มโครงการ</label>
+                </div>
+                <div class="col-75">
+                  <label>11/11/2022</label>
+                </div>
+              </div><div class="row">
+                <div class="col-25">
+                  <label>งบประมาณ</label>
+                </div>
+                <div class="col-75">
+                  <label>70000 บาท</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>รายละเอียด</label>
+                </div>
+                <div class="col-75">
+                  <label>โครงการจัดซื้อ Maxbook Pro M2 เพื่อใช้ในการ-------------------------------------
+                    -------------------------------------------------------------------------------
+                  </label>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-group">
+                  <div  class="jumbotron">
+                    <center>
+                      <h5 >ร่างโครงการ</h5>
+                      <progress id="file" value="100" max="100"> 100% </progress>    
+                      <br><br>
+                      <p for="file">อนุมัติ</p>
+                      <p><a href="{{id}}/draft" class="card-link">ดูเพิ่มเติม</a></p>
+                    </center>
+                  </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <div class="jumbotron">
+                    <center>
+                      <h5>พิจารณาโครงการ</h5>
+                      <progress id="file" value="40" max="100"> 40% </progress>    
+                      <br><br>
+                      <p for="file">รอพิจารณาผล</p>
+                      <p><a href="{{id}}/consider" class="card-link">ดูเพิ่มเติม</a></p>
+                    </center>
+                  </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <div  class="jumbotron">
+                    <center>
+                      <h5>ตรวจรับโครงการ</h5>
+                      <progress id="file" value="0" max="100"> 0% </progress>    
+                      <br><br>
+                      <p for="file">ยังไม่ดำเนินการ</p>
+                      <p><a href="{{id}}/examine" class="card-link">ดูเพิ่มเติม</a></p>
+                    </center>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <div class="rightcolumn" style="background-color:#ffffff;">
+            <div class="card">
+              <center>
+              <h1>สถานะ</h1>
+              <progress id="file" value="32" max="100"> 32% </progress>    
+              <br>
+              <br>
+              <label for="file">กำลังร่างอนุมัติโครงการ</label>
+              </center>
+              <div align="Right"><a href ="/" >อัพเดทสถานะ</a></div>
+            </div>
+            <div class="card">
+              <h3>Event</h3>
+              <p>นัดประชุมร่างโครงการวันที่ 15/01/21</p>
+            </div>
+          </div>
+        </div>
+    {% endblock %}
+    
