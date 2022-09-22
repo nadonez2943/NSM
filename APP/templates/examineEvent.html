@@ -1,0 +1,30 @@
+<doctype html>
+    {% extends 'layout.html' %}
+    {% block body %}
+    <br>
+    <div class="jumbotron">
+    <center><h1>Event</h1></center>
+    <hr>
+        
+    <table id="customers">
+        <tr>
+        <th>ลำดับ</th>
+        <th>ชื่ออีเวนท์</th>
+        <th>รายละเอียด</th>
+        <th>วันที่</th>
+        <th>แก้ไข</th>
+        </tr>
+        {% for result in row %}
+        <tr>
+        <td>{{result['row_num']}}</td>
+        <td>{{result['ev_name']}}</td>
+        <td>{{result['ev_detail']}}</td>
+        <td>{{result['evdate']}}</td>
+        <td><button type="button" class="btn btn-danger">แก้ไข</button></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <hr>
+    <center><a type="button" class="btn btn-primary btn-lg" href="addevent">เพิ่มกิจกรรม</a></center>
+    </div>
+    {% endblock %}

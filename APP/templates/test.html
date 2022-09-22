@@ -1,49 +1,96 @@
 <doctype html>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	  {% extends 'layout.html' %}
-	  {% block body %}
-	  <div class="container mt-3">
-		<div id="child1">
-		  <a>ค้นหาโครงการ</a>
-		  <form action="/">
-			  <input type="text" placeholder="Search.." name="search">
-			  <button type="submit" class="btn btn-primary">Search</button>
-		  </form>
-		  <div class="jumbotron">
-			<div class="container mt-3">
-			  <div class="table-responsive">
-				<table class="table table-bordered">
-				  <thead class="table-primary">
-					<tr>
-					  <th>ชื่อโครงการ</th>
-					  <th>เลขสารบัญ</th>
-					  <th>รายละเอียด</th>
-					  <th>ผู้รับผิดชอบ</th>
-					  <th>ตำแหน่งที่เกี่ยวข้อง</th>
-					  <th>กิจกรรม</th>
-					  <th>สถาณะโครงการ</th>
-					</tr>
-				  </thead>
-				  <tbody>
-					{% for result in row %}
-					<tr>
-					  <td><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>
-					  <td> {{result['pj_refNumber']}}</td>
-					  <td>{{result['pj_detail']}}</td>
-					  <td>{{result['user_name']}}</td>
-					  <td>{{result['pj_refNumber']}}</td>
-					  <td>{{result['pj_refNumber']}}</td>
-					  <td>{{result['pj_refNumber']}}</td>
-					</tr>
-					{% endfor %}
-				  </tbody>
-				</table>
+	{% extends 'layout.html' %}
+	
+	{% block body %}
+		<body>
+  
+		<div class="row">
+		  <p>
+			<br><h1>ร่างโครงการ และราคากลาง</h1>
+		  </p>
+		  <div class="leftcolumn">
+			<div class="card">
+			  <div class="container">
+				<!-- <form action="/action_page.php"> -->
+				  <div class="row">
+					  <h align="right" >เลขสารบัญ {{row[0]['pj_refNumber']}}</h>
+					</div>
+				  <div class="row">
+					<div class="col-25">
+					  <label>ชื่อโครงการ</label>
+					</div>
+					<div class="col-75">
+					  <label>{{row[0]['pj_name']}}</label>
+					</div>
+				  </div>
+				  <div class="row">
+					<div class="col-25">
+					  <label>ผู้รับผิดชอบโครงการ</label>
+					</div>
+					<div class="col-75">
+					  <label>{{rows[0]['user_fullname']}}</label>
+					</div>
+				  </div>
+				  <div class="row">
+					<div class="col-25">
+					  <label>คณะกรรมการ</label>
+					</div>
+					<div class="col-75">
+					  {% for result in row %}
+					  <div class="row"><div class="col-75"><label>{{result['user_fullname']}}</label></div><div class="col-25"><label >{{result['role_name']}}</label></div></div>
+					  {% endfor %}
+					  <div align="Right"><a href="addboard" role="button"> เพิ่มกรรมการ</a></div>
+					</div>
+				  </div>
+				  <div class="row">
+					<div class="col-25">
+					  <label>วันที่เริ่มโครงการ</label>
+					</div>
+					<div class="col-75">
+					  <label>{{row[0]['startproject_date']}}</label>
+					</div>
+				  </div><div class="row">
+					<div class="col-25">
+					  <label>งบประมาณ</label>
+					</div>
+					<div class="col-75">
+					  <label>{{row[0]['pj_amount']}}</label>
+					</div>
+				  </div>
+				  <div class="row">
+					<div class="col-25">
+					  <label>รายละเอียด</label>
+					</div>
+					<div class="col-75">
+					  <label>{{row[0]['pj_detail']}}
+					  </label>
+					</div>
+				  </div>
+				<!-- </form> -->
 			  </div>
 			</div>
+			
 		  </div>
-		
-		<center>
-		<a class="btn btn-primary btn-lg" href="addproject" role="button">เพิ่มโครงการใหม่</a>
-	  </center>
-	  </center>
+		  <div class="rightcolumn" style="background-color:#ffffff;">
+			<div class="card">
+			  <center>
+			  <h1>สถานะ</h1>
+			  <progress id="file" value="{{row[0]['stdraft_percent']}}" max="100"> </progress>    
+			  <br>
+			  <br>
+			  <label for="file">{{row[0]['stdraft_name']}}</label>
+			  </center>
+			  <div align="Right"><a href ="/" >อัพเดทสถานะ</a></div>
+			</div>
+			<div class="card">
+			  <h3>Event</h3>
+			  <p>{{row[0]['ev_name']}}</p>
+			  <p>{{row[0]['ev_date']}}</p>
+			  <a align="right" href="event">ดูเพิ่มเติม</a>
+			</div>
+		  </div>
+		</div>
+		<br>
+		<a  class="btn btn-primary btn-lg" href ="/" >ย้อนกลับ</a>
+		<a  class="btn btn-primary btn-lg" href ="/" >ถัดไป</a> 
 	  {% endblock %}
