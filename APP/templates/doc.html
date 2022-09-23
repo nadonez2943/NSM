@@ -1,0 +1,40 @@
+<doctype html>
+	{% extends 'layout.html' %}
+	
+	{% block body %}
+		<div class="card">
+			<br>
+			<h1>เอกสารโครงการ</h1>
+			<hr>
+			<p>
+				
+				<form method='POST' name="newpath" enctype='multipart/form-data' >
+					<h3>เพิ่มเอกสาร</h3>
+					<div class="col-75">
+						{{form.hidden_tag()}}
+						{{form.file()}}
+					</div>
+					<div class="col-25">
+						{{form.submit()}}
+					</div>
+				</form>
+			</p>
+			{% for result in row %}
+			<div class="row">
+				<div class="card">
+					<div class="row">
+						<h3>{{result['path_name']}}</h3>
+						<div class="col-75">
+							<h6>รายละเอียด :</h6>
+							<h6>{{result['path_detail']}}</h6>
+						</div>
+						<div class="col-25">
+							<a href="..\static\files\{{result['path_path']}}" >view file</a><br>
+							<a href="..\static\files\{{result['path_path']}}" download>download</a>
+						</div>	
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	{% endblock %}
