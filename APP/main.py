@@ -88,12 +88,15 @@ def project(id):
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT *,CAST(((stdraft_percent+stcon_percent+stex_percent)/3) AS DECIMAL(15, 2)) as x FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id WHERE nsm_project.projects.pj_id = %s", id)
+        format = '%d/%m/%Y'
+        cursor.execute("SELECT *,CAST(((stdraft_percent+stcon_percent+stex_percent)/3) AS DECIMAL(15, 2)) as x,DATE_FORMAT(startproject_date, %s) as startdate FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id WHERE nsm_project.projects.pj_id = %s", (format,id))
         row = cursor.fetchall()
         cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s", id)
         rows = cursor.fetchall()
+        cursor.execute("SELECT *,DATE_FORMAT(ev_date, %s) as evdate FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.events.ev_id desc",(format,id))
+        ev = cursor.fetchall()
         if rows:
-            return render_template('project.html', row=row , rows=rows , id=id )
+            return render_template('project.html', row=row , rows=rows , id=id ,ev=ev)
         else:
             return 'Error loading #{id}'.format(id=id)
     except Exception as e:
@@ -110,12 +113,15 @@ def draft(id):
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.board.role_id", id)
+        format = '%d/%m/%Y'
+        cursor.execute("SELECT *,DATE_FORMAT(startproject_date, %s) as startdate FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.board.role_id", (format,id))
         row = cursor.fetchall()
         cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s ", id)
         rows = cursor.fetchall()
+        cursor.execute("SELECT *,DATE_FORMAT(ev_date, %s) as evdate FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 1 WHERE nsm_project.projects.pj_id = %s order by nsm_project.events.ev_id desc",(format,id))
+        ev = cursor.fetchall()
         if rows:
-            return render_template('draft.html', row=row , rows=rows ,id=id)
+            return render_template('draft.html', row=row , rows=rows ,id=id, ev=ev)
         else:
             return 'Error loading #{id}'.format(id=id)
     except Exception as e:
@@ -132,13 +138,15 @@ def consider(id):
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 2 LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.tbl_role.role_id", id)
+        format = '%d/%m/%Y'
+        cursor.execute("SELECT *,DATE_FORMAT(startproject_date, %s) as startdate,DATE_FORMAT(contt_date, %s) as conttdate,DATE_FORMAT(contt_start, %s) as conttstart,DATE_FORMAT(contt_end, %s) as conttend FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.tbl_role.role_id", (format,format,format,format,id))
         row = cursor.fetchall()
         cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s ", id)
         rows = cursor.fetchall()
+        cursor.execute("SELECT *,DATE_FORMAT(ev_date, %s) as evdate FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 2 WHERE nsm_project.projects.pj_id = %s order by nsm_project.events.ev_id desc",(format,id))
+        ev = cursor.fetchall()
         if rows:
-            return render_template('consider.html', row=row , rows=rows ,id=id)
+            return render_template('consider.html', row=row , rows=rows ,id=id,ev=ev)
         else:
             return 'Error loading #{id}'.format(id=id)
     except Exception as e:
@@ -155,14 +163,17 @@ def examine(id):
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.tbl_role.role_id", id)
+        format = '%d/%m/%Y'
+        cursor.execute("SELECT *,DATE_FORMAT(startproject_date, %s) as startdate,DATE_FORMAT(contt_date, %s) as conttdate,DATE_FORMAT(contt_start, %s) as conttstart,DATE_FORMAT(contt_end, %s) as conttend FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.tbl_role.role_id", (format,format,format,format,id))
         row = cursor.fetchall()
         cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s ", id)
         rows = cursor.fetchall()
-        cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.disburse ON nsm_project.projects.pj_id = nsm_project.disburse.pj_id WHERE nsm_project.projects.pj_id = %s order by ins_no desc", id)
+        cursor.execute("SELECT *,DATE_FORMAT(ins_date, %s) as insdate FROM nsm_project.projects LEFT JOIN nsm_project.disburse ON nsm_project.projects.pj_id = nsm_project.disburse.pj_id WHERE nsm_project.projects.pj_id = %s order by ins_no desc", (format,id))
         dis = cursor.fetchall()
+        cursor.execute("SELECT *,DATE_FORMAT(ev_date, %s) as evdate FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 3 WHERE nsm_project.projects.pj_id = %s order by nsm_project.events.ev_id desc",(format,id))
+        ev = cursor.fetchall()
         if rows:
-            return render_template('examine.html', row=row , rows=rows , dis=dis,id=id)
+            return render_template('examine.html', row=row , rows=rows ,ev=ev, dis=dis,id=id)
         else:
             return 'Error loading #{id}'.format(id=id)
     except Exception as e:
@@ -223,7 +234,7 @@ def considerEvent(id):
         cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.events.ev_id) as row_num,DATE_FORMAT(ev_date, %s) as evdate FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 2 WHERE nsm_project.projects.pj_id = %s", (format,id))
         row = cursor.fetchall()
         if row:
-            return render_template('draftEvent.html', row=row , id=id)
+            return render_template('considerEvent.html', row=row , id=id)
         else:
             return 'Error loading #{id}'.format(id=id)
     except Exception as e:
@@ -243,7 +254,7 @@ def examineEvent(id):
         cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.events.ev_id) as row_num,DATE_FORMAT(ev_date, %s) as evdate FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 3 WHERE nsm_project.projects.pj_id = %s", (format,id))
         row = cursor.fetchall()
         if row:
-            return render_template('draftEvent.html', row=row , id=id)
+            return render_template('examineEvent.html', row=row , id=id)
         else:
             return 'Error loading #{id}'.format(id=id)
     except Exception as e:
@@ -253,9 +264,119 @@ def examineEvent(id):
         conn.close()
 
 #หน้าเพิ่มกิจกรรม
-@app.route('/addevent')
-def addevent():
-    return render_template('addevent.html')
+@app.route('/project/<int:id>/addeventd', methods=[ 'GET'])
+def addeventd(id):
+    conn = None
+    cursor = None
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    cursor.execute("SELECT * FROM nsm_project.projects WHERE nsm_project.projects.pj_id = %s", id)
+    row = cursor.fetchall()
+    return render_template('addeventd.html', id=id,row=row)
+
+@app.route('/addeventd', methods=[ 'POST'])
+def addeventd2():
+    conn = None
+    cursor = None
+    try:
+        ev_name = request.form['evname']
+        ev_detail = request.form['evdetail']
+        ev_date = request.form['evdate']
+        ev_phase = request.form['evphase']
+        pj_id = request.form['pjid']
+# validate the received values
+        if ev_name and ev_detail and ev_date and ev_phase and pj_id and request.method == 'POST':
+# save edits
+            sql = "INSERT INTO events(ev_name, ev_detail, ev_date, ev_phase, pj_id) VALUES(%s, %s, %s, %s, %s)"
+            data = (ev_name, ev_detail, ev_date, ev_phase, pj_id)
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute(sql, data)
+            conn.commit()
+            return redirect('/project/'+pj_id+'/draftEvent')
+        else:
+            return 'ไม่สามารถเพิ่มกิจกรรมได้'
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close()
+
+@app.route('/project/<int:id>/addeventc', methods=[ 'GET'])
+def addeventc(id):
+    conn = None
+    cursor = None
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    cursor.execute("SELECT * FROM nsm_project.projects WHERE nsm_project.projects.pj_id = %s", id)
+    row = cursor.fetchall()
+    return render_template('addeventc.html', id=id,row=row)
+
+@app.route('/addeventc', methods=[ 'POST'])
+def addeventc2():
+    conn = None
+    cursor = None
+    try:
+        ev_name = request.form['evname']
+        ev_detail = request.form['evdetail']
+        ev_date = request.form['evdate']
+        ev_phase = request.form['evphase']
+        pj_id = request.form['pjid']
+# validate the received values
+        if ev_name and ev_detail and ev_date and ev_phase and pj_id and request.method == 'POST':
+# save edits
+            sql = "INSERT INTO events(ev_name, ev_detail, ev_date, ev_phase, pj_id) VALUES(%s, %s, %s, %s, %s)"
+            data = (ev_name, ev_detail, ev_date, ev_phase, pj_id)
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute(sql, data)
+            conn.commit()
+            return redirect('/project/'+pj_id+'/considerEvent')
+        else:
+            return 'ไม่สามารถเพิ่มกิจกรรมได้'
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close()
+
+@app.route('/project/<int:id>/addevente', methods=[ 'GET'])
+def addevente(id):
+    conn = None
+    cursor = None
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    cursor.execute("SELECT * FROM nsm_project.projects WHERE nsm_project.projects.pj_id = %s", id)
+    row = cursor.fetchall()
+    return render_template('addevente.html', id=id,row=row)
+
+@app.route('/addevente', methods=[ 'POST'])
+def addevente2():
+    conn = None
+    cursor = None
+    try:
+        ev_name = request.form['evname']
+        ev_detail = request.form['evdetail']
+        ev_date = request.form['evdate']
+        ev_phase = request.form['evphase']
+        pj_id = request.form['pjid']
+# validate the received values
+        if ev_name and ev_detail and ev_date and ev_phase and pj_id and request.method == 'POST':
+# save edits
+            sql = "INSERT INTO events(ev_name, ev_detail, ev_date, ev_phase, pj_id) VALUES(%s, %s, %s, %s, %s)"
+            data = (ev_name, ev_detail, ev_date, ev_phase, pj_id)
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute(sql, data)
+            conn.commit()
+            return redirect('/project/'+pj_id+'/examineEvent')
+        else:
+            return 'ไม่สามารถเพิ่มกิจกรรมได้'
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close()
 
 #หน้าแก้ไขกิจกรรม
 @app.route('/editevent')

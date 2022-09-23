@@ -45,7 +45,7 @@
                   <label>วันที่เริ่มโครงการ</label>
                 </div>
                 <div class="col-75">
-                  <label>{{row[0]['startproject_date']}}</label>
+                  <label>{{row[0]['startdate']}}</label>
                 </div>
               </div>
               <div class="row">
@@ -72,7 +72,7 @@
                 <label>วันที่ประกาศผลบริษัทผู้รับเหมา</label>
               </div>
               <div class="col-75">
-                <label>{{row[0]['contt_date']}}</label>
+                <label>{{row[0]['conttdate']}}</label>
               </div>
             </div>
             <div class="row">
@@ -94,14 +94,14 @@
                 <label>วันที่เริ่ม</label>
               </div>
               <div class="col-75">
-                <label>{{row[0]['contt_start']}}</label>
+                <label>{{row[0]['conttstart']}}</label>
               </div>
             </div><div class="row">
               <div class="col-25">
                 <label>วันที่สิ้นสุด</label>
               </div>
               <div class="col-75">
-                <label>{{row[0]['contt_end']}}</label>
+                <label>{{row[0]['conttend']}}</label>
               </div>
             </div><div class="row">
               <div class="col-25">
@@ -127,15 +127,15 @@
           </div>
           <div class="card">
             <h3>Event</h3>
-            <p>{{row[0]['ev_name']}}</p>
-            <p>{{row[0]['ev_date']}}</p>
-            <a align="right" href="event">ดูเพิ่มเติม</a>
+            <p>{{ev[0]['ev_name']}}</p>
+            <p>{{ev[0]['evdate']}}</p>
+            <a align="right" href="examineEvent">ดูเพิ่มเติม</a>
           </div>
           <div class="card">
             <h3>การตรวจงาน</h3>
             <p>
               <a>งวดที่ {{dis[0]['ins_no']}}</a><br>
-              <a>ประจำวันที่ {{dis[0]['ins_date']}}</a>
+              <a>ประจำวันที่ {{dis[0]['insdate']}}</a>
               <p>
                 <a>รายละเอียด</a>
                 <a>{{dis[0]['dis_detail']}}</a>
