@@ -3,7 +3,6 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from db_config import mysql
 from app import app
 import pymysql
-from urllib import request
 from flask_wtf import FlaskForm
 from wtforms import FileField, SubmitField
 from werkzeug.utils import secure_filename
@@ -381,11 +380,10 @@ def test():
     cursor.execute("SELECT * FROM nsm_project.path")
     row = cursor.fetchall()
     if form.validate_on_submit():
-        conn = mysql.connect()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
+       
         file = form.file.data # First grab the file
         file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'],secure_filename(file.filename))) # Then save the file
-        sql = "INSERT INTO path(path-path) VALUES(%s)"
+        sql = "INSERT INTO path(path_path) VALUES(%s)"
         data = secure_filename(file.filename)
         conn = mysql.connect()
         cursor = conn.cursor()
