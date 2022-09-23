@@ -3,6 +3,14 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from db_config import mysql
 from app import app
 import pymysql
+from urllib import request
+from flask_wtf import FlaskForm
+from wtforms import FileField, SubmitField
+from werkzeug.utils import secure_filename
+import os
+from wtforms.validators import InputRequired
+
+ALLOWED_EXTENSIONS = {'doc', 'pdf'}
 
 # log in
 @app.route('/')
@@ -67,24 +75,6 @@ def myproject():
         cursor.execute("SELECT financial_amount FROM nsm_project.process")
         rows = cursor.fetchall()
         return render_template('home.html', row=row , rows=rows)
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close() 
-        conn.close()
-
-#ทดสอบ
-@app.route('/t')
-def h():
-    a=session['user_id']
-    conn = None
-    cursor = None
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.projects.pj_id) as row_num ,CAST(((stdraft_percent+stcon_percent+stex_percent)/3) AS DECIMAL(15, 2)) as x FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.mn_id  LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id WHERE nsm_project.board.user_id = %s group by nsm_project.projects.pj_id order by nsm_project.projects.pj_id asc, nsm_project.events.ev_id desc",(a))
-        row = cursor.fetchall()
-        return render_template('test.html', row=row )
     except Exception as e:
         print(e)
     finally:
@@ -369,6 +359,40 @@ def runp(id):
     finally:
         cursor.close()
         conn.close()  
+
+class UploadFileForm(FlaskForm):
+    file = FileField("File", validators=[InputRequired()])
+    submit = SubmitField("Upload File")
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+#ทดสอบ
+
+
+@app.route('/t', methods=['GET',"POST"])
+def test():
+    form = UploadFileForm()
+    conn = None
+    cursor = None
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    cursor.execute("SELECT * FROM nsm_project.path")
+    row = cursor.fetchall()
+    if form.validate_on_submit():
+        conn = mysql.connect()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        file = form.file.data # First grab the file
+        file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'],secure_filename(file.filename))) # Then save the file
+        sql = "INSERT INTO path(path-path) VALUES(%s)"
+        data = secure_filename(file.filename)
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute(sql, data)
+        conn.commit()
+        return "File has been uploaded."
+    return render_template('test.html', row=row,form=form)
 
 
 if __name__ == "__main__":
