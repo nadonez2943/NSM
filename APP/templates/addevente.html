@@ -1,0 +1,39 @@
+<doctype html>
+    {% extends 'layout.html' %}
+    {% block body %}
+    <br>
+    <div class="jumbotron">
+        <center><h1>กิจกรรม</h1></center>
+        <br>
+        <form action="/addevente" method="post">
+        <div class="row">
+            <div class="col-25">
+              <label>ชื่อ</label>
+            </div>
+            <div class="col-75">
+                <p> <input name="evname" value="" type="text" style="width:700px; " placeholder="ชื่อกิจกรรม" autocomplete="off" required> </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+            <label>รายละเอียด</label>
+            </div>
+            <div class="col-75">
+            <p> <input name="evdetail" value="" type="text" style="width:700px; height: 88;  " placeholder="รายละเอียด " autocomplete="off" required> </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+              <label>วันที่</label>
+            </div>
+            <div class="col-75">
+            <input name="evdate" value="" type="date"></input>
+            <input name="evphase" value="3" type="hidden">
+            <input name="pjid" value="{{row[0]['pj_id']}}" type="hidden">
+            </div>
+        </div>
+    </div>
+    <center><input type="submit" class="btn btn-primary btn-lg" value="Submit" ></center>
+    </div>
+    </form>
+    {% endblock %}
