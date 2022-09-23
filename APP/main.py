@@ -110,6 +110,11 @@ def project(id):
 def draft(id):
     conn = None
     cursor = None
+    phase = '1'
+    user = session['user_id']
+    manager = 'manager'
+    assistant = 'assistant'
+    board = 'board'
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
@@ -120,10 +125,17 @@ def draft(id):
         rows = cursor.fetchall()
         cursor.execute("SELECT *,DATE_FORMAT(ev_date, %s) as evdate FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 1 WHERE nsm_project.projects.pj_id = %s order by nsm_project.events.ev_id desc",(format,id))
         ev = cursor.fetchall()
-        if rows:
-            return render_template('draft.html', row=row , rows=rows ,id=id, ev=ev)
+        cursor.execute("SELECT *,CASE WHEN nsm_project.manager.user_id = nsm_project.users.user_id THEN 'manager' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 1 OR nsm_project.board.role_id = 2 THEN 'board' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 3 THEN 'assistant' END AS role FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id or nsm_project.manager.user_id = nsm_project.users.user_id Where nsm_project.projects.pj_id = %s and nsm_project.users.user_id = %s group by nsm_project.users.user_id",(id ,user))
+        role = cursor.fetchone()
+        if(phase == role['bo_phase'] ):
+            if (manager ==  role['role']) :
+                return render_template('draft.html', row=row , rows=rows ,id=id ,ev=ev)
+            elif (assistant == role['role']) :
+                return render_template('draft.html', row=row , rows=rows ,id=id ,ev=ev)
+            elif (board ==  role['role']) :
+                return redirect('/home')
         else:
-            return 'Error loading #{id}'.format(id=id)
+            return redirect('/home')
     except Exception as e:
         print(e)
     finally:
