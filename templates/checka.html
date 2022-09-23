@@ -1,0 +1,38 @@
+<doctype html>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    {% extends 'layout.html' %}  
+      {% block body %}
+                
+            <p>
+              <br><h1>ตรวจรับโครงการ</h1>
+            </p>
+          
+            
+            <div class="jumbotron">
+              <table class="table" id="">
+                  <tr>
+                    <th>งวดที่</th>
+                    <th>วันที่ตรวจรับ</th>
+                    <th>เลขที่สัญญา</th>
+                    <th>รายละเอียดการตรวจรับ</th>
+                    <th>วันที่เบิกจ่าย</th>
+                    <th>รายละเอียดการเบิกจ่าย</th>
+                    <th>ยอดที่เบิกจ่าย</th>
+                   
+                  </tr>
+                  {% for result in row %}
+                  <tr>
+                    <td></td>
+                    <td></td>        
+                    <td> </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>        
+                  </tr>
+                  {% endfor %}
+              </table>
+            </div>
+            
+  {% endblock %}
+  </html>

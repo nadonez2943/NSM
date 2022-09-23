@@ -13,14 +13,14 @@
             <div class="container">
               <!-- <form action="/action_page.php"> -->
                 <div class="row">
-                    <h align="right" >เลขสารบัญ {{row[id-2]['pj_refNumber']}}</h>
+                    <h align="right" >เลขสารบัญ {{row[0]['pj_refNumber']}}</h>
                   </div>
                 <div class="row">
                   <div class="col-25">
                     <label>ชื่อโครงการ</label>
                   </div>
                   <div class="col-75">
-                    <label>{{row[id-1]['pj_name']}}</label>
+                    <label>{{row[0]['pj_name']}}</label>
                   </div>
                 </div>
                 <div class="row">
@@ -28,7 +28,7 @@
                     <label>ผู้รับผิดชอบโครงการ</label>
                   </div>
                   <div class="col-75">
-                    <label>{{rows[id-2]['user_fullname']}}</label>
+                    <label>{{rows[0]['user_fullname']}}</label>
                   </div>
                 </div>
                 <div class="row">
@@ -47,14 +47,14 @@
                     <label>วันที่เริ่มโครงการ</label>
                   </div>
                   <div class="col-75">
-                    <label>{{row[id-2]['startproject_date']}}</label>
+                    <label>{{row[0]['startdate']}}</label>
                   </div>
                 </div><div class="row">
                   <div class="col-25">
                     <label>งบประมาณ</label>
                   </div>
                   <div class="col-75">
-                    <label>{{row[id-2]['pj_amount']}}</label>
+                    <label>{{row[0]['pj_amount']}}</label>
                   </div>
                 </div>
                 <div class="row">
@@ -62,7 +62,7 @@
                     <label>รายละเอียด</label>
                   </div>
                   <div class="col-75">
-                    <label>{{row[id-2]['pj_detail']}}
+                    <label>{{row[0]['pj_detail']}}
                     </label>
                   </div>
                 </div>
@@ -75,22 +75,24 @@
           <div class="card">
             <center>
             <h1>สถานะ</h1>
-            <progress id="file" value="{{row[0]['st_percent']}}" max="100"> </progress>    
+            <progress id="file" value="{{row[0]['stdraft_percent']}}" max="100"> </progress>    
             <br>
             <br>
-            <label for="file">{{row[id-2]['st_name']}}</label>
+            <label for="file">{{row[0]['stdraft_name']}}</label>
             </center>
             <div align="Right"><a href ="/" >อัพเดทสถานะ</a></div>
           </div>
           <div class="card">
             <h3>Event</h3>
-            <p>{{row[id-2]['ev_name']}}</p>
-            <p>{{row[id-2]['ev_date']}}</p>
-            <a align="right" href="event">ดูเพิ่มเติม</a>
+            <p>{{ev[0]['ev_name']}}</p>
+            <p>{{ev[0]['evdate']}}</p>
+            <a align="right" href="draftEvent">ดูเพิ่มเติม</a>
+          </div>
+          <div class="card">
+            <a align="center" href="doc">เอกสารโครงการ</a>
           </div>
         </div>
       </div>
       <br>
-      <a  class="btn btn-primary btn-lg" href ="/" >ย้อนกลับ</a>
-      <a  class="btn btn-primary btn-lg" href ="/" >ถัดไป</a> 
+      <input class="btn btn-primary btn-lg" type="button" onclick="history.back()" value="ย้อนกลับ">
     {% endblock %}
