@@ -12,12 +12,14 @@
         <div class="autocomplete" style="width:300px;">
             <input id="myInputt" type="text" name="myCountry" placeholder="ชื่อ - นามสกุล">
         </div>
-        <select name="board" size="1">
+        <select name="roleid" size="1">
             <option value="1">ประธาน<br>
             <option value="2">เลขาธิการ<br>
             <option value="3">กรรมการ<br>
         </select>
         </p>
+        <input name="bophase" value="2" type="hidden">
+        <input name="pjid" value="{{row[0]['pj_id']}}" type="hidden">
         <input type="submit" value="เพิ่มคณะกรรมการ">
         </center>
     </form>

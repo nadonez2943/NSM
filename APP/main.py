@@ -218,23 +218,44 @@ def examine(id):
 
 #หน้าเพิ่มคณะกรรมการ
 @app.route('/project/<int:id>/addboard',methods=[ 'GET'])
-def addboard_get(id):
+def addboardd(id):
+    conn = None
+    cursor = None
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    cursor.execute("SELECT * FROM nsm_project.projects WHERE nsm_project.projects.pj_id = %s", id)
+    row = cursor.fetchall()
+    cursor.execute("SELECT * FROM nsm_project.user ")
+    rows = cursor.fetchall()
+    return render_template('addboard.html', id=id,row=row,rows=rows)
+
+@app.route('/addboard', methods=[ 'POST'])
+def addboardd2():
     conn = None
     cursor = None
     try:
-        conn = mysql.connect()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT * FROM nsm_project.users ")
-        row = cursor.fetchall()
-        if row:
-            return render_template('addboard.html', row=row ,id=id,)
+        user_id = request.form['userid']
+        # ev_name = request.form['evname']
+        role_id = request.form['roleid']
+        bo_phase = request.form['bophase']
+        pj_id = request.form['pjid']
+# validate the received values
+        if user_id and role_id and bo_phase and pj_id and request.method == 'POST':
+# save edits
+            sql = "INSERT INTO board(user_id, role_id, ev_date, bo_phase, pj_id) VALUES(%s, %s, %s, %s)"
+            data = (user_id, role_id, bo_phase, pj_id)
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute(sql, data)
+            conn.commit()
+            return redirect('/project/'+pj_id+'/draft')
         else:
-            return 'Error loading #{id}'.format(id=id)
+            return 'ไม่สามารถเพิ่มกิจกรรมได้'
     except Exception as e:
-        print(e)
+           print(e)
     finally:
-        cursor.close()
-        conn.close()
+           cursor.close() 
+           conn.close()
 
 #หน้ากิจกรรม
 @app.route('/project/<int:id>/draftEvent', methods=[ 'GET'])
