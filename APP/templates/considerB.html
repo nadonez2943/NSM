@@ -1,0 +1,148 @@
+<doctype html>
+  {% extends 'layout.html' %}
+  
+  {% block body %}
+      <body>
+      
+      <div class="row">
+        <p>
+          <br><h1>พิจารณาผลโครงการ</h1>
+        </p>
+        <div class="leftcolumn">
+          <div class="card">
+            <div >
+              <form action="/action_page.php">
+                <div class="row">
+                  <h align="right" >เลขสารบัญ {{row[0]['pj_refNumber']}}</h>
+                </div>
+                <div class="row">
+                  <div class="col-25">
+                    <label>ชื่อโครงการ</label>
+                  </div>
+                  <div class="col-75">
+                    <label>{{row[0]['pj_name']}}</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-25">
+                    <label>ผู้รับผิดชอบโครงการ</label>
+                  </div>
+                  <div class="col-75">
+                    <label>{{rows[0]['user_fullname']}}</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-25">
+                    <label>คณะกรรมการ</label>
+                  </div>
+                  <div class="col-75">
+                    {% for result in row %}
+                    <div class="row"><div class="col-75"><label>{{result['user_fullname']}}</label></div><div class="col-25"><label >{{result['role_name']}}</label></div></div>
+                    {% endfor %}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-25">
+                    <label>วันที่เริ่มโครงการ</label>
+                  </div>
+                  <div class="col-75">
+                    <label>{{row[0]['startdate']}}</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-25">
+                    <label>งบประมาณ</label>
+                  </div>
+                  <div class="col-75">
+                    <label>{{row[0]['pj_amount']}}</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-25">
+                    <label>รายละเอียด</label>
+                  </div>
+                  <div class="col-75">
+                    <label>{{row[0]['pj_detail']}}
+                    </label>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="card">
+            <div class="row">
+              <div class="col-25">
+                <label>วันที่ประกาศผลบริษัทผู้รับเหมา</label>
+              </div>
+              <div class="col-75">
+                <label>{{row[0]['conttdate']}}</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-25">
+                <label>บริษัทผู้รับเหมา</label>
+              </div>
+              <div class="col-75">
+                <label>{{row[0]['contt_name']}}</label>
+              </div>
+            </div><div class="row">
+              <div class="col-25">
+                <label>ค่ารับเหมา</label>
+              </div>
+              <div class="col-75">
+                <label>{{row[0]['contt_fee']}}</label>
+              </div>
+            </div><div class="row">
+              <div class="col-25">
+                <label>วันที่เริ่ม</label>
+              </div>
+              <div class="col-75">
+                <label>{{row[0]['conttstart']}}</label>
+              </div>
+            </div><div class="row">
+              <div class="col-25">
+                <label>วันที่สิ้นสุด</label>
+              </div>
+              <div class="col-75">
+                <label>{{row[0]['conttend']}}</label>
+              </div>
+            </div><div class="row">
+              <div class="col-25">
+                <label>ระยะเวลาคงเหลือ</label>
+                
+              </div>
+              <div class="col-75">
+                <label>พันล้านปี</label>
+              </div>
+            </div>
+          </div>
+        </div>
+         
+        <div class="rightcolumn" style="background-color:#ffffff;">
+          <div class="card">
+            <center>
+            <h1>สถานะ</h1>
+            <progress id="file" value="{{row[0]['stcon_percent']}}" max="100"></progress>    
+            <br>
+            <br>
+            <label for="file">{{row[0]['stcon_name']}}</label>
+            </center>
+            <div align="Right"><a href ="/" >อัพเดทสถานะ</a></div>
+          </div>
+          <div class="card">
+            <h3>Event</h3>
+            <p>{{ev[0]['ev_name']}}</p>
+            <p>{{ev[0]['evdate']}}</p>
+            <a align="right" href="considerEvent">ดูเพิ่มเติม</a>
+          </div>
+          <div class="card">
+            <a align="center" href="doc">เอกสารโครงการ</a>
+          </div>
+        </div>
+      </div>
+      <br>
+      
+        <a  class="btn btn-primary btn-lg" href ="/" >ย้อนกลับ</a>
+        <a  class="btn btn-primary btn-lg" href ="/" >ถัดไป</a> 
+      
+  {% endblock %}

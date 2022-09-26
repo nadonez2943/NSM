@@ -2,14 +2,37 @@
 	{% extends 'layout.html' %}
 	
 	{% block body %}
+	
+	<script type="text/javascript">
+		function showDiv(Div) {
+			 var x = document.getElementById(Div);
+				 if(x.style.display=="none") {
+					 x.style.display = "block";}
+				 else { x.style.display = "none";}
+		 }
+		 </script>
+		 
+		
+	
 		<div class="card">
 			<br>
 			<h1>เอกสารโครงการ</h1>
 			<hr>
-			<p>
-				
+			<div>
+				<p><button class="btn" onclick="showDiv('toggle')">เพิ่มเอกสาร</button></p>	
+				<div id="toggle" style="display:none">
 				<form method='POST' name="newpath" enctype='multipart/form-data' >
-					<h3>เพิ่มเอกสาร</h3>
+					<div class="jumbotron">
+						<h3>เพิ่มเอกสาร</h3>
+						
+						<br>
+						<div class="row">
+							<p style="display:none">โปรเจคไอดี  </p>
+							<p style="display:none">ระยะ  </p>
+							<p>ชื่อไฟล์ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="" value="" type="text" style="width:500px; " placeholder="ชื่อไฟล์" autocomplete="off" required> </input></p>
+							<p>รายละเอียด&nbsp;&nbsp;<input name="" value="" type="text"style="width:500px;"placeholder="รายละเอียด" autocomplete="off" required></input></p>
+						</div>
+						<br>
 					<div class="col-75">
 						{{form.hidden_tag()}}
 						{{form.file()}}
@@ -18,7 +41,8 @@
 						{{form.submit()}}
 					</div>
 				</form>
-			</p>
+				</div>
+			</div>
 			{% for result in row %}
 			<div class="row">
 				<div class="card">
