@@ -20,7 +20,7 @@
         <td>{{result['ev_name']}}</td>
         <td>{{result['ev_detail']}}</td>
         <td>{{result['evdate']}}</td>
-        <td><button type="button" class="btn btn-danger">แก้ไข</button></td>
+        <td><a type="button" class="btn btn-danger" href="/project/{{result['pj_id']}}/editevent/{{result['ev_id']}}">แก้ไข</a></td>
         </tr>
         {% endfor %}
     </table>
