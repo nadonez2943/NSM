@@ -391,9 +391,49 @@ def addevente2():
            conn.close()
 
 #หน้าแก้ไขกิจกรรม
-@app.route('/editevent')
-def editevent():
-    return render_template('editevent.html')
+@app.route('/project/<int:id>/editevent/<int:idd>')
+def editevent(id,idd):
+    conn = None
+    cursor = None
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id WHERE nsm_project.projects.pj_id = %s AND nsm_project.events.ev_id = %s", (id,idd))
+    row = cursor.fetchall()
+    return render_template('editevent.html', id=id,row=row)
+
+@app.route('/editevent', methods=[ 'POST'])
+def editevent2():
+    conn = None
+    cursor = None
+    try:
+        ev_name = request.form['evname']
+        ev_detail = request.form['evdetail']
+        ev_date = request.form['evdate']
+        ev_phase = request.form['evphase']
+        pj_id = request.form['pjid']
+        ev_id = request.form['evid']
+# validate the received values
+        if ev_name and ev_detail and ev_date and ev_phase and pj_id and ev_id and request.method == 'POST':
+# save edits
+            sql = "UPDATE events SET ev_name=%s, ev_detail=%s, ev_date=%s, ev_phase=%s WHERE pj_id=%s AND ev_id=%s"
+            data = (ev_name, ev_detail, ev_date, ev_phase, pj_id,ev_id)
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute(sql, data)
+            conn.commit()
+            if ev_phase == '1':
+                return redirect('/project/'+pj_id+'/draftEvent')
+            elif ev_phase == '2':
+                return redirect('/project/'+pj_id+'/considerEvent')
+            elif ev_phase == '3':
+                return redirect('/project/'+pj_id+'/examineEvent')
+        else:
+            return 'ไม่สามารถแก้ไขกิจกรรมได้'
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close()
 
 #หน้าทดสอบการนับถอยหลัง
 @app.route('/countdown')
