@@ -229,7 +229,7 @@ def addboardd(id):
     row = cursor.fetchall()
     cursor.execute("SELECT * FROM nsm_project.users ")
     rows = cursor.fetchall()
-    return render_template('addboard.html', id=id,row=row,rows=rows)
+    return render_template('addboardd.html', id=id,row=row,rows=rows)
 
 @app.route('/addboardd', methods=[ 'POST'])
 def addboardd2():

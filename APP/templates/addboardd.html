@@ -1,0 +1,50 @@
+<doctype html>
+
+    {% extends 'layout.html' %}
+    {% block body %}
+    <br>
+    <div class="jumbotron">
+    <br>
+    <h1 align="center">คณะกรรมการ</h1>
+    <br>
+    <form action="/addboardd" method="post">
+        <center>
+        <p>
+            <div class="col-md-6">
+                <select id="single" class="js-states form-control" style="width: 50%" name="userid">
+                    <option value="0">ชื่อ-นามสกุล</option>
+                    {% for result in rows %}
+                    <option value="{{result['user_id']}}">{{result['user_fullname']}}</option>
+                    {% endfor %}
+                </select>
+              
+        <select name="roleid" size="1">
+            <option value="1">ประธาน<br>
+            <option value="2">กรรมการ<br>
+            <option value="3">เลขาธิการ<br>
+        </select>
+        </div>
+        </p>
+        <input name="bophase" value="1" type="hidden">
+        <input name="pjid" value="{{row[0]['pj_id']}}" type="hidden">
+        <br><br>
+        <input type="submit" value="เพิ่มคณะกรรมการ">
+        </center>
+    </form>
+    <script>$(document).ready(function(){
+
+        // Initialize Select2
+        $('#sel_users').select2();
+      
+        // Set option selected onchange
+        $('#user_selected').change(function(){
+          var value = $(this).val();
+      
+          // Set selected 
+          $('#sel_users').val(value);
+          $('#sel_users').select2().trigger('change');
+      
+        });
+      });
+      </script>
+    {% endblock %}
