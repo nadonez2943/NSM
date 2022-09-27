@@ -31,4 +31,18 @@
         <input type="submit" value="เพิ่มคณะกรรมการ">
         </center>
     </form>
+    <table id="customers">
+        <tr>
+        <th>ชื่อ-นามสกุล</th>
+        <th>ตำแหน่ง</th>
+        <th>ลบรายชื่อ</th>
+        </tr>
+        {% for result in row %}
+        <tr>
+        <td>{{result['user_fullname']}}</td>
+        <td>{{result['role_name']}}</td>
+        <td><a type="button" class="btn btn-danger" href="/project/{{result['pj_id']}}/editevent/{{result['ev_id']}}" >แก้ไข</a></td>
+        </tr>
+        {% endfor %}
+    </table>
     {% endblock %}
