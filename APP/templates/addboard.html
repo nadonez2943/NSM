@@ -1,4 +1,5 @@
 <doctype html>
+
     {% extends 'layout.html' %}
     {% block body %}
     <br>
@@ -6,19 +7,25 @@
     <br>
     <h1 align="center">คณะกรรมการ</h1>
     <br>
-    <form action="/addboard" method="post">
+    <form action="/addboardd" method="post">
         <center>
         <p>
-        <div class="autocomplete" style="width:300px;">
-            <input id="myInputt" type="text" name="myCountry" placeholder="ชื่อ - นามสกุล">
-        </div>
+            
+            
+                <select class="js-example-basic-single" name="userid" id="userid">
+                <option value="0">ชื่อ-นามสกุล</option>
+               {% for result in rows %}
+                <option value="{{result['user_id']}}">{{result['user_fullname']}}</option>
+                {% endfor %}
+                </select>
+                 
         <select name="roleid" size="1">
             <option value="1">ประธาน<br>
             <option value="2">เลขาธิการ<br>
             <option value="3">กรรมการ<br>
         </select>
         </p>
-        <input name="bophase" value="2" type="hidden">
+        <input name="bophase" value="1" type="hidden">
         <input name="pjid" value="{{row[0]['pj_id']}}" type="hidden">
         <input type="submit" value="เพิ่มคณะกรรมการ">
         </center>

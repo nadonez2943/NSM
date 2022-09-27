@@ -9,13 +9,13 @@
       <div class="jumbotron">
         <table class="table" id="customers">
             <tr>
-              <th>ลำดับ</th>
-              <th>ชื่อโครงการ</th>
-              <th>เลขสารบัญ</th>
-              <th>รายละเอียด</th>
-              <th>ผู้รับผิดชอบ</th>
-              <th>กิจกรรม</th>
-              <th>ความคืบหน้า</th>
+              <th><center>ลำดับ</center></th>
+              <th><center>ชื่อโครงการ</center></th>
+              <th><center>เลขสารบัญ</center></th>
+              <th><center>รายละเอียด</center></th>
+              <th><center>ผู้รับผิดชอบ</center></th>
+              <th><center>กิจกรรม</center></th>
+              <th><center>ความคืบหน้า</center></th>
             </tr>
             {% for result in row %}
             <tr>
@@ -25,7 +25,7 @@
               <td>{{result['pj_detail']}}</td>
               <td>{{result['user_fullname']}}</td>
               <td>{{result['ev_name']}}</td>
-              <td>{{result['x']}} %</td>        
+              <td><center>{{result['x']}} %</center></td>        
             </tr>
             {% endfor %}
         </table>
