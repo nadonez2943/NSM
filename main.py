@@ -7,7 +7,7 @@ def editproject(id):
     cursor.execute("SELECT * FROM nsm_project.projects  WHERE nsm_project.projects.pj_id = %s ", (id))
     row = cursor.fetchall()
     return render_template('editproject.html', id=id,row=row)
-
+#html ชื่อ editproject
 @app.route('/editproject', methods=[ 'POST'])
 def editproject2():
     conn = None
