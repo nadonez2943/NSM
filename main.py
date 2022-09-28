@@ -1,35 +1,37 @@
-from flask import Flask, render_template, request, redirect, url_for, session
-from db_config import MySQL
-from app import app
+@app.route('/project/<int:id>/editproject',methods = ['GET'])
+def editproject(id):
+    conn = None
+    cursor = None
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    cursor.execute("SELECT * FROM nsm_project.projects  WHERE nsm_project.projects.pj_id = %s ", (id))
+    row = cursor.fetchall()
+    return render_template('editproject.html', id=id,row=row)
 
-@app.route('/')
-def home():
-    return render_template('home.html')
-
-@app.route('/draft')
-def draft():
-    return render_template('draft.html')
-
-@app.route('/consider')
-def consider():
-    return render_template('consider.html')
-
-@app.route('/t')
-def h():
-    return render_template('test.html')
-
-@app.route('/login')
-def login():
-    return render_template('login.html')
-
-@app.route('/f')
-def f():
-    return render_template('addproject.html')
-
-@app.route('/k')
-def k():
-    return render_template('k.html')
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
+@app.route('/editproject', methods=[ 'POST'])
+def editproject2():
+    conn = None
+    cursor = None
+    try:
+        refNumber = request.form['refNumber']
+        name = request.form['name']
+        amount = request.form['amount']
+        detail = request.form['detail']
+        pj_id = request.form['pjid']
+# validate the received values
+        if refNumber and name and amount and detail and pj_id and request.method == 'POST':
+# save edits
+            sql = "UPDATE projects SET pj_refNumber=%s,  pj_name=%s,  pj_amount=%s,  pj_detail=%s WHERE pj_id=%s"
+            data = (refNumber, name, amount, detail, pj_id)
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute(sql, data)
+            conn.commit()
+            return redirect ('/project/'+pj_id+'')
+        else:
+            return 'ไม่สามารถแก้ไขโปรเจคได้'
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close()
