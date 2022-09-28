@@ -1,0 +1,43 @@
+ 
+<doctype html>
+    {% extends 'layout.html' %}
+     
+     {% block body %}
+   <br>
+   <br>
+ <center>
+   <h2 >แก้ไขรายละเอียดโครงการ</h2>
+   </center> 
+   <br>
+   
+ <div class="jumbotron" style="width: 1000; height: 600;"  >
+ <form action="/editproject" method="post">
+   <br>
+   
+        <dl>
+          <p><input name="pjid" value="{{row[0]['pj_id']}}" type="hidden"></p>
+            <p>
+                เลขสรรบัญ: <input name="refNumber" value="{{row[0]['pj_refNumber']}}" type="text" style="width:100px; " placeholder="เลขสรรบัญ" autocomplete="off" required> 
+            </p>
+            <p>
+                ชื่อโครงการ: <input name="name" value="{{row[0]['pj_name']}}" type="text" style="width:814px;" placeholder="ชื่อโครงการ" autocomplete="off" required> 
+            </p>
+             <p>
+                งบประมาณ: <input name="amount" value="{{row[0]['pj_amount']}}" type="text" style="width:814px;" placeholder="ชื่อโครงการ" autocomplete="off" required> 
+             </p>  
+             <p>รายละเอียดโครงการ(พอสังเขป)</p> 
+             <p> <input name="detail" value="{{row[0]['pj_detail']}}" type="text" style="width:900px; height: 88;  " placeholder="รายละเอียด " autocomplete="off" required> </p>
+            
+             <br>
+             <br>
+             <br>
+             <CENTER><p>
+                <input type="submit" class="btn" value="แก้ไขโครงการ">
+                </p></CENTER>
+            </dl>
+            
+           <br>
+ 
+ </div>   
+ </form>
+ {% endblock %}
