@@ -340,7 +340,7 @@ def addboarde2():
            conn.close()
 
 #ลบกรรมการ
-@app.route('/delete/<int:id>')
+@app.route('/delete_boardd/<int:id>')
 def delete_boardd(id):
     conn = None
     cursor = None
@@ -351,6 +351,40 @@ def delete_boardd(id):
         cursor.execute("DELETE FROM board WHERE bo_id=%s", (id))
         conn.commit()
         return redirect('/project/'+pj_id+'/addboardd')
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close() 
+        conn.close()
+
+@app.route('/delete_boardc/<int:id>')
+def delete_boardc(id):
+    conn = None
+    cursor = None
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        pj_id = '2'
+        cursor.execute("DELETE FROM board WHERE bo_id=%s", (id))
+        conn.commit()
+        return redirect('/project/'+pj_id+'/addboardc')
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close() 
+        conn.close()
+
+@app.route('/delete_boarde/<int:id>')
+def delete_boarde(id):
+    conn = None
+    cursor = None
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        pj_id = '2'
+        cursor.execute("DELETE FROM board WHERE bo_id=%s", (id))
+        conn.commit()
+        return redirect('/project/'+pj_id+'/addboarde')
     except Exception as e:
         print(e)
     finally:
