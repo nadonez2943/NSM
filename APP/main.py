@@ -581,19 +581,7 @@ def editevent2():
 #หน้าทดสอบการนับถอยหลัง
 @app.route('/countdown')
 def countdown():
-    conn = None
-    cursor = None
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT endproject_DateTime FROM nsm_project.process;")
-        rows = cursor.fetchall()
-        return render_template('home.html', rows=rows)
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close() 
-        conn.close()
+    return render_template('countdown.html')
 
 #หน้าเพิ่มโครงการ
 # เพิ่มโปรเจค
@@ -709,29 +697,26 @@ def doc(id):
 
 #ทดสอบ
 
-
-@app.route('/t', methods=['GET',"POST"])
+@app.route('/t')
 def test():
-    form = UploadFileForm()
+    return render_template('test.html')
+
+@app.route('/t2')
+def test2():
     conn = None
     cursor = None
-    conn = mysql.connect()
-    cursor = conn.cursor(pymysql.cursors.DictCursor)
-    cursor.execute("SELECT * FROM nsm_project.path")
-    row = cursor.fetchall()
-    if form.validate_on_submit():
-       
-        file = form.file.data # First grab the file
-        file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'],secure_filename(file.filename))) # Then save the file
-        sql = "INSERT INTO path(path_path) VALUES(%s)"
-        data = secure_filename(file.filename)
+    try:
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute(sql, data)
-        conn.commit()
-        return "File has been uploaded."
-    return render_template('test.html', row=row,form=form)
-
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        cursor.execute("SELECT * FROM nsm_project.process")
+        rows = cursor.fetchall()
+        return render_template('test2.html', rows=rows) 
+    except Exception as e:
+        print(e)
+    finally: 
+        cursor.close()
+        conn.close()
 
 if __name__ == "__main__":
     app.run(debug=True)
