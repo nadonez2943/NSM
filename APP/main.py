@@ -339,6 +339,24 @@ def addboarde2():
            cursor.close() 
            conn.close()
 
+#ลบกรรมการ
+@app.route('/delete/<int:id>')
+def delete_boardd(id):
+    conn = None
+    cursor = None
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        pj_id = '2'
+        cursor.execute("DELETE FROM board WHERE bo_id=%s", (id))
+        conn.commit()
+        return redirect('/project/'+pj_id+'/addboardd')
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close() 
+        conn.close()
+
 #หน้ากิจกรรม
 @app.route('/project/<int:id>/draftEvent', methods=[ 'GET'])
 def draftevent(id):
