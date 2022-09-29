@@ -8,6 +8,7 @@ from wtforms import FileField, SubmitField
 from werkzeug.utils import secure_filename
 import os
 from wtforms.validators import InputRequired
+from datetime import date
 
 ALLOWED_EXTENSIONS = {'doc', 'pdf'}
 
@@ -73,7 +74,7 @@ def myproject():
         row = cursor.fetchall()
         cursor.execute("SELECT financial_amount FROM nsm_project.process")
         rows = cursor.fetchall()
-        return render_template('home.html', row=row , rows=rows)
+        return render_template('myproject.html', row=row , rows=rows)
     except Exception as e:
         print(e)
     finally:
@@ -125,17 +126,19 @@ def draft(id):
         rows = cursor.fetchall()
         cursor.execute("SELECT *,DATE_FORMAT(ev_date, %s) as evdate FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 1 WHERE nsm_project.projects.pj_id = %s order by nsm_project.events.ev_id desc",(format,id))
         ev = cursor.fetchall()
+        cursor.execute("SELECT nsm_project.process.startproject_date,ADDDATE(nsm_project.process.startproject_date, INTERVAL 30 DAY) AS endproject_date,DATEDIFF(ADDDATE(nsm_project.process.startproject_date, INTERVAL 30 DAY),date(now())) AS diff FROM nsm_project.process WHERE nsm_project.process.pj_id = %s ", id)
+        diff = cursor.fetchall()
         cursor.execute("SELECT *,CASE WHEN nsm_project.manager.user_id = nsm_project.users.user_id THEN 'manager' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 1 OR nsm_project.board.role_id = 2 THEN 'board' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 3 THEN 'assistant' END AS role FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id or nsm_project.manager.user_id = nsm_project.users.user_id Where nsm_project.projects.pj_id = %s and nsm_project.users.user_id = %s group by nsm_project.users.user_id",(id ,user))
         role = cursor.fetchone()
         if (manager ==  role['role']) :
-                return render_template('draft.html', row=row , rows=rows ,id=id ,ev=ev)
+                return render_template('draft.html', row=row , rows=rows ,id=id ,ev=ev,diff=diff)
         if(phase == role['bo_phase'] ):
             if (assistant == role['role']) :
-                return render_template('draft.html', row=row , rows=rows ,id=id ,ev=ev)
+                return render_template('draft.html', row=row , rows=rows ,id=id ,ev=ev,diff=diff)
             elif (board ==  role['role']) :
-                return render_template('draftB.html', row=row , rows=rows ,id=id ,ev=ev)
+                return render_template('draftB.html', row=row , rows=rows ,id=id ,ev=ev,diff=diff)
         else:
-            return render_template('inept.html', row=row , rows=rows ,id=id ,ev=ev)
+            return render_template('inept.html', row=row , rows=rows ,id=id )
     except Exception as e:
         print(e)
     finally:
@@ -623,7 +626,7 @@ def addNewProject():
 def runp(id):
     conn = None
     cursor = None
-    x = id+1
+    x = id
     user = session['user_id']
     try:
         sql = "INSERT INTO manager (user_id, pj_id) VALUES(%s, %s)"
@@ -691,14 +694,76 @@ def test2():
         conn = mysql.connect()
         cursor = conn.cursor()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT * FROM nsm_project.process")
-        rows = cursor.fetchall()
-        return render_template('test2.html', rows=rows) 
+        cursor.execute("SELECT DATEDIFF(nsm_project.process.startproject_date,date(now())) AS date FROM nsm_project.process")
+        diff = cursor.fetchall()
+        cursor.execute("SELECT nsm_project.process.startproject_date,ADDDATE(nsm_project.process.startproject_date, INTERVAL 30 DAY) AS endproject_date FROM nsm_project.process")
+        dates = cursor.fetchall()
+        return render_template('test2.html',diff=diff,dates=dates ) 
     except Exception as e:
         print(e)
     finally: 
         cursor.close()
         conn.close()
+
+@app.route('/t3')
+def test3():
+    name = 'ff'
+    conn = None
+    cursor = None
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        cursor.execute("SELECT * FROM nsm_project.process")
+        rows = cursor.fetchall()
+        return render_template('test3.html', rows=rows ,name=name ) 
+    except Exception as e:
+        print(e)
+    finally: 
+        cursor.close()
+        conn.close()
+
+@app.route('/project/<int:id>/editproject',methods = ['GET'])
+def editproject(id):
+    conn = None
+    cursor = None
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    cursor.execute("SELECT * FROM nsm_project.projects  WHERE nsm_project.projects.pj_id = %s ", (id))
+    row = cursor.fetchall()
+    return render_template('editproject.html', id=id,row=row)
+#html ชื่อ editproject
+@app.route('/editproject', methods=[ 'POST'])
+def editproject2():
+    conn = None
+    cursor = None
+    try:
+        refNumber = request.form['refNumber']
+        name = request.form['name']
+        amount = request.form['amount']
+        detail = request.form['detail']
+        pj_id = request.form['pjid']
+# validate the received values
+        if refNumber and name and amount and detail and pj_id and request.method == 'POST':
+# save edits
+            sql = "UPDATE projects SET pj_refNumber=%s,  pj_name=%s,  pj_amount=%s,  pj_detail=%s WHERE pj_id=%s"
+            data = (refNumber, name, amount, detail, pj_id)
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute(sql, data)
+            conn.commit()
+            return redirect ('/project/'+pj_id+'')
+        else:
+            return 'ไม่สามารถแก้ไขโปรเจคได้'
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close()
+#check
+@app.route('/check')
+def check():
+    return render_template('check.html')
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -81,6 +81,16 @@
             </center>
           </div>
           <div class="card">
+            {% for result in diff %}
+            <lable>เริ่มการร่างโครงการ และราคากลาง</lable>
+            <lable>วันที่ {{result['startproject_date']}}</lable>
+            <lable>สิ้นสุดการร่างโครงการ และราคากลาง</lable>
+            <lable>วันที่ {{result['endproject_date']}}</lable>
+            <lable>คงเหลือ {{result['diff']}} วัน</lable>
+            <div align="Right"><a href ="/" >อัพเดทสถานะ</a></div>
+            {% endfor %}
+          </div>
+          <div class="card">
             <h3>Event</h3>
             <p>{{ev[0]['ev_name']}}</p>
             <p>{{ev[0]['evdate']}}</p>

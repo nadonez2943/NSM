@@ -1,47 +1,7 @@
 <doctype html>
 	
 	{% block body %}
-	<h1>Contagem regressiva</h1>
-	<form name="form_main">
-		<label for="numero">Date:</label> 
-		<input name='date_end' type="date" onblur="resetCountdown()" value="{{rows[1]['startproject_date']}}"/>
-		<br>
-	</form>
-	<div class="container">
-		<h1>Contagem regressiva até a data selecionada:</h1>
-		<ul>
-			<li><span id="days"></span>days</li>
-			<li><span id="hours"></span>Hours</li>
-			<li><span id="minutes"></span>Minutes</li>
-			<li><span id="seconds"></span>Seconds</li>
-		</ul>
-	</div>
-	
+	{% for result in rows %}
+	  <h1>คงเหลือ {{result['date']}} วัน</h1>
+	{% endfor %}
 	{% endblock %}
-
-	<script>
-		const second = 1000;
-		const minute = second * 60;
-		const hour = minute * 60;
-		const day = hour * 24;
-
-		let count_down = new Date('03/03/2025 00:00:00').getTime();
-		let x = setInterval(() => countDown(), second);
-
-		function countDown() {
-		let now = new Date(Date.now()).getTime();
-		let diff = count_down - now;
-
-		document.getElementById('days').innerText = Math.floor(diff / day);
-		document.getElementById('hours').innerText = Math.floor(diff % day / hour);
-		document.getElementById('minutes').innerText = Math.floor(diff % hour / minute);
-		document.getElementById('seconds').innerText = Math.floor(diff % minute / second);
-		}
-
-		function resetCountdown() {
-		clearInterval(x);
-		let date_end = document.form_main.date_end.value;
-		count_down = new Date(`${date_end} 00:00:00`).getTime();
-		x = setInterval(() => countDown(), second);
-		}
-	</script>
