@@ -81,7 +81,10 @@
             <br>
             <label for="file">{{row[0]['stdraft_name']}}</label>
             </center>
-            <div align="Right"><a href ="/" >อัพเดทสถานะ</a></div>
+            <form action="/project/{{row[0]['pj_id']}}/draft" method="post">
+            <input name="std" value="{{row[0]['stdraft_id']}}" type="hidden">
+            <div align="Right"><input type="submit" value="อัพเดทสถานะ" ></div>
+          </form>
           </div>
           <div class="card">
             {% for result in diff %}

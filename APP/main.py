@@ -620,6 +620,33 @@ def editevent2():
            cursor.close() 
            conn.close()
 
+#อัพเดทสถานะ
+@app.route('/project/<int:id>/draft', methods=['POST'])
+def update_std(id):
+    conn = None
+    cursor = None
+    try:
+        pj_id = id
+        std = request.form['std']
+        stdraft_id = std+1
+# validate the received values
+        if std and request.method == 'POST':
+# save edits
+            sql = "INSERT INTO process(stdraft_id) VALUES(%s)"
+            data = (stdraft_id)
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute(sql, data)
+            conn.commit()
+            return redirect('/project/'+pj_id+'/draft')
+        else:
+            return 'ไม่สามารถเพิ่มกิจกรรมได้'
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close()
+
 #หน้าทดสอบการนับถอยหลัง
 @app.route('/countdown')
 def countdown():
