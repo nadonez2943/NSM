@@ -717,27 +717,45 @@ def allowed_file(filename):
 
 
 #อัพเอกสาร
-@app.route('/project/<int:id>/doc', methods=['GET',"POST"])
-def doc(id):
+@app.route('/project/<int:id>/doc/<int:phase>', methods=['GET',"POST"])
+def doc(id,phase):
     form = UploadFileForm()
     conn = None
     cursor = None
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
-    cursor.execute("SELECT * FROM nsm_project.path")
+    cursor.execute("SELECT * FROM nsm_project.path WHERE nsm_project.path.pj_id=%s AND nsm_project.path.path_phase=%s",(id,phase))
     row = cursor.fetchall()
     if form.validate_on_submit():
-       
+        path_name = request.form['path_name']
+        path_detail = request.form['path_detail']
         file = form.file.data # First grab the file
         file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'],secure_filename(file.filename))) # Then save the file
-        sql = "INSERT INTO path(path_path) VALUES(%s)"
-        data = secure_filename(file.filename)
+        sql = "INSERT INTO path(pj_id,path_phase,path_path,path_name,path_detail) VALUES(%s,%s,%s,%s,%s)"
+        data = (id,phase,file.filename,path_name,path_detail)
         conn = mysql.connect()
         cursor = conn.cursor()
         cursor.execute(sql, data)
         conn.commit()
-        return "File has been uploaded."
-    return render_template('doc.html', row=row,form=form,id=id)
+        return redirect(str(phase))
+    return render_template('doc.html', row=row,form=form,id=id,phase=phase)
+
+#ลบเอกสาร
+@app.route('/project/<int:id>/doc/<int:phase>/<int:path>')
+def delete_docd(id,phase,path):
+    conn = None
+    cursor = None
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM path WHERE path_id=%s", (path))
+        conn.commit()
+        return redirect('/project/'+id+'/doc/'+phase+'')
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close() 
+        conn.close()
 
 #หน้างวด
 @app.route('/check')
@@ -824,10 +842,7 @@ def editproject2():
     finally:
            cursor.close() 
            conn.close()
-#check
-@app.route('/check')
-def check():
-    return render_template('check.html')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
