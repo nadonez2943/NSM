@@ -9,11 +9,9 @@
 				 if(x.style.display=="none") {
 					 x.style.display = "block";}
 				 else { x.style.display = "none";}
-		 }
-		 </script>
+		}
+	</script>
 		 
-		
-	
 		<div class="card">
 			<br>
 			<h1>เอกสารโครงการ</h1>
@@ -27,10 +25,8 @@
 						
 						<br>
 						<div class="row">
-							<p style="display:none">โปรเจคไอดี  </p>
-							<p style="display:none">ระยะ  </p>
-							<p>ชื่อไฟล์ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="" value="" type="text" style="width:500px; " placeholder="ชื่อไฟล์" autocomplete="off" required> </input></p>
-							<p>รายละเอียด&nbsp;&nbsp;<input name="" value="" type="text"style="width:500px;"placeholder="รายละเอียด" autocomplete="off" required></input></p>
+							<p>ชื่อไฟล์ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="path_name" type="text" style="width:500px; " placeholder="ชื่อไฟล์" autocomplete="off" required> </input></p>
+							<p>รายละเอียด&nbsp;&nbsp;<input name="path_detail" type="text" style="width:500px;"placeholder="รายละเอียด" autocomplete="off" required></input></p>
 						</div>
 						<br>
 					<div class="col-75">
@@ -48,14 +44,17 @@
 				<div class="card">
 					<div class="row">
 						<h3>{{result['path_name']}}</h3>
-						<div class="col-75">
+						<div class="col-50">
 							<h6>รายละเอียด :</h6>
 							<h6>{{result['path_detail']}}</h6>
 						</div>
 						<div class="col-25">
 							<a href="..\static\files\{{result['path_path']}}" >view file</a><br>
 							<a href="..\static\files\{{result['path_path']}}" download>download</a>
-						</div>	
+						</div>
+						<div class="col-25">
+							<a class="btn" href="/project/{{result['pj_id']}}/doc/{{result['path_phase']}}/{{result['path_id']}}" role="button">ลบเอกสาร</a>
+						</div>
 					</div>
 				</div>
 			</div>
