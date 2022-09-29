@@ -8,7 +8,6 @@ from wtforms import FileField, SubmitField
 from werkzeug.utils import secure_filename
 import os
 from wtforms.validators import InputRequired
-from datetime import date
 
 ALLOWED_EXTENSIONS = {'doc', 'pdf'}
 
@@ -128,7 +127,7 @@ def draft(id):
         rows = cursor.fetchall()
         cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 1 WHERE nsm_project.projects.pj_id = %s order by nsm_project.events.ev_id desc",(format,id))
         ev = cursor.fetchall()
-        cursor.execute("SELECT nsm_project.process.startproject_date,ADDDATE(nsm_project.process.startproject_date, INTERVAL 30 DAY) AS endproject_date,DATEDIFF(ADDDATE(nsm_project.process.startproject_date, INTERVAL 30 DAY),date(now())) AS diff FROM nsm_project.process WHERE nsm_project.process.pj_id = %s ", id)
+        cursor.execute("SELECT nsm_project.process.start_draft,DATE_FORMAT(DATE_ADD(start_draft , INTERVAL 543 YEAR ), %s) as startdate,DATE_FORMAT(DATE_ADD(ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY), INTERVAL 543 YEAR ), %s) AS endproject_date,DATEDIFF(ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY),date(now())) AS diff FROM nsm_project.process WHERE nsm_project.process.pj_id = %s", (format,format,id))
         diff = cursor.fetchall()
         cursor.execute("SELECT *,CASE WHEN nsm_project.manager.user_id = nsm_project.users.user_id THEN 'manager' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 1 OR nsm_project.board.role_id = 2 THEN 'board' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 3 THEN 'assistant' END AS role FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id or nsm_project.manager.user_id = nsm_project.users.user_id Where nsm_project.projects.pj_id = %s and nsm_project.users.user_id = %s group by nsm_project.users.user_id",(id ,user))
         role = cursor.fetchone()
@@ -257,7 +256,7 @@ def addboardd2():
             cursor = conn.cursor()
             cursor.execute(sql, data)
             conn.commit()
-            return redirect('/project/'+pj_id+'/draft')
+            return redirect('/project/'+pj_id+'/addboardd')
         else:
             return 'ไม่สามารถเพิ่มได้'
     except Exception as e:
@@ -347,17 +346,16 @@ def addboarde2():
            conn.close()
 
 #ลบกรรมการ
-@app.route('/delete_boardd/<int:id>')
-def delete_boardd(id):
+@app.route('/project/<int:id>/addboardd/<int:idd>')
+def delete_boardd(id,idd):
     conn = None
     cursor = None
     try:
         conn = mysql.connect()
         cursor = conn.cursor()
-        pj_id = '2'
-        cursor.execute("DELETE FROM board WHERE bo_id=%s", (id))
+        cursor.execute("DELETE FROM board WHERE bo_id=%s", (idd))
         conn.commit()
-        return redirect('/project/'+pj_id+'/addboardd')
+        return redirect('/project/'+id+'/addboardd')
     except Exception as e:
         print(e)
     finally:
@@ -738,11 +736,6 @@ def doc(id):
         conn.commit()
         return "File has been uploaded."
     return render_template('doc.html', row=row,form=form,id=id)
-
-#หน้างวด
-@app.route('/check')
-def check():
-    return render_template('test.html')
 
 #ทดสอบ
 
