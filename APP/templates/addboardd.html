@@ -27,10 +27,21 @@
         </p>
         <input name="bophase" value="1" type="hidden">
         <input name="pjid" value="{{row[0]['pj_id']}}" type="hidden">
-        <br><br>
+        <br>
         <input type="submit" value="เพิ่มคณะกรรมการ">
         </center>
     </form>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+            {% for message in messages %}
+            <div class="alert alert-info">
+                <strong>{{ message }}</strong>
+            </div>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
     <br>
     <table id="customers">
         <tr>
@@ -42,7 +53,7 @@
         <tr>
         <td>{{result['user_fullname']}}</td>
         <td>{{result['role_name']}}</td>
-        <td><a type="submit" class="btn btn-danger" href="/project/{{result['pj_id']}}/addboardd/{{result['bo_id']}}">ลบ</a></td>
+        <td><a type="submit" class="btn btn-danger" href="/project/{{result['pj_id']}}/deleteboardd/{{result['bo_id']}}">ลบ</a></td>
         </tr>
         {% endfor %} 
     </table>

@@ -1,5 +1,7 @@
 from pickle import TRUE
-from flask import Flask, render_template, request, redirect, url_for, session
+from ssl import AlertDescription
+from click import confirm
+from flask import Flask, render_template, request, redirect, url_for, session,flash
 from db_config import mysql
 from app import app
 import pymysql
@@ -107,6 +109,45 @@ def project(id):
         conn.close()
     
 #หน้าร่างโครงการ
+# @app.route('/project/<int:id>/draft', methods=[ 'GET'])
+# def draft(id):
+#     conn = None
+#     cursor = None
+#     phase = '1'
+#     user = session['user_id']
+#     manager = 'manager'
+#     assistant = 'assistant'
+#     board = 'board'
+#     try:
+#         conn = mysql.connect()
+#         cursor = conn.cursor(pymysql.cursors.DictCursor)
+#         format = '%e %b %Y'
+#         cursor.execute("SET lc_time_names = 'th_TH'")
+#         cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(startproject_date , INTERVAL 543 YEAR ), %s) as startdate FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id AND nsm_project.board.bo_phase = 1 LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.board.role_id", (format,id))
+#         row = cursor.fetchall()
+#         cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s ", id)
+#         rows = cursor.fetchall()
+#         cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 1 WHERE nsm_project.projects.pj_id = %s order by nsm_project.events.ev_id desc",(format,id))
+#         ev = cursor.fetchall()
+#         cursor.execute("SELECT nsm_project.process.startproject_date,ADDDATE(nsm_project.process.startproject_date, INTERVAL 30 DAY) AS endproject_date,DATEDIFF(ADDDATE(nsm_project.process.startproject_date, INTERVAL 30 DAY),date(now())) AS diff FROM nsm_project.process WHERE nsm_project.process.pj_id = %s ", id)
+#         diff = cursor.fetchall()
+#         cursor.execute("SELECT *,CASE WHEN nsm_project.manager.user_id = nsm_project.users.user_id THEN 'manager' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 1 OR nsm_project.board.role_id = 2 THEN 'board' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 3 THEN 'assistant' END AS role FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id or nsm_project.manager.user_id = nsm_project.users.user_id Where nsm_project.projects.pj_id = %s and nsm_project.users.user_id = %s group by nsm_project.users.user_id",(id ,user))
+#         role = cursor.fetchone()
+#         if (manager ==  role['role']) :
+#                 return render_template('draft.html', row=row , rows=rows ,id=id ,ev=ev,diff=diff)
+#         if(phase == role['bo_phase'] ):
+#             if (assistant == role['role']) :
+#                 return render_template('draft.html', row=row , rows=rows ,id=id ,ev=ev,diff=diff)
+#             elif (board ==  role['role']) :
+#                 return render_template('draftB.html', row=row , rows=rows ,id=id ,ev=ev,diff=diff)
+#         else:
+#             return render_template('inept.html', row=row , rows=rows ,id=id )
+#     except Exception as e:
+#         print(e)
+#     finally:
+#         cursor.close()
+#         conn.close()
+
 @app.route('/project/<int:id>/draft', methods=[ 'GET'])
 def draft(id):
     conn = None
@@ -145,6 +186,7 @@ def draft(id):
     finally:
         cursor.close()
         conn.close()
+
 
 #หน้าพิจารณาโครงการ
 @app.route('/project/<int:id>/consider', methods=[ 'GET'])
@@ -296,7 +338,7 @@ def addboardc2():
             cursor = conn.cursor()
             cursor.execute(sql, data)
             conn.commit()
-            return redirect('/project/'+pj_id+'/consider')
+            return redirect('/project/'+pj_id+'/addboardc')
         else:
             return 'ไม่สามารถเพิ่มได้'
     except Exception as e:
@@ -336,7 +378,7 @@ def addboarde2():
             cursor = conn.cursor()
             cursor.execute(sql, data)
             conn.commit()
-            return redirect('/project/'+pj_id+'/examine')
+            return redirect('/project/'+pj_id+'/addboarde')
         else:
             return 'ไม่สามารถเพิ่มได้'
     except Exception as e:
@@ -346,7 +388,7 @@ def addboarde2():
            conn.close()
 
 #ลบกรรมการ
-@app.route('/project/<int:id>/addboardd/<int:idd>')
+@app.route('/project/<int:id>/deleteboardd/<int:idd>')
 def delete_boardd(id,idd):
     conn = None
     cursor = None
@@ -355,41 +397,40 @@ def delete_boardd(id,idd):
         cursor = conn.cursor()
         cursor.execute("DELETE FROM board WHERE bo_id=%s", (idd))
         conn.commit()
-        return redirect('/project/'+id+'/addboardd')
+        flash('ลบรายชื่อสำเร็จ')
+        return redirect('/project/'+str(id)+'/addboardd')
     except Exception as e:
         print(e)
     finally:
         cursor.close() 
         conn.close()
 
-@app.route('/delete_boardc/<int:id>')
-def delete_boardc(id):
+@app.route('/project/<int:id>/deleteboardc/<int:idd>')
+def delete_boardc(id,idd):
     conn = None
     cursor = None
     try:
         conn = mysql.connect()
         cursor = conn.cursor()
-        pj_id = '2'
-        cursor.execute("DELETE FROM board WHERE bo_id=%s", (id))
+        cursor.execute("DELETE FROM board WHERE bo_id=%s", (idd))
         conn.commit()
-        return redirect('/project/'+pj_id+'/addboardc')
+        return redirect('/project/'+str(id)+'/addboardc')
     except Exception as e:
         print(e)
     finally:
         cursor.close() 
         conn.close()
 
-@app.route('/delete_boarde/<int:id>')
-def delete_boarde(id):
+@app.route('/project/<int:id>/deleteboarde/<int:idd>')
+def delete_boarde(id,idd):
     conn = None
     cursor = None
     try:
         conn = mysql.connect()
         cursor = conn.cursor()
-        pj_id = '2'
-        cursor.execute("DELETE FROM board WHERE bo_id=%s", (id))
+        cursor.execute("DELETE FROM board WHERE bo_id=%s", (idd))
         conn.commit()
-        return redirect('/project/'+pj_id+'/addboarde')
+        return redirect('/project/'+str(id)+'/addboarde')
     except Exception as e:
         print(e)
     finally:
@@ -775,7 +816,7 @@ def delete_docd(id,phase,path):
         cursor = conn.cursor()
         cursor.execute("DELETE FROM path WHERE path_id=%s", (path))
         conn.commit()
-        return redirect('/project/'+id+'/doc/'+phase+'')
+        return redirect('/project/'+str(id)+'/doc/'+str(phase)+'')
     except Exception as e:
         print(e)
     finally:
