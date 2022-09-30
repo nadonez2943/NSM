@@ -13,6 +13,7 @@
         <th>รายละเอียด</th>
         <th>วันที่</th>
         <th>แก้ไข</th>
+        <th>ลบ</th>
         </tr>
         {% for result in row %}
         <tr>
@@ -20,7 +21,8 @@
         <td>{{result['ev_name']}}</td>
         <td>{{result['ev_detail']}}</td>
         <td>{{result['evdate']}}</td>
-        <td><a type="button" class="btn btn-danger" href="/project/{{result['pj_id']}}/editevent/{{result['ev_id']}}" >แก้ไข</a></td>
+        <td><a href="/project/{{result['pj_id']}}/editevent/{{result['ev_id']}}" >แก้ไข</a></td>
+        <td><a style="color:red" href="/project/{{result['pj_id']}}/editevent/{{result['ev_id']}}" >ลบ</a></td>
         </tr>
         {% endfor %}
     </table>

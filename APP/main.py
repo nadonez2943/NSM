@@ -298,6 +298,7 @@ def addboardd2():
             cursor = conn.cursor()
             cursor.execute(sql, data)
             conn.commit()
+            flash('เพิ่มรายชื่อสำเร็จ')
             return redirect('/project/'+pj_id+'/addboardd')
         else:
             return 'ไม่สามารถเพิ่มได้'
@@ -338,6 +339,7 @@ def addboardc2():
             cursor = conn.cursor()
             cursor.execute(sql, data)
             conn.commit()
+            flash('เพิ่มรายชื่อสำเร็จ')
             return redirect('/project/'+pj_id+'/addboardc')
         else:
             return 'ไม่สามารถเพิ่มได้'
@@ -378,6 +380,7 @@ def addboarde2():
             cursor = conn.cursor()
             cursor.execute(sql, data)
             conn.commit()
+            flash('เพิ่มรายชื่อสำเร็จ')
             return redirect('/project/'+pj_id+'/addboarde')
         else:
             return 'ไม่สามารถเพิ่มได้'
@@ -414,6 +417,7 @@ def delete_boardc(id,idd):
         cursor = conn.cursor()
         cursor.execute("DELETE FROM board WHERE bo_id=%s", (idd))
         conn.commit()
+        flash('ลบรายชื่อสำเร็จ')
         return redirect('/project/'+str(id)+'/addboardc')
     except Exception as e:
         print(e)
@@ -430,6 +434,7 @@ def delete_boarde(id,idd):
         cursor = conn.cursor()
         cursor.execute("DELETE FROM board WHERE bo_id=%s", (idd))
         conn.commit()
+        flash('ลบรายชื่อสำเร็จ')
         return redirect('/project/'+str(id)+'/addboarde')
     except Exception as e:
         print(e)
@@ -829,24 +834,17 @@ def delete_docd(id,phase,path):
 def test():
     return render_template('test.html')
 
-@app.route('/t2')
-def test2():
+@app.route('/project/<int:id>/addboard/<int:phase>')
+def test2(id,phase):
     conn = None
     cursor = None
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT DATEDIFF(nsm_project.process.startproject_date,date(now())) AS date FROM nsm_project.process")
-        diff = cursor.fetchall()
-        cursor.execute("SELECT nsm_project.process.startproject_date,ADDDATE(nsm_project.process.startproject_date, INTERVAL 30 DAY) AS endproject_date FROM nsm_project.process")
-        dates = cursor.fetchall()
-        return render_template('test2.html',diff=diff,dates=dates ) 
-    except Exception as e:
-        print(e)
-    finally: 
-        cursor.close()
-        conn.close()
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id AND nsm_project.board.bo_phase = 1 LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s AND nsm_project.board.bo_phase =%s order by nsm_project.tbl_role.role_id", id , phase)
+    row = cursor.fetchall()
+    cursor.execute("SELECT * FROM nsm_project.users ")
+    rows = cursor.fetchall()
+    return render_template('test2.html', id=id,row=row,rows=rows)
 
 @app.route('/t3')
 def test3():
