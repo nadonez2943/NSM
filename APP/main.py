@@ -674,17 +674,17 @@ def update_std(id):
     try:
         pj_id = id
         std = request.form['std']
-        stdraft_id = std+1
+        stdraft_id = int(std)+1
 # validate the received values
         if std and request.method == 'POST':
 # save edits
-            sql = "INSERT INTO process(stdraft_id) VALUES(%s)"
-            data = (stdraft_id)
+            sql = "UPDATE process SET stdraft_id=%s WHERE pj_id=%s"
+            data = (stdraft_id, id)
             conn = mysql.connect()
             cursor = conn.cursor()
             cursor.execute(sql, data)
             conn.commit()
-            return redirect('/project/'+pj_id+'/draft')
+            return redirect('/project/'+str(pj_id)+'/draft')
         else:
             return 'ไม่สามารถเพิ่มกิจกรรมได้'
     except Exception as e:
