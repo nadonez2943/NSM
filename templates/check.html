@@ -1,116 +1,62 @@
 <doctype html>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  {% extends 'layout.html' %}  
+    {% extends 'layout.html' %}
     {% block body %}
-              
-          <p>
-            <br><h1>ตรวจรับโครงการ</h1>
-          </p>
-        
-          <script type="text/javascript">
-           function showDiv(Div) {
-                var x = document.getElementById(Div);
-                    if(x.style.display=="none") {
-                        x.style.display = "block";}
-                    else { x.style.display = "none";}
-            }
-            </script>
-            
-             <p><button class="btn" onclick="showDiv('toggle')">เพิ่มการตรวจ</button></p>
-            
-            <div id="toggle" style="display:none">
-              <div class="jumbotron">
-                    <center><h1>การตรวจงวดงาน</h1></center>
-                    <form action="/addchecks" method="post">
-                    <br>
-                    <div class="row">
-                        <div class="col-25">
-                          <label>งวดที่</label>
-                        </div>
-                        <div class="col-75">
-                            <label><input name="ins_no" value="" type="text" style="width:300px; " placeholder="งวดที่" autocomplete="off" required> </p></label>
-                        </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-25">
-                        <label>วันที่ตรวจรับ</label>
-                      </div>
-                      <div class="col-75">
-                        <label><input name="ins_date" value="" type="date"></input></label>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-25">
-                        <label>เลขที่สัญญา</label>
-                      </div>
-                      <div class="col-75">
-                        <label><input name="" value="" type="text" style="width:500px; " placeholder="เลขที่สัญญา" autocomplete="off" required> </p></label>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-25">
-                        <label>รายละเอียดการตรวจรับ</label>
-                      </div>
-                      <div class="col-75">
-                        <label><input name="" value="" type="text" style="width:700px; " placeholder="รายละเอียดการตรวจรับ" autocomplete="off" required> </p></label>
-                      </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-25">
-                          <label>วันที่เบิกจ่าย</label>
-                        </div>
-                        <div class="col-75">
-                        <label><input name="" value="" type="date"></input></label>
-                        </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-25">
-                        <label>รายละเอียดการเบิกจ่าย</label>
-                      </div>
-                      <div class="col-75">
-                        <label><input name="" value="" type="text" style="width:700px; " placeholder="รายละเอียดการเบิกจ่าย" autocomplete="off" required> </p></label>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-25">
-                        <label>ยอดที่เบิกจ่าย</label>
-                      </div>
-                      <div class="col-75">
-                        <label><input name="" value="" type="text" style="width:700px; " placeholder="ยอดที่เบิกจ่าย" autocomplete="off" required> </p></label>
-                      </div>
-                    </div>
-                 <center><input type="submit" class="btn" value="เพิ่ม"></center>
-                  </div>
-               
-                </div>
-            </form>
-            </div>
-          
-          <div class="jumbotron">
-            <table class="table" id="">
-                <tr>
-                  <th>งวดที่</th>
-                  <th>วันที่ตรวจรับ</th>
-                  <th>เลขที่สัญญา</th>
-                  <th>รายละเอียดการตรวจรับ</th>
-                  <th>วันที่เบิกจ่าย</th>
-                  <th>รายละเอียดการเบิกจ่าย</th>
-                  <th>ยอดที่เบิกจ่าย</th>
-                 
-                </tr>
-                {% for result in row %}
-                <tr>
-                  <td></td>
-                  <td></td>        
-                  <td> </td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>        
-                </tr>
-                {% endfor %}
-            </table>
-          </div>
-          
-{% endblock %}
-</html>
+      <br>
+      <p align="right">
+        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for project names.." title="Type in a name">
+      </p>
+      <div class="jumbotron">
+        <table class="table" id="customers">
+            <tr>
+              <th>ลำดับ</th>
+              <th>ชื่อโครงการ</th>
+              <th>เลขสารบัญ</th>
+              <th>รายละเอียด</th>
+              <th>ผู้รับผิดชอบ</th>
+              <th>กิจกรรม</th>
+              <th>ความคืบหน้า</th>
+            </tr>
+            {% for result in row %}
+            <tr>
+              <td>{{result['row_num']}}</td>
+              <td><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
+              <td> {{result['pj_refNumber']}}</td>
+              <td>{{result['pj_detail']}}</td>
+              <td>{{result['user_fullname']}}</td>
+              <td>{{result['ev_name']}}</td>
+              <td>{{result['x']}} %</td>        
+            </tr>
+            {% endfor %}
+        </table>
+      </div>
+      <center>
+      <a class="btn btn-primary btn-lg" href="/addNewProject" role="button">เพิ่มโครงการใหม่</a>
+      <a class="btn btn-primary btn-lg" href="dd" role="button">addeventc</a>
+      <a class="btn btn-primary btn-lg" href="d" role="button"> addeventd</a>
+      <a class="btn btn-primary btn-lg" href="addevente" role="button"> addevente</a>
+      <a class="btn btn-primary btn-lg" href="event" role="button"> กรรมการ</a>
+      <a class="btn btn-primary btn-lg" href="draft" role="button"> draft</a>
+      <a class="btn btn-primary btn-lg" href="addexamine" role="button"> ex</a>
+      </center>
+      <script>
+        function myFunction() {
+          var input, filter, table, tr, td, i, txtValue;
+          input = document.getElementById("myInput");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("customers");
+          tr = table.getElementsByTagName("tr");
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+              txtValue = td.textContent || td.innerText;
+              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
+              }
+            }       
+          }
+        }
+        </script>
+    {% endblock %}
