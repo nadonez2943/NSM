@@ -1,0 +1,68 @@
+<doctype html>
+    {% extends 'layout.html' %}
+     {% block body %}
+    <br><br>
+    <p align="left"><input class="btn btn-primary btn-lg" type="button" onclick="history.back()" value="ย้อนกลับ"></p>
+        <form action="/addexamine" method="post">
+            <div class="card">
+                <br><center><h3 class="display-4">เพิ่มข้อมูล</h3></center><br> 
+                <div class="row">
+                  <div class="col-25">
+                    <label>วันที่ประกาศผลบริษัทผู้รับเหมา</label>
+                  </div>
+                  <div class="col-75">
+                    <p><input name="conttdate" value="" type="date" placeholder="วันที่ประกาศผลบริษัทผู้รับเหมา" required> </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-25">
+                    <label>บริษัทผู้รับเหมา</label>
+                  </div>
+                  <div class="col-75">
+                    <p><input name="contt_name" value="" type="text" style="width:750px;" placeholder="ชื่อบริษัทผู้รับเหมา" required> </p>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                      <label>ที่อยู่บริษัทผู้รับเหมา</label>
+                    </div>
+                    <div class="col-75">
+                        <p><input name="contt_address" value="" type="text" style="width:750px; height:90;" placeholder="ที่อยู่บริษัทผู้รับเหมา" autocomplete="off" required></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                      <label>เบอร์โทรศัพท์</label>
+                    </div>
+                    <div class="col-75">
+                      <p><input name="contt_tel" value="" type="text" style="width:750px;" placeholder="เบอร์โทรศัพท์" required> </p>
+                    </div>
+                  </div>
+                <div class="row">
+                  <div class="col-25">
+                    <label>อีเมล</label>
+                  </div>
+                  <div class="col-75">
+                    <p><input name="contt_email" value="" type="text" style="width:750px;" placeholder="อีเมล" required></p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-25">
+                    <label>วันที่เริ่ม</label>
+                  </div>
+                  <div class="col-75">
+                    <p><input name="conttstart" value="" type="date" placeholder="วันที่เริ่ม" required> </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-25">
+                    <label>วันที่สิ้นสุด</label>
+                  </div>
+                  <div class="col-75">
+                    <p><input name="conttend" value="" type="date" placeholder="วันที่สิ้นสุด" required> </p>
+                  </div>
+                <p align="center"><input type="submit" class="btn" value="เพิ่มข้อมูลบริษัท" onclick="return confirm('ตรวจสอบข้อมูลถูกต้อง? ยืนยันการเพิ่มข้อมูล')"></p>
+              </div>
+            </div>
+        </form>
+ {% endblock %}

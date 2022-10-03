@@ -81,6 +81,25 @@ def myproject():
     finally:
         cursor.close() 
         conn.close()
+
+#โครงการของฉัน
+@app.route('/adminproject')
+def adminproject():
+    conn = None
+    cursor = None
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.projects.pj_id) as row_num ,CAST(((stdraft_percent+stcon_percent+stex_percent)/3) AS DECIMAL(15, 2)) as x FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.mn_id  LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id group by nsm_project.projects.pj_id order by nsm_project.projects.pj_id asc, nsm_project.events.ev_id desc")
+        row = cursor.fetchall()
+        cursor.execute("SELECT financial_amount FROM nsm_project.process")
+        rows = cursor.fetchall()
+        return render_template('adminproject.html', row=row , rows=rows)
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close() 
+        conn.close()
         
  #หน้าโครงการ
 @app.route('/project/<int:id>', methods=[ 'GET'])
@@ -109,44 +128,6 @@ def project(id):
         conn.close()
     
 #หน้าร่างโครงการ
-# @app.route('/project/<int:id>/draft', methods=[ 'GET'])
-# def draft(id):
-#     conn = None
-#     cursor = None
-#     phase = '1'
-#     user = session['user_id']
-#     manager = 'manager'
-#     assistant = 'assistant'
-#     board = 'board'
-#     try:
-#         conn = mysql.connect()
-#         cursor = conn.cursor(pymysql.cursors.DictCursor)
-#         format = '%e %b %Y'
-#         cursor.execute("SET lc_time_names = 'th_TH'")
-#         cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(startproject_date , INTERVAL 543 YEAR ), %s) as startdate FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id AND nsm_project.board.bo_phase = 1 LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.board.role_id", (format,id))
-#         row = cursor.fetchall()
-#         cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s ", id)
-#         rows = cursor.fetchall()
-#         cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 1 WHERE nsm_project.projects.pj_id = %s order by nsm_project.events.ev_id desc",(format,id))
-#         ev = cursor.fetchall()
-#         cursor.execute("SELECT nsm_project.process.startproject_date,ADDDATE(nsm_project.process.startproject_date, INTERVAL 30 DAY) AS endproject_date,DATEDIFF(ADDDATE(nsm_project.process.startproject_date, INTERVAL 30 DAY),date(now())) AS diff FROM nsm_project.process WHERE nsm_project.process.pj_id = %s ", id)
-#         diff = cursor.fetchall()
-#         cursor.execute("SELECT *,CASE WHEN nsm_project.manager.user_id = nsm_project.users.user_id THEN 'manager' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 1 OR nsm_project.board.role_id = 2 THEN 'board' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 3 THEN 'assistant' END AS role FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id or nsm_project.manager.user_id = nsm_project.users.user_id Where nsm_project.projects.pj_id = %s and nsm_project.users.user_id = %s group by nsm_project.users.user_id",(id ,user))
-#         role = cursor.fetchone()
-#         if (manager ==  role['role']) :
-#                 return render_template('draft.html', row=row , rows=rows ,id=id ,ev=ev,diff=diff)
-#         if(phase == role['bo_phase'] ):
-#             if (assistant == role['role']) :
-#                 return render_template('draft.html', row=row , rows=rows ,id=id ,ev=ev,diff=diff)
-#             elif (board ==  role['role']) :
-#                 return render_template('draftB.html', row=row , rows=rows ,id=id ,ev=ev,diff=diff)
-#         else:
-#             return render_template('inept.html', row=row , rows=rows ,id=id )
-#     except Exception as e:
-#         print(e)
-#     finally:
-#         cursor.close()
-#         conn.close()
 
 @app.route('/project/<int:id>/draft', methods=[ 'GET'])
 def draft(id):
@@ -674,17 +655,17 @@ def update_std(id):
     try:
         pj_id = id
         std = request.form['std']
-        stdraft_id = int(std)+1
+        stdraft_id = std+1
 # validate the received values
         if std and request.method == 'POST':
 # save edits
-            sql = "UPDATE process SET stdraft_id=%s WHERE pj_id=%s"
-            data = (stdraft_id, id)
+            sql = "INSERT INTO process(stdraft_id) VALUES(%s)"
+            data = (stdraft_id)
             conn = mysql.connect()
             cursor = conn.cursor()
             cursor.execute(sql, data)
             conn.commit()
-            return redirect('/project/'+str(pj_id)+'/draft')
+            return redirect('/project/'+pj_id+'/draft')
         else:
             return 'ไม่สามารถเพิ่มกิจกรรมได้'
     except Exception as e:
@@ -902,6 +883,109 @@ def editproject2():
            cursor.close() 
            conn.close()
 
+# เรียกหน้า html
+@app.route('/addcontractor/<int:id>',methods=['GET'])
+def addcontractor(id):
+    conn = None
+    cursor = None
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        cursor.execute("SET lc_time_names = 'th_TH'")
+        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(startproject_date , INTERVAL 543 YEAR ), %s) as startdate,DATE_FORMAT(DATE_ADD(contt_date , INTERVAL 543 YEAR ), %s) as conttdate,DATE_FORMAT(DATE_ADD(contt_start , INTERVAL 543 YEAR ), %s) as conttstart,DATE_FORMAT(DATE_ADD(contt_end , INTERVAL 543 YEAR ), %s) as conttend FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id AND nsm_project.board.bo_phase = 2 LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.board.role_id", (format,format,format,format,id))
+        row = cursor.fetchall()
+        return render_template("addcontractor.html",id=id,row=row) 
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close()
+
+
+# เพิ่มรถแท็กเตอร์
+@app.route('/contrac', methods=[ 'POST'])
+def contrac2():
+    conn = None
+    cursor = None
+    try:
+        contt_name = request.form['contt_name']
+        contt_address = request.form['contt_address']
+        contt_tel = request.form['contt_tel']
+        contt_fee = request.form['contt_fee']
+        contt_date = request.form['contt_date']
+        contt_start = request.form['contt_start']
+        contt_end = request.form['contt_end']
+        id = request.form['id']
+        pc = request.form['pc']
+        if  contt_name and contt_address and contt_tel and contt_fee and contt_date and contt_start and contt_end and  request.method == 'POST':
+            sql = "INSERT INTO contractor (contt_name, contt_address, contt_tel, contt_fee, contt_date, contt_start, contt_end ) VALUES(%s, %s, %s, %s, %s, %s, %s)"
+            data = (contt_name,contt_address,contt_tel,contt_fee,contt_date,contt_start,contt_end,)
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute(sql, data)
+            conn.commit()
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute("UPDATE process SET contt_id = %s WHERE pc_id = %s",(pc,id))
+            conn.commit()
+            return redirect('/project/'+id+'/consider')
+        else:
+            return 'Error'
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close()
+
+# เรียกหน้า html editcontrac
+@app.route('/editcontractor/<int:id>/<int:idc>',methods=['GET'])
+def econ(id,idc):
+    conn = None
+    cursor = None
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM contractor WHERE contt_id=%s", idc)
+        row = cursor.fetchall()
+        if row:
+            return render_template('editcontractor.html', row=row,id=id)
+        else:
+            return 'Error loading #{id}'.format(id=id)
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        conn.close()
+
+@app.route('/updatecontractor', methods=['POST'])
+def updatecontractor():
+    conn = None
+    cursor = None
+    try: 
+        contt_name = request.form['contt_name']
+        contt_address = request.form['contt_address']
+        contt_tel = request.form['contt_tel']
+        contt_fee = request.form['contt_fee']
+        contt_date = request.form['contt_date']
+        contt_start = request.form['contt_start']
+        contt_end = request.form['contt_end']
+        id = request.form['id']
+        idc = request.form['idc']
+        if  contt_name and contt_address and contt_tel and contt_fee and contt_date and contt_start and  contt_end and request.method == 'POST':
+            sql = "UPDATE contractor SET contt_name=%s, contt_address=%s, contt_tel=%s, contt_fee=%s, contt_date=%s , contt_start=%s, contt_end=%s WHERE contt_id=%s"
+            data = data = (contt_name,contt_address,contt_tel,contt_fee,contt_date,contt_start,contt_end, idc)
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute(sql, data)
+            conn.commit()
+            return redirect('/project/'+id+'/consider')
+        else:
+            return 'Error while updating user'
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close() 
+        conn.close()
 
 if __name__ == "__main__":
     app.run(debug=True)
