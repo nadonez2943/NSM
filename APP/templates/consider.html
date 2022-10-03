@@ -55,7 +55,7 @@
                     <label>งบประมาณ</label>
                   </div>
                   <div class="col-75">
-                    <label>{{row[0]['pj_amount']}} บาท</label>
+                    <label>{{row[0]['pjamount']}} บาท</label>
                   </div>
                 </div>
                 <div class="row">
@@ -92,7 +92,7 @@
                 <label>ค่ารับเหมา</label>
               </div>
               <div class="col-75">
-                <label>{{row[0]['contt_fee']}} บาท</label>
+                <label>{{row[0]['conttfee']}} บาท</label>
               </div>
             </div><div class="row">
               <div class="col-25">
@@ -114,7 +114,7 @@
                 
               </div>
               <div class="col-75">
-                <label>พันล้านปี</label>
+                <label>{{row[0]['condiff']}} วัน</label>
               </div>
             </div>
             <p align="right"><a href="#" >เพิ่ม</a><a href="#" > แก้ไข</a></p>
@@ -132,7 +132,7 @@
             </center>
             <form action="/project/{{row[0]['pj_id']}}/consider" method="post">
               <input name="stc" value="{{row[0]['stcon_id']}}" type="hidden">
-              <div align="Right"><input type="submit" value="อัพเดทสถานะ" ></div>
+              <div align="Right"><input type="submit" onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="อัพเดทสถานะ" ></div>
             </form>
           </div>
           <div class="card">

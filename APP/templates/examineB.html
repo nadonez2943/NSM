@@ -52,7 +52,7 @@
                   <label>งบประมาณ</label>
                 </div>
                 <div class="col-75">
-                  <label>{{row[0]['pj_amount']}}</label>
+                  <label>{{row[0]['pjamount']}}</label>
                 </div>
               </div>
               <div class="row">
@@ -86,7 +86,7 @@
                 <label>ค่ารับเหมา</label>
               </div>
               <div class="col-75">
-                <label>{{row[0]['contt_fee']}}</label>
+                <label>{{row[0]['conttfee']}}</label>
               </div>
             </div><div class="row">
               <div class="col-25">
@@ -108,7 +108,7 @@
                 
               </div>
               <div class="col-75">
-                <label>พันล้านปี</label>
+                <label>{{row[0]['condiff']}} วัน</label>
               </div>
             </div>
           </div>
@@ -133,17 +133,19 @@
             <h3>การตรวจงาน</h3>
             <p>
               <a>งวดที่ {{dis[0]['ins_no']}}</a><br>
-              <a>ประจำวันที่ {{dis[0]['insdate']}}</a>
+              <a>ประจำวันที่ {{dis[0]['checkdate']}}</a>
               <p>
                 <a>รายละเอียด</a>
-                <a>{{dis[0]['dis_detail']}}</a>
+                <a>{{dis[0]['check_detail']}}</a>
               </p>
             </p>
-            <a align="right" href="check">ทั้งหมด</a>
+            <a align="right" href="/check">ทั้งหมด</a>
           </div>
           <div class="card">
             <a align="center" href="doc/3">เอกสารโครงการ</a>
           </div>
         </div>
       </div>
+      <br>
+      <a class="btn btn-primary btn-lg" type="button" href="/project/{{row[0]['pj_id']}}">ย้อนกลับ</a>
   {% endblock %}
