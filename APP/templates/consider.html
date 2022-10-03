@@ -130,7 +130,10 @@
             <br>
             <label for="file">{{row[0]['stcon_name']}}</label>
             </center>
-            <div align="Right"><a href ="/" >อัพเดทสถานะ</a></div>
+            <form action="/project/{{row[0]['pj_id']}}/consider" method="post">
+              <input name="stc" value="{{row[0]['stcon_id']}}" type="hidden">
+              <div align="Right"><input type="submit" value="อัพเดทสถานะ" ></div>
+            </form>
           </div>
           <div class="card">
             <h3>Event</h3>
@@ -144,6 +147,6 @@
         </div>
       </div>
       <br>
-      <input class="btn btn-primary btn-lg" type="button" onclick="history.back()" value="ย้อนกลับ">
+      <a class="btn btn-primary btn-lg" type="button" href="/project/{{row[0]['pj_id']}}">ย้อนกลับ</a>
       
   {% endblock %}

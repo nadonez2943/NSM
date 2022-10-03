@@ -675,18 +675,67 @@ def update_std(id):
         pj_id = id
         std = request.form['std']
         stdraft_id = int(std)+1
-# validate the received values
-        if std and request.method == 'POST':
-# save edits
-            sql = "UPDATE process SET stdraft_id=%s WHERE pj_id=%s"
-            data = (stdraft_id, id)
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            cursor.execute(sql, data)
-            conn.commit()
-            return redirect('/project/'+str(pj_id)+'/draft')
-        else:
-            return 'ไม่สามารถเพิ่มกิจกรรมได้'
+        if stdraft_id > 4 :
+            stdraft = 4
+        elif stdraft_id < 5 :
+            stdraft = stdraft_id
+        sql = "UPDATE process SET stdraft_id=%s WHERE pj_id=%s"
+        data = (stdraft, id)
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute(sql, data)
+        conn.commit()
+        return redirect('/project/'+str(pj_id)+'/draft')
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close()
+
+@app.route('/project/<int:id>/consider', methods=['POST'])
+def update_stc(id):
+    conn = None
+    cursor = None
+    try:
+        pj_id = id
+        stc = request.form['stc']
+        stcon_id = int(stc)+1
+        if stcon_id > 4 :
+            stcon = 4
+        elif stcon_id < 5 :
+            stcon = stcon_id
+        sql = "UPDATE process SET stcon_id=%s WHERE pj_id=%s"
+        data = (stcon, id)
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute(sql, data)
+        conn.commit()
+        return redirect('/project/'+str(pj_id)+'/consider')
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close()
+
+@app.route('/project/<int:id>/examine', methods=['POST'])
+def update_ste(id):
+    conn = None
+    cursor = None
+    try:
+        pj_id = id
+        ste = request.form['ste']
+        stex_id = int(ste)+1
+        if stex_id > 4 :
+            stex = 4
+        elif stex_id < 5 :
+            stex = stex_id
+        sql = "UPDATE process SET stex_id=%s WHERE pj_id=%s"
+        data = (stex, id)
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute(sql, data)
+        conn.commit()
+        return redirect('/project/'+str(pj_id)+'/examine')
     except Exception as e:
            print(e)
     finally:
