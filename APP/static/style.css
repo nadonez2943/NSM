@@ -36,6 +36,11 @@ h1{
         padding: 20px;
         margin-top: 20px;
       }
+.cardG {
+  background-color: grey;
+  padding: 20px;
+  margin-top: 20px;
+}
 .row:after {
             content: "";
             display: table;
@@ -52,6 +57,13 @@ input[type=text], select,textarea{
                                      padding: 8px ;
                                      border: 1px solid #ccc;
                                      border-radius: 4px;
+                                    
+                                    }
+input[type=date], select,textarea{
+                                    
+                                    padding: 8px ;
+                                    border: 1px solid #ccc;
+                                    border-radius: 4px;
                                     
                                     }
 label {
