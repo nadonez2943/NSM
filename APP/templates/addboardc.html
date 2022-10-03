@@ -30,8 +30,20 @@
         <br><br>
         <input type="submit" value="เพิ่มคณะกรรมการ">
         </center>
-    </form>
+    </form> 
     <br>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+            {% for message in messages %}
+            <div class="alert alert-info">
+                <strong>{{ message }}</strong>
+            </div>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+   
     <table id="customers">
         <tr>
         <th>ชื่อ-นามสกุล</th>
@@ -46,4 +58,6 @@
         </tr>
         {% endfor %}
     </table>
+    <br>
+    <a class="btn btn-primary btn-lg" type="submit" href="/project/{{row[0]['pj_id']}}/consider" value="ย้อนกลับ">ย้อนกลับ</a>
     {% endblock %}

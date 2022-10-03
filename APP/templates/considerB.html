@@ -54,7 +54,7 @@
                     <label>งบประมาณ</label>
                   </div>
                   <div class="col-75">
-                    <label>{{row[0]['pj_amount']}} บาท</label>
+                    <label>{{row[0]['pjamount']}} บาท</label>
                   </div>
                 </div>
                 <div class="row">
@@ -87,10 +87,10 @@
               </div>
             </div><div class="row">
               <div class="col-25">
-                <label>ค่ารับเหมา</label>
+                <label>อีเมล</label>
               </div>
               <div class="col-75">
-                <label>{{row[0]['contt_fee']}} บาท</label>
+                <label>{{row[0]['contt_email']}}</label>
               </div>
             </div><div class="row">
               <div class="col-25">
@@ -112,7 +112,7 @@
                 
               </div>
               <div class="col-75">
-                <label>พันล้านปี</label>
+                <label>{{row[0]['condiff']}} วัน</label>
               </div>
             </div>
           </div>
@@ -127,7 +127,6 @@
             <br>
             <label for="file">{{row[0]['stcon_name']}}</label>
             </center>
-            <div align="Right"><a href ="/" >อัพเดทสถานะ</a></div>
           </div>
           <div class="card">
             <h3>Event</h3>
@@ -142,6 +141,6 @@
       </div>
       <br>
       
-      <input class="btn btn-primary btn-lg" type="button" onclick="history.back()" value="ย้อนกลับ">
+      <a class="btn btn-primary btn-lg" type="button" href="/project/{{row[0]['pj_id']}}">ย้อนกลับ</a>
       
   {% endblock %}

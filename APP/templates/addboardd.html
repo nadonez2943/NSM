@@ -30,7 +30,7 @@
         <br>
         <input type="submit" value="เพิ่มคณะกรรมการ">
         </center>
-    </form>
+    </form><br>
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             <ul class=flashes>
@@ -42,7 +42,7 @@
             </ul>
         {% endif %}
     {% endwith %}
-    <br>
+    
     <table id="customers">
         <tr>
         <th>ชื่อ-นามสกุล</th>

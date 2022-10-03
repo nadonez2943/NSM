@@ -111,7 +111,7 @@ def project(id):
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         format = '%e %b %Y'
         cursor.execute("SET lc_time_names = 'th_TH'")
-        cursor.execute("SELECT *,CAST(((stdraft_percent+stcon_percent+stex_percent)/3) AS DECIMAL(15, 2)) as x,DATE_FORMAT(DATE_ADD(startproject_date , INTERVAL 543 YEAR ), %s) as startdate FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id WHERE nsm_project.projects.pj_id = %s", (format,id))
+        cursor.execute("SELECT *,CAST(((stdraft_percent+stcon_percent+stex_percent)/3) AS DECIMAL(15, 2)) as x,DATE_FORMAT(DATE_ADD(startproject_date , INTERVAL 543 YEAR ), %s) as startdate, FORMAT(pj_amount, 0) as pjamount FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id WHERE nsm_project.projects.pj_id = %s", (format,id))
         row = cursor.fetchall()
         cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s", id)
         rows = cursor.fetchall()
@@ -143,7 +143,7 @@ def draft(id):
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         format = '%e %b %Y'
         cursor.execute("SET lc_time_names = 'th_TH'")
-        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(startproject_date , INTERVAL 543 YEAR ), %s) as startdate FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id AND nsm_project.board.bo_phase = 1 LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.board.role_id", (format,id))
+        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(startproject_date , INTERVAL 543 YEAR ), %s) as startdate, FORMAT(pj_amount, 0) as pjamount FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id AND nsm_project.board.bo_phase = 1 LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.board.role_id", (format,id))
         row = cursor.fetchall()
         cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s ", id)
         rows = cursor.fetchall()
@@ -184,7 +184,7 @@ def consider(id):
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         format = '%e %b %Y'
         cursor.execute("SET lc_time_names = 'th_TH'")
-        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(startproject_date , INTERVAL 543 YEAR ), %s) as startdate,DATE_FORMAT(DATE_ADD(contt_date , INTERVAL 543 YEAR ), %s) as conttdate,DATE_FORMAT(DATE_ADD(contt_start , INTERVAL 543 YEAR ), %s) as conttstart,DATE_FORMAT(DATE_ADD(contt_end , INTERVAL 543 YEAR ), %s) as conttend FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id AND nsm_project.board.bo_phase = 2 LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.board.role_id", (format,format,format,format,id))
+        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(startproject_date , INTERVAL 543 YEAR ), %s) as startdate,DATE_FORMAT(DATE_ADD(contt_date , INTERVAL 543 YEAR ), %s) as conttdate,DATE_FORMAT(DATE_ADD(contt_start , INTERVAL 543 YEAR ), %s) as conttstart,DATE_FORMAT(DATE_ADD(contt_end , INTERVAL 543 YEAR ), %s) as conttend,DATEDIFF(contt_end, date(now())) as condiff, FORMAT(pj_amount, 0) as pjamount FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id AND nsm_project.board.bo_phase = 2 LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.board.role_id", (format,format,format,format,id))
         row = cursor.fetchall()
         cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s ", id)
         rows = cursor.fetchall()
@@ -222,11 +222,11 @@ def examine(id):
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         format = '%e %b %Y'
         cursor.execute("SET lc_time_names = 'th_TH'")
-        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(startproject_date , INTERVAL 543 YEAR ), %s) as startdate,DATE_FORMAT(DATE_ADD(contt_date , INTERVAL 543 YEAR ), %s) as conttdate,DATE_FORMAT(DATE_ADD(contt_start , INTERVAL 543 YEAR ), %s) as conttstart,DATE_FORMAT(DATE_ADD(contt_end , INTERVAL 543 YEAR ), %s) as conttend FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id AND nsm_project.board.bo_phase = 3 LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.tbl_role.role_id", (format,format,format,format,id))
+        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(startproject_date , INTERVAL 543 YEAR ), %s) as startdate,DATE_FORMAT(DATE_ADD(contt_date , INTERVAL 543 YEAR ), %s) as conttdate,DATE_FORMAT(DATE_ADD(contt_start , INTERVAL 543 YEAR ), %s) as conttstart,DATE_FORMAT(DATE_ADD(contt_end , INTERVAL 543 YEAR ), %s) as conttend ,DATEDIFF(contt_end, date(now())) as condiff, FORMAT(pj_amount, 0) as pjamount FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id AND nsm_project.board.bo_phase = 3 LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.tbl_role.role_id", (format,format,format,format,id))
         row = cursor.fetchall()
         cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s ", id)
         rows = cursor.fetchall()
-        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(ins_date , INTERVAL 543 YEAR ), %s) as insdate FROM nsm_project.projects LEFT JOIN nsm_project.disburse ON nsm_project.projects.pj_id = nsm_project.disburse.pj_id WHERE nsm_project.projects.pj_id = %s order by ins_no desc", (format,id))
+        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(check_date , INTERVAL 543 YEAR ), %s) as checkdate FROM nsm_project.projects LEFT JOIN nsm_project.check ON nsm_project.projects.pj_id = nsm_project.check.pj_id WHERE nsm_project.projects.pj_id = %s order by ins_no desc", (format,id))
         dis = cursor.fetchall()
         cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 3 WHERE nsm_project.projects.pj_id = %s order by nsm_project.events.ev_id desc",(format,id))
         ev = cursor.fetchall()
@@ -647,6 +647,30 @@ def editevent2():
            cursor.close() 
            conn.close()
 
+#ลบอีเว้นท์
+@app.route('/project/<int:id>/EVENT/<int:phase>/<int:evid>')
+def delete_event(id,phase,evid):
+    conn = None
+    cursor = None
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        ph = phase
+        cursor.execute("DELETE FROM events WHERE ev_id=%s", (evid))
+        conn.commit()
+        if ph == 1 :
+            return redirect('/project/'+str(id)+'/draftEvent')
+        elif ph == 2 :
+            return redirect('/project/'+str(id)+'/considerEvent')
+        elif ph == 3 :
+            return redirect('/project/'+str(id)+'/examineEvent')
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close() 
+        conn.close()
+
+
 #อัพเดทสถานะ
 @app.route('/project/<int:id>/draft', methods=['POST'])
 def update_std(id):
@@ -655,29 +679,78 @@ def update_std(id):
     try:
         pj_id = id
         std = request.form['std']
-        stdraft_id = std+1
-# validate the received values
-        if std and request.method == 'POST':
-# save edits
-            sql = "INSERT INTO process(stdraft_id) VALUES(%s)"
-            data = (stdraft_id)
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            cursor.execute(sql, data)
-            conn.commit()
-            return redirect('/project/'+pj_id+'/draft')
-        else:
-            return 'ไม่สามารถเพิ่มกิจกรรมได้'
+        stdraft_id = int(std)+1
+        if stdraft_id > 4 :
+            stdraft = 4
+        elif stdraft_id < 5 :
+            stdraft = stdraft_id
+        sql = "UPDATE process SET stdraft_id=%s WHERE pj_id=%s"
+        data = (stdraft, id)
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute(sql, data)
+        conn.commit()
+        return redirect('/project/'+str(pj_id)+'/draft')
     except Exception as e:
            print(e)
     finally:
            cursor.close() 
            conn.close()
 
-#หน้าทดสอบการนับถอยหลัง
-@app.route('/countdown')
-def countdown():
-    return render_template('countdown.html')
+@app.route('/project/<int:id>/consider', methods=['POST'])
+def update_stc(id):
+    conn = None
+    cursor = None
+    try:
+        pj_id = id
+        stc = request.form['stc']
+        stcon_id = int(stc)+1
+        if stcon_id > 4 :
+            stcon = 4
+        elif stcon_id < 5 :
+            stcon = stcon_id
+        sql = "UPDATE process SET stcon_id=%s WHERE pj_id=%s"
+        data = (stcon, id)
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute(sql, data)
+        conn.commit()
+        return redirect('/project/'+str(pj_id)+'/consider')
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close()
+
+@app.route('/project/<int:id>/examine', methods=['POST'])
+def update_ste(id):
+    conn = None
+    cursor = None
+    try:
+        pj_id = id
+        ste = request.form['ste']
+        stex_id = int(ste)+1
+        if stex_id > 4 :
+            stex = 4
+        elif stex_id < 5 :
+            stex = stex_id
+        sql = "UPDATE process SET stex_id=%s WHERE pj_id=%s"
+        data = (stex, id)
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute(sql, data)
+        conn.commit()
+        return redirect('/project/'+str(pj_id)+'/examine')
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close()
+
+#หน้างวด
+@app.route('/check')
+def check():
+    return render_template('check.html')
 
 #หน้าเพิ่มโครงการ
 # เพิ่มโปรเจค
@@ -911,15 +984,15 @@ def contrac2():
         contt_name = request.form['contt_name']
         contt_address = request.form['contt_address']
         contt_tel = request.form['contt_tel']
-        contt_fee = request.form['contt_fee']
+        contt_email = request.form['contt_email']
         contt_date = request.form['contt_date']
         contt_start = request.form['contt_start']
         contt_end = request.form['contt_end']
         id = request.form['id']
         pc = request.form['pc']
-        if  contt_name and contt_address and contt_tel and contt_fee and contt_date and contt_start and contt_end and  request.method == 'POST':
-            sql = "INSERT INTO contractor (contt_name, contt_address, contt_tel, contt_fee, contt_date, contt_start, contt_end ) VALUES(%s, %s, %s, %s, %s, %s, %s)"
-            data = (contt_name,contt_address,contt_tel,contt_fee,contt_date,contt_start,contt_end,)
+        if  contt_name and contt_address and contt_tel and contt_email and contt_date and contt_start and contt_end and  request.method == 'POST':
+            sql = "INSERT INTO contractor (contt_name, contt_address, contt_tel, contt_email, contt_date, contt_start, contt_end ) VALUES(%s, %s, %s, %s, %s, %s, %s)"
+            data = (contt_name,contt_address,contt_tel,contt_email,contt_date,contt_start,contt_end,)
             conn = mysql.connect()
             cursor = conn.cursor()
             cursor.execute(sql, data)
@@ -965,15 +1038,15 @@ def updatecontractor():
         contt_name = request.form['contt_name']
         contt_address = request.form['contt_address']
         contt_tel = request.form['contt_tel']
-        contt_fee = request.form['contt_fee']
+        contt_email = request.form['contt_email']
         contt_date = request.form['contt_date']
         contt_start = request.form['contt_start']
         contt_end = request.form['contt_end']
         id = request.form['id']
         idc = request.form['idc']
-        if  contt_name and contt_address and contt_tel and contt_fee and contt_date and contt_start and  contt_end and request.method == 'POST':
-            sql = "UPDATE contractor SET contt_name=%s, contt_address=%s, contt_tel=%s, contt_fee=%s, contt_date=%s , contt_start=%s, contt_end=%s WHERE contt_id=%s"
-            data = data = (contt_name,contt_address,contt_tel,contt_fee,contt_date,contt_start,contt_end, idc)
+        if  contt_name and contt_address and contt_tel and contt_email and contt_date and contt_start and  contt_end and request.method == 'POST':
+            sql = "UPDATE contractor SET contt_name=%s, contt_address=%s, contt_tel=%s, contt_email=%s, contt_date=%s , contt_start=%s, contt_end=%s WHERE contt_id=%s"
+            data = data = (contt_name,contt_address,contt_tel,contt_email,contt_date,contt_start,contt_end, idc)
             conn = mysql.connect()
             cursor = conn.cursor()
             cursor.execute(sql, data)
