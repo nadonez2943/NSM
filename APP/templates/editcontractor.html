@@ -1,0 +1,71 @@
+<doctype html>
+  {% extends 'layout.html' %}
+  {% block body %}
+  <br><br>
+  <p align="left"><input class="btn btn-primary btn-lg" type="button" onclick="history.back()" value="ย้อนกลับ"></p>
+      <form action="/editcontractor/{{id}}" method="post">
+        {% for result in row %}
+          <div class="card">
+              <br><center><h3 class="display-4">แก้ไขข้อมูล</h3></center><br> 
+              <div class="row">
+                <div class="col-25">
+                  <label>วันที่ประกาศผลบริษัทผู้รับเหมา</label>
+                </div>
+                <div class="col-75">
+                  <p><input name="contt_date" type="date" value="{{result['contt_date']}}" required> </p>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-25">
+                  <label>บริษัทผู้รับเหมา</label>
+                </div>
+                <div class="col-75">
+                  <p><input name="contt_name" type="text" style="width:750px;" value="{{result['contt_name']}}" required> </p>
+                </div>
+              </div>
+              <div class="row">
+                  <div class="col-25">
+                    <label>ที่อยู่บริษัทผู้รับเหมา</label>
+                  </div>
+                  <div class="col-75">
+                      <p><input name="contt_address" type="text" style="width:750px; height:90;" value="{{result['contt_address']}}" required></p>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-25">
+                    <label>เบอร์โทรศัพท์</label>
+                  </div>
+                  <div class="col-75">
+                    <p><input name="contt_tel" type="text" style="width:750px;" value="{{result['contt_tel']}}" required> </p>
+                  </div>
+                </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>อีเมล</label>
+                </div>
+                <div class="col-75">
+                  <p><input name="contt_email" type="text" style="width:750px;" value="{{result['contt_email']}}" required></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>วันที่เริ่ม</label>
+                </div>
+                <div class="col-75">
+                  <p><input name="contt_start" type="date" value="{{result['contt_start']}}" required> </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>วันที่สิ้นสุด</label>
+                </div>
+                <div class="col-75">
+                  <p><input name="contt_end" type="date" value="{{result['contt_end']}}" required> </p>
+                </div>
+                <CENTER><p><input type="submit" class="btn" value="แก้ไขข้อมูล" onclick="return confirm('ยืนยันการแก้ไข ?')"></p></CENTER>
+            </div>
+          </div>
+        {% endfor %}
+      </form>
+{% endblock %}
