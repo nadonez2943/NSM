@@ -1,9 +1,9 @@
 <doctype html>
     {% extends 'layout.html' %}
-     {% block body %}
-    <br><br><h1>{{row[0]['Name']}}</h1>
+    {% block body %}
+    <br><br>
     <p align="left"><input class="btn btn-primary btn-lg" type="button" onclick="history.back()" value="ย้อนกลับ"></p>
-        <form action="/addcontractor/{{row[0]['pj_id']}}/{{row[0]['contt_id']}}" method="post">
+        <form action="/addcontractor/{{id}}" method="post">
             <div class="card">
                 <br><center><h3 class="display-4">เพิ่มข้อมูล</h3></center><br> 
                 <div class="row">
@@ -11,9 +11,10 @@
                     <label>วันที่ประกาศผลบริษัทผู้รับเหมา</label>
                   </div>
                   <div class="col-75">
-                    <p><input name="conttdate" value="" type="date" placeholder="วันที่ประกาศผลบริษัทผู้รับเหมา" required> </p>
+                    <p><input name="contt_date" value="" type="date" placeholder="วันที่ประกาศผลบริษัทผู้รับเหมา" required> </p>
                   </div>
                 </div>
+                
                 <div class="row">
                   <div class="col-25">
                     <label>บริษัทผู้รับเหมา</label>
@@ -51,7 +52,7 @@
                     <label>วันที่เริ่ม</label>
                   </div>
                   <div class="col-75">
-                    <p><input name="conttstart" value="" type="date" placeholder="วันที่เริ่ม" required> </p>
+                    <p><input name="contt_start" value="" type="date" placeholder="วันที่เริ่ม" required> </p>
                   </div>
                 </div>
                 <div class="row">
@@ -59,9 +60,9 @@
                     <label>วันที่สิ้นสุด</label>
                   </div>
                   <div class="col-75">
-                    <p><input name="conttend" value="" type="date" placeholder="วันที่สิ้นสุด" required> </p>
+                    <p><input name="contt_end" value="" type="date" placeholder="วันที่สิ้นสุด" required> </p>
                   </div>
-                <p align="center"><input type="submit" class="btn" value="เพิ่มข้อมูลบริษัท" onclick="return confirm('ตรวจสอบข้อมูลถูกต้อง? ยืนยันการเพิ่มข้อมูล')"></p>
+                  <CENTER><p><input type="submit" class="btn" value="เพิ่มข้อมูล" onclick="return confirm('ตรวจสอบข้อมูลครบถ้วนแล้ว ?')"></p></CENTER>
               </div>
             </div>
         </form>

@@ -927,6 +927,7 @@ def editproject(id):
     cursor.execute("SELECT * FROM nsm_project.projects  WHERE nsm_project.projects.pj_id = %s ", (id))
     row = cursor.fetchall()
     return render_template('editproject.html', id=id,row=row)
+
 #html ชื่อ editproject
 @app.route('/editproject', methods=[ 'POST'])
 def editproject2():
@@ -964,7 +965,8 @@ def addcontractor(id):
     try:
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("SHOW TABLE STATUS FROM nsm_project WHERE NAME='contractor';")
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        cursor.execute("SELECT max(contt_id) FROM nsm_project.contractor;")
         row = cursor.fetchall()
         return render_template("addcontractor.html",id=id,row=row) 
     except Exception as e:
@@ -973,38 +975,90 @@ def addcontractor(id):
         cursor.close()
         conn.close()
     
+@app.route('/addcontractor/<int:id>', methods=['POST'])
+def addcontractor2(id):
+    conn = None
+    cursor = None
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    try:
+        contt_date = request.form['contt_date']
+        contt_name = request.form['contt_name']
+        contt_address = request.form['contt_address']
+        contt_tel = request.form['contt_tel']
+        contt_email = request.form['contt_email']
+        contt_start = request.form['contt_start']
+        contt_end = request.form['contt_end']
+        if  contt_date and contt_name and contt_address and contt_tel and contt_email and contt_start and contt_end and  request.method == 'POST':
+            sql = "INSERT INTO contractor (contt_date, contt_name, contt_address, contt_tel, contt_email, contt_start, contt_end ) VALUES(%s, %s, %s, %s, %s, %s, %s)"
+            data = (contt_date,contt_name,contt_address,contt_tel,contt_email,contt_start,contt_end,)
+            cursor.execute(sql, data)
+            cursor = conn.cursor(pymysql.cursors.DictCursor)
+            cursor.execute("SELECT contt_id FROM nsm_project.contractor order by contt_id DESC;")
+            sql1 = cursor.fetchall()
+            contt = sql1[0]['contt_id']
+            update = "UPDATE process SET contt_id=%s WHERE pj_id = %s"
+            data1 = (contt,id)
+            cursor.execute(update, data1)
+            conn.commit()
+            return redirect ('/project/'+str(id)+'/consider')
+        else:
+            return 'Error'
+    except Exception as e:
+           print(e)
+    finally:
+        cursor.close() 
+        conn.close()
 
-# @app.route('/addcontractor/<int:id>/<int:conid>', methods=[ 'POST'])
-# def addcontractor2(id,conid):
-#     conn = None
-#     cursor = None
-#     try:
-#         contt_name = request.form['contt_name']
-#         contt_address = request.form['contt_address']
-#         contt_tel = request.form['contt_tel']
-#         contt_email = request.form['contt_email']
-#         contt_date = request.form['contt_date']
-#         contt_start = request.form['contt_start']
-#         contt_end = request.form['contt_end']
-#         if  contt_name and contt_address and contt_tel and contt_email and contt_date and contt_start and contt_end and  request.method == 'POST':
-#             sql = "INSERT INTO contractor (contt_name, contt_address, contt_tel, contt_email, contt_date, contt_start, contt_end ) VALUES(%s, %s, %s, %s, %s, %s, %s)"
-#             data = (contt_name,contt_address,contt_tel,contt_email,contt_date,contt_start,contt_end,)
-#             conn = mysql.connect()
-#             cursor = conn.cursor()
-#             cursor.execute(sql, data)
-#             conn.commit()
-#             conn = mysql.connect()
-#             cursor = conn.cursor()
-#             cursor.execute("UPDATE process SET contt_id = %s WHERE pc_id = %s",(pc,id))
-#             conn.commit()
-#             return redirect('/project/'+id+'/consider')
-#         else:
-#             return 'Error'
-#     except Exception as e:
-#            print(e)
-#     finally:
-#            cursor.close() 
-#            conn.close()
+#แก้ไขcontrac
+@app.route('/editcontractor/<int:id>',methods=['GET'])
+def editcontractorveiw(id):
+    conn = None
+    cursor = None
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        cursor.execute("SELECT * FROM nsm_project.contractor;")
+        row = cursor.fetchall()
+        return render_template("editcontractor.html",id=id,row=row) 
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        conn.close()
+
+@app.route('/editcontractor/<int:id>', methods=['POST'])
+def editcontractor(id):
+    conn = None
+    cursor = None
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    try:
+        contt_date = request.form['contt_date']
+        contt_name = request.form['contt_name']
+        contt_address = request.form['contt_address']
+        contt_tel = request.form['contt_tel']
+        contt_email = request.form['contt_email']
+        contt_start = request.form['contt_start']
+        contt_end = request.form['contt_end']
+        if  contt_date and contt_name and contt_address and contt_tel and contt_email and contt_start and contt_end and  request.method == 'POST':
+            cursor = conn.cursor(pymysql.cursors.DictCursor)
+            sql = "UPDATE contractor SET contt_date=%s, contt_name=%s, contt_address=%s, contt_tel=%s, contt_email=%s, contt_start=%s, contt_end=%s "
+            data = (contt_date,contt_name,contt_address,contt_tel,contt_email,contt_start,contt_end,)
+            cursor.execute(sql, data)
+            conn.commit()
+            return redirect ('/project/'+str(id)+'/consider')
+        else:
+            return 'Error'
+    except Exception as e:
+           print(e)
+    finally:
+        cursor.close() 
+        conn.close()
+    
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
