@@ -1,6 +1,9 @@
 <doctype html>
     {% extends 'layout.html' %}
     {% block body %}
+    <style>
+        input[type='text'] { font-size: 16px; }
+        </style>
     <br>
     <div class="jumbotron">
         <center><h1>แก้ไขกิจกรรม</h1></center>
@@ -8,15 +11,15 @@
         <form action="/editevent" method="post">
         <div class="row">
             <div class="col-25">
-              <label>ชื่อ</label>
+              <h4>ชื่อ</h4>
             </div>
             <div class="col-75">
-                <p> <input name="evname" value="{{row[0]['ev_name']}}" type="input" style="width:700px; "  required> </p>
+                <p> <input name="evname" value="{{row[0]['ev_name']}}" type="text" style="width:700px; "  required> </p>
             </div>
         </div>
         <div class="row">
             <div class="col-25">
-            <label>รายละเอียด</label>
+            <h4>รายละเอียด</h4>
             </div>
             <div class="col-75">
             <p> <input name="evdetail" value="{{row[0]['ev_detail']}}" type="text" style="width:700px; height: 88;  " required> </p>
@@ -24,7 +27,7 @@
         </div>
         <div class="row">
             <div class="col-25">
-              <label>วันที่</label>
+              <h4>วันที่</h4>
             </div>
             <div class="col-75">
             <input name="evdate" value="{{row[0]['ev_date']}}" type="date"></input>
@@ -33,8 +36,17 @@
             <input name="evid" value="{{row[0]['ev_id']}}" type="hidden">
             </div>
         </div>
+        <div class="row">
+            <div class="col-25">
+                <h4>เวลา</h4>
+            </div>
+            <div class="col-75">
+                <input id="timepicker" name="evtime" type="text" style="width:8%" value="{{row[0]['ev_time']}}">
+            </div>
+        </div>
     </div>
-    <center><input type="submit" class="btn btn-primary btn-lg" value="Submit" ></center>
+    <center><input type="submit" class="btn btn-primary btn-lg" value="ยืนยัน" ></center>
     </div>
     </form>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
     {% endblock %}
