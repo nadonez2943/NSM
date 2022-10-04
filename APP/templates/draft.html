@@ -92,7 +92,10 @@
             <lable>วันที่ {{result['startdate']}}</lable><br>
             <lable>สิ้นสุดการร่างโครงการ และราคากลาง</lable>
             <lable>วันที่ {{result['endproject_date']}}</lable><br>
-            <lable>คงเหลือ {{result['diff']}} วัน</lable>
+            <center>
+            <div class="box">
+            <p id="diff" value="100">คงเหลือ {{result['diff']}} วัน</p>
+            </div></center>
             {% endfor %}
           </div>
           <div class="card">
