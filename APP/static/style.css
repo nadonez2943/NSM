@@ -189,6 +189,9 @@ input {
             padding: 10px;
             font-size: 16px;
       }
-
+.bootstrap-timepicker-meridian, .meridian-column
+      {
+          display: none;
+      }
 
             

@@ -110,12 +110,13 @@ def project(id):
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         format = '%e %b %Y'
+        tformat = '%H:%i'
         cursor.execute("SET lc_time_names = 'th_TH'")
         cursor.execute("SELECT *,CAST(((stdraft_percent+stcon_percent+stex_percent)/3) AS DECIMAL(15, 2)) as x,DATE_FORMAT(DATE_ADD(startproject_date , INTERVAL 543 YEAR ), %s) as startdate, FORMAT(pj_amount, 0) as pjamount FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id WHERE nsm_project.projects.pj_id = %s", (format,id))
         row = cursor.fetchall()
         cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s", id)
         rows = cursor.fetchall()
-        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.events.ev_id desc",(format,id))
+        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate,TIME_FORMAT(ev_time, %s) as evtime FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.events.ev_id desc",(format,tformat,id))
         ev = cursor.fetchall()
         if rows:
             return render_template('project.html', row=row , rows=rows , id=id ,ev=ev)
@@ -142,12 +143,13 @@ def draft(id):
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         format = '%e %b %Y'
+        tformat = '%H:%i'
         cursor.execute("SET lc_time_names = 'th_TH'")
         cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(startproject_date , INTERVAL 543 YEAR ), %s) as startdate, FORMAT(pj_amount, 0) as pjamount FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id AND nsm_project.board.bo_phase = 1 LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.board.role_id", (format,id))
         row = cursor.fetchall()
         cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s ", id)
         rows = cursor.fetchall()
-        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 1 WHERE nsm_project.projects.pj_id = %s order by nsm_project.events.ev_id desc",(format,id))
+        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate,TIME_FORMAT(ev_time, %s) as evtime FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 1 WHERE nsm_project.projects.pj_id = %s order by nsm_project.events.ev_id desc",(format,tformat,id))
         ev = cursor.fetchall()
         cursor.execute("SELECT nsm_project.process.start_draft,DATE_FORMAT(DATE_ADD(start_draft , INTERVAL 543 YEAR ), %s) as startdate,DATE_FORMAT(DATE_ADD(ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY), INTERVAL 543 YEAR ), %s) AS endproject_date,DATEDIFF(ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY),date(now())) AS diff FROM nsm_project.process WHERE nsm_project.process.pj_id = %s", (format,format,id))
         diff = cursor.fetchall()
@@ -183,12 +185,13 @@ def consider(id):
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         format = '%e %b %Y'
+        tformat = '%H:%i'
         cursor.execute("SET lc_time_names = 'th_TH'")
         cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(startproject_date , INTERVAL 543 YEAR ), %s) as startdate,DATE_FORMAT(DATE_ADD(contt_date , INTERVAL 543 YEAR ), %s) as conttdate,DATE_FORMAT(DATE_ADD(contt_start , INTERVAL 543 YEAR ), %s) as conttstart,DATE_FORMAT(DATE_ADD(contt_end , INTERVAL 543 YEAR ), %s) as conttend,DATEDIFF(contt_end, date(now())) as condiff, FORMAT(pj_amount, 0) as pjamount FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id AND nsm_project.board.bo_phase = 2 LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.board.role_id", (format,format,format,format,id))
         row = cursor.fetchall()
         cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s ", id)
         rows = cursor.fetchall()
-        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 2 WHERE nsm_project.projects.pj_id = %s order by nsm_project.events.ev_id desc",(format,id))
+        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate,TIME_FORMAT(ev_time, %s) as evtime FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 2 WHERE nsm_project.projects.pj_id = %s order by nsm_project.events.ev_id desc",(format,tformat,id))
         ev = cursor.fetchall()
         cursor.execute("SELECT *,CASE WHEN nsm_project.manager.user_id = nsm_project.users.user_id THEN 'manager' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 1 OR nsm_project.board.role_id = 2 THEN 'board' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 3 THEN 'assistant' END AS role FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id or nsm_project.manager.user_id = nsm_project.users.user_id Where nsm_project.projects.pj_id = %s and nsm_project.users.user_id = %s group by nsm_project.users.user_id",(id ,user))
         role = cursor.fetchone()
@@ -221,6 +224,7 @@ def examine(id):
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         format = '%e %b %Y'
+        tformat = '%H:%i'
         cursor.execute("SET lc_time_names = 'th_TH'")
         cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(startproject_date , INTERVAL 543 YEAR ), %s) as startdate,DATE_FORMAT(DATE_ADD(contt_date , INTERVAL 543 YEAR ), %s) as conttdate,DATE_FORMAT(DATE_ADD(contt_start , INTERVAL 543 YEAR ), %s) as conttstart,DATE_FORMAT(DATE_ADD(contt_end , INTERVAL 543 YEAR ), %s) as conttend ,DATEDIFF(contt_end, date(now())) as condiff, FORMAT(pj_amount, 0) as pjamount FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id AND nsm_project.board.bo_phase = 3 LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.tbl_role.role_id", (format,format,format,format,id))
         row = cursor.fetchall()
@@ -228,7 +232,7 @@ def examine(id):
         rows = cursor.fetchall()
         cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(check_date , INTERVAL 543 YEAR ), %s) as checkdate FROM nsm_project.projects LEFT JOIN nsm_project.check ON nsm_project.projects.pj_id = nsm_project.check.pj_id WHERE nsm_project.projects.pj_id = %s order by ins_no desc", (format,id))
         dis = cursor.fetchall()
-        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 3 WHERE nsm_project.projects.pj_id = %s order by nsm_project.events.ev_id desc",(format,id))
+        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate,TIME_FORMAT(ev_time, %s) as evtime FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 3 WHERE nsm_project.projects.pj_id = %s order by nsm_project.events.ev_id desc",(format,tformat,id))
         ev = cursor.fetchall()
         cursor.execute("SELECT *,CASE WHEN nsm_project.manager.user_id = nsm_project.users.user_id THEN 'manager' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 1 OR nsm_project.board.role_id = 2 THEN 'board' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 3 THEN 'assistant' END AS role FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id or nsm_project.manager.user_id = nsm_project.users.user_id Where nsm_project.projects.pj_id = %s and nsm_project.users.user_id = %s group by nsm_project.users.user_id",(id ,user))
         role = cursor.fetchone()
@@ -432,8 +436,9 @@ def draftevent(id):
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         format = '%e %b %Y'
+        tformat = '%H:%i'
         cursor.execute("SET lc_time_names = 'th_TH'")
-        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.events.ev_id) as row_num,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 1 WHERE nsm_project.projects.pj_id = %s", (format,id))
+        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.events.ev_id) as row_num,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate,TIME_FORMAT(ev_time, %s) as evtime FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 1 WHERE nsm_project.projects.pj_id = %s", (format,tformat,id))
         row = cursor.fetchall()
         if row:
             return render_template('draftEvent.html', row=row , id=id)
@@ -453,8 +458,9 @@ def considerEvent(id):
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         format = '%e %b %Y'
+        tformat = '%H:%i'
         cursor.execute("SET lc_time_names = 'th_TH'")
-        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.events.ev_id) as row_num,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 2 WHERE nsm_project.projects.pj_id = %s", (format,id))
+        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.events.ev_id) as row_num,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate,TIME_FORMAT(ev_time, %s) as evtime FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 2 WHERE nsm_project.projects.pj_id = %s", (format,tformat,id))
         row = cursor.fetchall()
         if row:
             return render_template('considerEvent.html', row=row , id=id)
@@ -474,8 +480,9 @@ def examineEvent(id):
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         format = '%e %b %Y'
+        tformat = '%H:%i'
         cursor.execute("SET lc_time_names = 'th_TH'")
-        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.events.ev_id) as row_num,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 3 WHERE nsm_project.projects.pj_id = %s", (format,id))
+        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.events.ev_id) as row_num,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate,TIME_FORMAT(ev_time, %s) as evtime FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 3 WHERE nsm_project.projects.pj_id = %s", (format,tformat,id))
         row = cursor.fetchall()
         if row:
             return render_template('examineEvent.html', row=row , id=id)
@@ -507,12 +514,13 @@ def addeventd2():
         ev_detail = request.form['evdetail']
         ev_date = request.form['evdate']
         ev_phase = request.form['evphase']
+        ev_time = request.form['evtime']
         pj_id = request.form['pjid']
 # validate the received values
         if ev_name and ev_detail and ev_date and ev_phase and pj_id and request.method == 'POST':
 # save edits
-            sql = "INSERT INTO events(ev_name, ev_detail, ev_date, ev_phase, pj_id) VALUES(%s, %s, %s, %s, %s)"
-            data = (ev_name, ev_detail, ev_date, ev_phase, pj_id)
+            sql = "INSERT INTO events(ev_name, ev_detail, ev_date, ev_phase, pj_id, ev_time) VALUES(%s, %s, %s, %s, %s, %s)"
+            data = (ev_name, ev_detail, ev_date, ev_phase, pj_id,ev_time)
             conn = mysql.connect()
             cursor = conn.cursor()
             cursor.execute(sql, data)
@@ -546,11 +554,12 @@ def addeventc2():
         ev_date = request.form['evdate']
         ev_phase = request.form['evphase']
         pj_id = request.form['pjid']
+        ev_time = request.form['evtime']
 # validate the received values
         if ev_name and ev_detail and ev_date and ev_phase and pj_id and request.method == 'POST':
 # save edits
-            sql = "INSERT INTO events(ev_name, ev_detail, ev_date, ev_phase, pj_id) VALUES(%s, %s, %s, %s, %s)"
-            data = (ev_name, ev_detail, ev_date, ev_phase, pj_id)
+            sql = "INSERT INTO events(ev_name, ev_detail, ev_date, ev_phase, pj_id, ev_time) VALUES(%s, %s, %s, %s, %s, %s)"
+            data = (ev_name, ev_detail, ev_date, ev_phase, pj_id, ev_time)
             conn = mysql.connect()
             cursor = conn.cursor()
             cursor.execute(sql, data)
@@ -584,11 +593,12 @@ def addevente2():
         ev_date = request.form['evdate']
         ev_phase = request.form['evphase']
         pj_id = request.form['pjid']
+        ev_time = request.form['evtime']
 # validate the received values
         if ev_name and ev_detail and ev_date and ev_phase and pj_id and request.method == 'POST':
 # save edits
-            sql = "INSERT INTO events(ev_name, ev_detail, ev_date, ev_phase, pj_id) VALUES(%s, %s, %s, %s, %s)"
-            data = (ev_name, ev_detail, ev_date, ev_phase, pj_id)
+            sql = "INSERT INTO events(ev_name, ev_detail, ev_date, ev_phase, pj_id, ev_time) VALUES(%s, %s, %s, %s, %s, %s)"
+            data = (ev_name, ev_detail, ev_date, ev_phase, pj_id, ev_time)
             conn = mysql.connect()
             cursor = conn.cursor()
             cursor.execute(sql, data)
