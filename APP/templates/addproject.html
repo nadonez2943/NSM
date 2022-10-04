@@ -9,19 +9,16 @@
    <br>
   
    <div class="jumbotron">
-   <form action="/addproject" method="post">
+   <form action="/addProject" method="POST">
       <br>         
       <dl>
       <p>
-         เลขสรรบัญ: <input name="refNumber" value="" type="text" style="width:100px; " placeholder="เลขสรรบัญ" autocomplete="off" required> 
+         เลขสรรบัญ: <input name="refNumber" value="" type="text" style="width:100px;" placeholder="เลขสรรบัญ" required> 
       </p>
       <p>
-         กอง: <input name="office" value="" type="text" style="width:351px;" placeholder="กอง" autocomplete="off" required> &nbsp;&nbsp; &nbsp;&nbsp; 
-         สำนัก: <input name="divition" value="" type="text" style="width:401px;" placeholder="สำนัก" autocomplete="off" required> 
+         กอง: <input name="office" type="text" style="width:351px;" placeholder="กอง" autocomplete="off" required> &nbsp;&nbsp; &nbsp;&nbsp; 
+         สำนัก: <input name="divition" type="text" style="width:401px;" placeholder="สำนัก" autocomplete="off" required> 
       </p>
-      <!-- <p>
-         ผู้รับผิดชอบ: <input name="projace_m" value="" type="text" style="width:100px; " placeholder="ผู้รับผิดชอบ" autocomplete="off" required> 
-      </p> -->
       <p>
          ชื่อโครงการ: <input name="name" value="" type="text" style="width:814px;" placeholder="ชื่อโครงการ" autocomplete="off" required> 
       </p>
@@ -48,10 +45,6 @@
          โดยใช้งบประมาณ:<input name="budgetSource" value="" type="text" style="width:153px; " placeholder="โดยใช้งบประมาณ " autocomplete="off" required>  &nbsp;&nbsp;
          ประจำปีงบประมาณ:<input name="budgetYears" value="" type="text" style="width:156px; " placeholder="ประจำปีงบประมาณ " autocomplete="off" required>
       </p>
-      <p>
-         <input name="id" value="{{rows[0]+1}}" type="hidden"  required> 
-      </p>
-      <br>
       <br>
       <br>
       <CENTER>
@@ -63,3 +56,14 @@
    </div>   
 </form>
 {% endblock %}
+
+<!-- refNumber
+office
+divition
+name
+radio
+amount
+detail
+financeAmount
+budgetSource
+budgetYears -->

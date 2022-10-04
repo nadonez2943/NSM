@@ -797,50 +797,65 @@ def user():
            conn.close()
 
 # ก่อนเอาไอดีpjไปเก็บ
-@app.route('/addNewProject')
-def addNewProject():
-    conn = None
-    cursor = None
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor.execute("SELECT pj_id FROM projects ORDER BY pj_id DESC LIMIT 1")
-        rows = cursor.fetchone()
-        id = rows 
-        print(id)
-        return render_template("addproject.html", rows=rows) 
-    except Exception as e:
-        print(e)
-    finally: 
-        cursor.close()
-        conn.close()
-
-# เอาไอดี pj ไปเก็บ manager กับ process
-@app.route('/runp/<int:id>')
-def runp(id):
-    conn = None
-    cursor = None
-    x = id
+@app.route('/addProject')
+def addProjectview():
+    return render_template("addproject.html") 
+    
+@app.route('/addProject',methods=['POST'])
+def addProject():
     user = session['user_id']
+    conn = None
+    cursor = None
+    conn = mysql.connect()
+    cursor = conn.cursor()
     try:
-        sql = "INSERT INTO manager (user_id, pj_id) VALUES(%s, %s)"
-        data = (user,x)
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor.execute(sql, data)
-        conn.commit()
-        sql = "INSERT INTO process (pj_id) VALUES(%s)"
-        data2 = (x)
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor.execute(sql, data2)
-        conn.commit()
-        return redirect('/home')
+        pj_refNumber = request.form['refNumber']
+        pj_office = request.form['office']
+        pj_divition = request.form['divition']
+        pj_name = request.form['name']
+        pj_type = request.form['radio']
+        pj_amount = request.form['amount']
+        pj_financeAmount = request.form['financeAmount']
+        pj_budgetSource = request.form['budgetSource']
+        pj_budgetYears = request.form['budgetYears']
+        if  pj_refNumber and pj_office and pj_divition and pj_name and pj_type and pj_amount and pj_financeAmount and pj_budgetSource and pj_budgetYears and request.method == 'POST':
+            sql1 = "INSERT INTO projects (pj_refNumber,pj_office,pj_divition,pj_name,pj_type,pj_amount,pj_financeAmount,pj_budgetSource,pj_budgetYears) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            data1 = (pj_refNumber,pj_office,pj_divition,pj_name,pj_type,pj_amount,pj_financeAmount,pj_budgetSource,pj_budgetYears)
+            cursor.execute(sql1, data1)
+            cursor = conn.cursor(pymysql.cursors.DictCursor)
+            cursor.execute("SELECT pj_id FROM nsm_project.projects order by pj_id DESC;")
+            sql2 = cursor.fetchall()
+            pj_id = sql2[0]['pj_id']
+            sql3 = "INSERT INTO manager (user_id,pj_id) VALUES(%s, %s)"
+            data3 = (user,pj_id)
+            cursor.execute(sql3, data3)
+            conn.commit()
+            return redirect ('/project/'+str(id)+'/consider')
+        else:
+            return 'Error'
     except Exception as e:
         print(e)
     finally:
         cursor.close()
         conn.close()  
+#     conn = None
+#     cursor = None
+#     user = session['user_id']
+#     try:
+#         sql = "INSERT INTO manager (user_id, pj_id) VALUES(%s, %s)"
+#         data = (user,x)
+#         conn = mysql.connect()
+#         cursor = conn.cursor()
+#         cursor.execute(sql, data)
+#         conn.commit()
+#         sql = "INSERT INTO process (pj_id) VALUES(%s)"
+#         data2 = (x)
+#         conn = mysql.connect()
+#         cursor = conn.cursor()
+#         cursor.execute(sql, data2)
+#         conn.commit()
+#         return redirect('/home')
+
 
 class UploadFileForm(FlaskForm):
     file = FileField("File", validators=[InputRequired()])
