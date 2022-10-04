@@ -956,109 +956,55 @@ def editproject2():
            cursor.close() 
            conn.close()
 
-# เรียกหน้า html
+#หน้าเพิ่มข้อมูลบริษัท
 @app.route('/addcontractor/<int:id>',methods=['GET'])
 def addcontractor(id):
     conn = None
     cursor = None
     try:
         conn = mysql.connect()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SET lc_time_names = 'th_TH'")
-        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(startproject_date , INTERVAL 543 YEAR ), %s) as startdate,DATE_FORMAT(DATE_ADD(contt_date , INTERVAL 543 YEAR ), %s) as conttdate,DATE_FORMAT(DATE_ADD(contt_start , INTERVAL 543 YEAR ), %s) as conttstart,DATE_FORMAT(DATE_ADD(contt_end , INTERVAL 543 YEAR ), %s) as conttend FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id AND nsm_project.board.bo_phase = 2 LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.board.role_id", (format,format,format,format,id))
+        cursor = conn.cursor()
+        cursor.execute("SHOW TABLE STATUS FROM nsm_project WHERE NAME='contractor';")
         row = cursor.fetchall()
         return render_template("addcontractor.html",id=id,row=row) 
-    except Exception as e:
-           print(e)
-    finally:
-           cursor.close() 
-           conn.close()
-
-
-# เพิ่มรถแท็กเตอร์
-@app.route('/contrac', methods=[ 'POST'])
-def contrac2():
-    conn = None
-    cursor = None
-    try:
-        contt_name = request.form['contt_name']
-        contt_address = request.form['contt_address']
-        contt_tel = request.form['contt_tel']
-        contt_email = request.form['contt_email']
-        contt_date = request.form['contt_date']
-        contt_start = request.form['contt_start']
-        contt_end = request.form['contt_end']
-        id = request.form['id']
-        pc = request.form['pc']
-        if  contt_name and contt_address and contt_tel and contt_email and contt_date and contt_start and contt_end and  request.method == 'POST':
-            sql = "INSERT INTO contractor (contt_name, contt_address, contt_tel, contt_email, contt_date, contt_start, contt_end ) VALUES(%s, %s, %s, %s, %s, %s, %s)"
-            data = (contt_name,contt_address,contt_tel,contt_email,contt_date,contt_start,contt_end,)
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            cursor.execute(sql, data)
-            conn.commit()
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            cursor.execute("UPDATE process SET contt_id = %s WHERE pc_id = %s",(pc,id))
-            conn.commit()
-            return redirect('/project/'+id+'/consider')
-        else:
-            return 'Error'
-    except Exception as e:
-           print(e)
-    finally:
-           cursor.close() 
-           conn.close()
-
-# เรียกหน้า html editcontrac
-@app.route('/editcontractor/<int:id>/<int:idc>',methods=['GET'])
-def econ(id,idc):
-    conn = None
-    cursor = None
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM contractor WHERE contt_id=%s", idc)
-        row = cursor.fetchall()
-        if row:
-            return render_template('editcontractor.html', row=row,id=id)
-        else:
-            return 'Error loading #{id}'.format(id=id)
     except Exception as e:
         print(e)
     finally:
         cursor.close()
         conn.close()
+    
 
-@app.route('/updatecontractor', methods=['POST'])
-def updatecontractor():
-    conn = None
-    cursor = None
-    try: 
-        contt_name = request.form['contt_name']
-        contt_address = request.form['contt_address']
-        contt_tel = request.form['contt_tel']
-        contt_email = request.form['contt_email']
-        contt_date = request.form['contt_date']
-        contt_start = request.form['contt_start']
-        contt_end = request.form['contt_end']
-        id = request.form['id']
-        idc = request.form['idc']
-        if  contt_name and contt_address and contt_tel and contt_email and contt_date and contt_start and  contt_end and request.method == 'POST':
-            sql = "UPDATE contractor SET contt_name=%s, contt_address=%s, contt_tel=%s, contt_email=%s, contt_date=%s , contt_start=%s, contt_end=%s WHERE contt_id=%s"
-            data = data = (contt_name,contt_address,contt_tel,contt_email,contt_date,contt_start,contt_end, idc)
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            cursor.execute(sql, data)
-            conn.commit()
-            return redirect('/project/'+id+'/consider')
-        else:
-            return 'Error while updating user'
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close() 
-        conn.close()
+# @app.route('/addcontractor/<int:id>/<int:conid>', methods=[ 'POST'])
+# def addcontractor2(id,conid):
+#     conn = None
+#     cursor = None
+#     try:
+#         contt_name = request.form['contt_name']
+#         contt_address = request.form['contt_address']
+#         contt_tel = request.form['contt_tel']
+#         contt_email = request.form['contt_email']
+#         contt_date = request.form['contt_date']
+#         contt_start = request.form['contt_start']
+#         contt_end = request.form['contt_end']
+#         if  contt_name and contt_address and contt_tel and contt_email and contt_date and contt_start and contt_end and  request.method == 'POST':
+#             sql = "INSERT INTO contractor (contt_name, contt_address, contt_tel, contt_email, contt_date, contt_start, contt_end ) VALUES(%s, %s, %s, %s, %s, %s, %s)"
+#             data = (contt_name,contt_address,contt_tel,contt_email,contt_date,contt_start,contt_end,)
+#             conn = mysql.connect()
+#             cursor = conn.cursor()
+#             cursor.execute(sql, data)
+#             conn.commit()
+#             conn = mysql.connect()
+#             cursor = conn.cursor()
+#             cursor.execute("UPDATE process SET contt_id = %s WHERE pc_id = %s",(pc,id))
+#             conn.commit()
+#             return redirect('/project/'+id+'/consider')
+#         else:
+#             return 'Error'
+#     except Exception as e:
+#            print(e)
+#     finally:
+#            cursor.close() 
+#            conn.close()
 
 if __name__ == "__main__":
     app.run(debug=True)

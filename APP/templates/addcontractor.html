@@ -1,9 +1,9 @@
 <doctype html>
     {% extends 'layout.html' %}
      {% block body %}
-    <br><br>
+    <br><br><h1>{{row[0]['Name']}}</h1>
     <p align="left"><input class="btn btn-primary btn-lg" type="button" onclick="history.back()" value="ย้อนกลับ"></p>
-        <form action="/addexamine" method="post">
+        <form action="/addcontractor/{{row[0]['pj_id']}}/{{row[0]['contt_id']}}" method="post">
             <div class="card">
                 <br><center><h3 class="display-4">เพิ่มข้อมูล</h3></center><br> 
                 <div class="row">
