@@ -74,5 +74,40 @@
       });
   });
 </script>
+<!-- <script>
+  function f_color(){
+  if (parseInt(document.getElementById('diff').value) == 10) {
+  document.getElementById('diff').style.color = "red";
+  // document.getElementById('EditRecordnote').style.background="yellow";
+  }
+  else if (parseInt(document.getElementById('diff').value) == 9) {
+  document.getElementById('diff').style.color = "yellow";
+  // document.getElementById('EditRecordnote').style.background="yellow";
+  }
+  else if (parseInt(document.getElementById('diff').value) > 14) {
+  document.getElementById('diff').style.color = "green";
+  // document.getElementById('EditRecordnote').style.background="yellow";
+  }
+  }
+  f_color();
+  </script> -->
+  <!-- <script>
+    var value = parseInt(document.getElementById('diff').value);
+      var bgclass = "normalbg";
+      if ( value >= 15) {
+        document.getElementById('diff').style.color = "green";
+      } else if ( value > 10 && value <= 14 ) {
+        document.getElementById('diff').style.color = "yellow";
+      } else if ( value <= 10) {
+        document.getElementById('diff').style.color = "red";
+      }
+  </script> -->
+  <SCRIPT LANGUAGE="JavaScript">
+    var elems = document.getElementsById("diff");
+    for (var i=0, m=elems.length; i<m; i++) {
+    if (elems[i].innerHTML>7)
+      { elems[i].style.color="red";}
+    }
+    </SCRIPT>
   </body>
 </html>
