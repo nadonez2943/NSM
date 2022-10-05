@@ -201,15 +201,4 @@ input {
         margin: 0;
         padding: 2;
     }
-.normalbg
-    {
-       color: #41b100;
-    }
-.warningbg
-    {
-       color: hsl(46, 100%, 50%);
-    }
-.problembg
-    {
-       color: #FF0000;
-    }            
+           

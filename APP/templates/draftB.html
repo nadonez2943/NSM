@@ -2,6 +2,18 @@
   {% extends 'layout.html' %}
   
   {% block body %}
+  <head>
+    <style>
+    input[type="text"]{
+      height: 35px;
+      width: 90px;
+      border: none;
+      background: transparent;
+      text-align: center;
+      
+  }
+  </style>
+  </head>
       <body>
 
       <div class="row">
@@ -86,7 +98,11 @@
             <lable>วันที่ {{result['startproject_date']}}</lable>
             <lable>สิ้นสุดการร่างโครงการ และราคากลาง</lable>
             <lable>วันที่ {{result['endproject_date']}}</lable>
-            <lable>คงเหลือ {{result['diff']}} วัน</lable>
+            <center>
+              <leble>คงเหลือ</lable>
+                  <input type="text" id="diff" value="{{result['diff']}}" disabled="disabled"/>
+              <leble>วัน</lable>
+            </center>
             {% endfor %}
           </div>
           <div class="card">
