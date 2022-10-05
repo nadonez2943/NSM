@@ -10,6 +10,7 @@ from wtforms import FileField, SubmitField
 from werkzeug.utils import secure_filename
 import os
 from wtforms.validators import InputRequired
+from datetime import date
 
 ALLOWED_EXTENSIONS = {'doc', 'pdf'}
 
@@ -818,6 +819,7 @@ def addProject():
         pj_financeAmount = request.form['financeAmount']
         pj_budgetSource = request.form['budgetSource']
         pj_budgetYears = request.form['budgetYears']
+        start_draft = request.form['start_draft']
         if  pj_refNumber and pj_office and pj_divition and pj_name and pj_type and pj_amount and pj_financeAmount and pj_budgetSource and pj_budgetYears and request.method == 'POST':
             sql1 = "INSERT INTO projects (pj_refNumber,pj_office,pj_divition,pj_name,pj_type,pj_amount,pj_financeAmount,pj_budgetSource,pj_budgetYears) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
             data1 = (pj_refNumber,pj_office,pj_divition,pj_name,pj_type,pj_amount,pj_financeAmount,pj_budgetSource,pj_budgetYears)
@@ -829,8 +831,11 @@ def addProject():
             sql3 = "INSERT INTO manager (user_id,pj_id) VALUES(%s, %s)"
             data3 = (user,pj_id)
             cursor.execute(sql3, data3)
+            sql4 = "INSERT INTO process (pj_id,stdraft_id,stcon_id,stex_id,startproject_date,start_draft) VALUES(%s,%s,%s,%s,%s,%s)"
+            data4 = (pj_id,1,1,1,date.today(),start_draft)
+            cursor.execute(sql4, data4)
             conn.commit()
-            return redirect ('/project/'+str(id)+'/consider')
+            return redirect ('/myproject')
         else:
             return 'Error'
     except Exception as e:
@@ -838,24 +843,6 @@ def addProject():
     finally:
         cursor.close()
         conn.close()  
-#     conn = None
-#     cursor = None
-#     user = session['user_id']
-#     try:
-#         sql = "INSERT INTO manager (user_id, pj_id) VALUES(%s, %s)"
-#         data = (user,x)
-#         conn = mysql.connect()
-#         cursor = conn.cursor()
-#         cursor.execute(sql, data)
-#         conn.commit()
-#         sql = "INSERT INTO process (pj_id) VALUES(%s)"
-#         data2 = (x)
-#         conn = mysql.connect()
-#         cursor = conn.cursor()
-#         cursor.execute(sql, data2)
-#         conn.commit()
-#         return redirect('/home')
-
 
 class UploadFileForm(FlaskForm):
     file = FileField("File", validators=[InputRequired()])
