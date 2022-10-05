@@ -259,9 +259,9 @@ def addboardd(id):
     cursor = None
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
-    cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id AND nsm_project.board.bo_phase = 1 LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.tbl_role.role_id", id)
+    cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id AND nsm_project.board.bo_phase = 1 LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id LEFT JOIN nsm_project.office ON nsm_project.users.of_id = nsm_project.office.of_id LEFT JOIN nsm_project.division ON nsm_project.users.dv_id = nsm_project.division.dv_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.tbl_role.role_id", id)
     row = cursor.fetchall()
-    cursor.execute("SELECT * FROM nsm_project.users ")
+    cursor.execute("SELECT * FROM nsm_project.users LEFT JOIN nsm_project.office ON nsm_project.users.of_id = nsm_project.office.of_id LEFT JOIN nsm_project.division ON nsm_project.users.dv_id = nsm_project.division.dv_id ")
     rows = cursor.fetchall()
     return render_template('addboardd.html', id=id,row=row,rows=rows)
 
@@ -300,9 +300,9 @@ def addboardc(id):
     cursor = None
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
-    cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id AND nsm_project.board.bo_phase = 2 LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.tbl_role.role_id", id)
+    cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id AND nsm_project.board.bo_phase = 2 LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id LEFT JOIN nsm_project.office ON nsm_project.users.of_id = nsm_project.office.of_id LEFT JOIN nsm_project.division ON nsm_project.users.dv_id = nsm_project.division.dv_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.tbl_role.role_id", id)
     row = cursor.fetchall()
-    cursor.execute("SELECT * FROM nsm_project.users ")
+    cursor.execute("SELECT * FROM nsm_project.users LEFT JOIN nsm_project.office ON nsm_project.users.of_id = nsm_project.office.of_id LEFT JOIN nsm_project.division ON nsm_project.users.dv_id = nsm_project.division.dv_id ")
     rows = cursor.fetchall()
     return render_template('addboardc.html', id=id,row=row,rows=rows)
 
@@ -341,9 +341,9 @@ def addboarde(id):
     cursor = None
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
-    cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id AND nsm_project.board.bo_phase = 3 LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.tbl_role.role_id", id)
+    cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id AND nsm_project.board.bo_phase = 3 LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id LEFT JOIN nsm_project.office ON nsm_project.users.of_id = nsm_project.office.of_id LEFT JOIN nsm_project.division ON nsm_project.users.dv_id = nsm_project.division.dv_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.tbl_role.role_id", id)
     row = cursor.fetchall()
-    cursor.execute("SELECT * FROM nsm_project.users ")
+    cursor.execute("SELECT * FROM nsm_project.users LEFT JOIN nsm_project.office ON nsm_project.users.of_id = nsm_project.office.of_id LEFT JOIN nsm_project.division ON nsm_project.users.dv_id = nsm_project.division.dv_id ")
     rows = cursor.fetchall()
     return render_template('addboarde.html', id=id,row=row,rows=rows)
 
@@ -632,14 +632,15 @@ def editevent2():
         ev_name = request.form['evname']
         ev_detail = request.form['evdetail']
         ev_date = request.form['evdate']
+        ev_time = request.form['evtime']
         ev_phase = request.form['evphase']
         pj_id = request.form['pjid']
         ev_id = request.form['evid']
 # validate the received values
         if ev_name and ev_detail and ev_date and ev_phase and pj_id and ev_id and request.method == 'POST':
 # save edits
-            sql = "UPDATE events SET ev_name=%s, ev_detail=%s, ev_date=%s, ev_phase=%s WHERE pj_id=%s AND ev_id=%s"
-            data = (ev_name, ev_detail, ev_date, ev_phase, pj_id,ev_id)
+            sql = "UPDATE events SET ev_name=%s, ev_detail=%s, ev_date=%s, ev_time=%s, ev_phase=%s WHERE pj_id=%s AND ev_id=%s"
+            data = (ev_name, ev_detail, ev_date, ev_time, ev_phase, pj_id,ev_id)
             conn = mysql.connect()
             cursor = conn.cursor()
             cursor.execute(sql, data)
