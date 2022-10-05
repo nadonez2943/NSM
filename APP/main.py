@@ -1,7 +1,7 @@
 from pickle import TRUE
 from ssl import AlertDescription
 from click import confirm
-from flask import Flask, render_template, request, redirect, url_for, session,flash
+from flask import Flask, render_template, request, redirect, url_for, session,flash,jsonify
 from db_config import mysql
 from app import app
 import pymysql
@@ -766,42 +766,45 @@ def check():
 
 #หน้าเพิ่มโครงการ
 # เพิ่มโปรเจค
-@app.route('/addproject', methods=['POST'])
-def user():
-    conn = None
-    cursor = None
-    try:
-        id = request.form['id']
-        refNumber = request.form['refNumber']
-        office = request.form['office']
-        divition = request.form['divition']
-        type = request.form['radio']
-        name = request.form['name']
-        amount = request.form['amount']
-        detail = request.form['detail']
-        financeAmount = request.form['financeAmount']
-        budgetSource = request.form['budgetSource']
-        budgetYears = request.form['budgetYears']
-        if  refNumber and office and divition and type and name and amount and detail and financeAmount and budgetSource and budgetYears and  request.method == 'POST':
-            sql = "INSERT INTO projects (pj_refNumber, pj_office, pj_division, pj_type, pj_name, pj_amount, pj_detail, pj_financeAmount, pj_budgetSource, pj_budgetYears) VALUES(%s, %s, %s, %s, %s,%s, %s, %s, %s, %s)"
-            data = (refNumber,office,divition,type,name,amount,detail,financeAmount,budgetSource,budgetYears,)
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            cursor.execute(sql, data)
-            conn.commit()
-            return redirect('/runp/'+id)
-        else:
-            return 'Error'
-    except Exception as e:
-           print(e)
-    finally:
-           cursor.close() 
-           conn.close()
+# @app.route('/addproject', methods=['POST'])
+# def user():
+#     conn = None
+#     cursor = None
+#     try:
+#         id = request.form['id']
+#         refNumber = request.form['refNumber']
+#         office = request.form['ofid']
+#         divition = request.form['dvid']
+#         type = request.form['radio']
+#         name = request.form['name']
+#         amount = request.form['amount']
+#         detail = request.form['detail']
+#         financeAmount = request.form['financeAmount']
+#         budgetSource = request.form['budgetSource']
+#         budgetYears = request.form['budgetYears']
+#         if  refNumber and office and divition and type and name and amount and detail and financeAmount and budgetSource and budgetYears and  request.method == 'POST':
+#             sql = "INSERT INTO projects (pj_refNumber, of_id, dv_id, pj_type, pj_name, pj_amount, pj_detail, pj_financeAmount, pj_budgetSource, pj_budgetYears) VALUES(%s, %s, %s, %s, %s,%s, %s, %s, %s, %s)"
+#             data = (refNumber,office,divition,type,name,amount,detail,financeAmount,budgetSource,budgetYears,)
+#             conn = mysql.connect()
+#             cursor = conn.cursor()
+#             cursor.execute(sql, data)
+#             conn.commit()
+#             return redirect('/runp/'+id)
+#         else:
+#             return 'Error'
+#     except Exception as e:
+#            print(e)
+#     finally:
+#            cursor.close() 
+#            conn.close()
 
 # ก่อนเอาไอดีpjไปเก็บ
-@app.route('/addProject')
+@app.route('/addProject',methods=['GET'])
 def addProjectview():
-    return render_template("addproject.html") 
+    cursor = mysql.connect().cursor(pymysql.cursors.DictCursor)
+    cursor.execute("SELECT * FROM office ORDER BY of_id")
+    office = cursor.fetchall()
+    return render_template("addproject.html", office=office) 
     
 @app.route('/addProject',methods=['POST'])
 def addProject():
@@ -812,8 +815,8 @@ def addProject():
     cursor = conn.cursor()
     try:
         pj_refNumber = request.form['refNumber']
-        pj_office = request.form['office']
-        pj_divition = request.form['divition']
+        of_id = request.form['ofid']
+        dv_id = request.form['dvid']
         pj_name = request.form['name']
         pj_type = request.form['radio']
         pj_amount = request.form['amount']
@@ -821,9 +824,9 @@ def addProject():
         pj_budgetSource = request.form['budgetSource']
         pj_budgetYears = request.form['budgetYears']
         start_draft = request.form['start_draft']
-        if  pj_refNumber and pj_office and pj_divition and pj_name and pj_type and pj_amount and pj_financeAmount and pj_budgetSource and pj_budgetYears and request.method == 'POST':
-            sql1 = "INSERT INTO projects (pj_refNumber,pj_office,pj_divition,pj_name,pj_type,pj_amount,pj_financeAmount,pj_budgetSource,pj_budgetYears) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            data1 = (pj_refNumber,pj_office,pj_divition,pj_name,pj_type,pj_amount,pj_financeAmount,pj_budgetSource,pj_budgetYears)
+        if  pj_refNumber and of_id and dv_id and pj_name and pj_type and pj_amount and pj_financeAmount and pj_budgetSource and pj_budgetYears and request.method == 'POST':
+            sql1 = "INSERT INTO projects (pj_refNumber,of_id,dv_id,pj_name,pj_type,pj_amount,pj_financeAmount,pj_budgetSource,pj_budgetYears) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            data1 = (pj_refNumber,of_id,dv_id,pj_name,pj_type,pj_amount,pj_financeAmount,pj_budgetSource,pj_budgetYears)
             cursor.execute(sql1, data1)
             cursor = conn.cursor(pymysql.cursors.DictCursor)
             cursor.execute("SELECT pj_id FROM nsm_project.projects order by pj_id DESC;")
@@ -843,8 +846,25 @@ def addProject():
         print(e)
     finally:
         cursor.close()
-        conn.close()  
+        conn.close() 
 
+@app.route("/division",methods=["POST","GET"])
+def division():
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        if request.method == 'POST':
+            category_id = request.form['category_id'] 
+            result = cursor.execute("SELECT * FROM  division WHERE of_id = %s ORDER BY dv_name ASC", [category_id])
+            division = cursor.fetchall() 
+            OutputArray = []
+            for result in division:
+                outputObj = {
+                    'id': result['dv_id'],
+                    'name': result['dv_name']}
+                OutputArray.append(outputObj)
+            return jsonify(OutputArray) 
+            
 class UploadFileForm(FlaskForm):
     file = FileField("File", validators=[InputRequired()])
     submit = SubmitField("Upload File")

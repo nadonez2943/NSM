@@ -9,16 +9,32 @@
    <br>
   
    <div class="jumbotron">
-   <form action="/addProject" method="POST">
+   <form action="/addproject" method="post">
       <br>         
       <dl>
       <p>
-         เลขสรรบัญ: <input name="refNumber" value="" type="text" style="width:100px;" placeholder="เลขสรรบัญ" required> 
+         เลขสรรบัญ: <input name="refNumber" value="" type="text" style="width:100px; " placeholder="เลขสรรบัญ" autocomplete="off" required> 
       </p>
       <p>
-         กอง: <input name="office" type="text" style="width:351px;" placeholder="กอง" autocomplete="off" required> &nbsp;&nbsp; &nbsp;&nbsp; 
-         สำนัก: <input name="divition" type="text" style="width:401px;" placeholder="สำนัก" autocomplete="off" required> 
-      </p>
+        
+        
+            <div class="row">
+                <div class="col-md-6">
+                     สำนักงาน
+                    <select name="ofid"  id="ofid" class="form-control" title="Select office"> 
+                        {% for row in office %}
+                            <option value="{{row.of_id}}">{{row.of_name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                     กอง
+                    <select name="dvid"  id="dv_name" class="form-control" title="Select division">
+                     
+                  </select>
+                </div>
+            </div>
+        </p>
       <p>
          ชื่อโครงการ: <input name="name" value="" type="text" style="width:814px;" placeholder="ชื่อโครงการ" autocomplete="off" required> 
       </p>
@@ -45,7 +61,8 @@
          โดยใช้งบประมาณ:<input name="budgetSource" value="" type="text" style="width:153px; " placeholder="โดยใช้งบประมาณ " autocomplete="off" required>  &nbsp;&nbsp;
          ประจำปีงบประมาณ:<input name="budgetYears" value="" type="text" style="width:156px; " placeholder="ประจำปีงบประมาณ " autocomplete="off" required>
       </p>
-      <p>วันที่เริ่มการร่างโครงการและราคากลาง:<input name="start_draft" value="" type="date" style="width:170px; " placeholder="วันที่เริ่มการร่างโครงการและราคากลาง" autocomplete="off" required>&nbsp;&nbsp; &nbsp;</p>
+   
+      <br>
       <br>
       <br>
       <CENTER>
@@ -56,5 +73,37 @@
       </dl>
    </div>   
 </form>
-{% endblock %}
+<script>
+   $(document).ready(function () {
+      
+       function load_data(type, category_id) {
+       $.ajax({
+       url: "/division",
+       method: "POST",
+       data: { type: type, category_id: category_id },
+       dataType: "json",
+       success: function (data) {
+           var html = "";
+           for (var count = 0; count < data.length; count++) {
+               html += '<option value="' + data[count].id + '">' + data[count].name + "</option>";
 
+           }
+           if (type == "ofid") {
+               $("#ofid").html(html);
+               $("#ofid").selectpicker("refresh");
+           } else {
+               $("#dv_name").html(html);
+               
+           }
+           },
+       });
+   }
+
+   $(document).on("change", "#ofid", function () {
+           var category_id = $("#ofid").val();
+           load_data("dvid", category_id);
+       });
+});
+</script>
+
+{% endblock %}
