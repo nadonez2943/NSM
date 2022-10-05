@@ -74,40 +74,27 @@
       });
   });
 </script>
-<!-- <script>
-  function f_color(){
-  if (parseInt(document.getElementById('diff').value) == 10) {
-  document.getElementById('diff').style.color = "red";
-  // document.getElementById('EditRecordnote').style.background="yellow";
+<script>
+  let dif = Number(document.getElementById('diff').value)
+  if (dif <= 0) {
+    document.getElementById('diff').value = '0';
+    document.getElementById('diff').style.color = "white";
+    document.getElementById('diff').style.background = "grey";
   }
-  else if (parseInt(document.getElementById('diff').value) == 9) {
-  document.getElementById('diff').style.color = "yellow";
-  // document.getElementById('EditRecordnote').style.background="yellow";
+  else if (dif < 10 && dif > 0) {
+    document.getElementById('diff').style.color = "white";
+    document.getElementById('diff').style.background = "red";
   }
-  else if (parseInt(document.getElementById('diff').value) > 14) {
-  document.getElementById('diff').style.color = "green";
-  // document.getElementById('EditRecordnote').style.background="yellow";
+  else if (dif >= 10 && dif < 20) {
+    document.getElementById('diff').style.color = "grey";
+  document.getElementById('diff').style.background = "gold";
   }
+  else if (dif >= 20){
+    document.getElementById('diff').style.color = "white";
+  document.getElementById('diff').style.background = "green";
   }
-  f_color();
-  </script> -->
-  <!-- <script>
-    var value = parseInt(document.getElementById('diff').value);
-      var bgclass = "normalbg";
-      if ( value >= 15) {
-        document.getElementById('diff').style.color = "green";
-      } else if ( value > 10 && value <= 14 ) {
-        document.getElementById('diff').style.color = "yellow";
-      } else if ( value <= 10) {
-        document.getElementById('diff').style.color = "red";
-      }
-  </script> -->
-  <SCRIPT LANGUAGE="JavaScript">
-    var elems = document.getElementsById("diff");
-    for (var i=0, m=elems.length; i<m; i++) {
-    if (elems[i].innerHTML>7)
-      { elems[i].style.color="red";}
-    }
-    </SCRIPT>
+  
+  </script>
+  
   </body>
 </html>

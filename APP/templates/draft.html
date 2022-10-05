@@ -2,6 +2,18 @@
   {% extends 'layout.html' %}
   
   {% block body %}
+  <head>
+    <style>
+    input[type="text"]{
+      height: 35px;
+      width: 90px;
+      border: none;
+      background: transparent;
+      text-align: center;
+      
+  }
+  </style>
+  </head>
       <body>
 
       <div class="row">
@@ -83,7 +95,7 @@
             </center>
             <form action="/project/{{row[0]['pj_id']}}/draft" method="post">
             <input name="std" value="{{row[0]['stdraft_id']}}" type="hidden">
-            <div align="Right"><input type="submit" onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="อัพเดทสถานะ" ></div>
+            <div align="center"><input type="submit" onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="อัพเดทสถานะ" ></div>
           </form>
           </div>
           <div class="card">
@@ -92,10 +104,11 @@
             <lable>วันที่ {{result['startdate']}}</lable><br>
             <lable>สิ้นสุดการร่างโครงการ และราคากลาง</lable>
             <lable>วันที่ {{result['endproject_date']}}</lable><br>
-            <center>
-            <div class="box">
-            <p id="diff" value="100">คงเหลือ {{result['diff']}} วัน</p>
-            </div></center>
+            
+            <leble>คงเหลือ</lable>
+                <input type="text" id="diff" value="{{result['diff']}}" disabled="disabled"/>
+            <leble>วัน</lable>
+          
             {% endfor %}
           </div>
           <div class="card">
