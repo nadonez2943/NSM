@@ -3,6 +3,9 @@
     {% extends 'layout.html' %}
     {% block body %}
     <br>
+    <a class="btn btn-primary btn-lg" type="submit" href="/project/{{row[0]['pj_id']}}/draft" value="ย้อนกลับ">ย้อนกลับ</a>
+    <br>
+    <br>
     <div class="jumbotron">
     <br>
     <h1 align="center">คณะกรรมการ</h1>
@@ -57,6 +60,5 @@
         </tr>
         {% endfor %} 
     </table>
-    <br>
-    <a class="btn btn-primary btn-lg" type="submit" href="/project/{{row[0]['pj_id']}}/draft" value="ย้อนกลับ">ย้อนกลับ</a>
+    
     {% endblock %}
