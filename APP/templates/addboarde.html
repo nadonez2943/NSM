@@ -12,7 +12,7 @@
         <p>
             <div class="col-md-6">
                 <select id="single" class="js-states form-control" style="width: 50%" name="userid">
-                    <option value="0">ชื่อ-นามสกุล</option>
+                    <option value="" disabled selected>ชื่อ-นามสกุล</option>
                     {% for result in rows %}
                     <option value="{{result['user_id']}}">{{result['user_fullname']}}   ({{result['dv_shname']}})</option>
                     {% endfor %}

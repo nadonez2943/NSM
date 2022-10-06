@@ -4,14 +4,37 @@
   {% block body %}
   <head>
     <style>
-    input[type="text"]{
+    input[id="sta"]{
       height: 35px;
       width: 90px;
       border: none;
       background: transparent;
       text-align: center;
+    }
+    input[id="diff"]{
+      height: 35px;
+      width: 50px;
+      border: none;
+      background: transparent;
+      text-align: center;
+    }
+    input[id="day"]{
+      height: 35px;
+      width: 40px;
+      border: none;
+      background: transparent;
+      text-align: center;
       
-  }
+    }
+    input[id="status"]{
+      height: 35px;
+      width: 70px;
+      border: none;
+      border-radius: 5px;
+      background: transparent;
+      text-align: center;
+      
+    }
   </style>
   </head>
       <body>
@@ -95,21 +118,23 @@
             </center>
             <form action="/project/{{row[0]['pj_id']}}/draft" method="post">
             <input name="std" value="{{row[0]['stdraft_id']}}" type="hidden">
-            <div align="center"><input type="submit" onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="อัพเดทสถานะ" ></div>
+            <input id="stdid" value="{{row[0]['stdraft_id']}}" type="hidden">
+            <div align="center"><input type="submit" id="appbotton" onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="อัพเดทสถานะ" ></div>
           </form>
           </div>
           <div class="card">
-            {% for result in diff %}
             <lable>เริ่มการร่างโครงการ และราคากลาง</lable>
-            <lable>วันที่ {{result['startdate']}}</lable><br>
+            <lable>วันที่ {{diff[0]['startdate']}}</lable><br>
             <lable>สิ้นสุดการร่างโครงการ และราคากลาง</lable>
-            <lable>วันที่ {{result['endproject_date']}}</lable><br>
-            
-            <leble>คงเหลือ</lable>
-                <input type="text" id="diff" value="{{result['diff']}}" disabled="disabled"/>
-            <leble>วัน</lable>
-          
-            {% endfor %}
+            <lable>วันที่ {{diff[0]['endproject_date']}}</lable><br>
+            <leble>
+              <input type="hidden" id="appr" value="{{row[0]['draftapp_status']}}" >
+            <input type="text" id="sta" value="คงเหลือ" disabled="disabled"/>
+                <input type="text" id="diff" value="{{diff[0]['diff']}}" disabled="disabled"/>
+                <input id="day" value="วัน" disabled="disabled"/></lable>
+                <center>
+              <input id="status" value="" disabled="disabled"/>
+              </center>
           </div>
           <div class="card">
             <h3>กิจกรรม</h3>

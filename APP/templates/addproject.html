@@ -22,6 +22,7 @@
                 <div class="col-md-6">
                      สำนักงาน
                     <select name="ofid"  id="ofid" class="form-control" title="Select office"> 
+   
                         {% for row in office %}
                             <option value="{{row.of_id}}">{{row.of_name}}</option>
                         {% endfor %}
