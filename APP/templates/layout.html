@@ -77,9 +77,16 @@
 </script>
 <script>
   let dif = Number(document.getElementById('diff').value)
+  let dst = document.getElementById('appr').value
   document.getElementById('sta').style.color = "black";
   document.getElementById('day').style.color = "black";
-  if (dif < 0) {
+  if (dst == "yes") {
+    document.getElementById('sta').value = "เกินกำหนด";
+    document.getElementById('diff').value = Math.abs(dif);
+    document.getElementById('diff').style.color = "white";
+    document.getElementById('diff').style.background = "red";
+  }
+  else if (dif < 0) {
     document.getElementById('sta').value = "เกินกำหนด";
     document.getElementById('diff').value = Math.abs(dif);
     document.getElementById('diff').style.color = "white";
