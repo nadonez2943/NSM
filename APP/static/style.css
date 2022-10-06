@@ -5,6 +5,14 @@
         font-weight: bold;
         font-size: 18px;
      }
+.btn-outline{
+        padding: 7px 35px;
+        background-color:NONE; 
+        border: 2px solid rgba(10, 39, 97, 0.83);
+        color: rgba(10, 39, 97, 0.83);
+        font-weight: bold;
+        font-size: 18px;
+      }
 h1{
     Font-family: Inter;
     Font-style: Medium;
