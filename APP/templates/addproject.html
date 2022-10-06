@@ -9,7 +9,7 @@
    <br>
   
    <div class="jumbotron">
-   <form action="/addproject" method="post">
+   <form action="/addProject" method="post">
       <br>         
       <dl>
       <p>
@@ -61,7 +61,8 @@
          โดยใช้งบประมาณ:<input name="budgetSource" value="" type="text" style="width:153px; " placeholder="โดยใช้งบประมาณ " autocomplete="off" required>  &nbsp;&nbsp;
          ประจำปีงบประมาณ:<input name="budgetYears" value="" type="text" style="width:156px; " placeholder="ประจำปีงบประมาณ " autocomplete="off" required>
       </p>
-   
+      <p>วันที่เริ่มการร่างโครงการและราคากลาง:<input name="start_draft" value="" type="date" style="width:170px; " placeholder="วันที่เริ่มการร่างโครงการและราคากลาง" autocomplete="off" required>&nbsp;&nbsp; &nbsp;</p>
+      
       <br>
       <br>
       <br>
@@ -73,6 +74,9 @@
       </dl>
    </div>   
 </form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
 <script>
    $(document).ready(function () {
       
