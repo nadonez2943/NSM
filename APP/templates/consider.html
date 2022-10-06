@@ -130,8 +130,8 @@
             <label for="file">{{row[0]['stcon_name']}}</label>
             </center>
             <form action="/project/{{row[0]['pj_id']}}/consider" method="post">
-              <input name="stc" value="{{row[0]['stcon_id']}}" type="hidden">
-              <div align="center"><input type="submit" onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="อัพเดทสถานะ" ></div>
+              <input name="stc" id="stc" value="{{row[0]['stcon_id']}}" type="hidden">
+              <div align="center"><input type="submit" id="appbottonc"onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="อัพเดทสถานะ" ></div>
             </form>
           </div>
           <div class="card">

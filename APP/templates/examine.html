@@ -126,8 +126,8 @@
             <label for="file">{{row[0]['stex_name']}}</label>
             </center>
             <form action="/project/{{row[0]['pj_id']}}/examine" method="post">
-              <input name="ste" value="{{row[0]['stex_id']}}" type="hidden">
-              <div align="center"><input type="submit" onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="อัพเดทสถานะ" ></div>
+              <input name="ste" id="ste" value="{{row[0]['stex_id']}}" type="hidden">
+              <div align="center"><input type="submit" id="appbottone" onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="อัพเดทสถานะ" ></div>
             </form>
           </div>
           <div class="card">

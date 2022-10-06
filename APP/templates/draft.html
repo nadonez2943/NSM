@@ -127,8 +127,8 @@
             <form action="/project/{{row[0]['pj_id']}}/draft" method="post">
             <input name="std" id="std" value="{{row[0]['stdraft_id']}}" type="hidden">
             <input name="startd" value="{{row[0]['start_draft']}}" type="hidden">
-            <div align="center"><input type="submit" id="appbotton" onclick="return confirm('ยืนยัน')" value="อัพเดทสถานะ" ></form></div>
-            <div align="center"><form action="/project/{{row[0]['pj_id']}}/draft/unapproved" method="post"><input type="hidden" id="appbotton2" onclick="return confirm('ยืนยัน')" value="" ></form></div>
+            <div align="center"><input type="submit" id="appbotton" onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="อัพเดทสถานะ" ></form></div>
+            <div align="center"><form action="/project/{{row[0]['pj_id']}}/draft/unapproved" method="post"><input type="hidden" id="appbotton2" onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="" ></form></div>
           </div>
           <div class="card" id="divd">
             <lable>เริ่มการร่างโครงการ และราคากลาง</lable>
