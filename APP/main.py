@@ -765,39 +765,6 @@ def check():
     return render_template('check.html')
 
 #หน้าเพิ่มโครงการ
-# เพิ่มโปรเจค
-# @app.route('/addproject', methods=['POST'])
-# def user():
-#     conn = None
-#     cursor = None
-#     try:
-#         id = request.form['id']
-#         refNumber = request.form['refNumber']
-#         office = request.form['ofid']
-#         divition = request.form['dvid']
-#         type = request.form['radio']
-#         name = request.form['name']
-#         amount = request.form['amount']
-#         detail = request.form['detail']
-#         financeAmount = request.form['financeAmount']
-#         budgetSource = request.form['budgetSource']
-#         budgetYears = request.form['budgetYears']
-#         if  refNumber and office and divition and type and name and amount and detail and financeAmount and budgetSource and budgetYears and  request.method == 'POST':
-#             sql = "INSERT INTO projects (pj_refNumber, of_id, dv_id, pj_type, pj_name, pj_amount, pj_detail, pj_financeAmount, pj_budgetSource, pj_budgetYears) VALUES(%s, %s, %s, %s, %s,%s, %s, %s, %s, %s)"
-#             data = (refNumber,office,divition,type,name,amount,detail,financeAmount,budgetSource,budgetYears,)
-#             conn = mysql.connect()
-#             cursor = conn.cursor()
-#             cursor.execute(sql, data)
-#             conn.commit()
-#             return redirect('/runp/'+id)
-#         else:
-#             return 'Error'
-#     except Exception as e:
-#            print(e)
-#     finally:
-#            cursor.close() 
-#            conn.close()
-
 # ก่อนเอาไอดีpjไปเก็บ
 @app.route('/addProject',methods=['GET'])
 def addProjectview():
@@ -820,13 +787,14 @@ def addProject():
         pj_name = request.form['name']
         pj_type = request.form['radio']
         pj_amount = request.form['amount']
+        pj_detail = request.form['detail']
         pj_financeAmount = request.form['financeAmount']
         pj_budgetSource = request.form['budgetSource']
         pj_budgetYears = request.form['budgetYears']
         start_draft = request.form['start_draft']
-        if  pj_refNumber and of_id and dv_id and pj_name and pj_type and pj_amount and pj_financeAmount and pj_budgetSource and pj_budgetYears and request.method == 'POST':
-            sql1 = "INSERT INTO projects (pj_refNumber,of_id,dv_id,pj_name,pj_type,pj_amount,pj_financeAmount,pj_budgetSource,pj_budgetYears) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            data1 = (pj_refNumber,of_id,dv_id,pj_name,pj_type,pj_amount,pj_financeAmount,pj_budgetSource,pj_budgetYears)
+        if  pj_refNumber and of_id and dv_id and pj_name and pj_type and pj_amount and pj_detail and pj_financeAmount and pj_budgetSource and pj_budgetYears and request.method == 'POST':
+            sql1 = "INSERT INTO projects (pj_refNumber,of_id,dv_id,pj_name,pj_type,pj_amount,pj_detail,pj_financeAmount,pj_budgetSource,pj_budgetYears) VALUES(%s, %s, %s, %s,%s, %s, %s, %s, %s, %s)"
+            data1 = (pj_refNumber,of_id,dv_id,pj_name,pj_type,pj_amount,pj_detail,pj_financeAmount,pj_budgetSource,pj_budgetYears)
             cursor.execute(sql1, data1)
             cursor = conn.cursor(pymysql.cursors.DictCursor)
             cursor.execute("SELECT pj_id FROM nsm_project.projects order by pj_id DESC;")
