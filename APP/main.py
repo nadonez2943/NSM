@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from pickle import TRUE
 from ssl import AlertDescription
 from click import confirm
@@ -11,6 +12,7 @@ from werkzeug.utils import secure_filename
 import os
 from wtforms.validators import InputRequired
 from datetime import date
+
 
 ALLOWED_EXTENSIONS = {'doc', 'pdf'}
 
@@ -689,20 +691,29 @@ def update_std(id):
     conn = None
     cursor = None
     try:
-        pj_id = id
         std = request.form['std']
+        start_draft = request.form['startd']
         stdraft_id = int(std)+1
-        if stdraft_id > 4 :
-            stdraft = 4
-        elif stdraft_id < 5 :
+        stdd = int(std)
+        if stdd == 3 :
             stdraft = stdraft_id
-        sql = "UPDATE process SET stdraft_id=%s WHERE pj_id=%s"
-        data = (stdraft, id)
+            draftapp_status = 'yes'
+            sdd = start_draft
+        elif stdd ==2 :
+            stdraft = stdraft_id
+            draftapp_status = ''
+            sdd = date.today()
+        elif stdd < 2 :
+            stdraft = stdraft_id
+            draftapp_status = ''
+            sdd = NULL
+        sql = "UPDATE process SET stdraft_id=%s,draftapp_status=%s, start_draft=%s WHERE pj_id=%s"
+        data = (stdraft,draftapp_status,sdd, id)
         conn = mysql.connect()
         cursor = conn.cursor()
         cursor.execute(sql, data)
         conn.commit()
-        return redirect('/project/'+str(pj_id)+'/draft')
+        return redirect('/project/'+str(id)+'/draft')
     except Exception as e:
            print(e)
     finally:
@@ -714,7 +725,6 @@ def update_stc(id):
     conn = None
     cursor = None
     try:
-        pj_id = id
         stc = request.form['stc']
         stcon_id = int(stc)+1
         if stcon_id > 4 :
@@ -727,7 +737,7 @@ def update_stc(id):
         cursor = conn.cursor()
         cursor.execute(sql, data)
         conn.commit()
-        return redirect('/project/'+str(pj_id)+'/consider')
+        return redirect('/project/'+str(id)+'/consider')
     except Exception as e:
            print(e)
     finally:
@@ -739,7 +749,6 @@ def update_ste(id):
     conn = None
     cursor = None
     try:
-        pj_id = id
         ste = request.form['ste']
         stex_id = int(ste)+1
         if stex_id > 4 :
@@ -752,13 +761,33 @@ def update_ste(id):
         cursor = conn.cursor()
         cursor.execute(sql, data)
         conn.commit()
-        return redirect('/project/'+str(pj_id)+'/examine')
+        return redirect('/project/'+str(id)+'/examine')
     except Exception as e:
            print(e)
     finally:
            cursor.close() 
            conn.close()
 
+#ไม่อนุมัติ
+@app.route('/project/<int:id>/draft/unapproved', methods=['POST'])
+def unapproved(id):
+    conn = None
+    cursor = None
+    try:
+        stdraft = 2
+        draftapp_status = 'no'
+        sql = "UPDATE process SET stdraft_id=%s,draftapp_status=%s WHERE pj_id=%s"
+        data = (stdraft,draftapp_status, id)
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute(sql, data)
+        conn.commit()
+        return redirect('/project/'+str(id)+'/draft')
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close()
 #หน้างวด
 @app.route('/check')
 def check():

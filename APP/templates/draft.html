@@ -4,6 +4,14 @@
   {% block body %}
   <head>
     <style>
+      input[id="appbotton2"]{
+      border: none;
+      height: 48px;
+      border-radius: 4px;
+      background: transparent;
+      text-align: center;
+      
+    }
     input[id="sta"]{
       height: 35px;
       width: 90px;
@@ -27,8 +35,8 @@
       
     }
     input[id="status"]{
-      height: 35px;
-      width: 70px;
+      height: 40px;
+      width: 130px;
       border: none;
       border-radius: 5px;
       background: transparent;
@@ -108,7 +116,7 @@
           
         </div>
         <div class="rightcolumn" style="background-color:#ffffff;">
-          <div class="card">
+          <div class="card" >
             <center>
             <h1>สถานะ</h1>
             <progress id="file" value="{{row[0]['stdraft_percent']}}" max="100"> </progress>    
@@ -117,23 +125,24 @@
             <label for="file">{{row[0]['stdraft_name']}}</label>
             </center>
             <form action="/project/{{row[0]['pj_id']}}/draft" method="post">
-            <input name="std" value="{{row[0]['stdraft_id']}}" type="hidden">
-            <input id="stdid" value="{{row[0]['stdraft_id']}}" type="hidden">
-            <div align="center"><input type="submit" id="appbotton" onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="อัพเดทสถานะ" ></div>
-          </form>
+            <input name="std" id="std" value="{{row[0]['stdraft_id']}}" type="hidden">
+            <input name="startd" value="{{row[0]['start_draft']}}" type="hidden">
+            <div align="center"><input type="submit" id="appbotton" onclick="return confirm('ยืนยัน')" value="อัพเดทสถานะ" ></form></div>
+            <div align="center"><form action="/project/{{row[0]['pj_id']}}/draft/unapproved" method="post"><input type="hidden" id="appbotton2" onclick="return confirm('ยืนยัน')" value="" ></form></div>
           </div>
-          <div class="card">
+          <div class="card" id="divd">
             <lable>เริ่มการร่างโครงการ และราคากลาง</lable>
             <lable>วันที่ {{diff[0]['startdate']}}</lable><br>
             <lable>สิ้นสุดการร่างโครงการ และราคากลาง</lable>
             <lable>วันที่ {{diff[0]['endproject_date']}}</lable><br>
             <leble>
+              <!-- <input type="hidden" id="strd" value="{{diff[0]['startdate']}}" > -->
               <input type="hidden" id="appr" value="{{row[0]['draftapp_status']}}" >
             <input type="text" id="sta" value="คงเหลือ" disabled="disabled"/>
                 <input type="text" id="diff" value="{{diff[0]['diff']}}" disabled="disabled"/>
                 <input id="day" value="วัน" disabled="disabled"/></lable>
                 <center>
-              <input id="status" value="" disabled="disabled"/>
+              <input type ="hidden"id="status" value="" disabled="disabled"/>
               </center>
           </div>
           <div class="card">

@@ -75,16 +75,49 @@
       });
   });
 </script>
+
 <script>
-  let dif = Number(document.getElementById('diff').value)
-  let dst = document.getElementById('appr').value
+  var stdd = document.getElementById('std').value;
+  if (stdd == "3") {
+    document.getElementById('appbotton').value = "อนุมัติ";
+    document.getElementById('appbotton2').value = "ไม่อนุมัติ";
+    document.getElementById('appbotton2').type = "submit";
+    document.getElementById('appbotton2').style.color = "white";
+    document.getElementById('appbotton2').style.background = "#2E4778";
+  }
+  else if (stdd == "4") {
+    document.getElementById('appbotton').type = "hidden";  
+  }
+</script>
+
+<script> 
+  var dif = Number(document.getElementById('diff').value);
+  var dst = document.getElementById('appr').value;
+  // var strdd = document.getElementById('strd').value;
   document.getElementById('sta').style.color = "black";
   document.getElementById('day').style.color = "black";
+  // if (strdd == Date(2022, 10, 7)) {
+  //   document.getElementById('strd').style.display = 'none';
+  // }
   if (dst == "yes") {
-    document.getElementById('sta').value = "เกินกำหนด";
-    document.getElementById('diff').value = Math.abs(dif);
-    document.getElementById('diff').style.color = "white";
-    document.getElementById('diff').style.background = "red";
+    document.getElementById('sta').type = "hidden";
+    document.getElementById('diff').type = "hidden";
+    document.getElementById('day').type = "hidden";
+    document.getElementById('status').type = "text";
+    document.getElementById('status').value = "ผ่านการอนุมัติ";
+    document.getElementById('status').style.color = "white";
+    document.getElementById('diff').style.background = "transparent";
+    document.getElementById('status').style.background = "green";
+  }
+  else if (dst == "no") {
+    document.getElementById('sta').type = "hidden";
+    document.getElementById('diff').type = "hidden";
+    document.getElementById('day').type = "hidden";
+    document.getElementById('status').type = "text";
+    document.getElementById('status').value = "ไม่ผ่านการอนุมัติ";
+    document.getElementById('status').style.color = "white";
+    document.getElementById('diff').style.background = "transparent";
+    document.getElementById('status').style.background = "red";
   }
   else if (dif < 0) {
     document.getElementById('sta').value = "เกินกำหนด";
