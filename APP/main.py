@@ -119,8 +119,10 @@ def project(id):
         rows = cursor.fetchall()
         cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate,TIME_FORMAT(ev_time, %s) as evtime FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.events.ev_id desc",(format,tformat,id))
         ev = cursor.fetchall()
+        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(pac_date , INTERVAL 543 YEAR ), %s) as pacdate FROM nsm_project.pacel RIGHT JOIN nsm_project.projects ON nsm_project.projects.pj_id = nsm_project.pacel.pj_id WHERE nsm_project.projects.pj_id=%s ORDER BY pac_id DESC",(format,id))
+        pac = cursor.fetchall()
         if rows:
-            return render_template('project.html', row=row , rows=rows , id=id ,ev=ev)
+            return render_template('project.html', row=row , rows=rows , id=id , ev=ev, pac=pac)
         else:
             return 'Error loading #{id}'.format(id=id)
     except Exception as e:
@@ -788,10 +790,10 @@ def unapproved(id):
         conn.commit()
         return redirect('/project/'+str(id)+'/draft')
     except Exception as e:
-           print(e)
+        print(e)
     finally:
-           cursor.close() 
-           conn.close()
+        cursor.close() 
+        conn.close()
 #หน้างวด
 @app.route('/check')
 def check():
@@ -1090,6 +1092,52 @@ def editcontractor(id):
     finally:
         cursor.close() 
         conn.close()
+
+#หน้าประกาศจาก กพ. -----------------------------------------------------------------------------------------------------------------------------------
+@app.route('/project/<int:id>/viewpac', methods=[ 'GET'])
+def viewpac(id):
+    conn = None
+    cursor = None
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(pac_date , INTERVAL 543 YEAR ), %s) as pacdate FROM nsm_project.pacel RIGHT JOIN nsm_project.projects ON nsm_project.projects.pj_id = nsm_project.pacel.pj_id WHERE nsm_project.projects.pj_id=%s ORDER BY pac_id DESC",(format,id))
+    pac = cursor.fetchall()
+    return render_template('viewpac.html', id=id,pac=pac)
+
+@app.route('/project/<int:id>/addpacview', methods=[ 'GET'])
+def addpacview(id):
+    conn = None
+    cursor = None
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(pac_date , INTERVAL 543 YEAR ), %s) as pacdate FROM nsm_project.pacel RIGHT JOIN nsm_project.projects ON nsm_project.projects.pj_id = nsm_project.pacel.pj_id WHERE nsm_project.projects.pj_id=%s ORDER BY pac_id DESC",(format,id))
+    pac = cursor.fetchall()
+    return render_template('addpac.html', id=id,pac=pac)
+
+@app.route('/addpac/<int:id>', methods=[ 'POST'])
+def addpac(id):
+    conn = None
+    cursor = None
+    try:
+        pac_detail = request.form['pac_detail']
+        pac_date = request.form['pac_date']
+        if pac_detail and pac_date and request.method == 'POST':
+            sql = "INSERT INTO pacel(pac_detail,pac_date,pj_id) VALUES(%s, %s, %s)"
+            data = (pac_detail,pac_date,id)
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute(sql, data)
+            conn.commit()
+            return redirect('/project/'+str(id)+'/draftEvent')
+        else:
+            return 'ไม่สามารถเพิ่มกิจกรรมได้'
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close()
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------
     
 
 if __name__ == "__main__":
