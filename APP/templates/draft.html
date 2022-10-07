@@ -43,10 +43,90 @@
       text-align: center;
       
     }
+    input[id="nstt"]{
+      height: 35px;
+      width: 110px;
+      border: none;
+      border-radius: 5px;
+      color:black;
+      background: transparent;
+      text-align: center;  
+    }
+    input[id="nstt2"]{
+      height: 35px;
+      width: 130px;
+      border: none;
+      border-radius: 5px;
+      color:black;
+      background: transparent;
+      text-align: center;  
+    }
+    input[id="msta"]{
+      height: 35px;
+      width: 250px;
+      border: none;
+      background: transparent;
+      text-align: center;
+      font-size: 1.5em;
+    }
+    input[id="mdiff"]{
+      height: 35px;
+      width: 50px;
+      border: none;
+      background: transparent;
+      text-align: center;
+      font-size: 1.5em;
+    }
+    input[id="mday"]{
+      height: 35px;
+      width: 50px;
+      border: none;
+      background: transparent;
+      text-align: center;
+      font-size: 1.5em;
+    }
+    /* The Modal (background) */
+.modall {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modall-content {
+  background-color: #ff0000;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid rgb(161, 161, 161);
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #ffffff;
+  float: right;
+  font-size: 38px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
   </style>
+
   </head>
       <body>
-
       <div class="row">
         <p>
           <br><h1>ร่างโครงการ และราคากลาง</h1>
@@ -112,6 +192,21 @@
                  <p align="right"><a href="/project/{{id}}/editproject" >แก้ไข</a></p>
               <!-- </form> -->
             </div>
+
+<!-- The Modal -->
+<div id="modall" class="modall">
+
+  <!-- Modal content -->
+  <div class="modall-content" id="modall-con">
+    <span class="close" id="clo">&times;</span>
+    <center>
+    <input type="text" id="msta" value="ระยะเวลาร่างคงเหลือ" disabled="disabled"/>
+                <input type="text" id="mdiff" value="{{diff[0]['diff']}}" disabled="disabled"/>
+                <input id="mday" value="วัน" disabled="disabled"/>
+    </center>
+  </div>
+
+</div>
           </div>
           
         </div>
@@ -121,21 +216,28 @@
             <h1>สถานะ</h1>
             <progress id="file" value="{{row[0]['stdraft_percent']}}" max="100"> </progress>    
             <br>
-            <br>
+            
             <label for="file">{{row[0]['stdraft_name']}}</label>
             </center>
             <form action="/project/{{row[0]['pj_id']}}/draft" method="post">
             <input name="std" id="std" value="{{row[0]['stdraft_id']}}" type="hidden">
             <input name="startd" value="{{row[0]['start_draft']}}" type="hidden">
-            <div align="center"><input type="submit" id="appbotton" onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="อัพเดทสถานะ" ></form></div>
+            <div align="center"><input type="submit" id="appbotton" onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="สถานะถัดไป" ></form></div>
             <div align="center"><form action="/project/{{row[0]['pj_id']}}/draft/unapproved" method="post"><input type="hidden" id="appbotton2" onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="" ></form></div>
+            <input name="nstd" value="{{nst[0]['stdraft']}}" type="hidden">
+            <center>
+              <lable>
+            <input id="nstt" value="สถานะถัดไป:" disabled="disabled"/>
+            <input id="nstt2" value="{{nst[0]['stdraft_name']}}" disabled="disabled"/>
+          </lable>
+          </center>
           </div>
           <div class="card" id="divd">
             <lable>เริ่มการร่างโครงการ และราคากลาง</lable>
             <lable>วันที่ {{diff[0]['startdate']}}</lable><br>
             <lable>สิ้นสุดการร่างโครงการ และราคากลาง</lable>
             <lable>วันที่ {{diff[0]['endproject_date']}}</lable><br>
-            <leble>
+            <lable>
               <!-- <input type="hidden" id="strd" value="{{diff[0]['startdate']}}" > -->
               <input type="hidden" id="appr" value="{{row[0]['draftapp_status']}}" >
             <input type="text" id="sta" value="คงเหลือ" disabled="disabled"/>
@@ -159,4 +261,5 @@
       </div>
       <br>
       <a class="btn btn-primary btn-lg" type="button" href="/project/{{row[0]['pj_id']}}">ย้อนกลับ</a>
+      </body>
     {% endblock %}
