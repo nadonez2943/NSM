@@ -2,6 +2,28 @@
   {% extends 'layout.html' %}
   
   {% block body %}
+  <head>
+  <style>
+  input[id="nstt"]{
+    height: 35px;
+    width: 110px;
+    border: none;
+    border-radius: 5px;
+    color:black;
+    background: transparent;
+    text-align: center;  
+  }
+  input[id="nstt2"]{
+    height: 35px;
+    width: 130px;
+    border: none;
+    border-radius: 5px;
+    color:black;
+    background: transparent;
+    text-align: center;  
+  }
+</style>
+</head>
       <body>
       
       <div class="row">
@@ -126,13 +148,20 @@
             <h1>สถานะ</h1>
             <progress id="file" value="{{row[0]['stcon_percent']}}" max="100"></progress>    
             <br>
-            <br>
+            
             <label for="file">{{row[0]['stcon_name']}}</label>
             </center>
             <form action="/project/{{row[0]['pj_id']}}/consider" method="post">
               <input name="stc" id="stc" value="{{row[0]['stcon_id']}}" type="hidden">
-              <div align="center"><input type="submit" id="appbottonc"onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="อัพเดทสถานะ" ></div>
+              <div align="center"><input type="submit" id="appbottonc"onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="สถานะถัดไป" ></div>
             </form>
+            <input name="nstc" value="{{nst[0]['stcon']}}" type="hidden">
+            <center>
+              <lable>
+            <input id="nstt" value="สถานะถัดไป:" disabled="disabled"/>
+            <input id="nstt2" value="{{nst[0]['stcon_name']}}" disabled="disabled"/>
+          </lable>
+          </center>
           </div>
           <div class="card">
             <h3>กิจกรรม</h3>
