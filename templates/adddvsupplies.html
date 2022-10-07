@@ -1,0 +1,37 @@
+<doctype html>
+    {% extends 'layout.html' %}
+    {% block body %}
+    <br>
+    <br>
+    <p>
+    <form method='POST' action="" >
+        <div  class="jumbotron">
+            <h3 align="center">ประกาศจากกองพัสดุ</h3>
+            
+            <br>
+            <div class="row">
+                <div class="col-25">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;รายละเอียดประกาศ
+                </div>
+                <div class="col-75">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="path_name" type="text" style="width:500px; " placeholder="รายละเอียดประกาศ" autocomplete="off" required> </input>
+                </div>
+                <div class="col-25">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;วันที่
+                </div>
+                <div class="col-75">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="path_detail" type="text" style="width:500px;"placeholder="วันที่" autocomplete="off" required></input>
+                </div>
+            </div>
+            <br>
+            <br>
+            <CENTER>
+                <p>
+                   <input type="submit" class="btn" value="เพิ่มประกาศ">
+                </p>
+            </CENTER>
+        </div>
+    </p>
+
+
+    {% endblock %}

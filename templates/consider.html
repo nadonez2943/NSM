@@ -13,7 +13,7 @@
             <div >
               <form action="/action_page.php">
                 <div class="row">
-                  <h align="right" >เลขสารบัญ {{row[0]['pj_refNumber']}}</h>
+                  <h align="right" >เลขสรรบัญ {{row[0]['pj_refNumber']}}</h>
                 </div>
                 <div class="row">
                   <div class="col-25">
@@ -39,7 +39,7 @@
                     {% for result in row %}
                     <div class="row"><div class="col-75"><label>{{result['user_fullname']}}</label></div><div class="col-25"><label >{{result['role_name']}}</label></div></div>
                     {% endfor %}
-                    <div align="Right"><a href="addboard" role="button"> เพิ่มกรรมการ</a></div>
+                    <div align="Right"><a href="addboardc" role="button">แก้ไขรายชื่อคณะกรรมการ</a></div>
                   </div>
                 </div>
                 <div class="row">
@@ -55,7 +55,7 @@
                     <label>งบประมาณ</label>
                   </div>
                   <div class="col-75">
-                    <label>{{row[0]['pj_amount']}}</label>
+                    <label>{{row[0]['pjamount']}} บาท</label>
                   </div>
                 </div>
                 <div class="row">
@@ -68,8 +68,8 @@
                   </div>
                 </div>
               </form>
+               <p align="right"><a href="/project/{{id}}/editproject" >แก้ไข</a></p>
             </div>
-            <a href="#" align="right">แก้ไข</a>
           </div>
           <div class="card">
             <div class="row">
@@ -89,10 +89,10 @@
               </div>
             </div><div class="row">
               <div class="col-25">
-                <label>ค่ารับเหมา</label>
+                <label>อีเมล</label>
               </div>
               <div class="col-75">
-                <label>{{row[0]['contt_fee']}}</label>
+                <label>{{row[0]['contt_email']}}</label>
               </div>
             </div><div class="row">
               <div class="col-25">
@@ -111,13 +111,12 @@
             </div><div class="row">
               <div class="col-25">
                 <label>ระยะเวลาคงเหลือ</label>
-                
               </div>
               <div class="col-75">
-                <label>พันล้านปี</label>
+                <label>{{row[0]['condiff']}} วัน</label>
               </div>
             </div>
-            <p align="right"><a href="/addconsider" >เพิ่ม</a><a href="/editconsider" > แก้ไข</a></p>
+            <p align="right"><a href="/addcontractor/{{id}}" >เพิ่ม</a><a href="/editcontractor/{{id}}" > แก้ไข</a></p>
           </div>
         </div>
          
@@ -130,19 +129,27 @@
             <br>
             <label for="file">{{row[0]['stcon_name']}}</label>
             </center>
-            <div align="Right"><a href ="/" >อัพเดทสถานะ</a></div>
+            <form action="/project/{{row[0]['pj_id']}}/consider" method="post">
+              <input name="stc" value="{{row[0]['stcon_id']}}" type="hidden">
+              <div align="center"><input type="submit" onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="อัพเดทสถานะ" ></div>
+            </form>
           </div>
           <div class="card">
-            <h3>Event</h3>
+            <h3>กิจกรรม</h3>
             <p>{{ev[0]['ev_name']}}</p>
-            <p>{{ev[0]['evdate']}}</p>
-            <a align="right" href="conevent">ดูเพิ่มเติม</a>
+            <p>วันที่ {{ev[0]['evdate']}}</p>
+            <p>เวลา {{ev[0]['evtime']}} น.</p>
+            <a align="right" href="considerEvent">ดูเพิ่มเติม</a>
           </div>
-          
+          <div class="card">
+            <a align="center" href="doc/2">เอกสารโครงการ</a>
+          </div>
+          <div class="card">
+            <a align="center" href="/adddvsipplies">เพิ่มประกาศจากกองพัสดุ</a>
+          </div>
         </div>
       </div>
       <br>
-      
-      <input class="btn btn-primary btn-lg" type="button" onclick="history.back()" value="ย้อนกลับ">
+      <a class="btn btn-primary btn-lg" type="button" href="/project/{{row[0]['pj_id']}}">ย้อนกลับ</a>
       
   {% endblock %}

@@ -2,6 +2,18 @@
   {% extends 'layout.html' %}
   
   {% block body %}
+  <head>
+    <style>
+    input[type="text"]{
+      height: 35px;
+      width: 90px;
+      border: none;
+      background: transparent;
+      text-align: center;
+      
+  }
+  </style>
+  </head>
       <body>
 
       <div class="row">
@@ -13,7 +25,7 @@
             <div class="container">
               <!-- <form action="/action_page.php"> -->
                 <div class="row">
-                    <h align="right" >เลขสารบัญ {{row[0]['pj_refNumber']}}</h>
+                    <h align="right" >เลขสรรบัญ {{row[0]['pj_refNumber']}}</h>
                   </div>
                 <div class="row">
                   <div class="col-25">
@@ -39,7 +51,7 @@
                     {% for result in row %}
                     <div class="row"><div class="col-75"><label>{{result['user_fullname']}}</label></div><div class="col-25"><label >{{result['role_name']}}</label></div></div>
                     {% endfor %}
-                    <div align="Right"><a href="addboard" role="button"> เพิ่มกรรมการ</a></div>
+                    <div align="Right"><a href="addboardd" role="button"> แก้ไขรายชื่อคณะกรรมการ</a></div>
                   </div>
                 </div>
                 <div class="row">
@@ -54,7 +66,7 @@
                     <label>งบประมาณ</label>
                   </div>
                   <div class="col-75">
-                    <label>{{row[0]['pj_amount']}}</label>
+                    <label>{{row[0]['pjamount']}} บาท</label>
                   </div>
                 </div>
                 <div class="row">
@@ -66,6 +78,7 @@
                     </label>
                   </div>
                 </div>
+                 <p align="right"><a href="/project/{{id}}/editproject" >แก้ไข</a></p>
               <!-- </form> -->
             </div>
           </div>
@@ -80,19 +93,39 @@
             <br>
             <label for="file">{{row[0]['stdraft_name']}}</label>
             </center>
-            <div align="Right"><a href ="/" >อัพเดทสถานะ</a></div>
+            <form action="/project/{{row[0]['pj_id']}}/draft" method="post">
+            <input name="std" value="{{row[0]['stdraft_id']}}" type="hidden">
+            <div align="center"><input type="submit" onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="อัพเดทสถานะ" ></div>
+          </form>
           </div>
           <div class="card">
-            <h3>Event</h3>
+            {% for result in diff %}
+            <lable>เริ่มการร่างโครงการ และราคากลาง</lable>
+            <lable>วันที่ {{result['startdate']}}</lable><br>
+            <lable>สิ้นสุดการร่างโครงการ และราคากลาง</lable>
+            <lable>วันที่ {{result['endproject_date']}}</lable><br>
+            
+            <leble>คงเหลือ</lable>
+                <input type="text" id="diff" value="{{result['diff']}}" disabled="disabled"/>
+            <leble>วัน</lable>
+          
+            {% endfor %}
+          </div>
+          <div class="card">
+            <h3>กิจกรรม</h3>
             <p>{{ev[0]['ev_name']}}</p>
-            <p>{{ev[0]['evdate']}}</p>
+            <p>วันที่ {{ev[0]['evdate']}}</p>
+            <p>เวลา {{ev[0]['evtime']}} น.</p>
             <a align="right" href="draftEvent">ดูเพิ่มเติม</a>
           </div>
           <div class="card">
-            <a align="center" href="doc">เอกสารโครงการ</a>
+            <a align="center" href="doc/1">เอกสารโครงการ</a>
+          </div>
+          <div class="card">
+            <a align="center" href="/adddvsipplies">เพิ่มประกาศจากกองพัสดุ</a>
           </div>
         </div>
       </div>
       <br>
-      <input class="btn btn-primary btn-lg" type="button" onclick="history.back()" value="ย้อนกลับ">
+      <a class="btn btn-primary btn-lg" type="button" href="/project/{{row[0]['pj_id']}}">ย้อนกลับ</a>
     {% endblock %}

@@ -11,7 +11,7 @@
         <div class="leftcolumn">
           <div class="card">
             <div class="row">
-              <h align="right" >เลขสารบัญ {{row[0]['pj_refNumber']}}</h>
+              <h align="right" >เลขสรรบัญ {{row[0]['pj_refNumber']}}</h>
               </div>
               <div class="row">
                 <div class="col-25">
@@ -37,7 +37,7 @@
                   {% for result in row %}
                   <div class="row"><div class="col-75"><label>{{result['user_fullname']}}</label></div><div class="col-25"><label >{{result['role_name']}}</label></div></div>
                   {% endfor %}
-                  <div align="Right"><a href="addboard" role="button"> เพิ่มกรรมการ</a></div>
+                  <div align="Right"><a href="addboarde" role="button">แก้ไขรายชื่อคณะกรรมการ</a></div>
                 </div>
               </div>
               <div class="row">
@@ -53,7 +53,7 @@
                   <label>งบประมาณ</label>
                 </div>
                 <div class="col-75">
-                  <label>{{row[0]['pj_amount']}}</label>
+                  <label>{{row[0]['pjamount']}} บาท</label>
                 </div>
               </div>
               <div class="row">
@@ -65,6 +65,7 @@
                 </label>
               </div>
             </div>
+             <p align="right"><a href="/project/{{id}}/editproject" >แก้ไข</a></p>
           </div>
           <div class="card">
             <div class="row">
@@ -84,10 +85,10 @@
               </div>
             </div><div class="row">
               <div class="col-25">
-                <label>ค่ารับเหมา</label>
+                <label>อีเมล</label>
               </div>
               <div class="col-75">
-                <label>{{row[0]['contt_fee']}}</label>
+                <label>{{row[0]['contt_email']}}</label>
               </div>
             </div><div class="row">
               <div class="col-25">
@@ -109,10 +110,10 @@
                 
               </div>
               <div class="col-75">
-                <label>พันล้านปี</label>
+                <label>{{row[0]['condiff']}} วัน</label>
               </div>
             </div>
-            <p align="right"><a href="/addexamine" >เพิ่ม</a><a href="#" > แก้ไข</a></p>
+           
           </div>
         </div>
         <div class="rightcolumn" style="background-color:#ffffff;">
@@ -124,30 +125,39 @@
             <br>
             <label for="file">{{row[0]['stex_name']}}</label>
             </center>
+            <form action="/project/{{row[0]['pj_id']}}/examine" method="post">
+              <input name="ste" value="{{row[0]['stex_id']}}" type="hidden">
+              <div align="center"><input type="submit" onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="อัพเดทสถานะ" ></div>
+            </form>
           </div>
           <div class="card">
-            <h3>Event</h3>
+            <h3>กิจกรรม</h3>
             <p>{{ev[0]['ev_name']}}</p>
-            <p>{{ev[0]['evdate']}}</p>
+            <p>วันที่ {{ev[0]['evdate']}}</p>
+            <p>เวลา {{ev[0]['evtime']}} น.</p>
             <a align="right" href="examineEvent">ดูเพิ่มเติม</a>
           </div>
           <div class="card">
             <h3>การตรวจงาน</h3>
             <p>
               <a>งวดที่ {{dis[0]['ins_no']}}</a><br>
-              <a>ประจำวันที่ {{dis[0]['insdate']}}</a>
+              <a>ประจำวันที่ {{dis[0]['checkdate']}}</a>
               <p>
                 <a>รายละเอียด</a>
-                <a>{{dis[0]['dis_detail']}}</a>
+                <a>{{dis[0]['check_detail']}}</a>
               </p>
             </p>
-            <a align="right" href="check">ทั้งหมด</a>
+            <a align="right" href="/check">ทั้งหมด</a>
           </div>
           <div class="card">
-            <a align="center" href="doc">เอกสารโครงการ</a>
+            <a align="center" href="doc/3">เอกสารโครงการ</a>
+          </div>
+          <div class="card">
+            <a align="center" href="/adddvsipplies">เพิ่มประกาศจากกองพัสดุ</a>
           </div>
         </div>
       </div>
       <br>
-      <input class="btn btn-primary btn-lg" type="button" onclick="history.back()" value="ย้อนกลับ">
+      <a class="btn btn-primary btn-lg" type="button" href="/project/{{row[0]['pj_id']}}">ย้อนกลับ</a>
+      
   {% endblock %}
