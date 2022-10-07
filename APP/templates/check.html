@@ -1,116 +1,119 @@
 <doctype html>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    {% extends 'layout.html' %}  
-      {% block body %}
-                
-            <p>
-              <br><h1>ตรวจรับโครงการ</h1>
-            </p>
-          
-            <script type="text/javascript">
-             function showDiv(Div) {
-                  var x = document.getElementById(Div);
-                      if(x.style.display=="none") {
-                          x.style.display = "block";}
-                      else { x.style.display = "none";}
-              }
-              </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  {% extends 'layout.html' %}  
+    {% block body %}
               
-               <p><button class="btn" onclick="showDiv('toggle')">เพิ่มการตรวจ</button></p>
-              
-              <div id="toggle" style="display:none">
-                <div class="jumbotron">
-                      <center><h1>การตรวจงวดงาน</h1></center>
-                      <form action="/addchecks" method="post">
-                      <br>
-                      <div class="row">
-                          <div class="col-25">
-                            <label>งวดที่</label>
-                          </div>
-                          <div class="col-75">
-                              <label><input name="ins_no" value="" type="text" style="width:300px; " placeholder="งวดที่" autocomplete="off" required> </p></label>
-                          </div>
-                      </div>
-                      <div class="row">
+          <p>
+            <br><h1>ตรวจรับโครงการ</h1>
+          </p>
+        
+          <script type="text/javascript">
+           function showDiv(Div) {
+                var x = document.getElementById(Div);
+                    if(x.style.display=="none") {
+                        x.style.display = "block";}
+                    else { x.style.display = "none";}
+            }
+            </script>
+            
+             <p><button class="btn" onclick="showDiv('toggle')">เพิ่มการตรวจ</button></p>
+            
+            <div id="toggle" style="display:none">
+              <div class="jumbotron">
+                    <center><h1>การตรวจงวดงาน</h1></center>
+                    <form action="/addcheck" method="post">
+                    <br>
+                    <p><input name="pj_id" value="{{row[0]['pj_id']}}" type="hidden"></p>
+
+                    <div class="row">
                         <div class="col-25">
-                          <label>วันที่ตรวจรับ</label>
+                          <label>งวดที่</label>
                         </div>
                         <div class="col-75">
-                          <label><input name="ins_date" value="" type="date"></input></label>
+                            <label><input name="ins_no" value="" type="text" style="width:300px; "  placeholder="งวดที่" autocomplete="off" required> </p></label>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-25">
-                          <label>เลขที่สัญญา</label>
-                        </div>
-                        <div class="col-75">
-                          <label><input name="" value="" type="text" style="width:500px; " placeholder="เลขที่สัญญา" autocomplete="off" required> </p></label>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-25">
-                          <label>รายละเอียดการตรวจรับ</label>
-                        </div>
-                        <div class="col-75">
-                          <label><input name="" value="" type="text" style="width:700px; " placeholder="รายละเอียดการตรวจรับ" autocomplete="off" required> </p></label>
-                        </div>
-                      </div>
-                      <div class="row">
-                          <div class="col-25">
-                            <label>วันที่เบิกจ่าย</label>
-                          </div>
-                          <div class="col-75">
-                          <label><input name="" value="" type="date"></input></label>
-                          </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-25">
-                          <label>รายละเอียดการเบิกจ่าย</label>
-                        </div>
-                        <div class="col-75">
-                          <label><input name="" value="" type="text" style="width:700px; " placeholder="รายละเอียดการเบิกจ่าย" autocomplete="off" required> </p></label>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-25">
-                          <label>ยอดที่เบิกจ่าย</label>
-                        </div>
-                        <div class="col-75">
-                          <label><input name="" value="" type="text" style="width:700px; " placeholder="ยอดที่เบิกจ่าย" autocomplete="off" required> </p></label>
-                        </div>
-                      </div>
-                   <center><input type="submit" class="btn" value="เพิ่ม"></center>
                     </div>
-                 
+                    <div class="row">
+                      <div class="col-25">
+                        <label>เลขที่สัญญา</label>
+                      </div>
+                      <div class="col-75">
+                        <label><input name="contractNo" value="" type="text" style="width:300px; " placeholder="เลขที่สัญญา" autocomplete="off" required> </p></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-25">
+                        <label>วันที่ตรวจรับ</label>
+                      </div>
+                      <div class="col-75">
+                        <label><input name="check_date" value="" type="date"></input></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-25">
+                        <label>รายละเอียดการตรวจรับ</label>
+                      </div>
+                      <div class="col-75">
+                        <label><input name="check_detail" value="" type="text" style="width:700px; height: 100px;  " placeholder="" autocomplete="off" required> </p></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                          <label>วันที่เบิกจ่าย</label>
+                        </div>
+                        <div class="col-75">
+                        <label><input name="ins_date" value="" type="date"></input></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-25">
+                        <label>ยอดที่เบิกจ่าย</label>
+                      </div>
+                      <div class="col-75">
+                        <label><input name="ins_amount" value="" type="text" style="width:300px; " placeholder="ยอดที่เบิกจ่าย" autocomplete="off" required> </p></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-25">
+                        <label>รายละเอียดการเบิกจ่าย</label>
+                      </div>
+                      <div class="col-75">
+                        <label><input name="ins_detail" value="" type="text" style="width:700px; height: 100px; " placeholder="" autocomplete="off" required> </p></label>
+                      </div>
+                    </div>
+                  
+                 <center><input type="submit" class="btn" value="เพิ่ม"></center>
                   </div>
-              </form>
-              </div>
+               
+                </div>
             
-            <div class="jumbotron">
-              <table class="table" id="">
-                  <tr>
-                    <th>งวดที่</th>
-                    <th>วันที่ตรวจรับ</th>
-                    <th>เลขที่สัญญา</th>
-                    <th>รายละเอียดการตรวจรับ</th>
-                    <th>วันที่เบิกจ่าย</th>
-                    <th>รายละเอียดการเบิกจ่าย</th>
-                    <th>ยอดที่เบิกจ่าย</th>
-                   
-                  </tr>
-                  {% for result in row %}
-                  <tr>
-                    <td></td>
-                    <td></td>        
-                    <td> </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>        
-                  </tr>
-                  {% endfor %}
-              </table>
             </div>
-            
-  {% endblock %}
-  </html>
+          </form>
+          <div class="jumbotron">
+            <table class="table" id="">
+                <tr>
+                  <th>งวดที่</th>
+                  <th>วันที่ตรวจรับ</th>
+                  <th>เลขที่สัญญา</th>
+                  <th>รายละเอียดการตรวจรับ</th>
+                  <th>วันที่เบิกจ่าย</th>
+                  <th>รายละเอียดการเบิกจ่าย</th>
+                  <th>ยอดที่เบิกจ่าย</th>
+                 
+                </tr>
+                {% for result in row %}
+                <tr>
+                  <td>{{result['ins_no']}}</td>
+                  <td>{{result['checkdate']}}</td>        
+                  <td>{{result['contractNo']}}</td>
+                  <td>{{result['check_detail']}}</td>
+                  <td>{{result['insdate']}}</td>
+                  <td>{{result['ins_detail']}}</td>
+                  <td>{{result['ins_amount']}}</td>        
+                </tr>
+                {% endfor %}
+            </table>
+          </div>
+          
+{% endblock %}
+</html>
