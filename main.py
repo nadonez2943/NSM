@@ -1043,5 +1043,16 @@ def division():
                 OutputArray.append(outputObj)
             return jsonify(OutputArray)
 
+@app.route('/project/<int:id>/check', methods=[ 'GET'])
+def check(id):
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    format = '%e %b %Y'
+    cursor.execute("SET lc_time_names = 'th_TH'")
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(check_date ,INTERVAL 543 YEAR ),%s) as checkdate,DATE_FORMAT(DATE_ADD(ins_date ,INTERVAL 543 YEAR ), %s) as insdate FROM nsm_project.projects LEFT JOIN nsm_project.checks ON nsm_project.projects.pj_id = nsm_project.checks.pj_id WHERE nsm_project.projects.pj_id=%s", (format,format,id))
+    row = cursor.fetchall()
+    return render_template('check.html', id=id,row=row)  
+
 if __name__ == "__main__":
     app.run(debug=True)
