@@ -21,7 +21,7 @@
                 <div class="col-md-6">
                      สำนักงาน
                     <select name="ofid"  id="ofid" class="form-control" title="Select office"> 
-   
+                     <option value=""></option>
                         {% for row in office %}
                             <option value="{{row.of_id}}">{{row.of_name}}</option>
                         {% endfor %}
@@ -48,7 +48,7 @@
             <span class="checkmark"></span>
          </a>&nbsp;&nbsp;&nbsp;&nbsp;
          งบประมาณ:
-         <input name="amount" value="" type="text" style="width:300px;"placeholder="จำนวนงาน" autocomplete="off" required>
+         <input name="amount" value="" type="text" style="width:300px;"placeholder="จำนวนงาน" id="currency-field" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?" data-type="currency" autocomplete="off" required>
       </p>
       <p>
          รายละเอียดโครงการ(พอสังเขป)
@@ -57,9 +57,9 @@
          <input name="detail" value="" type="text" style="width:900px; height: 88;  " placeholder="รายละเอียด " autocomplete="off" required> 
       </p>
       <p>
-         วงเงิน:<input name="financeAmount" value="" type="text" style="width:170px; " placeholder="วงเงิน " autocomplete="off" required>บาท&nbsp;&nbsp; &nbsp;
-         โดยใช้งบประมาณ:<input name="budgetSource" value="" type="text" style="width:153px; " placeholder="โดยใช้งบประมาณ " autocomplete="off" required>  &nbsp;&nbsp;
-         ประจำปีงบประมาณ:<input name="budgetYears" value="" type="text" style="width:156px; " placeholder="ประจำปีงบประมาณ " autocomplete="off" required>
+         วงเงิน:<input name="financeAmount" value="" type="text" style="width:170px; " placeholder="วงเงิน " id="currency-field" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?" data-type="currency" autocomplete="off" required>&nbsp;บาท&nbsp;&nbsp; &nbsp;
+         โดยใช้งบประมาณ:<input name="budgetSource" value="" type="text" style="width:153px; " placeholder="ที่มางบประมาณ " autocomplete="off" required>  &nbsp;&nbsp;
+         ประจำปีงบประมาณ:<input name="budgetYears" value="" type="text" style="width:170px; " placeholder="ประจำปีงบประมาณ " autocomplete="off" required>
       </p>
       <p>วันที่เริ่มการร่างโครงการและราคากลาง:<input name="start_draft" value="" type="date" style="width:170px; " placeholder="วันที่เริ่มการร่างโครงการและราคากลาง" autocomplete="off" required>&nbsp;&nbsp; &nbsp;</p>
       
