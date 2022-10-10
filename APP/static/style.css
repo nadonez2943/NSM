@@ -68,7 +68,7 @@ h1{
             background: #ddd;
             margin-top: 20px;
         }
-input[type=text], select,textarea{
+input[type=text], select,textarea,datalist{
                                      
                                      padding: 8px ;
                                      border: 1px solid #ccc;

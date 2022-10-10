@@ -963,17 +963,9 @@ def delete_docd(id,phase,path):
 def test():
     return render_template('test.html')
 
-@app.route('/project/<int:id>/addboard/<int:phase>')
-def test2(id,phase):
-    conn = None
-    cursor = None
-    conn = mysql.connect()
-    cursor = conn.cursor(pymysql.cursors.DictCursor)
-    cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id AND nsm_project.board.bo_phase = 1 LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s AND nsm_project.board.bo_phase =%s order by nsm_project.tbl_role.role_id", id , phase)
-    row = cursor.fetchall()
-    cursor.execute("SELECT * FROM nsm_project.users ")
-    rows = cursor.fetchall()
-    return render_template('test2.html', id=id,row=row,rows=rows)
+@app.route('/test2')
+def test2():
+    return render_template('test2.html')
 
 @app.route('/t3')
 def test3():

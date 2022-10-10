@@ -1,42 +1,21 @@
 <doctype html>
     {% extends 'layout.html' %}
     {% block body %}
-    <br>
-    <div class="jumbotron">
-        <center><h1>กิจกรรม</h1></center>
-        <br>
-        <form action="/addeventd" method="post">
-		{% result for in row %}
-        <div class="row">
-            <div class="col-25">
-              <label>ชื่อ</label>
-            </div>
-            <div class="col-75">
-                <p> <input name="evname" type="text" style="width:700px; " placeholder="ชื่อกิจกรรม" required> </p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-25">
-            <label>รายละเอียด</label>
-            </div>
-            <div class="col-75">
-            <p> <input name="evdetail" type="text" style="width:700px; height: 88;  " placeholder="รายละเอียด " required> </p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-25">
-              <label>วันที่</label>
-            </div>
-            <div class="col-75">
-            <input name="evdate" type="date"></input>
-			<!-- เดี๋ยวใส่ค่าในรูปเอา -->
-            <!-- <input name="evphase" value="1" type="hidden">
-            <input name="pjid" value="{{row[0]['pj_id']}}" type="hidden"> -->
-            </div>
-        </div>
-    </div>
-    <center><input type="submit" class="btn btn-primary btn-lg" value="Submit" ></center>
-    </div>
-	{% endfor %}
-    </form>
+    <!-- <form  method="post" action="#"> -->
+        <label id="date-time-Str">
+          Date:
+          <input name="inDate" type="date">
+        </label>
+      
+    <script>
+        const 
+        myForm = document.querySelector('#my-form')
+        , dtStr  = document.querySelector('#date-time-Str')  
+        , localDt_now =_=>
+            {
+            let now = new Date()
+            return now
+            }
+        dtStr.inDate.valueAsDate = localDt_now() 
+    </script>
     {% endblock %}
