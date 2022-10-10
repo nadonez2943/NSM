@@ -59,9 +59,9 @@
       <p>
          วงเงิน:<input name="financeAmount" value="" type="text" style="width:170px; " placeholder="วงเงิน " autocomplete="off" required>บาท&nbsp;&nbsp; &nbsp;
          โดยใช้งบประมาณ:<input name="budgetSource" value="" type="text" style="width:153px; " placeholder="โดยใช้งบประมาณ " autocomplete="off" required>  &nbsp;&nbsp;
-         ประจำปีงบประมาณ:<input name="budgetYears" value="" type="text" style="width:156px; " placeholder="ประจำปีงบประมาณ " autocomplete="off" required>
+         ประจำปีงบประมาณ:<input name="budgetYears" value="{{office[0]['curyear']}}" type="text" style="width:156px; " placeholder="ประจำปีงบประมาณ " autocomplete="off" required>
       </p>
-      <p>วันที่เริ่มการร่างโครงการและราคากลาง:<input name="start_draft" value="" type="date" style="width:170px; " placeholder="วันที่เริ่มการร่างโครงการและราคากลาง" autocomplete="off" required>&nbsp;&nbsp; &nbsp;</p>
+      <p>วันที่เริ่มการร่างโครงการและราคากลาง:<input name="start_draft" value="{{office[0]['curdate']}}" type="date" style="width:170px; " placeholder="วันที่เริ่มการร่างโครงการและราคากลาง" autocomplete="off" required>&nbsp;&nbsp; &nbsp;</p>
       
       <br>
       <br>

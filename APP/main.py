@@ -843,7 +843,8 @@ def addcheck():
 @app.route('/addProject',methods=['GET'])
 def addProjectview():
     cursor = mysql.connect().cursor(pymysql.cursors.DictCursor)
-    cursor.execute("SELECT * FROM office ORDER BY of_id")
+    format = '%Y'
+    cursor.execute("SELECT *,curdate() as curdate,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 543 YEAR ), %s) as curyear FROM office ORDER BY of_id",format)
     office = cursor.fetchall()
     return render_template("addproject.html", office=office) 
     
@@ -1237,7 +1238,6 @@ def editpac(id,pac_id):
     finally:
         cursor.close() 
         conn.close()
-
 #---------------------------------------------------------------------------------------------------------------------------------------------------
     
 

@@ -22,6 +22,9 @@
     background: transparent;
     text-align: center;  
   }
+  a {
+  display:block;
+}
 </style>
 </head>
       <body>
@@ -138,7 +141,8 @@
                 <label>{{row[0]['condiff']}} วัน</label>
               </div>
             </div>
-            <p align="right"><a href="/addcontractor/{{id}}" >เพิ่ม</a><a href="/editcontractor/{{id}}" > แก้ไข</a></p>
+            <input id="conttid" value="{{row[0]['contt_id']}}" type="hidden">
+            <p align="right"><a href="/addcontractor/{{id}}" id="addcontt">เพิ่ม</a><a href="/editcontractor/{{id}}" id="editcontt"> แก้ไข</a></p>
           </div>
         </div>
          

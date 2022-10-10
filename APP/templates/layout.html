@@ -233,6 +233,15 @@
     }
     }
     </script>
+    <script>
+    var cid = Number(document.getElementById("conttid").value);
+    if (cid > 0) {
+    document.getElementById('addcontt').style.display= "none";
+    }
+    else {
+    document.getElementById('editcontt').style.display= "none";
+    }
+    </script> 
 
   </body>
 </html>
