@@ -134,7 +134,6 @@
         <div class="leftcolumn">
           <div class="card">
             <div class="container">
-              <!-- <form action="/action_page.php"> -->
                 <div class="row">
                     <h align="right" >เลขสรรบัญ {{row[0]['pj_refNumber']}}</h>
                   </div>
@@ -160,7 +159,7 @@
                   </div>
                   <div class="col-75">
                     {% for result in row %}
-                    <div class="row"><div class="col-75"><label>{{result['user_fullname']}}</label></div><div class="col-25"><label >{{result['role_name']}}</label></div></div>
+                    <div class="row"><div class="col-50"><label>{{result['user_fullname']}}</label></div><div class="col-25"><label >{{result['role_name']}}</label></div></div>
                     {% endfor %}
                     <div align="Right"><a href="addboardd" role="button"> แก้ไขรายชื่อคณะกรรมการ</a></div>
                   </div>
@@ -190,7 +189,6 @@
                   </div>
                 </div>
                  <p align="right"><a href="/project/{{id}}/editproject" >แก้ไข</a></p>
-              <!-- </form> -->
             </div>
 
 <!-- The Modal -->
