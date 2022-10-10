@@ -701,15 +701,19 @@ def update_std(id):
         start_draft = request.form['startd']
         stdraft_id = int(std)+1
         stdd = int(std)
-        if stdd == 3 :
+        if stdd == 5 :
             stdraft = stdraft_id
             draftapp_status = 'yes'
             sdd = start_draft
-        elif stdd ==2 :
+        elif stdd == 4 :
+            stdraft = stdraft_id
+            draftapp_status = ''
+            sdd = start_draft
+        elif stdd ==3 :
             stdraft = stdraft_id
             draftapp_status = ''
             sdd = date.today()
-        elif stdd < 2 :
+        elif stdd < 3 :
             stdraft = stdraft_id
             draftapp_status = ''
             sdd = NULL
@@ -733,10 +737,7 @@ def update_stc(id):
     try:
         stc = request.form['stc']
         stcon_id = int(stc)+1
-        if stcon_id > 4 :
-            stcon = 4
-        elif stcon_id < 5 :
-            stcon = stcon_id
+        stcon = stcon_id
         sql = "UPDATE process SET stcon_id=%s WHERE pj_id=%s"
         data = (stcon, id)
         conn = mysql.connect()
@@ -757,10 +758,7 @@ def update_ste(id):
     try:
         ste = request.form['ste']
         stex_id = int(ste)+1
-        if stex_id > 4 :
-            stex = 4
-        elif stex_id < 5 :
-            stex = stex_id
+        stex = stex_id
         sql = "UPDATE process SET stex_id=%s WHERE pj_id=%s"
         data = (stex, id)
         conn = mysql.connect()
