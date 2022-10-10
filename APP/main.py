@@ -701,15 +701,19 @@ def update_std(id):
         start_draft = request.form['startd']
         stdraft_id = int(std)+1
         stdd = int(std)
-        if stdd == 3 :
+        if stdd == 5 :
             stdraft = stdraft_id
             draftapp_status = 'yes'
             sdd = start_draft
-        elif stdd ==2 :
+        elif stdd == 4 :
+            stdraft = stdraft_id
+            draftapp_status = ''
+            sdd = start_draft
+        elif stdd ==3 :
             stdraft = stdraft_id
             draftapp_status = ''
             sdd = date.today()
-        elif stdd < 2 :
+        elif stdd < 3 :
             stdraft = stdraft_id
             draftapp_status = ''
             sdd = NULL
@@ -733,10 +737,7 @@ def update_stc(id):
     try:
         stc = request.form['stc']
         stcon_id = int(stc)+1
-        if stcon_id > 4 :
-            stcon = 4
-        elif stcon_id < 5 :
-            stcon = stcon_id
+        stcon = stcon_id
         sql = "UPDATE process SET stcon_id=%s WHERE pj_id=%s"
         data = (stcon, id)
         conn = mysql.connect()
@@ -757,10 +758,7 @@ def update_ste(id):
     try:
         ste = request.form['ste']
         stex_id = int(ste)+1
-        if stex_id > 4 :
-            stex = 4
-        elif stex_id < 5 :
-            stex = stex_id
+        stex = stex_id
         sql = "UPDATE process SET stex_id=%s WHERE pj_id=%s"
         data = (stex, id)
         conn = mysql.connect()
@@ -843,7 +841,8 @@ def addcheck():
 @app.route('/addProject',methods=['GET'])
 def addProjectview():
     cursor = mysql.connect().cursor(pymysql.cursors.DictCursor)
-    cursor.execute("SELECT * FROM office ORDER BY of_id")
+    format = '%Y'
+    cursor.execute("SELECT *,curdate() as curdate,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 543 YEAR ), %s) as curyear FROM office ORDER BY of_id",format)
     office = cursor.fetchall()
     return render_template("addproject.html", office=office) 
     
@@ -1229,7 +1228,6 @@ def editpac(id,pac_id):
     finally:
         cursor.close() 
         conn.close()
-
 #---------------------------------------------------------------------------------------------------------------------------------------------------
     
 

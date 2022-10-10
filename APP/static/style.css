@@ -217,4 +217,6 @@ input {
         margin: 0;
         padding: 2;
     }
-           
+.hidden {
+      display: none;
+    }          
