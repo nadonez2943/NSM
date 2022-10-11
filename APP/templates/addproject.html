@@ -8,11 +8,11 @@
    <div class="jumbotron">
    <center><h1>โครงการใหม่</h1></center>
    <hr>
-   <form action="/addProject" method="post">
+   <form id="form" action="/addProject" method="post">
       <br>         
       <dl>
       <p>
-         เลขสรรบัญ: <input name="refNumber" value="" type="text" style="width:100px; " placeholder="เลขสรรบัญ" autocomplete="off" required> 
+         เลขสรรบัญ: <input name="refNumber" id="ref" value="" type="text" style="width:100px; " placeholder="เลขสรรบัญ" autocomplete="off" required> 
       </p>
       <p>
         
@@ -48,20 +48,19 @@
             <span class="checkmark"></span>
          </a>&nbsp;&nbsp;&nbsp;&nbsp;
          งบประมาณ:
-         <input name="amount" value="" type="text" style="width:300px;"placeholder="จำนวนงาน" id="currency-field" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?" data-type="currency" autocomplete="off" required>
+         <input name="amount" value="" type="text" id="num"style="width:300px;"placeholder="จำนวนงาน"  autocomplete="off" required>
       </p>
       <p>
-         รายละเอียดโครงการ(พอสังเขป)
+         รายละเอียดโครงการ
       </p> 
       <p> 
          <input name="detail" value="" type="text" style="width:900px; height: 88;  " placeholder="รายละเอียด " autocomplete="off" required> 
       </p>
       <p>
-         วงเงิน:<input name="financeAmount" value="" type="text" style="width:170px; " placeholder="วงเงิน " id="currency-field" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?" data-type="currency" autocomplete="off" required>&nbsp;บาท&nbsp;&nbsp; &nbsp;
+         วงเงิน:<input name="financeAmount" value="" id="num2"type="text" style="width:170px; " placeholder="วงเงิน "  autocomplete="off" required>&nbsp;บาท&nbsp;&nbsp; &nbsp;
          โดยใช้งบประมาณ:<input name="budgetSource" value="" type="text" style="width:153px; " placeholder="ที่มางบประมาณ " autocomplete="off" required>  &nbsp;&nbsp;
-         ประจำปีงบประมาณ:<input name="budgetYears" value="" type="text" style="width:170px; " placeholder="ประจำปีงบประมาณ " autocomplete="off" required>
+         ประจำปีงบประมาณ:<input name="budgetYears" value="{{office[0]['curyear']}}" type="text" style="width:170px; " placeholder="ประจำปีงบประมาณ " autocomplete="off" required>
       </p>
-      <p>วันที่เริ่มการร่างโครงการและราคากลาง:<input name="start_draft" value="" type="date" style="width:170px; " placeholder="วันที่เริ่มการร่างโครงการและราคากลาง" autocomplete="off" required>&nbsp;&nbsp; &nbsp;</p>
       
       <br>
       <br>
@@ -112,47 +111,67 @@
     
 </script>
 <script>
-   $("input[data-type='currency']").on({
-    keyup: function() {
-      formatCurrency($(this));
-    },
-    blur: function() { 
-      formatCurrency($(this), "blur");
-    }
+   (function($, undefined) {
+
+"use strict";
+
+// When ready.
+$(function() {
+   
+   var $form = $( "#form" );
+   var $input = $form.find( "input" );
+   var nam = document.getElementById('num').name;
+   var nam2 = document.getElementById('num2').name;
+   $input.on( "keyup", function( event ) {
+      
+      
+      // When user select text in the document, also abort.
+      var selection = window.getSelection().toString();
+      if ( selection !== '' ) {
+         return;
+      }
+      
+      // When the arrow keys are pressed, abort.
+      if ( $.inArray( event.keyCode, [38,40,37,39] ) !== -1 ) {
+         return;
+      }
+      
+      
+      var $this = $( this );
+      
+      // Get the value.
+      var input = $this.val();
+      
+      if (nam == "amount" || nam2 == "financeAmount"){
+      var input = input.replace(/[\D\s\._\-]+/g, "");
+            input = input ? parseInt( input, 10 ) : 0;
+
+            $this.val( function() {
+               return ( input === 0 ) ? "" : input.toLocaleString( "en-US" );
+            } );
+      } 
+   } );
+   
+   /**
+    * ==================================
+    * When Form Submitted
+    * ==================================
+    */
+   $form.on( "submit", function( event ) {
+      
+      var $this = $( this );
+      var arr = $this.serializeArray();
+   
+      for (var i = 0; i < arr.length; i++) {
+            arr[i].value = arr[i].value.replace(/[($)\s\._\-]+/g, ''); // Sanitize the values.
+      };
+      
+      console.log( arr );
+      
+      event.preventDefault();
+   });
+   
 });
-
-
-function formatNumber(n) {
-   return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-}
-
-function formatCurrency(input, blur) {
-   var input_val = input.val();
-   if (input_val === "") { return; }
-   var original_len = input_val.length;
-   var caret_pos = input.prop("selectionStart");
-   if (input_val.indexOf(".") >= 0) {
-      var decimal_pos = input_val.indexOf(".");
-      var left_side = input_val.substring(0, decimal_pos);
-      var right_side = input_val.substring(decimal_pos);
-      left_side = formatNumber(left_side);
-      right_side = formatNumber(right_side);
-      if (blur === "blur") {
-         right_side += "00";
-      }
-      right_side = right_side.substring(0, 2);
-      input_val = left_side + "." + right_side;
-   } else {
-      input_val = formatNumber(input_val);
-      input_val = input_val;
-      if (blur === "blur") {
-         input_val += ".00";
-      }
-   }
-   input.val(input_val);
-   var updated_len = input_val.length;
-   caret_pos = updated_len - original_len + caret_pos;
-   input[0].setSelectionRange(caret_pos, caret_pos);
-}
+})(jQuery);
 </script>
 {% endblock %}
