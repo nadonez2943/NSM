@@ -21,6 +21,16 @@
         font-weight: bold;
         font-size: 18px;
       }
+
+.btn-outline1{
+        padding: 7px 20px;
+        background-color:NONE; 
+        border: 2px solid #aaa;
+        color: rgba(10, 39, 97, 0.83);
+        font-weight: bold;
+        font-size: 16px;
+      }
+
 h1{
     Font-family: Inter;
     Font-style: Medium;
@@ -83,9 +93,10 @@ input[type=date], select,textarea{
                                     
                                     }
 label {
-        padding: 12px 12px 12px 0;
+        padding: 6px 6px 6px 0;
         display: inline-block;
       }
+
 input[type=submit] {
                         background-color: #2E4778;
                         color: white;
@@ -101,22 +112,22 @@ input[type=submit]:hover {
 .col-25 {
             float: left;
             width: 25%;
-            margin-top: 6px;
         }
 .col-65 {
           float: left;
           width: 65%;
-          margin-top: 6px;
         }
 .col-50 {
           float: left;
           width: 50%;
-          margin-top: 6px;
-      }
+        }
 .col-75 {
             float: left;
             width: 75%;
-            margin-top: 6px;
+        }
+.col-80 {
+          float: left;
+          width: 80%;
         }
 @media screen and (max-width: 800px) 
         {
@@ -219,4 +230,4 @@ input {
     }
 .hidden {
       display: none;
-    }          
+    }  
