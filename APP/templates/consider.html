@@ -3,199 +3,209 @@
   
   {% block body %}
   <head>
-    <style>
-      input[id="nstt"]{
-        height: 35px;
-        width: 110px;
-        border: none;
-        border-radius: 5px;
-        color:black;
-        background: transparent;
-        text-align: center;  
-      }
-      input[id="nstt2"]{
-        height: 35px;
-        width: 210px;
-        border: none;
-        border-radius: 5px;
-        color:black;
-        background: transparent;
-        text-align: center;  
-      }
-      a {
+  <style>
+    input[id="nstt"]{
+      height: 35px;
+      width: 110px;
+      border: none;
+      border-radius: 5px;
+      color:black;
+      background: transparent;
+      text-align: center;  
+    }
+    input[id="nstt2"]{
+      height: 35px;
+      width: 210px;
+      border: none;
+      border-radius: 5px;
+      color:black;
+      background: transparent;
+      text-align: center;  
+    }
+    a {
       display:block;
-      }
-    </style>
+    }
+  </style>
   </head>
-  <body>
-      <div class="row">
+
+  <div class="row">
         <p>
           <br><h1>พิจารณาผลโครงการ</h1>
+          <div class="card-group">
+            <div class="card">
+              <div class="card-header">
+                <h5>สถานะ</h5>
+              </div>
+              <div class="card-body" align="center">
+                  <progress id="file" value="{{row[0]['stcon_percent']}}" max="100"></progress>    
+                  <br>
+                  <label for="file">{{row[0]['stcon_name']}}</label>
+                  <form action="/project/{{row[0]['pj_id']}}/consider" method="post">
+                  <input name="stc" id="stc" value="{{row[0]['stcon_id']}}" type="hidden">
+                  <input type="submit" id="appbottonc"onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="สถานะถัดไป" >
+                  </form>
+                  <input name="nstc" value="{{nst[0]['stcon']}}" type="hidden">
+                  <lable>
+                    <input id="nstt" value="สถานะถัดไป:" disabled="disabled"/>
+                    <input id="nstt2" value="{{nst[0]['stcon_name']}}" disabled="disabled"/>
+                  </lable>
+              </div>
+            </div>
+            <p></p>
+            <div class="card" id="divd" style="margin-left:5px;">
+              <div class="card-header" align="center">
+                <h5>ระยะเวลา</h5>
+              </div>
+              <div class="card-body">
+                
+              </div>
+            </div>
+          </div>
         </p>
+
         <div class="leftcolumn">
           <div class="card">
-            <div class="row">
-              <div class="col-75"><h2>ข้อมูลโครงการ</h2></div>
-              <div class="col-25">
-                <a align="center" type="button" class="btn-outline1 btn-lg" href="/project/{{id}}/editproject" id="editcontt"> แก้ไข</a>
+            <div class="card-body">
+              <h5>รายละเอียดโครงการ</h5><hr>
+              <div class="row">
+                <div class="col-25">
+                  <label>เลขสรรบัญ</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['pj_refNumber']}}</label>
+                </div>
               </div>
-            </div><hr>
-                <div class="row">
-                  <h align="right" >เลขสรรบัญ {{row[0]['pj_refNumber']}}</h>
+              <div class="row">
+                <div class="col-25">
+                  <label>ชื่อโครงการ</label>
                 </div>
-                <div class="row">
-                  <div class="col-25">
-                    <label>ชื่อโครงการ</label>
-                  </div>
-                  <div class="col-75">
-                    <label>{{row[0]['pj_name']}}</label>
-                  </div>
+                <div class="col-75">
+                  <label>{{row[0]['pj_name']}}</label>
                 </div>
-                <div class="row">
-                  <div class="col-25">
-                    <label>ผู้รับผิดชอบโครงการ</label>
-                  </div>
-                  <div class="col-75">
-                    <label>{{rows[0]['user_fullname']}}</label>
-                  </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>ผู้รับผิดชอบโครงการ</label>
                 </div>
-                <div class="row">
-                  <div class="col-25">
-                    <a>คณะกรรมการ</a>
-                  </div>
-                  <div class="col-75">
-                    <div class="row">
-                      {% for result in row %}
-                      <div class="col-65">
-                        <label >{{result['user_fullname']}}</label>
-                      </div>
-                      <div class="col-25" >
-                        <label >{{result['role_name']}}</label>
-                      </div>
-                      {% endfor %}
-                    </div>
-                    <div class="col-80" align="center">
-                      <a href="addboardc" role="button">แก้ไขกรรมการ</a><hr>
-                    </div>
-                  </div>
+                <div class="col-75">
+                  <label>{{rows[0]['user_fullname']}}</label>
                 </div>
-                <div class="row">
-                  <div class="col-25">
-                    <label>วันที่เริ่มโครงการ</label>
-                  </div>
-                  <div class="col-75">
-                    <label>{{row[0]['startdate']}}</label>
-                  </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>คณะกรรมการ</label>
                 </div>
-                <div class="row">
-                  <div class="col-25">
-                    <label>งบประมาณ</label>
-                  </div>
-                  <div class="col-75">
-                    <label>{{row[0]['pjamount']}} บาท</label>
-                  </div>
+                <div class="col-75">
+                  {% for result in row %}
+                  <div class="row"><div class="col-75"><label>{{result['user_fullname']}}</label></div><div class="col-25"><label >{{result['role_name']}}</label></div></div>
+                  {% endfor %}
+                  <div align="Right"><a href="addboardc" role="button">แก้ไขรายชื่อคณะกรรมการ</a></div>
                 </div>
-                <div class="row">
-                  <div class="col-25">
-                    <label>รายละเอียด</label>
-                  </div>
-                  <div class="col-75">
-                    <label>{{row[0]['pj_detail']}}
-                    </label>
-                  </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>วันที่เริ่มโครงการ</label>
                 </div>
+                <div class="col-75">
+                  <label>{{row[0]['startdate']}}</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>งบประมาณ</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['pjamount']}} บาท</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>รายละเอียด</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['pj_detail']}}
+                  </label>
+                </div>
+              </div>
+              <p align="right"><a href="/project/{{id}}/editproject" >แก้ไข</a></p>
+            </div>
           </div>
 
-          <div class="card">
-            <div class="row">
-              <div class="col-75"><h2>ข้อมูลบริษัท</h2></div>
-              <div class="col-25">
-                <a align="center" type="button" class="btn-outline1 btn-lg" href="/addcontractor/{{id}}" id="addcontt">เพิ่ม</a>
-                <a align="center" type="button" class="btn-outline1 btn-lg" href="/editcontractor/{{id}}" id="editcontt"> แก้ไข</a>
+          <div class="card" style="margin-top: 8px;">
+            <div class="card-body">
+              <h5>ข้อมูลบริษัท</h5><hr>
+              <div class="row">
+                <div class="col-25">
+                  <label>วันที่ประกาศผลบริษัทผู้รับเหมา</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['conttdate']}}</label>
+                </div>
               </div>
-            </div><hr>
-            <div class="row">
-              <div class="col-25">
-                <label>วันที่ประกาศผลบริษัทผู้รับเหมา</label>
+              <div class="row">
+                <div class="col-25">
+                  <label>บริษัทผู้รับเหมา</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['contt_name']}}</label>
+                </div>
+              </div><div class="row">
+                <div class="col-25">
+                  <label>อีเมล</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['contt_email']}}</label>
+                </div>
+              </div><div class="row">
+                <div class="col-25">
+                  <label>วันที่เริ่ม</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['conttstart']}}</label>
+                </div>
+              </div><div class="row">
+                <div class="col-25">
+                  <label>วันที่สิ้นสุด</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['conttend']}}</label>
+                </div>
+              </div><div class="row">
+                <div class="col-25">
+                  <label>ระยะเวลาคงเหลือ</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['condiff']}} วัน</label>
+                </div>
               </div>
-              <div class="col-75">
-                <label>{{row[0]['conttdate']}}</label>
-              </div>
+              <input id="conttid" value="{{row[0]['contt_id']}}" type="hidden">
+              <p align="right"><a href="/addcontractor/{{id}}" id="addcontt">เพิ่ม</a><a href="/editcontractor/{{id}}" id="editcontt"> แก้ไข</a></p>
             </div>
-            <div class="row">
-              <div class="col-25">
-                <label>บริษัทผู้รับเหมา</label>
-              </div>
-              <div class="col-75">
-                <label>{{row[0]['contt_name']}}</label>
-              </div>
-            </div><div class="row">
-              <div class="col-25">
-                <label>อีเมล</label>
-              </div>
-              <div class="col-75">
-                <label>{{row[0]['contt_email']}}</label>
-              </div>
-            </div><div class="row">
-              <div class="col-25">
-                <label>วันที่เริ่ม</label>
-              </div>
-              <div class="col-75">
-                <label>{{row[0]['conttstart']}}</label>
-              </div>
-            </div><div class="row">
-              <div class="col-25">
-                <label>วันที่สิ้นสุด</label>
-              </div>
-              <div class="col-75">
-                <label>{{row[0]['conttend']}}</label>
-              </div>
-            </div><div class="row">
-              <div class="col-25">
-                <label>ระยะเวลาคงเหลือ</label>
-              </div>
-              <div class="col-75">
-                <label>{{row[0]['condiff']}} วัน</label>
-              </div>
-            </div>
-            <input id="conttid" value="{{row[0]['contt_id']}}" type="hidden">
           </div>
         </div>
          
         <div class="rightcolumn" style="background-color:#ffffff;">
+          
           <div class="card">
-            <center>
-            <h3>สถานะ</h3><hr>
-            <progress id="file" value="{{row[0]['stcon_percent']}}" max="100"></progress>    
-            <br>
-            <label for="file">{{row[0]['stcon_name']}}</label>
-            </center>
-            <form action="/project/{{row[0]['pj_id']}}/consider" method="post">
-              <input name="stc" id="stc" value="{{row[0]['stcon_id']}}" type="hidden">
-              <div align="center"><input type="submit" id="appbottonc"onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="สถานะถัดไป" ></div>
-            </form>
-            <input name="nstc" value="{{nst[0]['stcon']}}" type="hidden">
-            <center>
-              <lable>
-            <input id="nstt" value="สถานะถัดไป:" disabled="disabled"/>
-            <input id="nstt2" value="{{nst[0]['stcon_name']}}" disabled="disabled"/>
-          </lable>
-          </center>
+            <div class="card-header">
+              <h5>กิจกรรม</h5>
+            </div>
+            <div class="card-body">
+              <p>{{ev[0]['ev_name']}}</p>
+              <p>วันที่ {{ev[0]['evdate']}}</p>
+              <p>เวลา {{ev[0]['evtime']}} น.</p>
+              <a align="right" href="considerEvent">ดูเพิ่มเติม</a>
+            </div>
           </div>
-          <div class="card">
-            <center><h3>กิจกรรม</h3><hr></center>
-            <p>{{ev[0]['ev_name']}}</p>
-            <p>วันที่ {{ev[0]['evdate']}}</p>
-            <p>เวลา {{ev[0]['evtime']}} น.</p>
-            
-            <a align="right" href="considerEvent">ดูเพิ่มเติม</a>
-          </div>
-          <div class="card">
-            <a align="center" href="doc/2">เอกสารโครงการ</a>
+          <div class="card" style="margin-top: 5px;">
+            <div class="card-body">
+              <a align="center" href="doc/2">เอกสารโครงการ</a>
+            </div>
           </div>
         </div>
-      </div>
-      <br>
-      <a class="btn btn-primary btn-lg" type="button" href="/project/{{row[0]['pj_id']}}">ย้อนกลับ</a>
+
+  </div>
+  <br>
+  <a class="btn btn-primary btn-lg" type="button" href="/project/{{row[0]['pj_id']}}">ย้อนกลับ</a>
       
   {% endblock %}
