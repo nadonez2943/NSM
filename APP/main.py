@@ -850,7 +850,7 @@ def addcheck():
 def addProjectview():
     cursor = mysql.connect().cursor(pymysql.cursors.DictCursor)
     format = '%Y'
-    cursor.execute("SELECT *,curdate() as curdate,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 543 YEAR ), %s) as curyear FROM office ORDER BY of_id",format)
+    cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 543 YEAR ), %s) as curyear,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 542 YEAR ), %s) as curyear1,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 541 YEAR ), %s) as curyear2,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 544 YEAR ), %s) as curyear11,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 545 YEAR ), %s) as curyear22 FROM office ORDER BY of_id",(format,format,format,format,format))
     office = cursor.fetchall()
     return render_template("addproject.html", office=office) 
     
