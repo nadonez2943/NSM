@@ -200,10 +200,14 @@ def consider(id):
         ev = cursor.fetchall()
         cursor.execute("SELECT * FROM (SELECT *,CAST((nsm_project.process.stcon_id+1) AS UNSIGNED) stcon FROM nsm_project.process ) a LEFT JOIN (SELECT * FROM nsm_project.status_consider) b ON a.stcon = b.stcon_id WHERE a.pj_id = %s", id)
         nst = cursor.fetchall()
+        std = nst[0]['stdraft_id']
         cursor.execute("SELECT *,CASE WHEN nsm_project.manager.user_id = nsm_project.users.user_id THEN 'manager' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 1 OR nsm_project.board.role_id = 2 THEN 'board' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 3 THEN 'assistant' END AS role FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id or nsm_project.manager.user_id = nsm_project.users.user_id Where nsm_project.projects.pj_id = %s and nsm_project.users.user_id = %s group by nsm_project.users.user_id",(id ,user))
         role = cursor.fetchone()
         if (manager ==  role['role']) :
+            if (std == 6) :
                 return render_template('consider.html', row=row , rows=rows ,id=id ,ev=ev,nst=nst)
+            elif (std < 6) :
+                return render_template('errorcon.html')
         elif(phase == role['bo_phase'] ):
             if (assistant == role['role']) :
                 return render_template('consider.html', row=row , rows=rows ,id=id ,ev=ev,nst=nst)
@@ -243,10 +247,14 @@ def examine(id):
         ev = cursor.fetchall()
         cursor.execute("SELECT * FROM (SELECT *,CAST((nsm_project.process.stex_id+1) AS UNSIGNED) stex FROM nsm_project.process ) a LEFT JOIN (SELECT * FROM nsm_project.status_examine) b ON a.stex = b.stex_id WHERE a.pj_id = %s", id)
         nst = cursor.fetchall()
+        stc = nst[0]['stcon_id']
         cursor.execute("SELECT *,CASE WHEN nsm_project.manager.user_id = nsm_project.users.user_id THEN 'manager' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 1 OR nsm_project.board.role_id = 2 THEN 'board' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 3 THEN 'assistant' END AS role FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id or nsm_project.manager.user_id = nsm_project.users.user_id Where nsm_project.projects.pj_id = %s and nsm_project.users.user_id = %s group by nsm_project.users.user_id",(id ,user))
         role = cursor.fetchone()
         if (manager ==  role['role']) :
-                return render_template('examine.html', row=row , rows=rows ,id=id ,ev=ev,dis=dis,nst=nst)
+                if (stc == 6) :
+                    return render_template('examine.html', row=row , rows=rows ,id=id ,ev=ev,dis=dis,nst=nst)
+                elif (stc < 6) :
+                    return render_template('errorex.html')
         elif(phase == role['bo_phase'] ):
             if (assistant == role['role']) :
                 return render_template('examine.html', row=row , rows=rows ,id=id ,ev=ev,dis=dis,nst=nst)
