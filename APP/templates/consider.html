@@ -41,8 +41,8 @@
                   <br>
                   <label for="file">{{row[0]['stcon_name']}}</label>
                   <form action="/project/{{row[0]['pj_id']}}/consider" method="post">
-                  <input name="stc" id="stc" value="{{row[0]['stcon_id']}}" type="hidden">
-                  <input type="submit" id="appbottonc"onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="สถานะถัดไป" >
+                    <input name="stc" id="stc" value="{{row[0]['stcon_id']}}" type="hidden">
+                    <input type="submit" id="appbottonc"onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="สถานะถัดไป" >
                   </form>
                   <input name="nstc" value="{{nst[0]['stcon']}}" type="hidden">
                   <lable>
@@ -69,7 +69,7 @@
               <h5>รายละเอียดโครงการ</h5><hr>
               <div class="row">
                 <div class="col-25">
-                  <label>เลขสรรบัญ</label>
+                  <label>เลขสารบัญ</label>
                 </div>
                 <div class="col-75">
                   <label>{{row[0]['pj_refNumber']}}</label>
@@ -97,9 +97,9 @@
                 </div>
                 <div class="col-75">
                   {% for result in row %}
-                  <div class="row"><div class="col-75"><label>{{result['user_fullname']}}</label></div><div class="col-25"><label >{{result['role_name']}}</label></div></div>
+                  <div class="row"><div class="col-50"><label>{{result['user_fullname']}}</label></div><div class="col-25"><label >{{result['role_name']}}</label></div></div>
                   {% endfor %}
-                  <div align="Right"><a href="addboardc" role="button">แก้ไขรายชื่อคณะกรรมการ</a></div>
+                  <div align="Right"><a href="addboardc" role="button"> แก้ไขรายชื่อคณะกรรมการ</a></div>
                 </div>
               </div>
               <div class="row">

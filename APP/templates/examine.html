@@ -24,16 +24,60 @@
     }
   </style>
   </head>
-      <body>
       
-      <div class="row">
-        <p>
-          <br><h1>ตรวจรับโครงการ</h1>
-        </p>
-        <div class="leftcolumn">
-          <div class="card">
-            <div class="row">
-              <h align="right" >เลขสรรบัญ {{row[0]['pj_refNumber']}}</h>
+  <div class="row">
+    <p>
+      <br><h1>ตรวจรับโครงการ</h1>
+      <div class="card-group">
+        <div class="card">
+          <div class="card-header">
+            <h5>สถานะ</h5>
+          </div>
+          <div class="card-body" align="center">
+            <progress id="file" value="{{row[0]['stex_percent']}}" max="100"></progress>    
+            <br>
+            <label for="file">{{row[0]['stex_name']}}</label>
+            <form action="/project/{{row[0]['pj_id']}}/examine" method="post">
+              <input name="ste" id="ste" value="{{row[0]['stex_id']}}" type="hidden">
+              <input type="submit" id="appbottone" onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="สถานะถัดไป" >
+            </form>
+            <input name="nste" value="{{nst[0]['stex']}}" type="hidden">
+            <lable>
+              <input id="nstt" value="สถานะถัดไป:" disabled="disabled"/>
+              <input id="nstt2" value="{{nst[0]['stex_name']}}" disabled="disabled"/>
+            </lable>
+          </div>
+        </div>
+        <p></p>
+        <div class="card" id="divd" style="margin-left:5px;">
+          <div class="card-header" align="center">
+            <h5>การตรวจงาน</h5>
+          </div>
+          <div class="card-body">
+              <p>
+                <a>งวดที่ {{dis[0]['ins_no']}}</a><br>
+                <a>ประจำวันที่ {{dis[0]['checkdate']}}</a>
+                <p>
+                  <a>รายละเอียด</a>
+                  <a>{{dis[0]['check_detail']}}</a>
+                </p>
+              </p>
+              <a align="right" href="/project/{{id}}/check">ทั้งหมด</a>
+          </div>
+        </div>
+      </div>
+    </p>
+      <div class="leftcolumn">
+        <div class="card">
+          <div class="card-body">
+            <h5>รายละเอียดโครงการ</h5><hr>
+              <div class="row">
+                <div class="col-25">
+                  <label>เลขสารบัญ</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['pj_refNumber']}}</label>
+                </div>
               </div>
               <div class="row">
                 <div class="col-25">
@@ -57,9 +101,16 @@
                 </div>
                 <div class="col-75">
                   {% for result in row %}
-                  <div class="row"><div class="col-75"><label>{{result['user_fullname']}}</label></div><div class="col-25"><label >{{result['role_name']}}</label></div></div>
+                  <div class="row">
+                    <div class="col-50">
+                      <label>{{result['user_fullname']}}</label>
+                    </div>
+                    <div class="col-25">
+                      <label >{{result['role_name']}}</label>
+                    </div>
+                  </div>
                   {% endfor %}
-                  <div align="Right"><a href="addboarde" role="button">แก้ไขรายชื่อคณะกรรมการ</a></div>
+                  <div align="Right"><a href="addboarde" role="button"> แก้ไขรายชื่อคณะกรรมการ</a></div>
                 </div>
               </div>
               <div class="row">
@@ -87,9 +138,13 @@
                 </label>
               </div>
             </div>
-             <p align="right"><a href="/project/{{id}}/editproject" >แก้ไข</a></p>
+              <p align="right"><a href="/project/{{id}}/editproject" >แก้ไข</a></p>
           </div>
-          <div class="card">
+        </div>
+
+        <div class="card" style="margin-top: 8px;">
+          <div class="card-body">
+            <h5>ข้อมูลบริษัท</h5><hr>
             <div class="row">
               <div class="col-25">
                 <label>วันที่ประกาศผลบริษัทผู้รับเหมา</label>
@@ -135,55 +190,32 @@
                 <label>{{row[0]['condiff']}} วัน</label>
               </div>
             </div>
-           
           </div>
         </div>
-        <div class="rightcolumn" style="background-color:#ffffff;">
-          <div class="card">
-            <center>
-            <h1>สถานะ</h1>
-            <progress id="file" value="{{row[0]['stex_percent']}}" max="100"></progress>    
-            <br>
-            
-            <label for="file">{{row[0]['stex_name']}}</label>
-            </center>
-            <form action="/project/{{row[0]['pj_id']}}/examine" method="post">
-              <input name="ste" id="ste" value="{{row[0]['stex_id']}}" type="hidden">
-              <div align="center"><input type="submit" id="appbottone" onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="สถานะถัดไป" ></div>
-            </form>
-            <input name="nste" value="{{nst[0]['stex']}}" type="hidden">
-            <center>
-              <lable>
-            <input id="nstt" value="สถานะถัดไป:" disabled="disabled"/>
-            <input id="nstt2" value="{{nst[0]['stex_name']}}" disabled="disabled"/>
-          </lable>
-          </center>
-          </div>
-          <div class="card">
+      </div>
+
+      <div class="rightcolumn" style="background-color:#ffffff;">
+        <div class="card">
+          <div class="card-header">
             <h3>กิจกรรม</h3>
+          </div>
+          <div class="card-body">
             <p>{{ev[0]['ev_name']}}</p>
             <p>วันที่ {{ev[0]['evdate']}}</p>
             <p>เวลา {{ev[0]['evtime']}} น.</p>
             <a align="right" href="examineEvent">ดูเพิ่มเติม</a>
           </div>
-          <div class="card">
-            <h3>การตรวจงาน</h3>
-            <p>
-              <a>งวดที่ {{dis[0]['ins_no']}}</a><br>
-              <a>ประจำวันที่ {{dis[0]['checkdate']}}</a>
-              <p>
-                <a>รายละเอียด</a>
-                <a>{{dis[0]['check_detail']}}</a>
-              </p>
-            </p>
-            <a align="right" href="/project/{{id}}/check">ทั้งหมด</a>
-          </div>
-          <div class="card">
+        </div>
+        
+        <div class="card" style="margin-top: 5px;">
+          <div class="card-body">
             <a align="center" href="doc/3">เอกสารโครงการ</a>
           </div>
         </div>
       </div>
-      <br>
-      <a class="btn btn-primary btn-lg" type="button" href="/project/{{row[0]['pj_id']}}">ย้อนกลับ</a>
+
+  </div>
+  <br>
+  <a class="btn btn-primary btn-lg" type="button" href="/project/{{row[0]['pj_id']}}">ย้อนกลับ</a>
       
   {% endblock %}
