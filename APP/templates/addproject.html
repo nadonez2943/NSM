@@ -47,7 +47,7 @@
             <span class="checkmark"></span>
          </a>&nbsp;&nbsp;&nbsp;&nbsp;
          งบประมาณ:
-         <input name="amount" value="" id="id" class="mask" type="text" style="width:300px;"placeholder="งบประมาณ" autocomplete="off" required>
+         <input name="amount" value="" id="num1" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" class="mask" type="text" style="width:300px;"placeholder="งบประมาณ" autocomplete="off" required>
       </p>
       <p>
          รายละเอียดโครงการ
@@ -56,7 +56,7 @@
          <input name="detail" value="" type="text" style="width:900px; height: 88;  " placeholder="รายละเอียด " autocomplete="off" required> 
       </p>
       <p>
-         วงเงิน:<input name="financeAmount" value="" class="mask" id="num2"type="text" style="width:170px; " placeholder="วงเงิน "  autocomplete="off" required>&nbsp;บาท&nbsp;&nbsp; &nbsp;
+         วงเงิน:<input name="financeAmount" value="" class="mask" id="num2" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1'); " type="text" style="width:170px; " title="วงเงินต้องน้อยกว่างบประมาณ" placeholder="วงเงิน "  autocomplete="off" required>&nbsp;บาท&nbsp;&nbsp; &nbsp;
          โดยใช้งบประมาณ:
          <select name="budgetSource" style="border: 2px solid black;"required>
             <option value="" disabled selected>ที่มางบประมาณ</option>
@@ -150,5 +150,17 @@ $("input.mask").each((i,ele)=>{
     
 
   })
+</script>
+<script>
+document.getElementById("num1").oninput = function() {checkValues()};
+document.getElementById("num2").oninput = function() {checkValues()};
+function checkValues() {
+   var num1 = Number(document.getElementById('num1').value);
+   var num2 = Number(document.getElementById('num2').value);
+        if (num2 > num1) {
+            alert("วงเงินต้องน้อยกว่างบประมาณ");
+            document.getElementById('num2').value= num1 ;
+        }
+    }
 </script>
 {% endblock %}
