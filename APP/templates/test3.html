@@ -1,49 +1,113 @@
 <doctype html>
-	
-	{% block body %}
-	<h1>วันคงเหลือ {{name}}</h1>
-	<h1>Contagem regressiv</h1>
-	<form name="form_main">
-		<label for="numero">Date:</label> 
-		<input name='date_end' type="date" onblur="resetCountdown()" />
-		<!-- <input name='date_end' type="date" onblur="resetCountdown()" value="{{rows[1]['startproject_date']}}"/> -->
-		<br>
-	</form>
-	<div class="container">
-		<h1>Contagem regressiva até a data selecionada:</h1>
-		<ul>
-			<li><span id="days"></span>days</li>
-			<li><span id="hours"></span>Hours</li>
-			<li><span id="minutes"></span>Minutes</li>
-			<li><span id="seconds"></span>Seconds</li>
-		</ul>
-	</div>
-	
-	{% endblock %}
-
-	<script>
-		const second = 1000;
-		const minute = second * 60;
-		const hour = minute * 60;
-		const day = hour * 24;
-
-		let count_down = new Date().getTime();
-		let x = setInterval(() => countDown(), second);
-
-		function countDown() {
-		let now = new Date(Date.now()).getTime();
-		let diff = count_down - now;
-
-		document.getElementById('days').innerText = Math.floor(diff / day);
-		document.getElementById('hours').innerText = Math.floor(diff % day / hour);
-		document.getElementById('minutes').innerText = Math.floor(diff % hour / minute);
-		document.getElementById('seconds').innerText = Math.floor(diff % minute / second);
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	  {% extends 'layout.html' %}
+	  {% block body %}
+	  <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+		* {box-sizing: border-box}
+		
+		/* Set height of body and the document to 100% */
+		body, html {
+		  height: 100%;
+		  margin: 0;
+		  font-family: Arial;
 		}
-
-		function resetCountdown() {
-		clearInterval(x);
-		let date_end = document.form_main.date_end.value;
-		count_down = new Date(`${date_end} 00:00:00`).getTime();
-		x = setInterval(() => countDown(), second);
+		
+		/* Style tab links */
+		.tablink {
+		  background-color: #555;
+		  color: white;
+		  float: left;
+		  border: none;
+		  outline: none;
+		  cursor: pointer;
+		  padding: 14px 16px;
+		  font-size: 17px;
+		  width: 25%;
 		}
-	</script>
+		
+		.tablink:hover {
+		  background-color: #777;
+		}
+		
+		/* Style the tab content (and add height:100% for full page content) */
+		.tabcontent {
+		  color: white;
+		  display: none;
+		  padding: 100px 20px;
+		  height: 100%;
+		}
+		
+		#Home {background-color: red;}
+		#News {background-color: green;}
+		#Contact {background-color: blue;}
+		#About {background-color: orange;}
+		</style>
+		</head>
+		<body>
+		
+		<button class="tablink" onclick="openPage('Home', this, 'red')">Home</button>
+		<button class="tablink" onclick="openPage('News', this, 'green')" id="defaultOpen">News</button>
+		<button class="tablink" onclick="openPage('Contact', this, 'blue')">Contact</button>
+		<button class="tablink" onclick="openPage('About', this, 'orange')">About</button>
+		
+		<div id="Home" class="tabcontent">
+			<table class="table" id="customers">
+				<tr>
+				  <th><center>ลำดับ</center></th>
+				  <th><center>ชื่อโครงการ</center></th>
+				  <th ><center>เลขสารบัญ</center></th>
+				  <th ><center>ผู้รับผิดชอบ</center></th>
+				  <th><center>กิจกรรม</center></th>
+				  <th ><center>ความคืบหน้า</center></th>
+				</tr>
+				{% for result in row %}
+				<tr>
+				  <td>{{result['row_num']}}</td>
+				  <td><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
+				  <td> {{result['pj_refNumber']}}</td>
+				  <td>{{result['user_fullname']}}</td>
+				  <td>{{result['ev_name']}}</td>
+				  <td><center>{{result['x']}} %</center></td>        
+				</tr>
+				{% endfor %}
+			  </table>
+		</div>
+		
+		<div id="News" class="tabcontent">
+		  <h3>News</h3>
+		  <p>Some news this fine day!</p> 
+		</div>
+		
+		<div id="Contact" class="tabcontent">
+		  <h3>Contact</h3>
+		  <p>Get in touch, or swing by for a cup of coffee.</p>
+		</div>
+		
+		<div id="About" class="tabcontent">
+		  <h3>About</h3>
+		  <p>Who we are and what we do.</p>
+		</div>
+		
+		<script>
+		function openPage(pageName,elmnt,color) {
+		  var i, tabcontent, tablinks;
+		  tabcontent = document.getElementsByClassName("tabcontent");
+		  for (i = 0; i < tabcontent.length; i++) {
+			tabcontent[i].style.display = "none";
+		  }
+		  tablinks = document.getElementsByClassName("tablink");
+		  for (i = 0; i < tablinks.length; i++) {
+			tablinks[i].style.backgroundColor = "";
+		  }
+		  document.getElementById(pageName).style.display = "block";
+		  elmnt.style.backgroundColor = color;
+		}
+		
+		// Get the element with id="defaultOpen" and click on it
+		document.getElementById("defaultOpen").click();
+		</script>
+		   
+		</body>
+	  {% endblock %}
