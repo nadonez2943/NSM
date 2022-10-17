@@ -856,46 +856,49 @@ def addProjectview():
     
 @app.route('/addProject',methods=['POST'])
 def addProject():
-    user = session['user_id']
-    conn = None
-    cursor = None
-    conn = mysql.connect()
-    cursor = conn.cursor()
-    try:
-        pj_refNumber = request.form['refNumber']
-        of_id = request.form['ofid']
-        dv_id = request.form['dvid']
-        pj_name = request.form['name']
-        pj_type = request.form['radio']
-        pj_amount = request.form['amount']
-        pj_detail = request.form['detail']
-        pj_financeAmount = request.form['financeAmount']
-        pj_budgetSource = request.form['budgetSource']
-        pj_budgetYears = request.form['budgetYears']
-        start_draft = request.form['start_draft']
-        if  pj_refNumber and of_id and dv_id and pj_name and pj_type and pj_amount and pj_detail and pj_financeAmount and pj_budgetSource and pj_budgetYears and request.method == 'POST':
-            sql1 = "INSERT INTO projects (pj_refNumber,of_id,dv_id,pj_name,pj_type,pj_amount,pj_detail,pj_financeAmount,pj_budgetSource,pj_budgetYears) VALUES(%s, %s, %s, %s,%s, %s, %s, %s, %s, %s)"
-            data1 = (pj_refNumber,of_id,dv_id,pj_name,pj_type,pj_amount,pj_detail,pj_financeAmount,pj_budgetSource,pj_budgetYears)
-            cursor.execute(sql1, data1)
-            cursor = conn.cursor(pymysql.cursors.DictCursor)
-            cursor.execute("SELECT pj_id FROM nsm_project.projects order by pj_id DESC;")
-            sql2 = cursor.fetchall()
-            pj_id = sql2[0]['pj_id']
-            sql3 = "INSERT INTO manager (user_id,pj_id) VALUES(%s, %s)"
-            data3 = (user,pj_id)
-            cursor.execute(sql3, data3)
-            sql4 = "INSERT INTO process (pj_id,stdraft_id,stcon_id,stex_id,startproject_date,start_draft) VALUES(%s,%s,%s,%s,%s,%s)"
-            data4 = (pj_id,1,1,1,date.today(),start_draft)
-            cursor.execute(sql4, data4)
-            conn.commit()
-            return redirect ('/myproject')
-        else:
-            return 'Error'
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close()
-        conn.close() 
+    pj_refNumber = request.form['refNumber']
+    print(pj_refNumber)
+    return redirect ('/myproject')
+    # user = session['user_id']
+    # conn = None
+    # cursor = None
+    # conn = mysql.connect()
+    # cursor = conn.cursor()
+    # try:
+    #     pj_refNumber = request.form['refNumber']
+    #     of_id = request.form['ofid']
+    #     dv_id = request.form['dvid']
+    #     pj_name = request.form['name']
+    #     pj_type = request.form['radio']
+    #     pj_amount = request.form['amount']
+    #     pj_detail = request.form['detail']
+    #     pj_financeAmount = request.form['financeAmount']
+    #     pj_budgetSource = request.form['budgetSource']
+    #     pj_budgetYears = request.form['budgetYears']
+    #     start_draft = request.form['start_draft']
+    #     if  pj_refNumber and of_id and dv_id and pj_name and pj_type and pj_amount and pj_detail and pj_financeAmount and pj_budgetSource and pj_budgetYears and request.method == 'POST':
+    #         sql1 = "INSERT INTO projects (pj_refNumber,of_id,dv_id,pj_name,pj_type,pj_amount,pj_detail,pj_financeAmount,pj_budgetSource,pj_budgetYears) VALUES(%s, %s, %s, %s,%s, %s, %s, %s, %s, %s)"
+    #         data1 = (pj_refNumber,of_id,dv_id,pj_name,pj_type,pj_amount,pj_detail,pj_financeAmount,pj_budgetSource,pj_budgetYears)
+    #         cursor.execute(sql1, data1)
+    #         cursor = conn.cursor(pymysql.cursors.DictCursor)
+    #         cursor.execute("SELECT pj_id FROM nsm_project.projects order by pj_id DESC;")
+    #         sql2 = cursor.fetchall()
+    #         pj_id = sql2[0]['pj_id']
+    #         sql3 = "INSERT INTO manager (user_id,pj_id) VALUES(%s, %s)"
+    #         data3 = (user,pj_id)
+    #         cursor.execute(sql3, data3)
+    #         sql4 = "INSERT INTO process (pj_id,stdraft_id,stcon_id,stex_id,startproject_date,start_draft) VALUES(%s,%s,%s,%s,%s,%s)"
+    #         data4 = (pj_id,1,1,1,date.today(),start_draft)
+    #         cursor.execute(sql4, data4)
+    #         conn.commit()
+    #         return redirect ('/myproject')
+    #     else:
+    #         return 'Error'
+    # except Exception as e:
+    #     print(e)
+    # finally:
+    #     cursor.close()
+    #     conn.close() 
 
 @app.route("/division",methods=["POST","GET"])
 def division():
