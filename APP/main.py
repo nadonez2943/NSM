@@ -13,7 +13,6 @@ import os
 from wtforms.validators import InputRequired
 from datetime import date
 
-7
 ALLOWED_EXTENSIONS = {'doc', 'pdf'}
 
 # log in
@@ -977,7 +976,7 @@ def delete_docd(id,phase,path):
 def test():
     return render_template('test.html')
 
-@app.route('/test2')
+@app.route('/t2')
 def test2():
     return render_template('test2.html')
 
