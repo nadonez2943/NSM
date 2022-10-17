@@ -112,8 +112,8 @@
               <h5>ขั้นตอนล่าสุดจาก กพ.</h5>
             </div> 
             <div class="card-body">
-              <p>{{pac[0]['pac_detail']}}</p>
-              <p>วันที่ {{pac[0]['pacdate']}}</p>
+              <p id="pacde" type="hidden">{{pac[0]['pac_detail']}}</p>
+              <p id="pacda">วันที่ {{pac[0]['pacdate']}}</p>
             </div>
           </div>
           <div class="card" style="margin-top:5px;">
@@ -121,12 +121,24 @@
               <h5>กิจกรรม</h5>
             </div>
             <div class="card-body">
-            <p>{{ev[0]['ev_name']}}</p>
-            <p>วันที่ {{ev[0]['evdate']}}</p>
-            <p>เวลา {{ev[0]['evtime']}} น.</p>
+            <p id="evn">{{ev[0]['ev_name']}}</p>
+            <p id="evd">วันที่ {{ev[0]['evdate']}}</p>
+            <p id="evt">เวลา {{ev[0]['evtime']}} น.</p>
             </div>
           </div>
         </div>
       </div>
+
+  <script>
+    var pacde = document.getElementById("pacde").innerHTML
+    var pacda = document.getElementById("pacda").innerHTML
+    if (pacde == "None"){
+      document.getElementById("pacde").style.display = "none";
+    }
+    if (pacda == "วันที่ None"){
+      document.getElementById("pacda").style.display = "none";
+    }
+  </script>
   {% endblock %}
+  
   

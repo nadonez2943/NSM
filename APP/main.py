@@ -287,7 +287,9 @@ def addboardd(id):
     row = cursor.fetchall()
     cursor.execute("SELECT * FROM nsm_project.users LEFT JOIN nsm_project.office ON nsm_project.users.of_id = nsm_project.office.of_id LEFT JOIN nsm_project.division ON nsm_project.users.dv_id = nsm_project.division.dv_id ")
     rows = cursor.fetchall()
-    return render_template('addboardd.html', id=id,row=row,rows=rows)
+    cursor.execute("SELECT count(case when nsm_project.board.role_id = '1' then 1 end) as cmng ,count(case when nsm_project.board.role_id = '2' then 1 end) as cboa,count(case when nsm_project.board.role_id = '3' then 1 end) as cas FROM  nsm_project.board WHERE nsm_project.board.pj_id = %s AND nsm_project.board.bo_phase=1", id)
+    crole = cursor.fetchall()
+    return render_template('addboardd.html', id=id,row=row,rows=rows,crole=crole)
 
 @app.route('/addboardd', methods=[ 'POST'])
 def addboardd2():
@@ -328,7 +330,9 @@ def addboardc(id):
     row = cursor.fetchall()
     cursor.execute("SELECT * FROM nsm_project.users LEFT JOIN nsm_project.office ON nsm_project.users.of_id = nsm_project.office.of_id LEFT JOIN nsm_project.division ON nsm_project.users.dv_id = nsm_project.division.dv_id ")
     rows = cursor.fetchall()
-    return render_template('addboardc.html', id=id,row=row,rows=rows)
+    cursor.execute("SELECT count(case when nsm_project.board.role_id = '1' then 1 end) as cmng ,count(case when nsm_project.board.role_id = '2' then 1 end) as cboa,count(case when nsm_project.board.role_id = '3' then 1 end) as cas FROM  nsm_project.board WHERE nsm_project.board.pj_id = %s AND nsm_project.board.bo_phase=1", id)
+    crole = cursor.fetchall()
+    return render_template('addboardc.html', id=id,row=row,rows=rows,crole=crole)
 
 @app.route('/addboardc', methods=[ 'POST'])
 def addboardc2():
@@ -369,7 +373,9 @@ def addboarde(id):
     row = cursor.fetchall()
     cursor.execute("SELECT * FROM nsm_project.users LEFT JOIN nsm_project.office ON nsm_project.users.of_id = nsm_project.office.of_id LEFT JOIN nsm_project.division ON nsm_project.users.dv_id = nsm_project.division.dv_id ")
     rows = cursor.fetchall()
-    return render_template('addboarde.html', id=id,row=row,rows=rows)
+    cursor.execute("SELECT count(case when nsm_project.board.role_id = '1' then 1 end) as cmng ,count(case when nsm_project.board.role_id = '2' then 1 end) as cboa,count(case when nsm_project.board.role_id = '3' then 1 end) as cas FROM  nsm_project.board WHERE nsm_project.board.pj_id = %s AND nsm_project.board.bo_phase=1", id)
+    crole = cursor.fetchall()
+    return render_template('addboarde.html', id=id,row=row,rows=rows,crole=crole)
 
 @app.route('/addboarde', methods=[ 'POST'])
 def addboarde2():

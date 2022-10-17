@@ -117,12 +117,13 @@
 <script> 
   var dif = Number(document.getElementById('diff').value);
   var dst = document.getElementById('appr').value;
-  // var strdd = document.getElementById('strd').value;
   document.getElementById('sta').style.color = "black";
   document.getElementById('day').style.color = "black";
-  // if (strdd == Date(2022, 10, 7)) {
-  //   document.getElementById('strd').style.display = 'none';
-  // }
+  if (document.getElementById('diff').value == "None") {
+    document.getElementById('sta').type = "hidden";
+    document.getElementById('diff').type = "hidden";
+    document.getElementById('day').type = "hidden";
+  }
   if (dst == "yes") {
     document.getElementById('sta').type = "hidden";
     document.getElementById('diff').type = "hidden";
@@ -154,7 +155,7 @@
     document.getElementById('diff').style.background = "red";
   }
   else if (dif >= 10 && dif < 15) {
-    document.getElementById('diff').style.color = "black";
+    document.getElementById('diff').style.color = "red";
   document.getElementById('diff').style.background = "gold";
   }
   else if (dif >= 15){
@@ -246,5 +247,74 @@
     document.getElementById('editcontt').style.display= "none";
     }
     </script> 
+
+    <script>
+    var evn = document.getElementById("evn").innerHTML;
+    var evd = document.getElementById("evd").innerHTML;
+    var evt = document.getElementById("evt").innerHTML;
+    if (evn == "None"){
+      document.getElementById("evn").innerHTML = "-";
+    }
+    if (evd == "วันที่ None"){
+      document.getElementById("evd").innerHTML = "วันที่ -";
+    }
+    if (evt == "เวลา None น."){
+      document.getElementById("evt").innerHTML = "เวลา - น.";
+    }
+    </script>
+    <script>
+      var usf = document.getElementById("usf").innerHTML;
+      var usr = document.getElementById("usr").innerHTML;
+      if (usf == "None"){
+        document.getElementById("usf").innerHTML = "-";
+      }
+      if (usr == "None"){
+        document.getElementById("usr").innerHTML = "-";
+      }
+      </script>
+    <script>
+      var dstart = document.getElementById("dstart").innerHTML;
+      var dend = document.getElementById("dend").innerHTML;
+      if (dstart == "วันที่ None"){
+        document.getElementById("dstart").innerHTML = "วันที่ -";
+      }
+      if (dend == "วันที่ None"){
+        document.getElementById("dend").innerHTML = "วันที่ -";
+      }
+    </script>
+    
+    <!-- หน้าเพิ่มคณะกรรมการ -->
+    <script>
+      var usft = document.getElementById("usft").innerHTML;
+      var usrt = document.getElementById("usrt").innerHTML;
+      var cmng = document.getElementById("cmng").value;
+      var cboa = Number(document.getElementById("cboa").value);
+      var cas = document.getElementById("cas").value;
+      if (usft == "None"){
+        document.getElementById("usft").style.display = "none";
+        document.getElementById("usrt").style.display = "none";
+        document.getElementById("dlt").style.display = "none";
+      }
+      if (cmng == "1"){
+        $("#rid option[value='1']").hide();
+      }
+      if (cas == "1"){
+        $("#rid option[value='3']").hide();
+      }
+      if(cboa % 2 == 0) {
+        document.getElementById("finil").href = "#";
+        document.getElementById("fini").onclick = function() {unfinished()};
+      }
+      if (cmng == "0" || cas == "0" || cboa < 3){
+        document.getElementById("finil").href = "#";
+        document.getElementById("fini").onclick = function() {unfinishedAll()};
+      }
+      function unfinished() {
+        alert("จำนวนกรรมการต้องเป็นจำนวนคี่")
+      }
+      function unfinishedAll() {
+        alert("คณะกรรมการยังไม่ครบ")
+      }
+      </script>
   </body>
 </html>

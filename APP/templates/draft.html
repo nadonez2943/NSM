@@ -28,7 +28,7 @@
     }
     input[id="day"]{
       height: 35px;
-      width: 40px;
+      width: 70px;
       border: none;
       background: transparent;
       text-align: center;
@@ -158,15 +158,17 @@
           </div>
           <div class="card-body">
             <lable>เริ่มการร่างโครงการ และราคากลาง</lable>
-            <lable>วันที่ {{diff[0]['startdate']}}</lable><br>
+            <lable id="dstart">วันที่ {{diff[0]['startdate']}}</lable><br>
             <lable>สิ้นสุดการร่างโครงการ และราคากลาง</lable>
-            <lable>วันที่ {{diff[0]['endproject_date']}}</lable><br>
+            <lable id="dend">วันที่ {{diff[0]['endproject_date']}}</lable><br>
             <lable>
               <!-- <input type="hidden" id="strd" value="{{diff[0]['startdate']}}" > -->
               <input type="hidden" id="appr" value="{{row[0]['draftapp_status']}}" >
+              <center>
               <input type="text" id="sta" value="คงเหลือ" disabled="disabled"/>
               <input type="text" id="diff" value="{{diff[0]['diff']}}" disabled="disabled"/>
               <input id="day" value="วัน" disabled="disabled"/>
+              </center>
             </lable>
             <center>
               <input type ="hidden"id="status" value="" disabled="disabled"/>
@@ -211,7 +213,7 @@
               </div>
               <div class="col-75">
                 {% for result in row %}
-                <div class="row"><div class="col-50"><label>{{result['user_fullname']}}</label></div><div class="col-25"><label >{{result['role_name']}}</label></div></div>
+                <div class="row"><div class="col-50"><label id="usf">{{result['user_fullname']}}</label></div><div class="col-25"><label id="usr">{{result['role_name']}}</label></div></div>
                 {% endfor %}
                 <div align="Right"><a href="addboardd" role="button"> แก้ไขรายชื่อคณะกรรมการ</a></div>
               </div>
@@ -251,9 +253,9 @@
               <h5>กิจกรรม</h5>
             </div>
             <div class="card-body" align="center">
-              <p>{{ev[0]['ev_name']}}</p>
-              <p>วันที่ {{ev[0]['evdate']}}</p>
-              <p>เวลา {{ev[0]['evtime']}} น.</p>
+              <p id="evn">{{ev[0]['ev_name']}}</p>
+              <p id="evd">วันที่ {{ev[0]['evdate']}}</p>
+              <p id="evt">เวลา {{ev[0]['evtime']}} น.</p>
               <a align="right" href="draftEvent">ดูเพิ่มเติม</a>
             </div>  
           </div>
