@@ -25,7 +25,7 @@
                 ชื่อโครงการ: <input name="name" value="{{row[0]['pj_name']}}" type="text" style="width:814px;" placeholder="ชื่อโครงการ" autocomplete="off" required> 
             </p>
              <p>
-                งบประมาณ: <input name="amount" value="{{row[0]['pj_amount']}}" type="text" style="width:814px;" placeholder="ชื่อโครงการ" autocomplete="off" required> 
+                งบประมาณ: <input name="amount" id="numm" value="{{row[0]['pj_amount']}}" class="mask" type="text" style="width:814px;" placeholder="ชื่อโครงการ" autocomplete="off" required> 
              </p>  
              <p>รายละเอียดโครงการ(พอสังเขป)</p> 
              <p> <input name="detail" value="{{row[0]['pj_detail']}}" type="text" style="width:900px; height: 88;  " placeholder="รายละเอียด " autocomplete="off" required> </p>
@@ -60,5 +60,39 @@
  
  </div>   
  </form>
- 
+ <script>
+    $("input.mask").each((i,ele)=>{
+        let clone=$(ele).clone(false)
+        clone.attr("type","text")
+        let ele1=$(ele)
+        clone.val(Number(ele1.val()).toLocaleString("en"))
+        $(ele).after(clone)
+        $(ele).hide()
+        clone.mouseenter(()=>{
+    
+          ele1.show()
+          clone.hide()
+        })
+        setInterval(()=>{
+          let newv=Number(ele1.val()).toLocaleString("en")
+          if(clone.val()!=newv){
+            clone.val(newv)
+          }
+        },10)
+    
+        $(ele).mouseleave(()=>{
+          $(clone).show()
+          $(ele1).hide()
+        })
+        
+    
+      })
+    </script>
+    <script>
+        document.getElementById("numm").oninput = function() {cValues()};
+        function cValues() {
+        document.getElementById("numm").value = document.getElementById("numm").value.replace(/[^0-9.]/g, ''); 
+        document.getElementById("numm").value = document.getElementById("numm").value.replace(/(\..*)\./g, '$1');
+        }
+    </script>
  {% endblock %}

@@ -26,13 +26,13 @@
         </tr>
         {% for result in row %}
         <tr>
-        <td>{{result['row_num']}}</td>
-        <td>{{result['ev_name']}}</td>
-        <td>{{result['ev_detail']}}</td>
-        <td>{{result['evdate']}}</td>
-        <td>{{result['evtime']}} น.</td>
-        <td><a href="/project/{{result['pj_id']}}/editevent/{{result['ev_id']}}" >แก้ไข</a></td>
-        <td>
+        <td id="rnt">{{result['row_num']}}</td>
+        <td id="evnt">{{result['ev_name']}}</td>
+        <td id="evet">{{result['ev_detail']}}</td>
+        <td id="evdt">{{result['evdate']}}</td>
+        <td id="evtt">{{result['evtime']}} น.</td>
+        <td id="evedt"><a href="/project/{{result['pj_id']}}/editevent/{{result['ev_id']}}" >แก้ไข</a></td>
+        <td id="evdlt">
             <a  style="color:red" data-bs-toggle="modal" data-bs-target="#myModal1" >ลบ</a>
                 <div class="modal" id="myModal1">
                     <div class="modal-dialog modal-dialog-centered">
