@@ -71,7 +71,7 @@
   </div>
 
   <div id="Manager" class="tabcontent">
-    <table id="myTable" class="table table-striped" >  
+    <table id="myTableMN" class="table table-striped" >  
       <thead>  
         <tr>  
           <th><center>ลำดับ</center></th>
@@ -98,7 +98,7 @@
   </div>
   
   <div id="Board" class="tabcontent">
-    <table id="myTable" class="table table-striped" >  
+    <table id="myTableBO" class="table table-striped" >  
       <thead>  
         <tr>  
           <th><center>ลำดับ</center></th>
@@ -125,7 +125,7 @@
   </div>
 
   <div id="Draft" class="tabcontent">
-    <table id="myTable" class="table table-striped" >  
+    <table id="myTableDR" class="table table-striped" >  
       <thead>  
         <tr>  
           <th><center>ลำดับ</center></th>
@@ -152,7 +152,7 @@
   </div>
 
   <div id="Consider" class="tabcontent">
-    <table id="myTable" class="table table-striped" >  
+    <table id="myTableCO" class="table table-striped" >  
       <thead>  
         <tr>  
           <th><center>ลำดับ</center></th>
@@ -179,7 +179,7 @@
   </div>
 
   <div id="Examine" class="tabcontent">
-      <table id="myTable" class="table table-striped" >  
+      <table id="myTableEX" class="table table-striped" >  
         <thead>  
           <tr>  
             <th><center>ลำดับ</center></th>
@@ -214,7 +214,19 @@
 
 <script>
 $(document).ready(function(){
-    $('#myTable').dataTable();
+    $('#myTableMN').dataTable();
+});
+$(document).ready(function(){
+    $('#myTableBO').dataTable();
+});
+$(document).ready(function(){
+    $('#myTableDR').dataTable();
+});
+$(document).ready(function(){
+    $('#myTableCO').dataTable();
+});
+$(document).ready(function(){
+    $('#myTableEX').dataTable();
 });
 
 function openCity(evt, cityName) {
