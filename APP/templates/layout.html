@@ -110,12 +110,8 @@
 <script> 
   var dif = Number(document.getElementById('diff').value);
   var dst = document.getElementById('appr').value;
-  // var strdd = document.getElementById('strd').value;
   document.getElementById('sta').style.color = "black";
   document.getElementById('day').style.color = "black";
-  // if (strdd == Date(2022, 10, 7)) {
-  //   document.getElementById('strd').style.display = 'none';
-  // }
   if (dst == "yes") {
     document.getElementById('sta').type = "hidden";
     document.getElementById('diff').type = "hidden";
@@ -158,7 +154,6 @@
   </script>
   
   <script>
-    // Get the modal
     var modal = document.getElementById("modall");
     var span = document.getElementsByClassName("close")[0];
     var dif = Number(document.getElementById('mdiff').value);
@@ -172,12 +167,9 @@
       modal.style.display = "block";
     }
     
-    // When the user clicks on <span> (x), close the modal
     span.onclick = function() {
       modal.style.display = "none";
     }
-    
-    // When the user clicks anywhere outside of the modal, close it
     window.onclick = function(event) {
       if (event.target == modal) {
         modal.style.display = "none";
@@ -190,12 +182,10 @@
       modal.style.display = "block";
     }
     
-    // When the user clicks on <span> (x), close the modal
     span.onclick = function() {
       modal.style.display = "none";
     }
     
-    // When the user clicks anywhere outside of the modal, close it
     window.onclick = function(event) {
       if (event.target == modal) {
         modal.style.display = "none";
@@ -212,12 +202,10 @@
       modal.style.display = "block";
     }
     
-    // When the user clicks on <span> (x), close the modal
     span.onclick = function() {
       modal.style.display = "none";
     }
     
-    // When the user clicks anywhere outside of the modal, close it
     window.onclick = function(event) {
       if (event.target == modal) {
         modal.style.display = "none";

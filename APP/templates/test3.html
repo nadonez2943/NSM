@@ -1,103 +1,237 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+<!DOCTYPE html>  
+<html lang="en">   
+<head>   
+  <meta charset="utf-8">   
+  <title>Final Output</title>   
+  <meta name="description" content="Bootstrap.">  
+  <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">   
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css"></style>
+  <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <style>
+    body {font-family: Arial;}
+    
+    /* Style the tab */
+    .tab {
+      overflow: hidden;
+      border: 1px solid #ccc;
+      background-color: #f1f1f1;
+    }
+    
+    /* Style the buttons inside the tab */
+    .tab button {
+      background-color: inherit;
+      float: left;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      transition: 0.3s;
+      font-size: 17px;
+    }
+    
+    /* Change background color of buttons on hover */
+    .tab button:hover {
+      background-color: #ddd;
+    }
+    
+    /* Create an active/current tablink class */
+    .tab button.active {
+      background-color: #ccc;
+    }
+    
+    /* Style the tab content */
+    .tabcontent {
+      display: none;
+      padding: 6px 12px;
+      -webkit-animation: fadeEffect 1s;
+      animation: fadeEffect 1s;
+    }
+    
+    /* Fade in tabs */
+    @-webkit-keyframes fadeEffect {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    
+    @keyframes fadeEffect {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    </style>
+</head>  
+<body style="margin:20px auto">  
+  <div class="tab">
+    <button class="tablinks" onclick="openCity(event, 'Manager')" id="defaultOpen">โครงการที่เป็นผู้รับผิดชอบ</button>
+    <button class="tablinks" onclick="openCity(event, 'Board')">โครงการที่เป็นคณะกรรมการ</button>
+    <button class="tablinks" onclick="openCity(event, 'Draft')">ชุดร่าง</button>
+    <button class="tablinks" onclick="openCity(event, 'Consider')">ชุดพิจารณาผล</button>
+    <button class="tablinks" onclick="openCity(event, 'Examine')">ชุดตรวจรับ</button>
+  </div>
+
+  <div id="Manager" class="tabcontent">
+    <table id="myTable" class="table table-striped" >  
+      <thead>  
+        <tr>  
+          <th><center>ลำดับ</center></th>
+          <th><center>ชื่อโครงการ</center></th>
+          <th ><center>เลขสารบัญ</center></th>
+          <th ><center>ผู้รับผิดชอบ</center></th>
+          <th><center>กิจกรรม</center></th>
+          <th ><center>ความคืบหน้า</center></th>
+        </tr>  
+      </thead>  
+      <tbody>  
+        {% for result in MN %}
+        <tr>
+          <td>{{result['row_num']}}</td>
+          <td><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
+          <td> {{result['pj_refNumber']}}</td>
+          <td>{{result['user_fullname']}}</td>
+          <td>{{result['ev_name']}}</td>
+          <td><center>{{result['x']}} %</center></td>        
+        </tr>
+        {% endfor %}
+      </tbody>  
+    </table>  
+  </div>
+  
+  <div id="Board" class="tabcontent">
+    <table id="myTable" class="table table-striped" >  
+      <thead>  
+        <tr>  
+          <th><center>ลำดับ</center></th>
+          <th><center>ชื่อโครงการ</center></th>
+          <th ><center>เลขสารบัญ</center></th>
+          <th ><center>ผู้รับผิดชอบ</center></th>
+          <th><center>กิจกรรม</center></th>
+          <th ><center>ความคืบหน้า</center></th>
+        </tr>  
+      </thead>  
+      <tbody>  
+        {% for result in BO %}
+        <tr>
+          <td>{{result['row_num']}}</td>
+          <td><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
+          <td> {{result['pj_refNumber']}}</td>
+          <td>{{result['user_fullname']}}</td>
+          <td>{{result['ev_name']}}</td>
+          <td><center>{{result['x']}} %</center></td>        
+        </tr>
+        {% endfor %}
+      </tbody>  
+    </table>  
+  </div>
+
+  <div id="Draft" class="tabcontent">
+    <table id="myTable" class="table table-striped" >  
+      <thead>  
+        <tr>  
+          <th><center>ลำดับ</center></th>
+          <th><center>ชื่อโครงการ</center></th>
+          <th ><center>เลขสารบัญ</center></th>
+          <th ><center>ผู้รับผิดชอบ</center></th>
+          <th><center>กิจกรรม</center></th>
+          <th ><center>ความคืบหน้า</center></th>
+        </tr>  
+      </thead>  
+      <tbody>  
+        {% for result in DR %}
+        <tr>
+          <td>{{result['row_num']}}</td>
+          <td><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
+          <td> {{result['pj_refNumber']}}</td>
+          <td>{{result['user_fullname']}}</td>
+          <td>{{result['ev_name']}}</td>
+          <td><center>{{result['x']}} %</center></td>        
+        </tr>
+        {% endfor %}
+      </tbody>  
+    </table>  
+  </div>
+
+  <div id="Consider" class="tabcontent">
+    <table id="myTable" class="table table-striped" >  
+      <thead>  
+        <tr>  
+          <th><center>ลำดับ</center></th>
+          <th><center>ชื่อโครงการ</center></th>
+          <th ><center>เลขสารบัญ</center></th>
+          <th ><center>ผู้รับผิดชอบ</center></th>
+          <th><center>กิจกรรม</center></th>
+          <th ><center>ความคืบหน้า</center></th>
+        </tr>  
+      </thead>  
+      <tbody>  
+        {% for result in CO %}
+        <tr>
+          <td>{{result['row_num']}}</td>
+          <td><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
+          <td> {{result['pj_refNumber']}}</td>
+          <td>{{result['user_fullname']}}</td>
+          <td>{{result['ev_name']}}</td>
+          <td><center>{{result['x']}} %</center></td>        
+        </tr>
+        {% endfor %}
+      </tbody>  
+    </table>  
+  </div>
+
+  <div id="Examine" class="tabcontent">
+      <table id="myTable" class="table table-striped" >  
+        <thead>  
+          <tr>  
+            <th><center>ลำดับ</center></th>
+            <th><center>ชื่อโครงการ</center></th>
+            <th ><center>เลขสารบัญ</center></th>
+            <th ><center>ผู้รับผิดชอบ</center></th>
+            <th><center>กิจกรรม</center></th>
+            <th ><center>ความคืบหน้า</center></th>
+          </tr>  
+        </thead>  
+        <tbody>  
+          {% for result in EX %}
+          <tr>
+            <td>{{result['row_num']}}</td>
+            <td><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
+            <td> {{result['pj_refNumber']}}</td>
+            <td>{{result['user_fullname']}}</td>
+            <td>{{result['ev_name']}}</td>
+            <td><center>{{result['x']}} %</center></td>        
+          </tr>
+          {% endfor %}
+        </tbody>  
+      </table>  
+  </div>
+
+  <br>
+  <center>
+  <a class="btn btn-primary btn-lg" href="/addProject" role="button">เพิ่มโครงการใหม่</a>
+  </center>
+
+</body>  
+
+<script>
+$(document).ready(function(){
+    $('#myTable').dataTable();
+});
+
+function openCity(evt, cityName) {
+var i, tabcontent, tablinks;
+tabcontent = document.getElementsByClassName("tabcontent");
+for (i = 0; i < tabcontent.length; i++) {
+  tabcontent[i].style.display = "none";
 }
-
-.topnav {
-  overflow: hidden;
-  background-color: rgba(10, 39, 97, 0.83);
+tablinks = document.getElementsByClassName("tablinks");
+for (i = 0; i < tablinks.length; i++) {
+  tablinks[i].className = tablinks[i].className.replace(" active", "");
 }
-
-.topnav a {
-  float: left;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
+document.getElementById(cityName).style.display = "block";
+evt.currentTarget.className += " active";
 }
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
 
-.topnav a:hover {
-  background-color: #ddd;
-  color: black;
-}
-
-/* Create a right-aligned (split) link inside the navigation bar */
-.topnav div.split {
-  float: right;
-  color: white;
-}
-
-.dropdown {
-  float: left;
-  overflow: hidden;
-}
-
-.dropdown .dropbtn {
-  font-size: 16px;  
-  border: none;
-  outline: none;
-  color: white;
-  padding: 14px 16px;
-  background-color: inherit;
-  font-family: inherit;
-  margin: 0;
-}
-
-/* .navbar a:hover, .dropdown:hover .dropbtn {
-  background-color: red;
-} */
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  right: 20px;
-  background-color: #ccc;
-  min-width: 160px;
-  box-shadow: 5px  rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-.dropdown-content a {
-  float: none;
-  color: black;
-  padding: 14px 16px;
-  text-decoration: none;
-  display: block;
-  text-align: center;
-}
-
-.dropdown-content a:hover {
-  background-color: #ddd;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-</style>
-</head>
-<body>
-
-<div class="topnav">
-	<a style="color:#f1f1f1;" font-size="30px"> <img style="position: relative; top:4px;" src="https://www.img.in.th/images/9d4acbd200b1f8c31a8840d28462942c.png" width="109px" height="22px" class="d-inline-block align-top">&nbsp;&nbsp;พิพิธภัณฑ์วิทยาศาสตร์แห่งชาติ</a>
-	<div class="split">
-		<div class="dropdown" style="margin: 5px 5px 5px;">
-			<button class="dropbtn">
-				{{session.user_fullname}}&nbsp;
-				<i class="fa fa-caret-down"></i>
-			</button>
-			<div class="dropdown-content">
-				<a href="{{url_for('logout')}}">ออกจากระบบ</a>
-			</div>
-		</div> 
-	</div>
-</div>
-
-</body>
-</html>
+</html>  

@@ -46,9 +46,9 @@ input[type=submit] {
                    }
 
 input {
-    border: 1px solid transparent;
+    padding: 8px ;
+    border: 1px solid #ccc;
     background-color: #ffffff;
-    padding: 10px;
     font-size: 16px;
 }
 .btn {
@@ -82,7 +82,7 @@ h3{
 
 <body>
 <div class="topnav">
-	<a ALIGN="RIGHT" style="color:#f1f1f1;" font-size="30px"> <img style="position: relative; top:4px;" src="https://www.img.in.th/images/9d4acbd200b1f8c31a8840d28462942c.png" width="109px" height="22px" class="d-inline-block align-top">&nbsp;&nbsp;พิพิธภัณฑ์วิทยาศาสตร์แห่งชาติ</a>
+	<a style="color:#f1f1f1;" font-size="30px"> <img style="position: relative; top:1px;" src="https://www.img.in.th/images/9d4acbd200b1f8c31a8840d28462942c.png" width="109px" height="22px" class="d-inline-block align-top">&nbsp;&nbsp;พิพิธภัณฑ์วิทยาศาสตร์แห่งชาติ</a>
 </div> 
 <center>
 </br></br></br>
@@ -92,7 +92,7 @@ h3{
     <form action="{{ url_for('login') }}" method="post">
         <div class="msg">{{ msg }}</div><br>
         <input id="user_name" name="user_name" type="text" placeholder="Username"/></br><br>
-        <input id="user_password" name="user_password" type="text" placeholder="Password"/></br><br><br>
+        <input id="user_password" name="user_password" type="password" placeholder="Password"/></br><br><br>
         <input type="submit" class="btn" value="เข้าสู่ระบบ"></br></br><br>
     </form>
 </div>
