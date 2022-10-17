@@ -47,7 +47,7 @@
             <span class="checkmark"></span>
          </a>&nbsp;&nbsp;&nbsp;&nbsp;
          งบประมาณ:
-         <input name="amount" value="" type="text" style="width:300px;"placeholder="จำนวนงาน" id="currency-field" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?" data-type="currency" autocomplete="off" required>
+         <input name="amount" value="" id="num1" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" class="mask" type="text" style="width:300px;"placeholder="งบประมาณ" autocomplete="off" required>
       </p>
       <p>
          รายละเอียดโครงการ
@@ -56,9 +56,22 @@
          <input name="detail" value="" type="text" style="width:900px; height: 88;  " placeholder="รายละเอียด " autocomplete="off" required> 
       </p>
       <p>
-         วงเงิน:<input name="financeAmount" value="" id="num2"type="text" style="width:170px; " placeholder="วงเงิน "  autocomplete="off" required>&nbsp;บาท&nbsp;&nbsp; &nbsp;
-         โดยใช้งบประมาณ:<input name="budgetSource" value="" type="text" style="width:153px; " placeholder="ที่มางบประมาณ " autocomplete="off" required>  &nbsp;&nbsp;
-         ประจำปีงบประมาณ:<input name="budgetYears" value="{{office[0]['curyear']}}" type="text" style="width:170px; " placeholder="ประจำปีงบประมาณ " autocomplete="off" required>
+         วงเงิน:<input name="financeAmount" value="" class="mask" id="num2" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1'); " type="text" style="width:170px; " title="วงเงินต้องน้อยกว่างบประมาณ" placeholder="วงเงิน "  autocomplete="off" required>&nbsp;บาท&nbsp;&nbsp; &nbsp;
+         โดยใช้งบประมาณ:
+         <select name="budgetSource" style="border: 2px solid black;"required>
+            <option value="" disabled selected>ที่มางบประมาณ</option>
+            <option value="ลงทุน">ลงทุน</option>
+            <option value="ดำเนินการ">ดำเนินการ</option>
+         </select>
+         ประจำปีงบประมาณ:
+         <select name="budgetYears" style="border: 2px solid black;" required>
+            <option value="" disabled selected>ปีงบประมาณ</option>
+            <option value="{{office[0]['curyear-2']}}">{{office[0]['curyear2']}}</option>
+            <option value="{{office[0]['curyear-1']}}">{{office[0]['curyear1']}}</option>
+            <option value="{{office[0]['curyear']}}">{{office[0]['curyear']}}</option>
+            <option value="{{office[0]['curyear11']}}">{{office[0]['curyear11']}}</option>
+            <option value="{{office[0]['curyear22']}}">{{office[0]['curyear22']}}</option>
+          </select>
       </p>
       
       <br>
@@ -109,68 +122,45 @@
 
     
 </script>
+
 <script>
-   (function($, undefined) {
+$("input.mask").each((i,ele)=>{
+    let clone=$(ele).clone(false)
+    clone.attr("type","text")
+    let ele1=$(ele)
+    clone.val(Number(ele1.val()).toLocaleString("en"))
+    $(ele).after(clone)
+    $(ele).hide()
+    clone.mouseenter(()=>{
 
-"use strict";
-
-// When ready.
-$(function() {
-   
-   var $form = $( "#form" );
-   var $input = $form.find( "input" );
-   var nam = document.getElementById('num').name;
-   var nam2 = document.getElementById('num2').name;
-   $input.on( "keyup", function( event ) {
-      
-      
-      // When user select text in the document, also abort.
-      var selection = window.getSelection().toString();
-      if ( selection !== '' ) {
-         return;
+      ele1.show()
+      clone.hide()
+    })
+    setInterval(()=>{
+      let newv=Number(ele1.val()).toLocaleString("en")
+      if(clone.val()!=newv){
+        clone.val(newv)
       }
-      
-      // When the arrow keys are pressed, abort.
-      if ( $.inArray( event.keyCode, [38,40,37,39] ) !== -1 ) {
-         return;
-      }
-      
-      
-      var $this = $( this );
-      
-      // Get the value.
-      var input = $this.val();
-      
-      if (nam == "amount" || nam2 == "financeAmount"){
-      var input = input.replace(/[\D\s\._\-]+/g, "");
-            input = input ? parseInt( input, 10 ) : 0;
+    },10)
 
-            $this.val( function() {
-               return ( input === 0 ) ? "" : input.toLocaleString( "en-US" );
-            } );
-      } 
-   } );
-   
-   /**
-    * ==================================
-    * When Form Submitted
-    * ==================================
-    */
-   $form.on( "submit", function( event ) {
-      
-      var $this = $( this );
-      var arr = $this.serializeArray();
-   
-      for (var i = 0; i < arr.length; i++) {
-            arr[i].value = arr[i].value.replace(/[($)\s\._\-]+/g, ''); // Sanitize the values.
-      };
-      
-      console.log( arr );
-      
-      event.preventDefault();
-   });
-   
-});
-})(jQuery);
+    $(ele).mouseleave(()=>{
+      $(clone).show()
+      $(ele1).hide()
+    })
+    
+
+  })
+</script>
+<script>
+document.getElementById("num1").oninput = function() {checkValues()};
+document.getElementById("num2").oninput = function() {checkValues()};
+function checkValues() {
+   var num1 = Number(document.getElementById('num1').value);
+   var num2 = Number(document.getElementById('num2').value);
+        if (num2 > num1) {
+            alert("วงเงินต้องน้อยกว่างบประมาณ");
+            document.getElementById('num2').value= num1 ;
+        }
+    }
 </script>
 {% endblock %}
