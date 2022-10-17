@@ -64,8 +64,7 @@ h1{
            }
 .footer {
             padding: 20px;
-            text-align: center;
-            background: #ddd;
+            background: white;
             margin-top: 20px;
         }
 input[type=text], select,textarea,datalist{

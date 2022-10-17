@@ -1,5 +1,7 @@
 {% extends 'layoutt.html' %} 
-<head>   
+
+{% block body %}
+<head>  
   <style>
     body {font-family: Arial;}
     
@@ -13,7 +15,7 @@
     /* Style the buttons inside the tab */
     .tab button {
       background-color: inherit;
-      float: left;
+      float: center;
       border: none;
       outline: none;
       cursor: pointer;
@@ -38,6 +40,7 @@
       padding: 6px 12px;
       -webkit-animation: fadeEffect 1s;
       animation: fadeEffect 1s;
+      border: 1px solid #ccc;
     }
     
     /* Fade in tabs */
@@ -51,13 +54,16 @@
     }
     </style>
 </head>  
-{% block body %} 
+<body>
+<br>
 <div class="tab">
+  <center>
   <button class="tablinks" onclick="openCity(event, 'Manager')" id="defaultOpen">โครงการที่เป็นผู้รับผิดชอบ</button>
   <button class="tablinks" onclick="openCity(event, 'Board')">โครงการที่เป็นคณะกรรมการ</button>
   <button class="tablinks" onclick="openCity(event, 'Draft')">ชุดร่าง</button>
   <button class="tablinks" onclick="openCity(event, 'Consider')">ชุดพิจารณาผล</button>
   <button class="tablinks" onclick="openCity(event, 'Examine')">ชุดตรวจรับ</button>
+  </center>
 </div>
 
 <div id="Manager" class="tabcontent">
@@ -233,4 +239,5 @@ evt.currentTarget.className += " active";
 // Get the element with id="defaultOpen" and click on it
 document.getElementById("defaultOpen").click();
 </script>
+</body> 
 {% endblock %}

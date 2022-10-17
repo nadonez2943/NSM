@@ -932,6 +932,12 @@ def allowed_file(filename):
 #อัพเอกสาร
 @app.route('/project/<int:id>/doc/<int:phase>', methods=['GET',"POST"])
 def doc(id,phase):
+    if phase==1:
+        p='draft'
+    elif phase==2:
+        p='consider'
+    elif phase==3:
+        p='examine'
     form = UploadFileForm()
     conn = None
     cursor = None
@@ -951,7 +957,7 @@ def doc(id,phase):
         cursor.execute(sql, data)
         conn.commit()
         return redirect(str(phase))
-    return render_template('doc.html', row=row,form=form,id=id,phase=phase)
+    return render_template('doc.html', row=row,form=form,id=id,phase=phase,p=p)
 
 #ลบเอกสาร
 @app.route('/project/<int:id>/doc/<int:phase>/<int:path>')
