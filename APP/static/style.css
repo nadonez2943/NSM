@@ -14,7 +14,7 @@
         font-size: 18px;
       }
 .btn-outline{
-        padding: 7px 35px;
+        padding: 10px 40px;
         background-color:NONE; 
         border: 2px solid rgba(10, 39, 97, 0.83);
         color: rgba(10, 39, 97, 0.83);
@@ -67,22 +67,21 @@ h1{
             background: white;
             margin-top: 20px;
         }
-input[type=text], select,textarea,datalist{
-                                     
+textarea{
+          width: 100%;
+          padding: 8px ;
+          border: 1px solid #ccc;
+        }
+input[type=text], select,datalist{
                                      padding: 8px ;
                                      border: 1px solid #ccc;
-                                     border-radius: 4px;
-                                    
                                     }
 input[type=date], select,textarea{
                                     
                                     padding: 8px ;
                                     border: 1px solid #ccc;
-                                    border-radius: 4px;
-                                    
                                     }
 label {
-        /* padding: 3px 3px 3px 0; */
         display: inline-block;
       }
 input[type=submit] {
@@ -97,10 +96,25 @@ input[type=submit] {
 input[type=submit]:hover {
             background-color: #2E4778;
           }
+.rol-15 {
+          float: right;
+          width: 15%;
+          margin-top: 6px;
+        }
+.col-15 {
+          float: left;
+          width: 15%;
+          margin-top: 6px;
+        }
+.col-20 {
+          float: left;
+          width: 20%;
+          margin-top: 6px;
+        }
 .col-25 {
-            float: left;
-            width: 25%;
-            margin-top: 6px;
+          float: left;
+          width: 25%;
+          margin-top: 6px;
         }
 .col-40 {
           float: left;

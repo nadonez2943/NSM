@@ -11,50 +11,56 @@
 				 else { x.style.display = "none";}
 		}
 	</script>
-		 
+		<br>
 		<div class="card">
-			<br>
-            <div class="row">
-                <div class="col-75"><h1>ประกาศจากกองพัสดุ</h1></div>
-                <div class="col-25"><p><button class="btn" onclick="showDiv('toggle')">อัพเดตประกาศจากกองพัสดุ</button></p>	</div>
-            </div>
-                
-                <div id="toggle" style="display:none">
-                    <hr>
-                    <form action="/addpac/{{id}}" method='POST' enctype='multipart/form-data' >
-                        <div class="jumbotron">
-                            <div class="row">
-                                <p>
-                                    <div class="col-25"><label>รายละเอียดประกาศ:</label></div>
-                                    <div class="col-75"><input name="pac_detail" type="text" style="width:700px; height: 88; " required></div>
-                                </p>
-                                <p>
-                                    <div class="col-25"><label>วันที่ประกาศ:</label></div>
-                                    <div class="col-75"><input name="pac_date" type="date" style="width:150px; " required></div>
-                                </p>
-                            </div>
-                        </div>
-                    </form>
+			<div class="card-header">
+                <div class="row">
+                    <div class="col-75"><h1>ประกาศจากกองพัสดุ</h1></div>
+                    <div class="col-25"><button class="btn" onclick="showDiv('toggle')">อัพเดตประกาศจากกองพัสดุ</button>	</div>
                 </div>
-            
-			<hr>
+            </div>
+            <div id="toggle" style="display:none">
+                <form action="/addpac/{{id}}" method='POST' enctype='multipart/form-data' >
+                    <div class="card-body" style="margin-left: 10px;">
+                        <div class="row">
+                            <p>
+                                <div class="col-20" align="right" ><label>รายละเอียดประกาศ:</label></div>
+                                <div class="col-75"><textarea name="pac_detail" placeholder="Write something.." style="height:100px" required></textarea></div>
+                                
+                            </p>
+                            <p>
+                                <div class="col-20" align="right"><label>วันที่ประกาศ:</label></div>
+                                <div class="col-75"><input name="pac_date" type="date" required></div>
+                            </p>
+                        </div>
+                    </div>
+
+                    <center><input type="submit" class="btn btn-primary btn-lg" value="ยืนยัน" ></center>
+                </form>
+                
+            </div>
+            <div class="card-body">
 			{% for result in pac %}
-                <div  class="card">
+                
                     <div class="row">
                         <div class="col-50">
                             <h6>รายละเอียดประกาศ :</h6>
                             <h6>{{result['pac_detail']}}</h6>
                         </div>
-                        <div class="col-25">
+                        <div class="col-20">
                             <h6>วันที่ประกาศ :</h6>
                             <h6>{{result['pacdate']}}</h6>
                         </div>
-                        <div class="col-25">
-                            <a class="btn-outline btn-lg" href="/editpac/{{id}}/{{result['pac_id']}}" > แก้ไข</a>
-                            <a class="btnx btn-lg" href="/deletepac/{{id}}/{{result['pac_id']}}" >ลบ</a>
+                        <div class="col-15" style="padding: 10px;">
+                            <a class="btn-outline btn-lg" href="/editpac/{{id}}/{{result['pac_id']}}" style="margin-top: 6px;"> แก้ไข</a>
+                        </div>
+                        <div class="rol-15" >
+                            <a class="btn btn-lg" href="/deletepac/{{id}}/{{result['pac_id']}}" >ลบ</a>
                         </div>
                     </div>
-                </div>
+                    <hr>
+               
 			{% endfor %}
+        </div>
         </div>
     {% endblock %}
