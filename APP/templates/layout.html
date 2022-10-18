@@ -76,23 +76,37 @@
 
 <script>
   var stdd = document.getElementById('std').value;
-  if (stdd == "3") {
+  var usrole = document.getElementById('userrole').value;
+  var pmc = document.getElementById('PMC').value;
+  if (stdd == "2" && pmc != "wait" && pmc != "prewait" && usrole == "assistant")  {
+    document.getElementById('stdr').type = "date";
+    document.getElementById('dayform').style.display = "block";
+    document.getElementById('appbotton').type = "submit";
+  }document.getElementById('PMC').value
+  if (stdd == "2" && pmc == "prewait" && usrole == "assistant")  {
+    document.getElementById('appbotton').value = "เสร็จสิ้น";
+    document.getElementById('appbotton').type = "submit";
+  }
+  if (stdd == "2" && pmc == "wait" && usrole == "manager")  {
+    document.getElementById('appbotton').type = "submit";
+  }
+  if (stdd == "3" && pmc != "wait" && usrole == "assistant") {
     document.getElementById('appbotton').value = "อนุมัติ";
     document.getElementById('appbotton2').value = "ไม่อนุมัติ";
+    document.getElementById('appbotton').type = "submit";
     document.getElementById('appbotton2').type = "submit";
     document.getElementById('appbotton2').style.color = "white";
     document.getElementById('appbotton2').style.background = "#2E4778";
   }
-  if (stdd == "5") {
-    document.getElementById('appbotton').type = "hidden";  
+  if (stdd == "3" && pmc == "wait" && usrole == "manager")  {
+    document.getElementById('appbotton').type = "submit";
   }
-  if (stdd == "2" && document.getElementById('diff').value == "None" || stdd == "2" && document.getElementById('appr').value == "no")  {
-    document.getElementById('stdr').type = "date";
-    document.getElementById('dayform').style.display = "block"
+  if (stdd == "4" && pmc == "yes" && usrole == "assistant")  {
+    document.getElementById('appbotton').type = "submit";
+    document.getElementById('appbotton').value = "ส่งกอง พส. ดำเนินการ";
   }
-  else if (stdd == "2" && document.getElementById('diff').value != "None" )  {
-    document.getElementById('appbotton').value = "เสร็จสิ้น";
-  }
+  
+  
 </script>
 
 <script>
@@ -116,13 +130,41 @@
 <script> 
   var dif = Number(document.getElementById('diff').value);
   var dst = document.getElementById('appr').value;
-  // var strdd = document.getElementById('strd').value;
+  var pmc = document.getElementById('PMC').value;
   document.getElementById('sta').style.color = "black";
   document.getElementById('day').style.color = "black";
-  // if (strdd == Date(2022, 10, 7)) {
-  //   document.getElementById('strd').style.display = 'none';
-  // }
-  if (dst == "yes") {
+  if (document.getElementById('std').value == "2" && pmc == "wait" ) {
+    document.getElementById('sta').type = "hidden";
+    document.getElementById('diff').type = "hidden";
+    document.getElementById('day').type = "hidden";
+    document.getElementById('status').type = "text";
+    document.getElementById('status').value = "เสร็จสิ้น";
+    document.getElementById('status').style.color = "white";
+    document.getElementById('diff').style.background = "transparent";
+    document.getElementById('status').style.background = "green";
+  }
+  if (document.getElementById('std').value == "3" && pmc != "wait" ) {
+    document.getElementById('sta').type = "hidden";
+    document.getElementById('diff').type = "hidden";
+    document.getElementById('day').type = "hidden";
+    document.getElementById('status').type = "text";
+    document.getElementById('status').value = "อยู่ระหว่างการขออนุมัติ";
+    document.getElementById('status').style.color = "white";
+    document.getElementById('status').style.width = "190";
+    document.getElementById('diff').style.background = "transparent";
+    document.getElementById('status').style.background = "gray";
+  }
+  else if (dst == "yes" && pmc == "wait") {
+    document.getElementById('sta').type = "hidden";
+    document.getElementById('diff').type = "hidden";
+    document.getElementById('day').type = "hidden";
+    document.getElementById('status').type = "text";
+    document.getElementById('status').value = "รอยืนยันการอนุมัติ";
+    document.getElementById('status').style.color = "white";
+    document.getElementById('diff').style.background = "transparent";
+    document.getElementById('status').style.background = "gray";
+  }
+  else if (dst == "yes" && pmc == "yes") {
     document.getElementById('sta').type = "hidden";
     document.getElementById('diff').type = "hidden";
     document.getElementById('day').type = "hidden";
@@ -132,7 +174,18 @@
     document.getElementById('diff').style.background = "transparent";
     document.getElementById('status').style.background = "green";
   }
-  else if (dst == "no") {
+  else if (dst == "no" && pmc == "wait") {
+    document.getElementById('sta').type = "hidden";
+    document.getElementById('diff').type = "hidden";
+    document.getElementById('day').type = "hidden";
+    document.getElementById('status').type = "text";
+    document.getElementById('status').value = "รอยืนยันการไม่อนุมัติ";
+    document.getElementById('status').style.color = "white";
+    document.getElementById('status').style.width = "170";
+    document.getElementById('diff').style.background = "transparent";
+    document.getElementById('status').style.background = "gray";
+  }
+  else if (dst == "no" && pmc == "no") {
     document.getElementById('sta').type = "hidden";
     document.getElementById('diff').type = "hidden";
     document.getElementById('day').type = "hidden";
@@ -159,6 +212,11 @@
   else if (dif >= 15){
     document.getElementById('diff').style.color = "white";
   document.getElementById('diff').style.background = "green";
+  }
+  else if (dif >= 30){
+    document.getElementById('diff').style.color = "white";
+    document.getElementById('diff').style.background = "green";
+    document.getElementById('diff').value = 30;
   }
   if (document.getElementById('diff').value == "None"){
   document.getElementById('sta').type = "hidden";
