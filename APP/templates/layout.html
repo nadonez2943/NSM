@@ -76,17 +76,22 @@
 
 <script>
   var stdd = document.getElementById('std').value;
-  if (stdd == "5") {
+  if (stdd == "3") {
     document.getElementById('appbotton').value = "อนุมัติ";
     document.getElementById('appbotton2').value = "ไม่อนุมัติ";
     document.getElementById('appbotton2').type = "submit";
     document.getElementById('appbotton2').style.color = "white";
     document.getElementById('appbotton2').style.background = "#2E4778";
   }
-  else if (stdd == "6") {
-    document.getElementById('appbotton').type = "hidden";
-    document.getElementById('nstt').type = "hidden";
-    document.getElementById('nstt2').type = "hidden";  
+  if (stdd == "5") {
+    document.getElementById('appbotton').type = "hidden";  
+  }
+  if (stdd == "2" && document.getElementById('diff').value == "None" || stdd == "2" && document.getElementById('appr').value == "no")  {
+    document.getElementById('stdr').type = "date";
+    document.getElementById('dayform').style.display = "block"
+  }
+  else if (stdd == "2" && document.getElementById('diff').value != "None" )  {
+    document.getElementById('appbotton').value = "เสร็จสิ้น";
   }
 </script>
 
@@ -155,7 +160,11 @@
     document.getElementById('diff').style.color = "white";
   document.getElementById('diff').style.background = "green";
   }
-  
+  if (document.getElementById('diff').value == "None"){
+  document.getElementById('sta').type = "hidden";
+  document.getElementById('diff').type = "hidden";
+  document.getElementById('day').type = "hidden";
+  }
   </script>
   
   <script>
@@ -293,6 +302,10 @@
       if (cmng == "0" || cas == "0" || cboa < 3){
         document.getElementById("finil").href = "#";
         document.getElementById("fini").onclick = function() {unfinishedAll()};
+      }
+      else if (document.getElementById("PMR").value == "PM" ){
+        document.getElementById("finished").type = "submit";
+        document.getElementById("fini").type = "hidden";
       }
       function unfinished() {
         alert("จำนวนกรรมการต้องเป็นจำนวนคี่")

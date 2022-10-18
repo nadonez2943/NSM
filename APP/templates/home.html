@@ -76,23 +76,21 @@
 <div id="Manager" class="tabcontent">
   <table id="myTableMN" class="table table-striped" >  
     <thead>  
-      <tr>  
+      <tr class="header">  
         <th><center>ลำดับ</center></th>
         <th><center>ชื่อโครงการ</center></th>
         <th ><center>เลขสารบัญ</center></th>
         <th ><center>ผู้รับผิดชอบ</center></th>
-        <th><center>กิจกรรม</center></th>
         <th ><center>ความคืบหน้า</center></th>
       </tr>  
     </thead>  
     <tbody>  
       {% for result in MN %}
       <tr>
-        <td>{{result['row_num']}}</td>
-        <td><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
+        <td align="center">{{result['row_num']}}</td>
+        <td ><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
         <td> {{result['pj_refNumber']}}</td>
         <td>{{result['user_fullname']}}</td>
-        <td>{{result['ev_name']}}</td>
         <td><center>{{result['x']}} %</center></td>        
       </tr>
       {% endfor %}
@@ -103,23 +101,21 @@
 <div id="Board" class="tabcontent">
   <table id="myTableBO" class="table table-striped" >  
     <thead>  
-      <tr>  
+      <tr class="header">  
         <th><center>ลำดับ</center></th>
         <th><center>ชื่อโครงการ</center></th>
         <th ><center>เลขสารบัญ</center></th>
         <th ><center>ผู้รับผิดชอบ</center></th>
-        <th><center>กิจกรรม</center></th>
         <th ><center>ความคืบหน้า</center></th>
       </tr>  
     </thead>  
     <tbody>  
       {% for result in BO %}
       <tr>
-        <td>{{result['row_num']}}</td>
+        <td align="center">{{result['row_num']}}</td>
         <td><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
         <td> {{result['pj_refNumber']}}</td>
         <td>{{result['user_fullname']}}</td>
-        <td>{{result['ev_name']}}</td>
         <td><center>{{result['x']}} %</center></td>        
       </tr>
       {% endfor %}
@@ -130,23 +126,21 @@
 <div id="Draft" class="tabcontent">
   <table id="myTableDR" class="table table-striped" >  
     <thead>  
-      <tr>  
-        <th><center>ลำดับ</center></th>
+      <tr class="header">  
+        <th align="center"><center>ลำดับ</center></th>
         <th><center>ชื่อโครงการ</center></th>
         <th ><center>เลขสารบัญ</center></th>
         <th ><center>ผู้รับผิดชอบ</center></th>
-        <th><center>กิจกรรม</center></th>
         <th ><center>ความคืบหน้า</center></th>
       </tr>  
     </thead>  
     <tbody>  
       {% for result in DR %}
       <tr>
-        <td>{{result['row_num']}}</td>
+        <td align="center">{{result['row_num']}}</td>
         <td><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
         <td> {{result['pj_refNumber']}}</td>
         <td>{{result['user_fullname']}}</td>
-        <td>{{result['ev_name']}}</td>
         <td><center>{{result['x']}} %</center></td>        
       </tr>
       {% endfor %}
@@ -157,23 +151,21 @@
 <div id="Consider" class="tabcontent">
   <table id="myTableCO" class="table table-striped" >  
     <thead>  
-      <tr>  
+      <tr class="header">  
         <th><center>ลำดับ</center></th>
         <th><center>ชื่อโครงการ</center></th>
         <th ><center>เลขสารบัญ</center></th>
         <th ><center>ผู้รับผิดชอบ</center></th>
-        <th><center>กิจกรรม</center></th>
         <th ><center>ความคืบหน้า</center></th>
       </tr>  
     </thead>  
     <tbody>  
       {% for result in CO %}
       <tr>
-        <td>{{result['row_num']}}</td>
+        <td align="center">{{result['row_num']}}</td>
         <td><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
         <td> {{result['pj_refNumber']}}</td>
         <td>{{result['user_fullname']}}</td>
-        <td>{{result['ev_name']}}</td>
         <td><center>{{result['x']}} %</center></td>        
       </tr>
       {% endfor %}
@@ -184,23 +176,21 @@
 <div id="Examine" class="tabcontent">
     <table id="myTableEX" class="table table-striped" >  
       <thead>  
-        <tr>  
+        <tr class="header">  
           <th><center>ลำดับ</center></th>
           <th><center>ชื่อโครงการ</center></th>
           <th ><center>เลขสารบัญ</center></th>
           <th ><center>ผู้รับผิดชอบ</center></th>
-          <th><center>กิจกรรม</center></th>
           <th ><center>ความคืบหน้า</center></th>
         </tr>  
       </thead>  
       <tbody>  
         {% for result in EX %}
         <tr>
-          <td>{{result['row_num']}}</td>
+          <td align="center">{{result['row_num']}}</td>
           <td><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
           <td> {{result['pj_refNumber']}}</td>
           <td>{{result['user_fullname']}}</td>
-          <td>{{result['ev_name']}}</td>
           <td><center>{{result['x']}} %</center></td>        
         </tr>
         {% endfor %}

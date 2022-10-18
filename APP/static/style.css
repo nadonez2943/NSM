@@ -238,3 +238,6 @@ input {
 .hidden {
       display: none;
     }          
+.disabled-link {
+      pointer-events: none;
+    }
