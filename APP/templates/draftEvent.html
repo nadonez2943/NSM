@@ -59,28 +59,5 @@
             </table>
         <!-- </div> -->
     </div>
-    <script>
-        var dif = Number(document.getElementById("dif").value);
-        var tble = document.getElementById('eventt');
-            var row = tble.rows; // Getting the rows
-            if (dif > 30 || dif < 30){
-            
-  
-            for (var i = 0; i < row[0].cells.length; i++) {
-  
-                // Getting the text of columnName
-                var str = row[0].cells[i].innerHTML;
-  
-                // If 'Geek_id' matches with the columnName 
-                if (str.search("แก้ไข") != -1) { 
-                    for (var j = 0; j < row.length; j++) {
-  
-                        // Deleting the ith cell of each row
-                        row[j].deleteCell(i);
-                    }
-                }
-            }
-        }
-    </script>
 
     {% endblock %}
