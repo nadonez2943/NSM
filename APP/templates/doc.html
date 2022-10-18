@@ -2,16 +2,8 @@
 	{% extends 'layout.html' %}
 	
 	{% block body %}
-	
-	<script type="text/javascript">
-		function showDiv(Div) {
-			 var x = document.getElementById(Div);
-				 if(x.style.display=="none") {
-					 x.style.display = "block";}
-				 else { x.style.display = "none";}
-		}
-	</script>
-		 
+	<body><br>
+		<a class="btn btn-primary btn-lg" type="button" href="/project/{{id}}/{{p}}">ย้อนกลับ</a><br><br>
 		<div class="card">
 			<br>
 			<h1>เอกสารโครงการ</h1>
@@ -60,4 +52,13 @@
 			</div>
 			{% endfor %}
 		</div>
+		<script type="text/javascript">
+			function showDiv(Div) {
+				 var x = document.getElementById(Div);
+					 if(x.style.display=="none") {
+						 x.style.display = "block";}
+					 else { x.style.display = "none";}
+			}
+		</script>
+	</body>
 	{% endblock %}

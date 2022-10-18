@@ -1,12 +1,14 @@
 <doctype html>
     {% extends 'layout.html' %}
     {% block body %}
+    <body>
+        <br>
 		<div class="card">
-			<br>
-            <div class="col-75"><h1>ประกาศจากกองพัสดุ</h1></div>
-			<hr>
+            <div class="card-header">
+                <h1>ประกาศจากกองพัสดุ</h1>
+            </div>
+            <div  class="card-body">
 			{% for result in pac %}
-                <div  class="card">
                     <div class="row">
                         <div class="col-50">
                             <h6>รายละเอียดประกาศ :</h6>
@@ -17,7 +19,8 @@
                             <h6>{{result['pacdate']}}</h6>
                         </div>
                     </div>
-                </div>
 			{% endfor %}
+            </div>
 		</div>
+    </body>
     {% endblock %}
