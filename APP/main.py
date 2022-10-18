@@ -757,32 +757,53 @@ def update_std(id):
     try:
         std = request.form['std']
         start_draft = request.form['startd']
+        choose_stdraft = request.form['stdr']
+        pmc = request.form['PMC']
         stdraft_id = int(std)+1
         stdd = int(std)
-        if stdd == 5 :
+        if stdd == 3 :
             stdraft = stdraft_id
             draftapp_status = 'yes'
             sdd = start_draft
+            pmch = 'wait'
         elif stdd == 4 :
             stdraft = stdraft_id
             draftapp_status = ''
             sdd = start_draft
-        elif stdd ==3 :
-            stdraft = stdraft_id
+            pmch = pmc
+        elif stdd == 2 :
+            stdraft = 2
             draftapp_status = ''
-            sdd = date.today()
-        elif stdd < 3 :
-            stdraft = stdraft_id
-            draftapp_status = ''
-            sdd = NULL
-        sql = "UPDATE process SET stdraft_id=%s,draftapp_status=%s, start_draft=%s WHERE pj_id=%s"
-        data = (stdraft,draftapp_status,sdd, id)
+            sdd = choose_stdraft
+            pmch = 'wait'
+        sql = "UPDATE process SET stdraft_id=%s,draftapp_status=%s, start_draft=%s,PMcheck=%s WHERE pj_id=%s"
+        data = (stdraft,draftapp_status,sdd,pmch, id)
         conn = mysql.connect()
         cursor = conn.cursor()
         cursor.execute(sql, data)
         conn.commit()
         return redirect('/project/'+str(id)+'/draft')
     except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close()
+
+@app.route('/project/<int:id>/upddraft', methods=['POST'])
+def upddraft(id):
+    conn = None
+    cursor = None
+    start_draft = request.form['stdr']
+    try:
+        sql = "UPDATE process SET stdraft_id=%s WHERE pj_id=%s"
+        data = (start_draft, id)
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute(sql, data)
+        conn.commit()
+        return redirect('/project/'+str(id)+'/draft')
+    except Exception as e:
+           return start_draft
            print(e)
     finally:
            cursor.close() 
