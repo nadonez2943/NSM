@@ -163,15 +163,15 @@ def draft(id):
         ev = cursor.fetchall()
         cursor.execute("SELECT nsm_project.process.start_draft,DATE_FORMAT(DATE_ADD(start_draft , INTERVAL 543 YEAR ), %s) as startdate,DATE_FORMAT(DATE_ADD(ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY), INTERVAL 543 YEAR ), %s) AS endproject_date,DATEDIFF(ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY),date(now())) AS diff FROM nsm_project.process WHERE nsm_project.process.pj_id = %s", (format,format,id))
         diff = cursor.fetchall()
-        cursor.execute("SELECT * FROM (SELECT *,CAST((nsm_project.process.stdraft_id+1) AS UNSIGNED) stdraft FROM nsm_project.process ) a LEFT JOIN (SELECT * FROM nsm_project.status_draft) b ON a.stdraft = b.stdraft_id WHERE a.pj_id = %s", id)
-        nst = cursor.fetchall()
+        # cursor.execute("SELECT * FROM (SELECT *,CAST((nsm_project.process.stdraft_id+1) AS UNSIGNED) stdraft FROM nsm_project.process ) a LEFT JOIN (SELECT * FROM nsm_project.status_draft) b ON a.stdraft = b.stdraft_id WHERE a.pj_id = %s", id)
+        # nst = cursor.fetchall()
         cursor.execute("SELECT *,CASE WHEN nsm_project.manager.user_id = nsm_project.users.user_id THEN 'manager' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 1 OR nsm_project.board.role_id = 2 THEN 'board' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 3 THEN 'assistant' END AS role FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id or nsm_project.manager.user_id = nsm_project.users.user_id Where nsm_project.projects.pj_id = %s and nsm_project.users.user_id = %s group by nsm_project.users.user_id",(id ,user))
         role = cursor.fetchone()
         if (manager ==  role['role']) :
-                return render_template('draft.html', row=row , rows=rows ,id=id ,ev=ev,diff=diff,nst=nst)
+                return render_template('draft.html', row=row , rows=rows ,id=id ,ev=ev,diff=diff)
         if(phase == role['bo_phase'] ):
             if (assistant == role['role']) :
-                return render_template('draft.html', row=row , rows=rows ,id=id ,ev=ev,diff=diff,nst=nst)
+                return render_template('draft.html', row=row , rows=rows ,id=id ,ev=ev,diff=diff)
             elif (board ==  role['role']) :
                 return render_template('draftB.html', row=row , rows=rows ,id=id ,ev=ev,diff=diff)
         else:
@@ -275,11 +275,36 @@ def examine(id):
         cursor.close()
         conn.close()
 
-#หน้าเพิ่มคณะกรรมการ
+#PMเพิ่มคณะกรรมการ
+@app.route('/project/<int:id>/PMad', methods=[ 'POST'])
+def PMad(id):
+    conn = None
+    cursor = None
+    try:
+        stdraft_id = 2
+        if stdraft_id and request.method == 'POST':
+            sql = "UPDATE process SET stdraft_id=%s WHERE pj_id=%s"
+            data = (stdraft_id, id)
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute(sql, data)
+            conn.commit()
+        return redirect('/project/'+str(id)+'/draft')
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close() 
+
+#หน้าแก้ไขคณะกรรมการ
 @app.route('/project/<int:id>/addboardd',methods=[ 'GET'])
 def addboardd(id):
     conn = None
     cursor = None
+    phase = '1'
+    user = session['user_id']
+    manager = 'manager'
+    assistant = 'assistant'
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
     cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id AND nsm_project.board.bo_phase = 1 LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id LEFT JOIN nsm_project.office ON nsm_project.users.of_id = nsm_project.office.of_id LEFT JOIN nsm_project.division ON nsm_project.users.dv_id = nsm_project.division.dv_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.tbl_role.role_id", id)
@@ -288,7 +313,20 @@ def addboardd(id):
     rows = cursor.fetchall()
     cursor.execute("SELECT count(case when nsm_project.board.role_id = '1' then 1 end) as cmng ,count(case when nsm_project.board.role_id = '2' then 1 end) as cboa,count(case when nsm_project.board.role_id = '3' then 1 end) as cas FROM  nsm_project.board WHERE nsm_project.board.pj_id = %s AND nsm_project.board.bo_phase=1", id)
     crole = cursor.fetchall()
-    return render_template('addboardd.html', id=id,row=row,rows=rows,crole=crole)
+    cursor.execute("SELECT * FROM nsm_project.process WHERE nsm_project.process.pj_id=%s", id)
+    status = cursor.fetchall()
+    std = int(status[0]['stdraft_id'])
+    cursor.execute("SELECT *,CASE WHEN nsm_project.manager.user_id = nsm_project.users.user_id THEN 'manager' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 1 OR nsm_project.board.role_id = 2 THEN 'board' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 3 THEN 'assistant' END AS role FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id or nsm_project.manager.user_id = nsm_project.users.user_id Where nsm_project.projects.pj_id = %s and nsm_project.users.user_id = %s group by nsm_project.users.user_id",(id ,user))
+    role = cursor.fetchone()
+    if (manager ==  role['role'] and std == 1 ) :
+            return render_template('PMad.html', id=id,row=row,rows=rows,crole=crole)
+    elif (manager ==  role['role'] and std > 1 ) :
+            return render_template('inept.html', id=id,row=row,rows=rows,crole=crole)        
+    if(phase == role['bo_phase'] ):
+        if (assistant == role['role']) :
+            return render_template('addboardd.html', id=id,row=row,rows=rows,crole=crole)
+    else:
+        return render_template('inept.html', row=row , rows=rows ,id=id )
 
 @app.route('/addboardd', methods=[ 'POST'])
 def addboardd2():
@@ -296,7 +334,6 @@ def addboardd2():
     cursor = None
     try:
         user_id = request.form['userid']
-        # ev_name = request.form['evname']
         role_id = request.form['roleid']
         bo_phase = request.form['bophase']
         pj_id = request.form['pjid']
@@ -900,7 +937,7 @@ def addProject():
             data4 = (pj_id,1,1,1,date.today())
             cursor.execute(sql4, data4)
             conn.commit()
-            return redirect ('/myproject')
+            return redirect ('/home')
         else:
             return 'Error'
     except Exception as e:

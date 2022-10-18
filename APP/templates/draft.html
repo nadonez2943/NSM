@@ -144,10 +144,8 @@
             <input name="startd" value="{{row[0]['start_draft']}}" type="hidden">
             <div align="center"><input type="submit" id="appbotton" onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="สถานะถัดไป" ></form></div>
             <div align="center"><form action="/project/{{row[0]['pj_id']}}/draft/unapproved" method="post"><input type="hidden" id="appbotton2" onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="" ></form></div>
-            <input name="nstd" value="{{nst[0]['stdraft']}}" type="hidden">
             <lable>
-            <input id="nstt" value="สถานะถัดไป:" disabled="disabled"/>
-            <input id="nstt2" value="{{nst[0]['stdraft_name']}}" disabled="disabled"/>
+            
             </lable>
           </div>  
         </div>

@@ -155,7 +155,11 @@
     document.getElementById('diff').style.color = "white";
   document.getElementById('diff').style.background = "green";
   }
-  
+  if (document.getElementById('diff').value == "None"){
+  document.getElementById('sta').type = "hidden";
+  document.getElementById('diff').type = "hidden";
+  document.getElementById('day').type = "hidden";
+  }
   </script>
   
   <script>
@@ -293,6 +297,10 @@
       if (cmng == "0" || cas == "0" || cboa < 3){
         document.getElementById("finil").href = "#";
         document.getElementById("fini").onclick = function() {unfinishedAll()};
+      }
+      else if (document.getElementById("PMR").value == "PM" ){
+        document.getElementById("finished").type = "submit";
+        document.getElementById("fini").type = "hidden";
       }
       function unfinished() {
         alert("จำนวนกรรมการต้องเป็นจำนวนคี่")
