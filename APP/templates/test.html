@@ -1,21 +1,49 @@
-<!DOCTYPE html>
-<style type="text/css">
-  .bootstrap-timepicker-meridian, .meridian-column
-  {
-      display: none;
-  }
-</style>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.min.css" />
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
-<script type="text/javascript">
-  $(function () {
-      $('#timepicker').timepicker({
-          showMeridian: false,
-          showInputs: true
-      });
-  });
+<!DOCTYPE html>   
+<html lang="en">   
+<head>   
+<meta charset="utf-8">   
+<title>Final Output</title>   
+<meta name="description" content="Bootstrap.">  
+<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">   
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css"></style>
+<script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+</head>  
+<body style="margin:20px auto">  
+<div class="container">
+<div class="row header" style="text-align:center;color:green">
+<h3>Bootstrap</h3>
+</div>
+      <table id="myTable" class="table table-striped" >  
+        <thead>  
+          <tr>  
+            <th><center>ลำดับ</center></th>
+            <th><center>ชื่อโครงการ</center></th>
+            <th ><center>เลขสารบัญ</center></th>
+            <th ><center>ผู้รับผิดชอบ</center></th>
+            <th><center>กิจกรรม</center></th>
+            <th ><center>ความคืบหน้า</center></th>
+          </tr>  
+        </thead>  
+        <tbody>  
+          {% for result in EX %}
+          <tr>
+            <td>{{result['row_num']}}</td>
+            <td><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
+            <td> {{result['pj_refNumber']}}</td>
+            <td>{{result['user_fullname']}}</td>
+            <td>{{result['ev_name']}}</td>
+            <td><center>{{result['x']}} %</center></td>        
+          </tr>
+          {% endfor %}
+        </tbody>  
+      </table>  
+	  </div>
+</body>  
+<script>
+$(document).ready(function(){
+    $('#myTable').dataTable();
+});
 </script>
-<input id="timepicker" type="text">
-</html>
+</html>  
