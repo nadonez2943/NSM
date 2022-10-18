@@ -12,42 +12,59 @@
       <br>         
       <dl>
       <p>
-         เลขสรรบัญ: <input name="refNumber" id="ref" value="" type="text" style="width:100px; " placeholder="เลขสรรบัญ" autocomplete="off" required> 
-      </p>
-      <p>
-        
-        
-            <div class="row">
-                <div class="col-md-6">
-                     สำนักงาน
-                     <select name="ofid"  id="ofid" class="form-control" title="Select office"> 
-                     <option value=""></option>
-                        {% for row in office %}
-                            <option value="{{row.of_id}}">{{row.of_name}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="col-md-6">
-                     กอง
-                     <select name="dvid"  id="dv_name" class="form-control" title="Select division">
-                  </select>
-                </div>
+         <div class="row">
+            <div class="col-md-8">
+               ชื่อโครงการ
+               <input name="name" value="" type="text" style="width:100%;" placeholder="ชื่อโครงการ" autocomplete="off" required> 
             </div>
-        </p>
-      <p>
-         ชื่อโครงการ: <input name="name" value="" type="text" style="width:814px;" placeholder="ชื่อโครงการ" autocomplete="off" required> 
+            <div class="col-md-4">
+               เลขสารบัญ
+               <input name="refNumber" id="ref" value="" type="text" style="width:100%; " placeholder="เลขสารบัญ" autocomplete="off" required> 
+            </div>
+         </div>
       </p>
-      <p>ประเภทโครงการ 
-         <a class="container">&nbsp;&nbsp;&nbsp;
-            <input type="radio" checked="checked" name="radio"  value="จัดซื้อ"> จัดซื้อ
-            <span class="checkmark"></span>
-         </a>&nbsp;&nbsp;&nbsp;
-         <a class="container">
-            <input type="radio" name="radio" value="จัดจ้าง">จัดจ้าง
-            <span class="checkmark"></span>
-         </a>&nbsp;&nbsp;&nbsp;&nbsp;
-         งบประมาณ:
-         <input name="amount" value="" id="num1" oninput="" class="mask" type="text" style="width:300px;"placeholder="งบประมาณ" autocomplete="off" required>
+      <p>
+         <div class="row">
+            <div class="col-md-6">
+               สำนักงาน
+               <select name="ofid"  id="ofid" class="form-control" title="Select office"> 
+               <option value=""></option>
+                  {% for row in office %}
+                        <option value="{{row.of_id}}">{{row.of_name}}</option>
+                  {% endfor %}
+               </select>
+            </div>
+            <div class="col-md-6">
+               กอง
+               <select name="dvid"  id="dv_name" class="form-control" title="Select division">
+            </select>
+            </div>
+         </div>
+      </p>
+      <p>
+         <div class="row">
+            <div class="col-md-4">
+               ประเภทโครงการ 
+               <div class="row">
+                  <div class="col-md-6">
+                     <input type="radio" checked="checked" name="radio"  value="จัดซื้อ" style="width:50%;"> จัดซื้อ
+                     <span class="checkmark"></span>
+                  </div>
+                  <div class="col-md-6">
+                     <input type="radio" name="radio" value="จัดจ้าง" style="width:50%;">จัดจ้าง
+                     <span class="checkmark"></span>
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-4">
+               งบประมาณ
+               <input name="amount" value="" id="num1" oninput="" class="mask" type="text" style="width:100%;" placeholder="งบประมาณ" autocomplete="off" required>
+            </div>
+            <div class="col-md-4">
+               วงเงิน
+               <input name="financeAmount" value="" class="mask" id="num2" oninput="" type="text" style="width:100%; " title="วงเงินต้องน้อยกว่างบประมาณ" placeholder="วงเงิน "  autocomplete="off" required>
+            </div>
+         </div>
       </p>
       <p>
          รายละเอียดโครงการ
@@ -56,7 +73,7 @@
          <input name="detail" value="" type="text" style="width:900px; height: 88;  " placeholder="รายละเอียด " autocomplete="off" required> 
       </p>
       <p>
-         วงเงิน:<input name="financeAmount" value="" class="mask" id="num2" oninput="" type="text" style="width:170px; " title="วงเงินต้องน้อยกว่างบประมาณ" placeholder="วงเงิน "  autocomplete="off" required>&nbsp;บาท&nbsp;&nbsp; &nbsp;
+         
          โดยใช้งบประมาณ:
          <select name="budgetSource" style="border: 2px solid black;"required>
             <option value="" hidden>ที่มางบประมาณ</option>
