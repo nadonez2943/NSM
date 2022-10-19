@@ -11,7 +11,7 @@ from wtforms import FileField, SubmitField
 from werkzeug.utils import secure_filename
 import os
 from wtforms.validators import InputRequired
-from datetime import date
+from datetime import date,datetime
 
 ALLOWED_EXTENSIONS = {'doc', 'pdf'}
 
@@ -108,7 +108,7 @@ def project(id):
 def draft(id):
     conn = None
     cursor = None
-    phase = '1'
+    phase = 1
     user = session['user_id']
     manager = 'manager'
     assistant = 'assistant'
@@ -127,15 +127,13 @@ def draft(id):
         ev = cursor.fetchall()
         cursor.execute("SELECT nsm_project.process.start_draft,DATE_FORMAT(DATE_ADD(start_draft , INTERVAL 543 YEAR ), %s) as startdate,DATE_FORMAT(DATE_ADD(ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY), INTERVAL 543 YEAR ), %s) AS endproject_date,DATEDIFF(ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY),date(now())) AS diff FROM nsm_project.process WHERE nsm_project.process.pj_id = %s", (format,format,id))
         diff = cursor.fetchall()
-        # cursor.execute("SELECT * FROM (SELECT *,CAST((nsm_project.process.stdraft_id+1) AS UNSIGNED) stdraft FROM nsm_project.process ) a LEFT JOIN (SELECT * FROM nsm_project.status_draft) b ON a.stdraft = b.stdraft_id WHERE a.pj_id = %s", id)
-        # nst = cursor.fetchall()
         cursor.execute("SELECT *,CASE WHEN nsm_project.manager.user_id = nsm_project.users.user_id THEN 'manager' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 1 OR nsm_project.board.role_id = 2 THEN 'board' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 3 THEN 'assistant' END AS role FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id or nsm_project.manager.user_id = nsm_project.users.user_id Where nsm_project.projects.pj_id = %s and nsm_project.users.user_id = %s group by nsm_project.users.user_id",(id ,user))
         role = cursor.fetchone()
         if (manager ==  role['role']) :
-                return render_template('draft.html', row=row , rows=rows ,id=id ,ev=ev,diff=diff)
-        if(phase == role['bo_phase'] ):
+                return render_template('draft.html', row=row , rows=rows ,id=id ,ev=ev,diff=diff,role=role)
+        elif(phase == role['bo_phase'] and manager !=  role['role']):
             if (assistant == role['role']) :
-                return render_template('draft.html', row=row , rows=rows ,id=id ,ev=ev,diff=diff)
+                return render_template('draft.html', row=row , rows=rows ,id=id ,ev=ev,diff=diff,role=role)
             elif (board ==  role['role']) :
                 return render_template('draftB.html', row=row , rows=rows ,id=id ,ev=ev,diff=diff)
         else:
@@ -152,7 +150,7 @@ def draft(id):
 def consider(id):
     conn = None
     cursor = None
-    phase = '2'
+    phase = 2
     user = session['user_id']
     manager = 'manager'
     assistant = 'assistant'
@@ -175,9 +173,9 @@ def consider(id):
         cursor.execute("SELECT *,CASE WHEN nsm_project.manager.user_id = nsm_project.users.user_id THEN 'manager' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 1 OR nsm_project.board.role_id = 2 THEN 'board' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 3 THEN 'assistant' END AS role FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id or nsm_project.manager.user_id = nsm_project.users.user_id Where nsm_project.projects.pj_id = %s and nsm_project.users.user_id = %s group by nsm_project.users.user_id",(id ,user))
         role = cursor.fetchone()
         if (manager ==  role['role']) :
-            if (std == 6) :
+            if (std == 5) :
                 return render_template('consider.html', row=row , rows=rows ,id=id ,ev=ev,nst=nst)
-            elif (std < 6) :
+            elif (std < 5) :
                 return render_template('errorcon.html')
         elif(phase == role['bo_phase'] ):
             if (assistant == role['role']) :
@@ -197,7 +195,7 @@ def consider(id):
 def examine(id):
     conn = None
     cursor = None
-    phase = '3'
+    phase = 3
     user = session['user_id']
     manager = 'manager'
     assistant = 'assistant'
@@ -471,10 +469,9 @@ def draftevent(id):
         cursor.execute("SET lc_time_names = 'th_TH'")
         cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.events.ev_id) as row_num,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate,TIME_FORMAT(ev_time, %s) as evtime FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 1 WHERE nsm_project.projects.pj_id = %s", (format,tformat,id))
         row = cursor.fetchall()
-        if row:
-            return render_template('draftEvent.html', row=row , id=id)
-        else:
-            return 'Error loading #{id}'.format(id=id)
+        cursor.execute("SELECT nsm_project.process.start_draft,DATE_FORMAT(DATE_ADD(start_draft , INTERVAL 543 YEAR ), %s) as startdate,DATE_FORMAT(DATE_ADD(ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY), INTERVAL 543 YEAR ), %s) AS endproject_date,DATEDIFF(ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY),date(now())) AS diff FROM nsm_project.process WHERE nsm_project.process.pj_id = %s", (format,format,id))
+        diff = cursor.fetchall()
+        return render_template('draftEvent.html', row=row , id=id,diff=diff)
     except Exception as e:
         print(e)
     finally:
@@ -721,53 +718,68 @@ def update_std(id):
     try:
         std = request.form['std']
         start_draft = request.form['startd']
+        dast = request.form['appr']
         choose_stdraft = request.form['stdr']
         pmc = request.form['PMC']
-        stdraft_id = int(std)+1
         stdd = int(std)
-        if stdd == 3 :
-            stdraft = stdraft_id
-            draftapp_status = 'yes'
-            sdd = start_draft
-            pmch = 'wait'
-        elif stdd == 4 :
-            stdraft = stdraft_id
-            draftapp_status = ''
-            sdd = start_draft
-            pmch = pmc
-        elif stdd == 2 :
+        if stdd == 2 and pmc != 'wait' and pmc != 'prewait' :
             stdraft = 2
             draftapp_status = ''
             sdd = choose_stdraft
+            pmch = 'prewait'
+            end_draftd = '0000-00-00'
+            end_draftt = '00:00:00'
+        elif stdd == 2 and pmc == 'prewait' :
+            stdraft = 2
+            draftapp_status = 'finished'
+            sdd = start_draft
             pmch = 'wait'
-        sql = "UPDATE process SET stdraft_id=%s,draftapp_status=%s, start_draft=%s,PMcheck=%s WHERE pj_id=%s"
-        data = (stdraft,draftapp_status,sdd,pmch, id)
+            end_draftd = '0000-00-00'
+            end_draftt = '00:00:00'
+        elif stdd == 2 and pmc == 'wait' :
+            stdraft = 3
+            draftapp_status = 'waitapp'
+            sdd = start_draft
+            pmch = ''
+            end_draftd = '0000-00-00'
+            end_draftt = '00:00:00'
+        elif stdd == 3 and pmc != 'wait':
+            stdraft = 3
+            draftapp_status = 'yes'
+            sdd = start_draft
+            pmch = 'wait'
+            end_draftd = '0000-00-00'
+            end_draftt = '00:00:00'
+        elif stdd == 3 and pmc == 'wait' and dast == 'yes':
+            stdraft = 4
+            draftapp_status = 'yes'
+            sdd = start_draft
+            pmch = 'yes'
+            end_draftd = '0000-00-00'
+            end_draftt = '00:00:00'
+        elif stdd == 3 and pmc == 'wait' and dast == 'no':
+            stdraft = 2
+            draftapp_status = 'no'
+            sdd = start_draft
+            pmch = 'no'
+            end_draftd = '0000-00-00'
+            end_draftt = '00:00:00'
+        elif stdd == 4 and pmc == 'yes':
+            stdraft = 5
+            draftapp_status = 'yes'
+            sdd = start_draft
+            pmch = 'yes'
+            end_draftd = date.today()
+            now = datetime.now()
+            end_draftt = now.strftime("%H:%M:%S")
+        sql = "UPDATE process SET stdraft_id=%s,draftapp_status=%s, start_draft=%s,end_draft_date=%s,end_draft_time=%s,PMcheck=%s WHERE pj_id=%s"
+        data = (stdraft,draftapp_status,sdd,end_draftd,end_draftt,pmch, id)
         conn = mysql.connect()
         cursor = conn.cursor()
         cursor.execute(sql, data)
         conn.commit()
         return redirect('/project/'+str(id)+'/draft')
     except Exception as e:
-           print(e)
-    finally:
-           cursor.close() 
-           conn.close()
-
-@app.route('/project/<int:id>/upddraft', methods=['POST'])
-def upddraft(id):
-    conn = None
-    cursor = None
-    start_draft = request.form['stdr']
-    try:
-        sql = "UPDATE process SET stdraft_id=%s WHERE pj_id=%s"
-        data = (start_draft, id)
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor.execute(sql, data)
-        conn.commit()
-        return redirect('/project/'+str(id)+'/draft')
-    except Exception as e:
-           return start_draft
            print(e)
     finally:
            cursor.close() 
@@ -821,10 +833,11 @@ def unapproved(id):
     conn = None
     cursor = None
     try:
-        stdraft = 2
+        stdraft = 3
         draftapp_status = 'no'
-        sql = "UPDATE process SET stdraft_id=%s,draftapp_status=%s WHERE pj_id=%s"
-        data = (stdraft,draftapp_status, id)
+        pmch = 'wait'
+        sql = "UPDATE process SET stdraft_id=%s,draftapp_status=%s,PMcheck=%s WHERE pj_id=%s"
+        data = (stdraft,draftapp_status,pmch, id)
         conn = mysql.connect()
         cursor = conn.cursor()
         cursor.execute(sql, data)

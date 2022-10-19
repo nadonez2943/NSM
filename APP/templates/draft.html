@@ -137,17 +137,19 @@
           </div>
           <div class="card-body" align="center">
             <progress id="file" value="{{row[0]['stdraft_percent']}}" max="100"> </progress>    
-            <br>
+            <br><br>
             <label for="file">{{row[0]['stdraft_name']}}</label>
             <form action="/project/{{row[0]['pj_id']}}/draft" method="post">
             <input name="std" id="std" value="{{row[0]['stdraft_id']}}" type="hidden">
             <input name="startd" value="{{row[0]['start_draft']}}" type="hidden">
-            <input name="PMC" value="{{row[0]['PMcheck']}}" type="hidden">
+            <input name="PMC" id="PMC" value="{{row[0]['PMcheck']}}" type="hidden">
+            <input name="userrole" id="userrole" value="{{role['role']}}" type="hidden">
+            <input type="hidden" name="appr" value="{{row[0]['draftapp_status']}}" >
             <p id="dayform" style="display: none;">โปรดเลือกวันเริ่มต้น</p>
             <input name="stdr" id="stdr" value="" type="hidden"></input>
             <br><br>
-            <div align="center"><input type="submit" id="appbotton" onclick="" value="ยืนยัน" ></form></div>
-            <div align="center"><form action="/project/{{row[0]['pj_id']}}/draft/unapproved" method="post"><input type="hidden" id="appbotton2" onclick="return confirm('ยืนยันการอัพเดทสถานะ')" value="" ></form></div>
+            <div align="center"><input type="hidden" id="appbotton" onclick="return confirm('ยืนยัน')" value="ยืนยัน" ></form></div>
+            <div align="center"><form action="/project/{{row[0]['pj_id']}}/draft/unapproved" method="post"><input type="hidden" id="appbotton2" onclick="return confirm('ยืนยัน')" value="" ></form></div>
             
           </div>  
         </div>
@@ -160,7 +162,7 @@
             <lable>เริ่มการร่าง TOR และราคากลาง</lable>
             <lable id="dstart">วันที่ {{diff[0]['startdate']}}</lable><br>
             <lable>สิ้นสุดการร่าง TOR และราคากลาง</lable>
-            <lable id="dend">วันที่ {{diff[0]['endproject_date']}}</lable><br>
+            <lable id="dend">วันที่ {{diff[0]['endproject_date']}}</lable><br><br>
             <lable>
               <!-- <input type="hidden" id="strd" value="{{diff[0]['startdate']}}" > -->
               <input type="hidden" id="appr" value="{{row[0]['draftapp_status']}}" >

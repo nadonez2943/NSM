@@ -14,16 +14,17 @@
             <div class="col-50"><h1>กิจกรรม</h1></div>
             <div class="col-50" align="right"><a type="button" class="btn-outline btn-lg" href="addeventd">เพิ่มกิจกรรม</a></div>
         </div>
+        <input type="hidden" id="dif" value="{{diff[0]['diff']}}">
         <!-- <div class="card-body"> -->
-            <table id="customers">
+            <table id="eventt">
                 <tr>
                 <th>ลำดับ</th>
                 <th>ชื่ออีเวนท์</th>
                 <th>รายละเอียด</th>
                 <th>วันที่</th>
                 <th>เวลา</th>
-                <th>แก้ไข</th>
-                <th>ลบ</th>
+                <th >แก้ไข</th>
+                <th >ลบ</th>
                 </tr>
                 {% for result in row %}
                 <tr>
@@ -32,7 +33,7 @@
                 <td id="evet">{{result['ev_detail']}}</td>
                 <td id="evdt">{{result['evdate']}}</td>
                 <td id="evtt">{{result['evtime']}} น.</td>
-                <td id="evedt"><a   href="/project/{{result['pj_id']}}/editevent/{{result['ev_id']}}" >แก้ไข</a></td>
+                <td id="evedt"><a  id="evedt" href="/project/{{result['pj_id']}}/editevent/{{result['ev_id']}}" >แก้ไข</a></td>
                 <td id="evdlt">
                     <a  style="color:red" data-bs-toggle="modal" data-bs-target="#myModal1" >ลบ</a>
                         <div class="modal" id="myModal1">
@@ -58,4 +59,5 @@
             </table>
         <!-- </div> -->
     </div>
+
     {% endblock %}
