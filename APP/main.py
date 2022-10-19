@@ -78,6 +78,7 @@ def home():
 def project(id):
     conn = None
     cursor = None
+    user = session['user_id']
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
@@ -92,8 +93,10 @@ def project(id):
         ev = cursor.fetchall()
         cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(pac_date , INTERVAL 543 YEAR ), %s) as pacdate FROM nsm_project.pacel RIGHT JOIN nsm_project.projects ON nsm_project.projects.pj_id = nsm_project.pacel.pj_id WHERE nsm_project.projects.pj_id=%s ORDER BY pac_id DESC",(format,id))
         pac = cursor.fetchall()
+        cursor.execute("SELECT *,CASE WHEN nsm_project.manager.user_id = nsm_project.users.user_id THEN 'manager' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 1 OR nsm_project.board.role_id = 2 THEN 'board' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 3 THEN 'assistant' END AS role FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id or nsm_project.manager.user_id = nsm_project.users.user_id Where nsm_project.projects.pj_id = %s and nsm_project.users.user_id = %s group by nsm_project.users.user_id",(id ,user))
+        role = cursor.fetchone()
         if rows:
-            return render_template('project.html', row=row , rows=rows , id=id , ev=ev, pac=pac)
+            return render_template('project.html', row=row , rows=rows , id=id , ev=ev, pac=pac,role=role)
         else:
             return 'Error loading #{id}'.format(id=id)
     except Exception as e:
@@ -236,6 +239,27 @@ def examine(id):
     finally:
         cursor.close()
         conn.close()
+
+#ยุติโครงการ
+@app.route('/project/<int:id>/closeProject', methods=[ 'POST'])
+def closeProject(id):
+    conn = None
+    cursor = None
+    try:
+        pj_status = 'closed'
+        if pj_status and request.method == 'POST':
+            sql = "UPDATE projects SET pj_status=%s WHERE pj_id=%s"
+            data = (pj_status, id)
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute(sql, data)
+            conn.commit()
+        return redirect('/project/'+str(id))
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close() 
 
 #PMเพิ่มคณะกรรมการ
 @app.route('/project/<int:id>/PMad', methods=[ 'POST'])

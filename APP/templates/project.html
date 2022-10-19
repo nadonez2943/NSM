@@ -2,6 +2,18 @@
   {% extends 'layout.html' %}
   
   {% block body %}
+  <head>
+    <style>
+      input[id="closepj"]{
+      height: 70px;
+      width: 245px;
+      margin-top: 8px;
+      border-radius: 4px;
+      text-align: center;
+      font-size: 18px;
+    }
+    </style>
+  </head>
   <br>
       <div class="row">
         <div class="leftcolumn">
@@ -128,6 +140,12 @@
             </center>
             </div>
           </div>
+          <input name="userrole" id="userrole" value="{{role['role']}}" type="hidden">
+          <div>
+              <form action="/project/{{row[0]['pj_id']}}/closeProject" method="post">
+                <input type="submit" id="closepj" value="ยุติโครงการ">
+              </form>
+          </div>
         </div>
       </div>
 
@@ -135,7 +153,8 @@
     var pacde = document.getElementById("pacde").innerHTML
     var pacda = document.getElementById("pacda").innerHTML
     if (pacde == "None"){
-      document.getElementById("pacde").style.display = "none";
+      document.getElementById("pacde").innerHTML = "-";
+      document.getElementById("pacde").style.textAlign = "center";
     }
     if (pacda == "วันที่ None"){
       document.getElementById("pacda").style.display = "none";

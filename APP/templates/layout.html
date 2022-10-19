@@ -75,6 +75,13 @@
 </script>
 
 <script>
+var usrole = document.getElementById('userrole').value;
+if (usrole != "manager")  {
+      document.getElementById('closepj').type = "hidden";
+    }
+</script>
+
+<script>
   var stdd = document.getElementById('std').value;
   var usrole = document.getElementById('userrole').value;
   var pmc = document.getElementById('PMC').value;
