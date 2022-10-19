@@ -217,9 +217,9 @@
                 {% for result in row %}
                 <div class="row"><div class="col-50"><label id="usf">{{result['user_fullname']}}</label></div><div class="col-25"><label id="usr">{{result['role_name']}}</label></div></div>
                 {% endfor %}
-                <div align="Right"><a href="addboardd" role="button"> แก้ไขรายชื่อคณะกรรมการ</a></div>
+                <div align="Right"><a href="addboardd" id="addboardd" role="button"> แก้ไขรายชื่อคณะกรรมการ</a></div>
               </div>
-            </div>
+            </div><br>
             <div class="row">
               <div class="col-25">
                 <label>วันที่เริ่มโครงการ</label>
@@ -244,7 +244,7 @@
                 </label>
               </div>
             </div>
-              <p align="right"><a href="/project/{{id}}/editproject" >แก้ไข</a></p>
+              <p align="right"><a id="editpj"href="/project/{{id}}/editproject" >แก้ไข</a></p>
         </div>
       </div>
     </div>

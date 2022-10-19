@@ -32,7 +32,7 @@
                 <h4>วันที่</h4>
             </div>
             <div class="col-75">
-            <input name="evdate" value="" type="date"></input>
+            <input name="evdate" value="" type="date" min="{{diff[0]['start_draft']}}" max="{{diff[0]['endproject_date']}}"></input>
             <input name="evphase" value="1" type="hidden">
             <input name="pjid" value="{{row[0]['pj_id']}}" type="hidden">
             </div>
