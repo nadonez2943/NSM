@@ -143,7 +143,7 @@
           <input name="userrole" id="userrole" value="{{role['role']}}" type="hidden">
           <div>
               <form action="/project/{{row[0]['pj_id']}}/closeProject" method="post">
-                <input type="submit" id="closepj" value="ยุติโครงการ">
+                <input type="submit" id="closepj" onclick="return confirm('ยืนยันการยุติโครงการ')" value="ยุติโครงการ">
               </form>
           </div>
         </div>

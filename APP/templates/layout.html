@@ -130,13 +130,55 @@ if (usrole != "manager")  {
     document.getElementById('editpj').innerHTML = "";
     }
 </script>
+
 <script>
-  var stcc = document.getElementById('stc').value;
-  if (stcc == "6") {
-    document.getElementById('appbottonc').type = "hidden";
-    document.getElementById('nstt').type = "hidden";
-    document.getElementById('nstt2').type = "hidden";
+  var usrole = document.getElementById('userrole').value;
+  var stcc = Number(document.getElementById('stc').value);
+  var cpmc = document.getElementById('CPMC').value;
+  if (stcc == 2 && cpmc != "wait" && usrole == "manager") {
+    document.getElementById('openf').style.display = "block";
+    document.getElementById('buyd').style.display = "block";
+    document.getElementById('buy_date').type = "date";
+    document.getElementById('invited').style.display = "block";
+    document.getElementById('invite_date').type = "date";
+    document.getElementById('propd').style.display = "block";
+    document.getElementById('prop_date').type = "date";
   }
+  if (stcc == 7) {
+    document.getElementById('appbottonc').type = "hidden";
+  }
+  function handleChange(checkbox) {
+    if(checkbox.checked == true){
+      document.getElementById('buyd').style.display = "none";
+      document.getElementById('buy_date').type = "hidden";
+      document.getElementById('invited').style.display = "none";
+      document.getElementById('invite_date').type = "hidden";
+      document.getElementById('propd').style.display = "none";
+      document.getElementById('prop_date').type = "hidden";
+    }else{
+      document.getElementById('buyd').style.display = "block";
+      document.getElementById('buy_date').type = "date";
+      document.getElementById('invited').style.display = "block";
+      document.getElementById('invite_date').type = "date";
+      document.getElementById('propd').style.display = "block";
+      document.getElementById('prop_date').type = "date";
+      document.getElementById('checkboxdate').value = "1";
+   }
+}
+</script>
+
+<script>
+  var stcc = Number(document.getElementById('stc').value);
+  var usrole = document.getElementById('userrole').value;
+  if (stcc == 1 && usrole == "manager")  {
+      document.getElementById('addboardc').innerHTML = "เพิ่มรายชื่อคณะกรรมการ";
+    }
+  if (stcc > 1 && usrole == "manager")  {
+      document.getElementById('addboardc').innerHTML = "";
+    }
+  if ( usrole == "manager")  {
+    document.getElementById('editpj').innerHTML = "";
+    }
 </script>
 
 <script>
@@ -250,9 +292,11 @@ if (usrole != "manager")  {
     var modal = document.getElementById("modall");
     var span = document.getElementsByClassName("close")[0];
     var dif = Number(document.getElementById('mdiff').value);
+    var stdd = document.getElementById('std').value;
+    var pmc = document.getElementById('PMC').value;
     document.getElementById('msta').style.color = "white";
     document.getElementById('mday').style.color = "white";
-    if (dif < 0) {
+    if (dif < 0 && stdd == '2' && pmc != 'wait') {
     document.getElementById('msta').value = "ระยะเวลาร่างเกินกำหนด";
     document.getElementById('mdiff').value = Math.abs(dif);
     document.getElementById('mdiff').style.color = "white";
@@ -269,7 +313,7 @@ if (usrole != "manager")  {
       }
     }
     }
-    else if (dif < 10 && dif >= 0) {
+    else if (dif < 10 && dif >= 0 && stdd == '2' && pmc != 'wait') {
     document.getElementById('mdiff').style.color = "white";
     window.onload = function() {
       modal.style.display = "block";
@@ -285,7 +329,7 @@ if (usrole != "manager")  {
       }
     }
     }
-    else if (dif >= 10 && dif < 15) {
+    else if (dif >= 10 && dif < 15 && stdd == '2' && pmc != 'wait') {
     document.getElementById('msta').style.color = "red";
     document.getElementById('mdiff').style.color = "red";
     document.getElementById('mday').style.color = "red";
