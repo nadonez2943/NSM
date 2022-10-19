@@ -78,6 +78,7 @@
   var stdd = document.getElementById('std').value;
   var usrole = document.getElementById('userrole').value;
   var pmc = document.getElementById('PMC').value;
+  
   if (stdd == "2" && pmc != "wait" && pmc != "prewait" && usrole == "assistant")  {
     document.getElementById('stdr').type = "date";
     document.getElementById('dayform').style.display = "block";
@@ -109,6 +110,19 @@
   
 </script>
 
+<script>
+  var stdd = Number(document.getElementById('std').value);
+  var usrole = document.getElementById('userrole').value;
+  if (stdd == 1 && usrole == "manager")  {
+      document.getElementById('addboardd').innerHTML = "เพิ่มรายชื่อคณะกรรมการ";
+    }
+  if (stdd > 1 && usrole == "manager")  {
+      document.getElementById('addboardd').innerHTML = "";
+    }
+  if ( usrole == "manager")  {
+    document.getElementById('editpj').innerHTML = "";
+    }
+</script>
 <script>
   var stcc = document.getElementById('stc').value;
   if (stcc == "6") {
