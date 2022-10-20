@@ -135,6 +135,7 @@ if (usrole != "manager")  {
   var usrole = document.getElementById('userrole').value;
   var stcc = Number(document.getElementById('stc').value);
   var cpmc = document.getElementById('CPMC').value;
+  var condif = Number(document.getElementById('condif').value);
   if (stcc == 2 && cpmc != "wait" && usrole == "manager") {
     document.getElementById('openf').style.display = "block";
     document.getElementById('buyd').style.display = "block";
@@ -165,11 +166,19 @@ if (usrole != "manager")  {
     document.getElementById('formbutton').innerHTML = "กรอกวันและเวลาที่ส่งรายงานผล";
     document.getElementById('reptime').style.display = "block";
   }
-  if (stcc == 5 && cpmc != "wait" && cpmc != "prewait" && usrole == "assistant") {
+  if (stcc == 5 && cpmc != "wait" && usrole == "assistant") {
     document.getElementById('openf').style.display = "block";
     document.getElementById('winnerd').style.display = "block";
     document.getElementById('winner_date').type = "date";
     document.getElementById('noinfo').style.display = "none";
+  }
+  if (stcc == 6 && cpmc != "wait" && usrole == "assistant") {
+    document.getElementById('appbottonc').type = "submit";
+    document.getElementById('appbottonc').value = "พ้นอุทธรณ์";
+  }
+  
+  if (stcc == 6 && cpmc == "wait" && usrole == "manager") {
+    document.getElementById('appbottonc').type = "submit";
   }
   function handleChange(checkbox) {
     if(checkbox.checked == true){
@@ -202,6 +211,8 @@ if (usrole != "manager")  {
     }
   if ( usrole == "manager")  {
     document.getElementById('editpj').innerHTML = "";
+    document.getElementById('addcontt').innerHTML = "";
+    document.getElementById('editcontt').innerHTML = "";
     }
 </script>
 
@@ -379,6 +390,39 @@ if (usrole != "manager")  {
     }
     }
     </script>
+
+<script>
+  var modalc = document.getElementById("modallc");
+  var span = document.getElementsByClassName("close")[0];
+  var difc = Number(document.getElementById('mdiffc').value);
+  var stcc = Number(document.getElementById('stc').value);
+  var cpmc = document.getElementById('CPMC').value;
+  document.getElementById('mstac').style.color = "white";
+  document.getElementById('mdayc').style.color = "white";
+  if (difc <= 3 && difc > 0 && stcc == 5 && cpmc == 'wait') {
+  document.getElementById('mstac').value = "จะประกาศผู้ชนะในอีก";
+  document.getElementById('mdiffc').value = Math.abs(difc);
+  document.getElementById('mdiffc').style.color = "white";
+  window.onload = function() {
+    modallc.style.display = "block";
+  }
+  
+  span.onclick = function() {
+    modallc.style.display = "none";
+  }
+  window.onclick = function(event) {
+    if (event.target == modallc) {
+      modallc.style.display = "none";
+    }
+  }
+  }
+  else if (difc >= 4){
+    window.onload = function() {
+    modal.style.display = "none";
+  }
+  }
+  </script>
+
     <script>
     var cid = Number(document.getElementById("conttid").value);
     if (cid > 0) {
