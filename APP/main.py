@@ -983,7 +983,7 @@ def update_stc(id):
             conapp_date = '0000-00-00'
             conapp_status = ''
             conPMcheck = ''
-        elif (stcc == 5 and cpmc != "wait"):
+        elif (stcc == 5 and cpmc != "wait" and cpmc != "prewait"):
             stcon = 5
             buy_date = bdate
             invite_date = idate
@@ -994,7 +994,7 @@ def update_stc(id):
             winner_date = winnerdate
             conapp_date = '0000-00-00'
             conapp_status = ''
-            conPMcheck = 'wait'
+            conPMcheck = 'prewait'
         sql = "UPDATE process SET stcon_id=%s,buy_date=%s,invite_date=%s,prop_date=%s,finishcon_date=%s,report_date=%s,report_time=%s,winner_date=%s,conapp_date=%s,conapp_status=%s,conPMcheck=%s WHERE pj_id=%s"
         data = (stcon,buy_date,invite_date,prop_date,finishcon_date,report_date,report_time,winner_date,conapp_date,conapp_status,conPMcheck, id)
         conn = mysql.connect()

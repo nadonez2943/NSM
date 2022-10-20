@@ -125,13 +125,28 @@
                   <progress id="file" value="{{row[0]['stcon_percent']}}" max="100"></progress>    
                   <br><br>
                   <label for="file">{{row[0]['stcon_name']}}</label>
-                  <!-- <form action="/project/{{row[0]['pj_id']}}/consider" method="post">
-                    <input name="userrole" id="userrole" value="{{role['role']}}" type="hidden">
-                    <input name="CPMC" id="CPMC" value="{{row[0]['conPMcheck']}}" type="hidden">
-                    <input name="stc" id="stc" value="{{row[0]['stcon_id']}}" type="hidden">
-                    <input name="conapp" id="conapp" value="{{row[0]['conapp_status']}}" type="hidden" >
+                  <form action="/project/{{row[0]['pj_id']}}/consider" method="post">
+                    <input name="checkboxdate" id="checkboxdate" value="0" type="hidden">
+                        <input name="bdate" value="{{row[0]['buy_date']}}" type="hidden">
+                        <input name="idate" value="{{row[0]['invite_date']}}" type="hidden">
+                        <input name="pdate" value="{{row[0]['prop_date']}}" type="hidden">
+                        <input name="fdate" value="{{row[0]['finishcon_date']}}" type="hidden">
+                        <input name="rdate" value="{{row[0]['report_date']}}" type="hidden">
+                        <input name="rtime" value="{{row[0]['report_time']}}" type="hidden">
+                        <input name="wdate" value="{{row[0]['winner_date']}}" type="hidden">
+                        <input name="CPMC" value="{{row[0]['conPMcheck']}}" type="hidden">
+                        <input name="stc" value="{{row[0]['stcon_id']}}" type="hidden">
+                        <input name="conapp" value="{{row[0]['conapp_status']}}" type="hidden" >
+                        <input name="userrole" value="{{role['role']}}" type="hidden">
+                        <input type="hidden" value="{{row[0]['buy_date']}}" name="buy_date" id="buy_date">
+                        <input type="hidden" value="{{row[0]['invite_date']}}" name="invite_date" >
+                        <input type="hidden" value="{{row[0]['prop_date']}}" name="prop_date" >
+                        <input type="hidden" value="{{row[0]['finishcon_date']}}" name="finishcon_date" >
+                        <input type="hidden" value="{{row[0]['report_date']}}" name="report_date" >
+                        <input type="hidden" name="report_time"  value="{{row[0]['report_time']}}">
+                        <input type="hidden" value="{{row[0]['winner_date']}}" name="winner_date" >
                     <input type="hidden" id="appbottonc"onclick="return confirm('ยืนยัน')" value="ยืนยัน" >
-                  </form> -->
+                  </form>
                   <div class="openBtn">
                     <button class="openButton" onclick="openForm()" id="openf" style="display: none;"><strong id="formbutton">กรอกวันที่</strong></button>
                   </div>
@@ -159,7 +174,7 @@
                         <strong id="reportd" style="display: none;">วันและเวลาที่ส่งรายงานผล</strong>
                         </label>
                         <input type="hidden" value="" name="report_date" id="report_date" required>
-                        <input type="hidden" id="timepicker" name="report_time" id="report_time" value="00:00">
+                        <div id="reptime" style="display: none;"><input type="text" id="timepicker" name="report_time" id="report_time" value="00:00"></div>
                         <label>
                         <strong id="winnerd" style="display: none;">วันที่ประกาศผู้ชนะ</strong>
                         </label>
