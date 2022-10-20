@@ -31,7 +31,7 @@ def login():
 			session['user_id'] = account['user_id']
 			session['user_name'] = account['user_name']
 			session['user_fullname'] = account['user_fullname']
-			msg = 'Logged in successfully !'
+			session['user_role'] = account['user_role']
 			return redirect('/home')
 		else:
 			msg = 'Incorrect username / password !'
@@ -40,11 +40,15 @@ def login():
 #log out
 @app.route('/logout')
 def logout():
-	session.pop('loggedin', None)
-	session.pop('user_id', None)
-	session.pop('user_name', None)
-	session.pop('user_fullname', None)
+	new_func()
 	return redirect(url_for('login'))
+
+def new_func():
+    session.pop('loggedin', None)
+    session.pop('user_id', None)
+    session.pop('user_name', None)
+    session.pop('user_fullname', None)
+    session.pop('user_role', None)
 
 #หน้าหลัก
 @app.route('/home')
@@ -1159,7 +1163,8 @@ def division():
             for result in division:
                 outputObj = {
                     'id': result['dv_id'],
-                    'name': result['dv_name']}
+                    'name': result['dv_name'],
+                    'shname':result['dv_shname']}
                 OutputArray.append(outputObj)
             return jsonify(OutputArray) 
             
@@ -1229,19 +1234,9 @@ def test():
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
-        conn = mysql.connect()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.projects.pj_id) as row_num ,CAST(((stdraft_percent+stcon_percent+stex_percent)/3) AS DECIMAL(15, 2)) as x FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.mn_id  LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id WHERE nsm_project.manager.user_id = %s group by nsm_project.projects.pj_id order by nsm_project.projects.pj_id asc, nsm_project.events.ev_id desc",(a))
-        MN = cursor.fetchall()
-        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.projects.pj_id) as row_num ,CAST(((stdraft_percent+stcon_percent+stex_percent)/3) AS DECIMAL(15, 2)) as x FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.mn_id  LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id WHERE nsm_project.board.user_id = %s group by nsm_project.projects.pj_id order by nsm_project.projects.pj_id asc, nsm_project.events.ev_id desc",(a))
-        BO = cursor.fetchall()
-        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.projects.pj_id) as row_num ,CAST(((stdraft_percent+stcon_percent+stex_percent)/3) AS DECIMAL(15, 2)) as x FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.mn_id  LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id WHERE nsm_project.board.user_id = %s and nsm_project.board.bo_phase = 1 group by nsm_project.projects.pj_id order by nsm_project.projects.pj_id asc, nsm_project.events.ev_id desc",(a))
-        DR = cursor.fetchall()
-        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.projects.pj_id) as row_num ,CAST(((stdraft_percent+stcon_percent+stex_percent)/3) AS DECIMAL(15, 2)) as x FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.mn_id  LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id WHERE nsm_project.board.user_id = %s and nsm_project.board.bo_phase = 2 group by nsm_project.projects.pj_id order by nsm_project.projects.pj_id asc, nsm_project.events.ev_id desc",(a))
-        CO = cursor.fetchall()
-        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.projects.pj_id) as row_num ,CAST(((stdraft_percent+stcon_percent+stex_percent)/3) AS DECIMAL(15, 2)) as x FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.mn_id  LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id WHERE nsm_project.board.user_id = %s and nsm_project.board.bo_phase = 3 group by nsm_project.projects.pj_id order by nsm_project.projects.pj_id asc, nsm_project.events.ev_id desc",(a))
-        EX = cursor.fetchall()
-        return render_template('test.html', BO=BO,MN=MN,DR=DR,CO=CO,EX=EX )
+        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 543 YEAR ), %s) as curyear,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 542 YEAR ), %s) as curyear1,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 541 YEAR ), %s) as curyear2,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 544 YEAR ), %s) as curyear11,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 545 YEAR ), %s) as curyear22 FROM office ORDER BY of_id",(format,format,format,format,format))
+        office = cursor.fetchall()
+        return render_template('test.html', office=office )
     except Exception as e:
         print(e)
     finally:
@@ -1254,8 +1249,6 @@ def test2():
     conn = None
     cursor = None
     try:
-        conn = mysql.connect()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.projects.pj_id) as row_num ,CAST(((stdraft_percent+stcon_percent+stex_percent)/3) AS DECIMAL(15, 2)) as x FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.mn_id  LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id WHERE nsm_project.manager.user_id = %s group by nsm_project.projects.pj_id order by nsm_project.projects.pj_id asc, nsm_project.events.ev_id desc",(a))
@@ -1595,13 +1588,61 @@ def adminEmployee():
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.users.user_id) as row_num FROM nsm_project.users LEFT JOIN nsm_project.office ON nsm_project.users.of_id=nsm_project.office.of_id LEFT JOIN nsm_project.division ON nsm_project.users.dv_id=nsm_project.division.dv_id order by nsm_project.users.user_id desc;")
+        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.users.user_id) as row_num FROM nsm_project.users LEFT JOIN nsm_project.office ON nsm_project.users.of_id=nsm_project.office.of_id LEFT JOIN nsm_project.division ON nsm_project.users.dv_id=nsm_project.division.dv_id WHERE nsm_project.users.user_role='user' order by nsm_project.users.user_id desc;")
         em = cursor.fetchall()
-        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.users.user_id) as row_num FROM nsm_project.users LEFT JOIN nsm_project.office ON nsm_project.users.of_id=nsm_project.office.of_id LEFT JOIN nsm_project.division ON nsm_project.users.dv_id=nsm_project.division.dv_id order by nsm_project.users.user_id desc;")
+        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.users.user_id) as row_num FROM nsm_project.users LEFT JOIN nsm_project.office ON nsm_project.users.of_id=nsm_project.office.of_id LEFT JOIN nsm_project.division ON nsm_project.users.dv_id=nsm_project.division.dv_id WHERE nsm_project.users.user_role='admin' order by nsm_project.users.user_id desc;")
         ad = cursor.fetchall()
         return render_template('adminEmployee.html',em=em,ad=ad)
     except Exception as e:
         print(e)
+    finally:
+        cursor.close() 
+        conn.close()
+
+@app.route('/admin/employee/edit/<int:id>',methods=['GET'])
+def adminEmployeeEdit(id):
+    conn = None
+    cursor = None
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        cursor.execute("SELECT * FROM nsm_project.users LEFT JOIN nsm_project.office ON nsm_project.users.of_id=nsm_project.office.of_id LEFT JOIN nsm_project.division ON nsm_project.users.dv_id=nsm_project.division.dv_id WHERE nsm_project.users.user_id=%s;",(id))
+        row = cursor.fetchall()
+        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 543 YEAR ), %s) as curyear,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 542 YEAR ), %s) as curyear1,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 541 YEAR ), %s) as curyear2,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 544 YEAR ), %s) as curyear11,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 545 YEAR ), %s) as curyear22 FROM office ORDER BY of_id",(format,format,format,format,format))
+        office = cursor.fetchall()
+        return render_template('adminEmployeeEdit.html',row=row,office=office)
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close() 
+        conn.close()
+    
+
+@app.route('/edituser/<int:id>', methods=['POST'])
+def editUser(id):
+    conn = None
+    cursor = None
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    try:
+        user_name = request.form['user_name']
+        user_fullname = request.form['user_fullname']
+        user_email = request.form['user_email']
+        user_role = request.form['user_role']
+        tel = request.form['tel']
+        of_id = request.form['of_id']
+        dv_id = request.form['dv_id']
+        if  user_name and user_fullname and user_email and user_role and tel and of_id and dv_id and request.method == 'POST':
+            cursor = conn.cursor(pymysql.cursors.DictCursor)
+            sql = "UPDATE pacel SET user_name=%s,user_fullname=%s,user_email=%s,user_role=%s,tel=%s,of_id=%s,dv_id and WHERE user_id=%s"
+            data = (user_name,user_fullname,user_email,user_role,tel,of_id,dv_id,id)
+            cursor.execute(sql, data)
+            conn.commit()
+            return redirect ('/admin/employee')
+        else:
+            return 'Error'
+    except Exception as e:
+           print(e)
     finally:
         cursor.close() 
         conn.close()
