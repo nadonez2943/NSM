@@ -1,161 +1,71 @@
-{% extends 'layoutt.html' %} 
-
+{% extends 'layout.html' %} 
 {% block body %}
-<head>  
-  <style>
-    body {font-family: Arial;}
-    
-    /* Style the tab */
-    .tab {
-      overflow: hidden;
-      border: 1px solid #ccc;
-      background-color: #f1f1f1;
-    }
-    
-    /* Style the buttons inside the tab */
-    .tab button {
-      background-color: inherit;
-      float: left;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      padding: 14px 16px;
-      transition: 0.3s;
-      font-size: 17px;
-    }
-    
-    /* Change background color of buttons on hover */
-    .tab button:hover {
-      background-color: #ddd;
-    }
-    
-    /* Create an active/current tablink class */
-    .tab button.active {
-      background-color: #ccc;
-    }
-    
-    /* Style the tab content */
-    .tabcontent {
-      display: none;
-      padding: 6px 12px;
-      -webkit-animation: fadeEffect 1s;
-      animation: fadeEffect 1s;
-      border: 1px solid #ccc;
-    }
-    
-    /* Fade in tabs */
-    @-webkit-keyframes fadeEffect {
-      from {opacity: 0;}
-      to {opacity: 1;}
-    }
-    @keyframes fadeEffect {
-      from {opacity: 0;}
-      to {opacity: 1;}
-    }
-    .btn {
-        padding: 10px 40px;
-        background-color: rgba(10, 39, 97, 0.83); 
-        color: #FFFFFF;
-        font-weight: bold;
-        font-size: 18px;
-     }
-    </style>
-</head>  
 <body>
 <br>
-<div class="tab">
-  <center>
-  <button class="tablinks" onclick="openCity(event, 'User')" id="defaultOpen">พนักงาน</button>
-  <button class="tablinks" onclick="openCity(event, 'Admin')">ผู้ดูแลระบบ</button>
-  </center>
-</div>
-
-<div id="User" class="tabcontent">
-    <table id="myTableUser" class="table table-striped" >  
-      <thead>  
-        <tr class="header">  
-          <th><center>รหัสผู้ใช้</center></th>
-          <th><center>ชื่อผู้ใช้</center></th>
-          <th><center>ชื่อ-นามสกุล</center></th>
-          <th><center>สถานะ</center></th>
-          <th><center>อีเมล</center></th>
-          <th><center>เบอร์โทร</center></th>
-          <th><center>สำนักงาน</center></th>
-          <th><center>กอง</center></th>
-        </tr>  
-      </thead>  
-      <tbody>  
-        {% for result in em %}
-        <tr>
-          <td align="center">{{result['user_id']}}</td>    
-          <td align="center">{{result['user_name']}}</td>      
-          <td align="center">{{result['user_fullname']}}</td>
-          <td align="center">{{result['user_role']}}</td>
-          <td align="center">{{result['user_email']}}</td>
-          <td align="center">{{result['tel']}}</td>
-          <td align="center">{{result['of_shname']}}</td>
-          <td align="center">{{result['dv_shname']}}</td>        
-        </tr>
+<center>
+<div class="row">
+  <div class="col-md-6">
+     สำนักงาน
+     <select name="ofid" id="ofid" class="form-control" title="Select office"> 
+     <option value=""></option>
+        {% for row in office %}
+              <option value="{{row.of_id}}">{{row.of_name}}</option>
         {% endfor %}
-      </tbody>  
-    </table>  
+     </select>
+  </div>
+  <div class="col-md-6">
+     กอง
+     <div name="dvid"  id="dv_name" >
+  </div>
+  </div>
 </div>
-
-<div id="Admin" class="tabcontent">
-  <table id="myTableAdmin" class="table table-striped" >  
-    <thead>  
-      <tr class="header">  
-        <th><center>รหัสผู้ใช้</center></th>
-        <th><center>ชื่อผู้ใช้</center></th>
-        <th><center>ชื่อ-นามสกุล</center></th>
-        <th><center>สถานะ</center></th>
-        <th><center>อีเมล</center></th>
-        <th><center>เบอร์โทร</center></th>
-        <th><center>สำนักงาน</center></th>
-        <th><center>กอง</center></th>
-      </tr>  
-    </thead>  
-    <tbody>  
-      {% for result in ad %}
-      <tr>
-        <td align="center">{{result['user_id']}}</td>    
-        <td align="center">{{result['user_name']}}</td>      
-        <td align="center">{{result['user_fullname']}}</td>
-        <td align="center">{{result['user_role']}}</td>
-        <td align="center">{{result['user_email']}}</td>
-        <td align="center">{{result['tel']}}</td>
-        <td align="center">{{result['of_shname']}}</td>
-        <td align="center">{{result['dv_shname']}}</td>        
-      </tr>
-      {% endfor %}
-    </tbody>  
-  </table>  
+<h2>The XMLHttpRequest Object</h2>
+<button type="button" onclick="loadDoc()">Change Content</button>
+<div id="demo">
 </div>
-<br>
+</center>
 
 <script>
-$(document).ready(function(){
-  $('#myTableUser').dataTable();
-});
-$(document).ready(function(){
-  $('#myTableAdmin').dataTable();
-});
+   function loadDoc() {
+     const xhttp = new XMLHttpRequest();
+     xhttp.onload = function() {
+       document.getElementById("demo").innerHTML =
+       this.responseText;
+     }
+     xhttp.open("GET", "ajax_info.txt");
+     xhttp.send();
+   }
+</script>
+<script>
+  $(document).ready(function () {
+      function load_data(type, category_id) {
+      $.ajax({
+      url: "/division",
+      method: "POST",
+      data: { type: type, category_id: category_id },
+      dataType: "json",
+      success: function (data) {
+         var html = "";
+         for (var count = 0; count < data.length; count++) {
+            html += '<li value="' + data[count].id + '">' + data[count].name + "</li>";
 
-function openCity(evt, cityName) {
-var i, tabcontent, tablinks;
-tabcontent = document.getElementsByClassName("tabcontent");
-for (i = 0; i < tabcontent.length; i++) {
-tabcontent[i].style.display = "none";
-}
-tablinks = document.getElementsByClassName("tablinks");
-for (i = 0; i < tablinks.length; i++) {
-tablinks[i].className = tablinks[i].className.replace(" active", "");
-}
-document.getElementById(cityName).style.display = "block";
-evt.currentTarget.className += " active";
-}
-// Get the element with id="defaultOpen" and click on it
-document.getElementById("defaultOpen").click();
+         }
+         if (type == "ofid") {
+            $("#ofid").html(html);
+            $("#ofid").selectpicker("refresh");
+         } else {
+            $("#dv_name").html(html);
+            
+         }
+         },
+      });
+   }
+
+   $(document).on("change", "#ofid", function () {
+      var category_id = $("#ofid").val();
+      load_data("dvid", category_id);
+   });
+});
 </script>
 </body> 
 {% endblock %}

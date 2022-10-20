@@ -11,9 +11,13 @@
       border-radius: 4px;
       text-align: center;
       font-size: 18px;
-    }
+      }
+
     </style>
   </head>
+  
+  <a id="myBtn" href="/home" class='btn' >ย้อนกลับ</a>
+
   <br>
       <div class="row">
         <div class="leftcolumn">
@@ -143,7 +147,7 @@
           <input name="userrole" id="userrole" value="{{role['role']}}" type="hidden">
           <div>
               <form action="/project/{{row[0]['pj_id']}}/closeProject" method="post">
-                <input type="submit" id="closepj" value="ยุติโครงการ">
+                <input type="submit" id="closepj" onclick="return confirm('ยืนยันการยุติโครงการ')" value="ยุติโครงการ">
               </form>
           </div>
         </div>
@@ -161,9 +165,6 @@
     }
   </script>
 
-    <div class="footer">
-      <a class="btn btn-primary btn-lg" type="button" href="/home">ย้อนกลับ</a>
-    </div>
   {% endblock %}
   
   

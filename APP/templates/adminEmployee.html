@@ -5,6 +5,14 @@
   <style>
     body {font-family: Arial;}
     
+    .btn {
+        padding: 5px 5px;
+        background-color: rgba(10, 39, 97, 0.83); 
+        color: #FFFFFF;
+        font-size: 12px;
+        width: 40px;
+     }
+     
     /* Style the tab */
     .tab {
       overflow: hidden;
@@ -52,19 +60,6 @@
       from {opacity: 0;}
       to {opacity: 1;}
     }
-    .btn {
-        padding: 10px 40px;
-        background-color: rgba(10, 39, 97, 0.83); 
-        color: #FFFFFF;
-        font-weight: bold;
-        font-size: 18px;
-     }
-     .button {
-        padding: 4px 4px;
-        border: 2px;
-        font-weight: bold;
-        font-size: 18px;
-     }
     </style>
 </head>  
 <body>
@@ -85,21 +80,29 @@
           <th><center>ชื่อ-นามสกุล</center></th>
           <th><center>อีเมล</center></th>
           <th><center>เบอร์โทร</center></th>
+          <th hidden><center>ชื่อสำนักงาน</center></th>
+          <th hidden><center>สำนักงาน</center></th>
+          <th hidden><center>ชื่อกอง</center></th>
+          <th hidden><center>กอง</center></th>
           <th></th>
         </tr>  
       </thead>  
       <tbody>  
         {% for result in em %}
         <tr>
-          <td align="center">{{result['user_id']}}</td>    
-          <td align="center">{{result['user_name']}}</td>      
-          <td align="center">{{result['user_fullname']}}</td>
-          <td align="center">{{result['user_email']}}</td>
-          <td align="center">{{result['tel']}}</td> 
-          <td>
-            <div class="row">
-            </div>
-          </td>      
+          <td style="width: 10%;" align="center">{{result['user_id']}}</td>    
+          <td style="width: 15%;"align="center">{{result['user_name']}}</td>      
+          <td style="width: 20%;"align="center">{{result['user_fullname']}}</td>
+          <td style="width: 20%;"align="center">{{result['user_email']}}</td>
+          <td style="width: 10%;"align="center">{{result['tel']}}</td>
+          <td hidden align="center">{{result['of_shname']}}</td>
+          <td hidden align="center">{{result['of_name']}}</td>
+          <td hidden align="center">{{result['dv_shname']}}</td>  
+          <td hidden align="center">{{result['dv_name']}}</td>
+          <td style="width: 20%;"align="center">
+            <a href="/admin/employee/edit/{{result['user_id']}}" class='btn btn' >แก้ไข</a>
+            <a href="/delete/user/{{result['user_id']}}" class='btn btn-danger' style="background-color: rgb(255, 27, 27);">ลบ</a>
+          </td>
         </tr>
         {% endfor %}
       </tbody>  
@@ -113,24 +116,31 @@
         <th><center>รหัสผู้ใช้</center></th>
         <th><center>ชื่อผู้ใช้</center></th>
         <th><center>ชื่อ-นามสกุล</center></th>
-        <th><center>สถานะ</center></th>
         <th><center>อีเมล</center></th>
         <th><center>เบอร์โทร</center></th>
-        <th><center>สำนักงาน</center></th>
-        <th><center>กอง</center></th>
+        <th hidden><center>ชื่อสำนักงาน</center></th>
+        <th hidden><center>สำนักงาน</center></th>
+        <th hidden><center>ชื่อกอง</center></th>
+        <th hidden><center>กอง</center></th>
+        <th></th>
       </tr>  
     </thead>  
     <tbody>  
       {% for result in ad %}
       <tr>
-        <td align="center">{{result['user_id']}}</td>    
-        <td align="center">{{result['user_name']}}</td>      
-        <td align="center">{{result['user_fullname']}}</td>
-        <td align="center">{{result['user_role']}}</td>
-        <td align="center">{{result['user_email']}}</td>
-        <td align="center">{{result['tel']}}</td>
-        <td align="center">{{result['of_shname']}}</td>
-        <td align="center">{{result['dv_shname']}}</td>        
+        <td style="width: 10%;" align="center">{{result['user_id']}}</td>    
+          <td style="width: 15%;"align="center">{{result['user_name']}}</td>      
+          <td style="width: 20%;"align="center">{{result['user_fullname']}}</td>
+          <td style="width: 20%;"align="center">{{result['user_email']}}</td>
+          <td style="width: 10%;"align="center">{{result['tel']}}</td>
+          <td hidden align="center">{{result['of_shname']}}</td>
+          <td hidden align="center">{{result['of_name']}}</td>
+          <td hidden align="center">{{result['dv_shname']}}</td>  
+          <td hidden align="center">{{result['dv_name']}}</td>
+          <td style="width: 20%;"align="center">
+            <a href="/edit/user/{{result['user_id']}}" class='btn' >แก้ไข</a>
+            <a href="/delete/user/{{result['user_id']}}" class='btn btn-danger' style="background-color: rgb(255, 27, 27);">ลบ</a>
+          </td>
       </tr>
       {% endfor %}
     </tbody>  

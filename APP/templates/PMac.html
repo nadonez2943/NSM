@@ -10,7 +10,7 @@
     <br>
     <h1 align="center">คณะกรรมการ</h1>
     <br>
-    <form action="/addboardd" method="post">
+    <form action="/addboardc" method="post">
         <center>
         <p>
             <div class="col-md-6">
@@ -21,7 +21,7 @@
                     {% endfor %}
                 </select>
               
-        <select name="roleid" id="rid" size="1" required>
+        <select name="roleid" id="rid" size="1">
             <option hidden>ตำแหน่ง</option>
             <option id="mng" value="1">ประธาน<br>
             <option id="boa" value="2">กรรมการ<br>
@@ -32,7 +32,7 @@
         <input id="cmng" value="{{crole[0]['cmng']}}" type="hidden">
         <input id="cboa" value="{{crole[0]['cboa']}}" type="hidden">
         <input id="cas" value="{{crole[0]['cas']}}" type="hidden">
-        <input name="bophase" value="1" type="hidden">
+        <input name="bophase" value="2" type="hidden">
         <input name="pjid" value="{{row[0]['pj_id']}}" type="hidden">
         <br>
         <button type="button" class="btn btn-primary"data-bs-toggle="modal" data-bs-target="#myModal">เพิ่มคณะกรรมการ</button>
@@ -94,17 +94,22 @@
                             </div>
                             <!-- Modal footer -->
                             <div class="modal-footer">
-                                <a type="submit" class="btn btn-primary"  href="/project/{{result['pj_id']}}/deleteboardd/{{result['bo_id']}}"  >ใช่</a>
+                                <a type="submit" class="btn btn-primary"  href="/project/{{result['pj_id']}}/deleteboardc/{{result['bo_id']}}"  >ใช่</a>
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="background-color: red;">ไม่ใช่</button>
                             </div>  
         </td>  
         </tr>
         {% endfor %} 
     </table>
-    <input id="PMR" value="AS" type="hidden">
+    <input id="PMR" value="PM" type="hidden">
     <br><br><center>
-    <a id="finil" href="/project/{{row[0]['pj_id']}}/draft">
+    <a id="finil" href="/project/{{row[0]['pj_id']}}/consider">
     <input class="btn btn-primary btn-lg" type="button" id="fini" value="เสร็จสิ้น">
     </a>
+    <form action="/project/{{row[0]['pj_id']}}/PMac" method="post">
+    {% for result in row %}    
+    <input class="btn btn-primary btn-lg" type="hidden" id="finished" value="เสร็จสิ้น">
+    {% endfor %}
+    </form>
     </center>
     {% endblock %}

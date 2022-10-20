@@ -1,64 +1,57 @@
-<doctype html>
-	{% extends 'layout.html' %}
-	
-	{% block body %}
-	<body><br>
-		<a class="btn btn-primary btn-lg" type="button" href="/project/{{id}}/{{p}}">ย้อนกลับ</a><br><br>
-		<div class="card">
-			<br>
-			<h1>เอกสารโครงการ</h1>
-			<hr>
-			<div>
-				<p><button class="btn" onclick="showDiv('toggle')">เพิ่มประกาศ</button></p>	
-				<div id="toggle" style="display:none">
-				<form method='POST' name="newpath" enctype='multipart/form-data' >
-					<div class="jumbotron">
-						<h3>เพิ่มประกาศ</h3>
-						
-						<br>
-						<div class="row">
-							<p>ชื่อไฟล์ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="path_name" type="text" style="width:500px; " placeholder="ชื่อไฟล์" autocomplete="off" required> </input></p>
-							<p>รายละเอียด&nbsp;&nbsp;<input name="path_detail" type="text" style="width:500px;"placeholder="รายละเอียด" autocomplete="off" required></input></p>
-						</div>
-						<br>
-					<div class="col-75">
-						{{form.hidden_tag()}}
-						{{form.file()}}
-					</div>
-					<div class="col-25">
-						{{form.submit()}}
-					</div>
-				</form>
-				</div>
-			</div>
-			{% for result in row %}
-			<div class="row">
-				<div class="card">
-					<div class="row">
-						<h3>{{result['path_name']}}</h3>
-						<div class="col-50">
-							<h6>รายละเอียด :</h6>
-							<h6>{{result['path_detail']}}</h6>
-						</div>
-						<div class="col-25">
-							<a href="..\static\files\{{result['path_path']}}" >view file</a><br>
-							<a href="..\static\files\{{result['path_path']}}" download>download</a>
-						</div>
-						<div class="col-25">
-							<a class="btn" href="/project/{{result['pj_id']}}/doc/{{result['path_phase']}}/{{result['path_id']}}" role="button" onclick="return confirm('ยืนยันการลบเอกสาร ?')" >ลบเอกสาร</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			{% endfor %}
-		</div>
-		<script type="text/javascript">
-			function showDiv(Div) {
-				 var x = document.getElementById(Div);
-					 if(x.style.display=="none") {
-						 x.style.display = "block";}
-					 else { x.style.display = "none";}
+{% extends 'layout.html' %} 
+
+{% block body %}
+<body>
+<br>
+<div class="row">
+  <div class="col-md-6">
+     สำนักงาน
+     <select name="ofid" id="ofid" class="form-control" title="Select office"> 
+     <option value=""></option>
+        {% for row in office %}
+              <option value="{{row.of_id}}">{{row.of_name}}</option>
+        {% endfor %}
+     </select>
+  </div>
+  <div class="col-md-6">
+     กอง
+     <div name="dvid"  id="dv_name" >
+  </div>
+  </div>
+</div>
+</center>
+
+<script>
+
+	$(document).ready(function () {
+		function load_data(type, category_id) {
+		$.ajax({
+		url: "/division",
+		method: "POST",
+		data: { type: type, category_id: category_id },
+		dataType: "json",
+		success: function (data) {
+			var html = "";
+			for (var count = 0; count < data.length; count++) {
+				html += '<li value="' + data[count].id + '">' + data[count].name + "</li>";
+
 			}
-		</script>
-	</body>
-	{% endblock %}
+			if (type == "ofid") {
+				$("#ofid").html(html);
+				$("#ofid").selectpicker("refresh");
+			} else {
+				$("#dv_name").html(html);
+				
+			}
+			},
+		});
+	}
+
+	$(document).on("change", "#ofid", function () {
+		var category_id = $("#ofid").val();
+		load_data("dvid", category_id);
+		});
+	});
+</script>
+</body> 
+{% endblock %}
