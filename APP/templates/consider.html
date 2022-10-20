@@ -110,6 +110,68 @@
             text-align: left;
             margin-top: 6px;
         }
+        input[id="mstac"]{
+      height: 35px;
+      width: 250px;
+      border: none;
+      background: transparent;
+      text-align: center;
+      font-size: 1.5em;
+    }
+    input[id="mdiffc"]{
+      height: 35px;
+      width: 50px;
+      border: none;
+      background: transparent;
+      text-align: center;
+      font-size: 1.5em;
+    }
+    input[id="mdayc"]{
+      height: 35px;
+      width: 50px;
+      border: none;
+      background: transparent;
+      text-align: center;
+      font-size: 1.5em;
+    }
+    /* The Modal (background) */
+    .modallc {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      padding-top: 100px; /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modallc-content {
+      background-color: #ff0000;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid rgb(161, 161, 161);
+      width: 80%;
+    }
+
+    /* The Close Button */
+    .close {
+      color: #ffffff;
+      float: right;
+      font-size: 38px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
   </style>
   </head>
 
@@ -119,13 +181,14 @@
           <div class="card-group">
             <div class="card">
               <div class="card-header">
-                <h5>สถานะ</h5>
+                <center><h5>สถานะ</h5></center>
               </div>
               <div class="card-body" align="center">
                   <progress id="file" value="{{row[0]['stcon_percent']}}" max="100"></progress>    
                   <br><br>
-                  <label for="file">{{row[0]['stcon_name']}}</label>
-                  <form action="/project/{{row[0]['pj_id']}}/consider" method="post">
+                  <label for="file">{{row[0]['stcon_name']}}</label><p style="color: red;" id="addctt">**โปรดเพิ่มบริษัทที่ชนะ**</p>
+                  <input id="condif" value="{{row[0]['condiff']}}" type="hidden" >
+                  <form action="/project/{{row[0]['pj_id']}}/consider" id="updatestcc" method="post">
                     <input name="checkboxdate" id="checkboxdate" value="0" type="hidden">
                         <input name="bdate" value="{{row[0]['buy_date']}}" type="hidden">
                         <input name="idate" value="{{row[0]['invite_date']}}" type="hidden">
@@ -138,18 +201,20 @@
                         <input name="stc" value="{{row[0]['stcon_id']}}" type="hidden">
                         <input name="conapp" value="{{row[0]['conapp_status']}}" type="hidden" >
                         <input name="userrole" value="{{role['role']}}" type="hidden">
-                        <input type="hidden" value="{{row[0]['buy_date']}}" name="buy_date" id="buy_date">
+                        <input type="hidden" value="{{row[0]['buy_date']}}" name="buy_date" >
                         <input type="hidden" value="{{row[0]['invite_date']}}" name="invite_date" >
                         <input type="hidden" value="{{row[0]['prop_date']}}" name="prop_date" >
                         <input type="hidden" value="{{row[0]['finishcon_date']}}" name="finishcon_date" >
                         <input type="hidden" value="{{row[0]['report_date']}}" name="report_date" >
                         <input type="hidden" name="report_time"  value="{{row[0]['report_time']}}">
                         <input type="hidden" value="{{row[0]['winner_date']}}" name="winner_date" >
+                        <input name="conappd" value="{{row[0]['conapp_date']}}" type="hidden" >
                     <input type="hidden" id="appbottonc"onclick="return confirm('ยืนยัน')" value="ยืนยัน" >
                   </form>
                   <div class="openBtn">
                     <button class="openButton" onclick="openForm()" id="openf" style="display: none;"><strong id="formbutton">กรอกวันที่</strong></button>
                   </div>
+                  <input name="windif" id="windif" value="{{row[0]['windiff']}}" type="hidden">
                   <div class="loginPopup">
                     <div class="formPopup" id="popupForm">
                       <form action="/project/{{row[0]['pj_id']}}/consider" method="post" class="formContainer">
@@ -194,6 +259,7 @@
                         <input name="CPMC" id="CPMC" value="{{row[0]['conPMcheck']}}" type="hidden">
                         <input name="stc" id="stc" value="{{row[0]['stcon_id']}}" type="hidden">
                         <input name="conapp" id="conapp" value="{{row[0]['conapp_status']}}" type="hidden" >
+                        <input name="conappd" id="conappd" value="{{row[0]['conapp_date']}}" type="hidden" >
                         <button type="submit" onclick="return confirm('ยืนยัน')" class="btn">เสร็จสิ้น</button>
                         <button type="button" class="btn cancel" onclick="closeForm()">ยกเลิก</button>
                       </form>
@@ -247,8 +313,8 @@
                 </div>
                 <div class="col-75">
                   {% for result in row %}
-                  <div class="row"><div class="col-50"><label>{{result['user_fullname']}}</label></div><div class="col-25"><label >{{result['role_name']}}</label></div></div>
-                  {% endfor %}
+                <div class="row"><div class="col-50"><label id="usf">{{result['user_fullname']}}</label></div><div class="col-25"><label id="usr">{{result['role_name']}}</label></div></div>
+                {% endfor %}
                   <div align="Right"><a href="addboardc" id="addboardc" role="button"> แก้ไขรายชื่อคณะกรรมการ</a></div>
                 </div>
               </div><br>
@@ -286,10 +352,10 @@
               <h5>ข้อมูลบริษัท</h5><hr>
               <div class="row">
                 <div class="col-25">
-                  <label>วันที่ประกาศผลบริษัทผู้รับเหมา</label>
+                  <label>วันที่ประกาศผล</label>
                 </div>
                 <div class="col-75">
-                  <label>{{row[0]['conttdate']}}</label>
+                  <label id="cdatet">{{row[0]['conttdate']}}</label>
                 </div>
               </div>
               <div class="row">
@@ -297,35 +363,28 @@
                   <label>บริษัทผู้รับเหมา</label>
                 </div>
                 <div class="col-75">
-                  <label>{{row[0]['contt_name']}}</label>
+                  <label id="cnamet">{{row[0]['contt_name']}}</label>
                 </div>
               </div><div class="row">
                 <div class="col-25">
                   <label>อีเมล</label>
                 </div>
                 <div class="col-75">
-                  <label>{{row[0]['contt_email']}}</label>
+                  <label id="cemailt">{{row[0]['contt_email']}}</label>
                 </div>
               </div><div class="row">
                 <div class="col-25">
-                  <label>วันที่เริ่ม</label>
+                  <label>เบอร์โทรศัพท์</label>
                 </div>
                 <div class="col-75">
-                  <label>{{row[0]['conttstart']}}</label>
+                  <label id="ctelt">{{row[0]['contt_tel']}}</label>
                 </div>
               </div><div class="row">
                 <div class="col-25">
-                  <label>วันที่สิ้นสุด</label>
+                  <label>วงเงิน</label>
                 </div>
                 <div class="col-75">
-                  <label>{{row[0]['conttend']}}</label>
-                </div>
-              </div><div class="row">
-                <div class="col-25">
-                  <label>ระยะเวลาคงเหลือ</label>
-                </div>
-                <div class="col-75">
-                  <label>{{row[0]['condiff']}} วัน</label>
+                  <label id="cfint">{{row[0]['contt_fin']}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;บาท</label>
                 </div>
               </div>
               <input id="conttid" value="{{row[0]['contt_id']}}" type="hidden">
@@ -361,6 +420,17 @@
           </div>
         </div>
 
+        <div id="modallc" class="modallc">
+          <div class="modallc-content" id="modallc-con">
+            <span class="close" id="clo">&times;</span>
+            <center>
+            <input type="text" id="mstac" value="จะประกาศผู้ชนะในอีก" disabled="disabled"/>
+                        <input type="text" id="mdiffc" value="{{row[0]['windiff']}}" disabled="disabled"/>
+                        <input id="mdayc" value="วัน" disabled="disabled"/>
+            </center>
+          </div>
+      </div>
+
   </div>
   <br>
   <div class="footer">
@@ -375,5 +445,15 @@
       document.getElementById("popupForm").style.display = "none";
     }
     window.onclick = document.getElementById("popupForm").style.display = "none";
+  </script>
+
+  <script>
+    if (document.getElementById('cnamet').innerHTML == "None")  {
+        document.getElementById('cdatet').innerHTML = "-";
+        document.getElementById('cnamet').innerHTML = "-";
+        document.getElementById('cemailt').innerHTML = "-";
+        document.getElementById('ctelt').innerHTML = "-";
+        document.getElementById('cfint').innerHTML = "-";
+      }
   </script>
   {% endblock %}

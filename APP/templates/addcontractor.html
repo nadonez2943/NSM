@@ -10,7 +10,7 @@
                 <br><center><h3 class="display-4">เพิ่มข้อมูล</h3></center><br> 
                 <div class="row">
                   <div class="col-25">
-                    <label>วันที่ประกาศผลบริษัทผู้รับเหมา</label>
+                    <label>วันที่ประกาศผล</label>
                   </div>
                   <div class="col-75">
                     <p><input name="contt_date" value="" type="date" placeholder="วันที่ประกาศผลบริษัทผู้รับเหมา" required> </p>
@@ -38,7 +38,7 @@
                       <label>เบอร์โทรศัพท์</label>
                     </div>
                     <div class="col-75">
-                      <p><input name="contt_tel" value="" type="text"  placeholder="เบอร์โทรศัพท์" required> </p>
+                      <p><input name="contt_tel" id="contt_tel" value="" type="text"  placeholder="เบอร์โทรศัพท์" required> </p>
                     </div>
                   </div>
                 <div class="row">
@@ -49,24 +49,62 @@
                     <p><input name="contt_email" value="" type="text" style="width:60%;" placeholder="อีเมล" required></p>
                   </div>
                 </div>
+                <input id="numnum" value="{{rows[0]['pj_amount']}}" type="hidden" placeholder="วงเงิน" required>
                 <div class="row">
                   <div class="col-25">
-                    <label>วันที่เริ่ม</label>
+                    <label>วงเงิน</label>
                   </div>
                   <div class="col-75">
-                    <p><input name="contt_start" value="" type="date" placeholder="วันที่เริ่ม" required> </p>
+                    <p><input name="contt_fin" id="contt_fin" value="" class="mask" type="text" placeholder="วงเงิน" required> </p>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-25">
-                    <label>วันที่สิ้นสุด</label>
-                  </div>
-                  <div class="col-75">
-                    <p><input name="contt_end" value="" type="date" placeholder="วันที่สิ้นสุด" required> </p>
-                  </div>
-                  <CENTER><p><input type="submit" class="btn" value="เพิ่มข้อมูล" onclick="return confirm('ตรวจสอบข้อมูลครบถ้วนแล้ว ?')"></p></CENTER>
+                  <CENTER><input type="submit" class="btn" value="เพิ่มข้อมูล" onclick="return confirm('ตรวจสอบข้อมูลครบถ้วนแล้ว ?')"></CENTER>
                 </div>
               </div>
             </div>
         </form>
+        <script>
+          $("input.mask").each((i,ele)=>{
+              let clone=$(ele).clone(false)
+              clone.attr("type","text")
+              let ele1=$(ele)
+              clone.val(Number(ele1.val()).toLocaleString("en"))
+              $(ele).after(clone)
+              $(ele).hide()
+              clone.mouseenter(()=>{
+          
+                ele1.show()
+                clone.hide()
+              })
+              setInterval(()=>{
+                let newv=Number(ele1.val()).toLocaleString("en")
+                if(clone.val()!=newv){
+                  clone.val(newv)
+                }
+              },10)
+          
+              $(ele).mouseleave(()=>{
+                $(clone).show()
+                $(ele1).hide()
+              })
+              
+          
+            })
+          </script>
+          <script>
+            document.getElementById("contt_tel").oninput = function() {checkValues()};
+            document.getElementById("contt_fin").oninput = function() {checkValues()};
+            function checkValues() {
+               document.getElementById("contt_fin").value = document.getElementById("contt_fin").value.replace(/[^0-9.]/g, ''); 
+               document.getElementById("contt_fin").value = document.getElementById("contt_fin").value.replace(/(\..*)\./g, '$1');
+               document.getElementById("contt_tel").value = document.getElementById("contt_tel").value.replace(/[^0-9.]/g, ''); 
+               document.getElementById("contt_tel").value = document.getElementById("contt_tel").value.replace(/(\..*)\./g, '$1');
+               var num1 = Number(document.getElementById('numnum').value);
+               var num2 = Number(document.getElementById('contt_fin').value);
+                    if (num2 > num1) {
+                        alert("วงเงินเกินกว่างบประมาณ");
+                        document.getElementById('contt_fin').value= num1 ;
+                    }
+                }
+            </script>
  {% endblock %}
