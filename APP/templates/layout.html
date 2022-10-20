@@ -203,6 +203,10 @@ if (usrole != "manager")  {
 <script>
   var stcc = Number(document.getElementById('stc').value);
   var usrole = document.getElementById('userrole').value;
+  var windif = Number(document.getElementById('windif').value);
+  document.getElementById('addcontt').innerHTML = "";
+  document.getElementById('editcontt').innerHTML = "";
+  document.getElementById('addctt').innerHTML = "";
   if (stcc == 1 && usrole == "manager")  {
       document.getElementById('addboardc').innerHTML = "เพิ่มรายชื่อคณะกรรมการ";
     }
@@ -211,8 +215,11 @@ if (usrole != "manager")  {
     }
   if ( usrole == "manager")  {
     document.getElementById('editpj').innerHTML = "";
-    document.getElementById('addcontt').innerHTML = "";
-    document.getElementById('editcontt').innerHTML = "";
+    }
+  if (stcc == 5 && windif <= 0 && usrole == "assistant")  {
+    document.getElementById('addctt').innerHTML = "**โปรดเพิ่มบริษัทที่ชนะ**";
+    document.getElementById('addcontt').innerHTML = "เพิ่ม";
+    document.getElementById('editcontt').innerHTML = "แก้ไข";
     }
 </script>
 
