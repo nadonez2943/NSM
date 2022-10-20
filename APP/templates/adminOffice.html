@@ -1,0 +1,75 @@
+{% extends 'layout.html' %} 
+{% block body %}
+<body>
+    <br>
+    <div class="card">
+        <div class="card-header">
+            <h1>สำนักงาน/กอง</h1>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card" align="center">
+                        <h3>สำนักงาน</h3>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card" align="center">
+                        <h3>กอง</h3>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+           สำนักงาน
+           <select name="ofid"  id="ofid" class="form-control" title="Select office"> 
+           <option value=""></option>
+              {% for row in office %}
+                    <option value="{{row.of_id}}">{{row.of_name}}</option>
+              {% endfor %}
+           </select>
+        </div>
+        <div class="col-md-6">
+           กอง
+           <select name="dvid"  id="dv_name" class="form-control" title="Select division">
+        </select>
+        </div>
+     </div>
+
+    <script>
+        $(document).ready(function () {
+             function load_data(type, category_id) {
+            $.ajax({
+            url: "/division",
+            method: "POST",
+            data: { type: type, category_id: category_id },
+            dataType: "json",
+            success: function (data) {
+                var html = "";
+                for (var count = 0; count < data.length; count++) {
+                    html += '<option value="' + data[count].id + '">' + data[count].name + "</option>";
+        
+                }
+                if (type == "ofid") {
+                    $("#ofid").html(html);
+                    $("#ofid").selectpicker("refresh");
+                } else {
+                    $("#dv_name").html(html);
+                    
+                }
+                },
+            });
+        }
+     
+        $(document).on("change", "#ofid", function () {
+            var category_id = $("#ofid").val();
+            load_data("dvid", category_id);
+            });
+        });
+      
+    </script>
+</body>
+{% endblock %}

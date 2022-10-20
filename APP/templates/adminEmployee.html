@@ -59,6 +59,12 @@
         font-weight: bold;
         font-size: 18px;
      }
+     .button {
+        padding: 4px 4px;
+        border: 2px;
+        font-weight: bold;
+        font-size: 18px;
+     }
     </style>
 </head>  
 <body>
@@ -77,11 +83,9 @@
           <th><center>รหัสผู้ใช้</center></th>
           <th><center>ชื่อผู้ใช้</center></th>
           <th><center>ชื่อ-นามสกุล</center></th>
-          <th><center>สถานะ</center></th>
           <th><center>อีเมล</center></th>
           <th><center>เบอร์โทร</center></th>
-          <th><center>สำนักงาน</center></th>
-          <th><center>กอง</center></th>
+          <th></th>
         </tr>  
       </thead>  
       <tbody>  
@@ -90,11 +94,12 @@
           <td align="center">{{result['user_id']}}</td>    
           <td align="center">{{result['user_name']}}</td>      
           <td align="center">{{result['user_fullname']}}</td>
-          <td align="center">{{result['user_role']}}</td>
           <td align="center">{{result['user_email']}}</td>
-          <td align="center">{{result['tel']}}</td>
-          <td align="center">{{result['of_shname']}}</td>
-          <td align="center">{{result['dv_shname']}}</td>        
+          <td align="center">{{result['tel']}}</td> 
+          <td>
+            <div class="row">
+            </div>
+          </td>      
         </tr>
         {% endfor %}
       </tbody>  

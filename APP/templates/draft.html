@@ -23,6 +23,7 @@
       height: 35px;
       width: 50px;
       border: none;
+      border-radius: 6px;
       background: transparent;
       text-align: center;
     }
@@ -156,7 +157,7 @@
         <p></p>
         <div class="card" id="divd" style="margin-left:5px;">
           <div class="card-header" align="center">
-            <h5>ระยะเวลา</h5>
+            <h5>ติดตามการร่าง TOR</h5>
           </div>
           <div class="card-body">
             <lable>เริ่มการร่าง TOR และราคากลาง</lable>
@@ -217,9 +218,9 @@
                 {% for result in row %}
                 <div class="row"><div class="col-50"><label id="usf">{{result['user_fullname']}}</label></div><div class="col-25"><label id="usr">{{result['role_name']}}</label></div></div>
                 {% endfor %}
-                <div align="Right"><a href="addboardd" role="button"> แก้ไขรายชื่อคณะกรรมการ</a></div>
+                <div align="Right"><a href="addboardd" id="addboardd" role="button"> แก้ไขรายชื่อคณะกรรมการ</a></div>
               </div>
-            </div>
+            </div><br>
             <div class="row">
               <div class="col-25">
                 <label>วันที่เริ่มโครงการ</label>
@@ -244,7 +245,7 @@
                 </label>
               </div>
             </div>
-              <p align="right"><a href="/project/{{id}}/editproject" >แก้ไข</a></p>
+              <p align="right"><a id="editpj"href="/project/{{id}}/editproject" >แก้ไข</a></p>
         </div>
       </div>
     </div>
@@ -252,7 +253,7 @@
         <div class="rightcolumn" style="background-color:#ffffff;">
           <div class="card">
             <div class="card-header" align="center">
-              <h5>กิจกรรม</h5>
+              <h5>การนัดหมาย</h5>
             </div>
             <div class="card-body" align="center">
               <p id="evn">{{ev[0]['ev_name']}}</p>
