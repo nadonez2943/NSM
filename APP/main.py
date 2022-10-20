@@ -535,19 +535,20 @@ def draftevent(id):
         cursor.execute("SET lc_time_names = 'th_TH'")
         cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.events.ev_id) as row_num,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate,TIME_FORMAT(ev_time, %s) as evtime FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 1 WHERE nsm_project.projects.pj_id = %s", (format,tformat,id))
         row = cursor.fetchall()
-        cursor.execute("SELECT nsm_project.process.start_draft,DATE_FORMAT(DATE_ADD(start_draft , INTERVAL 543 YEAR ), %s) as startdate,DATE_FORMAT(DATE_ADD(ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY), INTERVAL 543 YEAR ), %s) AS endproject_date,DATEDIFF(ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY),date(now())) AS diff FROM nsm_project.process WHERE nsm_project.process.pj_id = %s", (format,format,id))
+        cursor.execute("SELECT nsm_project.process.start_draft,DATE_FORMAT(DATE_ADD(start_draft , INTERVAL 543 YEAR ), %s) as startdate,DATE_FORMAT(DATE_ADD(ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY), INTERVAL 543 YEAR ), %s) AS endproject_date,DATEDIFF(ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY),date(now())) AS diff,nsm_project.process.stdraft_id FROM nsm_project.process WHERE nsm_project.process.pj_id = %s", (format,format,id))
         diff = cursor.fetchall()
         drift = int(diff[0]['diff'])
+        std = int(diff[0]['stdraft_id'])
         cursor.execute("SELECT *,CASE WHEN nsm_project.manager.user_id = nsm_project.users.user_id THEN 'manager' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 1 OR nsm_project.board.role_id = 2 THEN 'board' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 3 THEN 'assistant' END AS role FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id or nsm_project.manager.user_id = nsm_project.users.user_id Where nsm_project.projects.pj_id = %s and nsm_project.users.user_id = %s group by nsm_project.users.user_id",(id ,user))
         role = cursor.fetchone()
-        if (manager ==  role['role'] and drift > 30 or drift < 0) :
+        if (manager ==  role['role'] and drift > 30 or drift < 0 or std == 5) :
             return render_template('draftEventB.html', row=row , id=id )
         elif (manager ==  role['role'] and drift >= 1 or drift <= 30) :
             return render_template('draftEvent.html', row=row , id=id )
         elif(phase == role['bo_phase'] and manager !=  role['role']):
             if (assistant == role['role'] and drift >= 1 or drift <= 30) :
                 return render_template('draftEvent.html', row=row ,id=id)
-            elif (assistant == role['role'] and drift > 30 or drift < 0) :
+            elif (assistant == role['role'] and drift > 30 or drift < 0 or std == 5) :
                 return render_template('draftEventB.html', row=row ,id=id)
             elif (board ==  role['role']) :
                 return render_template('draftEventB.html', row=row ,id=id)
@@ -564,6 +565,11 @@ def draftevent(id):
 def considerEvent(id):
     conn = None
     cursor = None
+    phase = 1
+    user = session['user_id']
+    manager = 'manager'
+    assistant = 'assistant'
+    board = 'board'
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
@@ -572,10 +578,24 @@ def considerEvent(id):
         cursor.execute("SET lc_time_names = 'th_TH'")
         cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.events.ev_id) as row_num,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate,TIME_FORMAT(ev_time, %s) as evtime FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 2 WHERE nsm_project.projects.pj_id = %s", (format,tformat,id))
         row = cursor.fetchall()
-        if row:
-            return render_template('considerEvent.html', row=row , id=id)
+        cursor.execute("SELECT * FROM process WHERE pj_id=%s", id)
+        rows = cursor.fetchall()
+        stc = int(rows[0]['stcon_id'])
+        cursor.execute("SELECT *,CASE WHEN nsm_project.manager.user_id = nsm_project.users.user_id THEN 'manager' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 1 OR nsm_project.board.role_id = 2 THEN 'board' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 3 THEN 'assistant' END AS role FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id or nsm_project.manager.user_id = nsm_project.users.user_id Where nsm_project.projects.pj_id = %s and nsm_project.users.user_id = %s group by nsm_project.users.user_id",(id ,user))
+        role = cursor.fetchone()
+        if (manager ==  role['role'] and stc == 7) :
+            return render_template('considerEventB.html', row=row , id=id )
+        elif (manager ==  role['role'] and stc < 7) :
+            return render_template('considerEvent.html', row=row , id=id )
+        elif(phase == role['bo_phase'] and manager !=  role['role']):
+            if (assistant == role['role'] and stc < 7) :
+                return render_template('draftEvent.html', row=row ,id=id)
+            elif (assistant == role['role'] and stc == 7) :
+                return render_template('draftEventB.html', row=row ,id=id)
+            elif (board ==  role['role']) :
+                return render_template('draftEventB.html', row=row ,id=id)
         else:
-            return 'Error loading #{id}'.format(id=id)
+            return render_template('inept.html', row=row ,id=id )
     except Exception as e:
         print(e)
     finally:
@@ -618,19 +638,20 @@ def addeventd(id):
     cursor = conn.cursor(pymysql.cursors.DictCursor)
     cursor.execute("SELECT * FROM nsm_project.projects WHERE nsm_project.projects.pj_id = %s", id)
     row = cursor.fetchall()
-    cursor.execute("SELECT nsm_project.process.start_draft,ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY) AS endproject_date,DATEDIFF(ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY),date(now())) AS diff FROM nsm_project.process WHERE nsm_project.process.pj_id = %s", (id))
+    cursor.execute("SELECT nsm_project.process.start_draft,ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY) AS endproject_date,DATEDIFF(ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY),date(now())) AS diff,nsm_project.process.stdraft_id FROM nsm_project.process WHERE nsm_project.process.pj_id = %s", (id))
     diff = cursor.fetchall()
     drift = int(diff[0]['diff'])
+    std = int(diff[0]['stdraft_id'])
     cursor.execute("SELECT *,CASE WHEN nsm_project.manager.user_id = nsm_project.users.user_id THEN 'manager' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 1 OR nsm_project.board.role_id = 2 THEN 'board' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 3 THEN 'assistant' END AS role FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id or nsm_project.manager.user_id = nsm_project.users.user_id Where nsm_project.projects.pj_id = %s and nsm_project.users.user_id = %s group by nsm_project.users.user_id",(id ,user))
     role = cursor.fetchone()
-    if (manager ==  role['role'] and drift > 30 or drift < 0) :
+    if (manager ==  role['role'] and drift > 30 or drift < 0 or std == 5) :
         return render_template('inept.html', id=id,row=row)
     elif (manager ==  role['role'] and drift >= 1 or drift <= 30) :
         return render_template('addeventd.html', row=row , id=id ,diff=diff)
     elif(phase == role['bo_phase'] and manager !=  role['role']):
         if (assistant == role['role'] and drift >= 1 or drift <= 30) :
             return render_template('addeventd.html', row=row ,id=id,diff=diff)
-        elif (assistant == role['role'] and drift > 30 or drift < 0) :
+        elif (assistant == role['role'] and drift > 30 or drift < 0 or std == 5) :
             return render_template('inept.html', row=row ,id=id)
         elif (board ==  role['role']) :
             return render_template('inept.html', row=row ,id=id)
@@ -671,11 +692,33 @@ def addeventd2():
 def addeventc(id):
     conn = None
     cursor = None
+    phase = 2
+    user = session['user_id']
+    manager = 'manager'
+    assistant = 'assistant'
+    board = 'board'
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
     cursor.execute("SELECT * FROM nsm_project.projects WHERE nsm_project.projects.pj_id = %s", id)
     row = cursor.fetchall()
-    return render_template('addeventc.html', id=id,row=row)
+    cursor.execute("SELECT * FROM process WHERE pj_id=%s", id)
+    rows = cursor.fetchall()
+    stc = int(rows[0]['stcon_id'])
+    cursor.execute("SELECT *,CASE WHEN nsm_project.manager.user_id = nsm_project.users.user_id THEN 'manager' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 1 OR nsm_project.board.role_id = 2 THEN 'board' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 3 THEN 'assistant' END AS role FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id or nsm_project.manager.user_id = nsm_project.users.user_id Where nsm_project.projects.pj_id = %s and nsm_project.users.user_id = %s group by nsm_project.users.user_id",(id ,user))
+    role = cursor.fetchone()
+    if (manager ==  role['role'] and stc == 7) :
+        return render_template('inept.html', id=id,row=row)
+    elif (manager ==  role['role'] and stc < 7) :
+        return render_template('addeventd.html', row=row , id=id )
+    elif(phase == role['bo_phase'] and manager !=  role['role']):
+        if (assistant == role['role'] and stc < 7) :
+            return render_template('addeventd.html', row=row ,id=id)
+        elif (assistant == role['role'] and stc == 7) :
+            return render_template('inept.html', row=row ,id=id)
+        elif (board ==  role['role']) :
+            return render_template('inept.html', row=row ,id=id)
+    else:
+        return render_template('inept.html', row=row ,id=id )
 
 @app.route('/addeventc', methods=[ 'POST'])
 def addeventc2():

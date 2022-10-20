@@ -404,12 +404,12 @@ if (usrole != "manager")  {
   var difc = Number(document.getElementById('mdiffc').value);
   var stcc = Number(document.getElementById('stc').value);
   var cpmc = document.getElementById('CPMC').value;
-  document.getElementById('mstac').style.color = "white";
-  document.getElementById('mdayc').style.color = "white";
+  document.getElementById('mstac').style.color = "black";
+  document.getElementById('mdiffc').style.color = "black";
+  document.getElementById('mdayc').style.color = "black";
   if (difc <= 3 && difc > 0 && stcc == 5 && cpmc == 'wait') {
   document.getElementById('mstac').value = "จะประกาศผู้ชนะในอีก";
   document.getElementById('mdiffc').value = Math.abs(difc);
-  document.getElementById('mdiffc').style.color = "white";
   window.onload = function() {
     modallc.style.display = "block";
   }
