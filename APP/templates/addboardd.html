@@ -25,13 +25,11 @@
             <option hidden>ตำแหน่ง</option>
             <option id="mng" value="1">ประธาน<br>
             <option id="boa" value="2">กรรมการ<br>
-            <option id="as" value="3">เลขาธิการ<br>
         </select>
         </div>
         </p>
         <input id="cmng" value="{{crole[0]['cmng']}}" type="hidden">
         <input id="cboa" value="{{crole[0]['cboa']}}" type="hidden">
-        <input id="cas" value="{{crole[0]['cas']}}" type="hidden">
         <input name="bophase" value="1" type="hidden">
         <input name="pjid" value="{{row[0]['pj_id']}}" type="hidden">
         <br>
@@ -78,25 +76,7 @@
         <tr>
         <td id="usft">{{result['user_fullname']}}</td>
         <td id="usrt">{{result['role_name']}}</td>
-        <td id="dlt">
-            <button type="button" class="btn btn-primary"data-bs-toggle="modal" data-bs-target="#myModal1">ลบ</button>
-                <div class="modal" id="myModal1">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <!-- Modal Header -->
-                            <div class="modal-header">
-                                <h4 class="modal-title">ยืนยันการลบ</h4>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-                            <!-- Modal body -->
-                            <div class="modal-body">
-                            คุณต้องการที่จะลบ คุณ {{result['user_fullname']}} ตำแหน่ง {{result['role_name']}} ใช่หรือไม่
-                            </div>
-                            <!-- Modal footer -->
-                            <div class="modal-footer">
-                                <a type="submit" class="btn btn-primary"  href="/project/{{result['pj_id']}}/deleteboardd/{{result['bo_id']}}"  >ใช่</a>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="background-color: red;">ไม่ใช่</button>
-                            </div>  
+        <td id="dlt"><a type="submit" class="btn btn-primary"  href="/project/{{result['pj_id']}}/deleteboardd/{{result['bo_id']}}"  >ลบ</a>
         </td>  
         </tr>
         {% endfor %} 

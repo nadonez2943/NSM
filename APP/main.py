@@ -449,7 +449,7 @@ def addboardc(id):
     else:
         return render_template('inept.html', row=row , rows=rows ,id=id )
 
-@app.route('/addboardc', methods=[ 'POST'])
+@app.route('/addboardc', methods=['POST'])
 def addboardc2():
     conn = None
     cursor = None

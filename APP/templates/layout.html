@@ -399,6 +399,36 @@ if (usrole != "manager")  {
     </script>
 
 <script>
+  var stcc = Number(document.getElementById('stc').value);
+  var cpmc = document.getElementById('CPMC').value;
+  var conapp = Number(document.getElementById('conapp').value);
+  var difc = Number(document.getElementById('mdiffc').value);
+  if (stcc == 1){
+    document.getElementById('statuscon').value = "รอกำหนดคณะกรรมการ";
+    document.getElementById('statuscon').type = "text";
+    document.getElementById('statuscon').style.background = "gray";
+    document.getElementById('statuscon').style.color = "white";
+    document.getElementById('statuscon').style.width = "35%";
+  }
+  if (stcc == 2 && cpmc != "wait"){
+    document.getElementById('statuscon').value = "รอกรอกวันที่";
+    document.getElementById('statuscon').type = "text";
+    document.getElementById('statuscon').style.background = "gray";
+    document.getElementById('statuscon').style.color = "white";
+    document.getElementById('statuscon').style.width = "20%";
+    document.getElementById('statuscon').style.marginTop = "30px";
+  }
+  if (stcc == 2 && cpmc == "wait"){
+    document.getElementById('statuscon').value = "รอกรอกวันที่";
+    document.getElementById('statuscon').type = "text";
+    document.getElementById('statuscon').style.background = "gray";
+    document.getElementById('statuscon').style.color = "white";
+    document.getElementById('statuscon').style.width = "20%";
+    document.getElementById('statuscon').style.marginTop = "30px";
+  }
+</script>
+
+<script>
   var modalc = document.getElementById("modallc");
   var span = document.getElementsByClassName("close")[0];
   var difc = Number(document.getElementById('mdiffc').value);

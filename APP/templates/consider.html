@@ -134,6 +134,61 @@
       text-align: center;
       font-size: 1.5em;
     }
+    input[id="winsta"]{
+      height: 35px;
+      width: 90px;
+      border: none;
+      background: transparent;
+      text-align: center;
+    }
+    input[id="windiff"]{
+      height: 35px;
+      width: 50px;
+      border: none;
+      border-radius: 6px;
+      background: transparent;
+      text-align: center;
+    }
+    input[id="winday"]{
+      height: 35px;
+      width: 70px;
+      border: none;
+      background: transparent;
+      text-align: center;
+      
+    }
+    input[id="consta"]{
+      height: 35px;
+      width: 90px;
+      border: none;
+      background: transparent;
+      text-align: center;
+    }
+    input[id="condiff"]{
+      height: 35px;
+      width: 50px;
+      border: none;
+      border-radius: 6px;
+      background: transparent;
+      text-align: center;
+    }
+    input[id="conday"]{
+      height: 35px;
+      width: 70px;
+      border: none;
+      background: transparent;
+      text-align: center;
+      
+    }
+    input[id="statuscon"]{
+      height: 40px;
+      width: 130px;
+      border: none;
+      border-radius: 5px;
+      background: transparent;
+      text-align: center;
+      
+    }
     /* The Modal (background) */
     .modallc {
       display: none; /* Hidden by default */
@@ -187,7 +242,6 @@
                   <progress id="file" value="{{row[0]['stcon_percent']}}" max="100"></progress>    
                   <br><br>
                   <label for="file">{{row[0]['stcon_name']}}</label><p style="color: red;" id="addctt">**โปรดเพิ่มบริษัทที่ชนะ**</p>
-                  <input id="condif" value="{{row[0]['condiff']}}" type="hidden" >
                   <form action="/project/{{row[0]['pj_id']}}/consider" id="updatestcc" method="post">
                     <input name="checkboxdate" id="checkboxdate" value="0" type="hidden">
                         <input name="bdate" value="{{row[0]['buy_date']}}" type="hidden">
@@ -258,7 +312,7 @@
                         <input name="wdate" id="wdate" value="{{row[0]['winner_date']}}" type="hidden">
                         <input name="CPMC" id="CPMC" value="{{row[0]['conPMcheck']}}" type="hidden">
                         <input name="stc" id="stc" value="{{row[0]['stcon_id']}}" type="hidden">
-                        <input name="conapp" id="conapp" value="{{row[0]['conapp_status']}}" type="hidden" >
+                        <input name="conapp" value="{{row[0]['conapp_status']}}" type="hidden" >
                         <input name="conappd" id="conappd" value="{{row[0]['conapp_date']}}" type="hidden" >
                         <button type="submit" onclick="return confirm('ยืนยัน')" class="btn">เสร็จสิ้น</button>
                         <button type="button" class="btn cancel" onclick="closeForm()">ยกเลิก</button>
@@ -268,12 +322,28 @@
               </div>
             </div>
             <p></p>
+            <input name="conappd" value="{{row[0]['conapp_date']}}" type="hidden" >
             <div class="card" id="divd" style="margin-left:5px;">
               <div class="card-header" align="center">
-                <h5>ระยะเวลา</h5>
+                <h5>ติดตามการพิจารณาผล</h5>
               </div>
               <div class="card-body">
-                <input name="conappd" value="{{row[0]['conapp_date']}}" type="hidden" >
+                <lable>
+                  <input name="conapp" id="conapp" value="{{row[0]['conapp_status']}}" type="hidden" >
+                  <center>
+                  <input type="hidden" id="winsta" value="จะประกาศผู้ชนะในอีก" disabled="disabled"/>
+                  <input type="hidden" id="windiff" value="{{row[0]['windiff']}}" disabled="disabled"/>
+                  <input type="hidden" id="winday" value="วัน" disabled="disabled"/>
+                  </center>
+                  <center>
+                    <input type="hidden" id="consta" value="เวลารออุทธรณ์คงเหลือ" disabled="disabled"/>
+                    <input type="hidden" id="condif" value="{{row[0]['condiff']}}" disabled="disabled"/>
+                    <input type="hidden" id="conday" value="วัน" disabled="disabled"/>
+                    </center>
+                </lable>
+                <center>
+                  <input type ="hidden"id="statuscon" value="" disabled="disabled"/>
+                </center>
               </div>
             </div>
           </div>
