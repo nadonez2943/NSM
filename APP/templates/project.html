@@ -217,6 +217,18 @@
       
       </div>
     </div>
+    <p id="user_role" hidden>{{user_role}}</p>
+
+  <script>
+    var user_role = document.getElementById("user_role").innerHTML
+    var myBtn = document.getElementById("myBtn").innerHTML
+    if (user_role == "admin"){
+      document.getElementById("myBtn").href = "/admin";
+    }
+    if (user_role == "user"){
+      document.getElementById("myBtn").href = "/home";
+    }
+  </script>
 
   <script>
     var pacde = document.getElementById("pacde").innerHTML
