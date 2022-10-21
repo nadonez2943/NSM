@@ -1,11 +1,10 @@
 <doctype html>
    {% extends 'layout.html' %}
    {% block body %}
+   <a id="myBtn" href="/home" class='btn' >ย้อนกลับ</a>
    <br>
-   <a class="btn btn-primary btn-lg" type="submit" href="/home" value="ย้อนกลับ">ย้อนกลับ</a>
    <br>
-   <br>
-   <div class="jumbotron">
+   <div class="jumbotron" style="padding: 20px;">
    <center><h1>โครงการใหม่</h1></center>
    <hr>
    <form id="form" action="/addProject" method="post">
@@ -70,7 +69,7 @@
          รายละเอียดโครงการ
       </p> 
       <p> 
-         <input name="detail" value="" type="text" style="width:900px; height: 88;  " placeholder="รายละเอียด " autocomplete="off" required> 
+         <textarea name="detail" value="" style="width:100%; height: 80px;" placeholder="รายละเอียด" autocomplete="off" required></textarea>
       </p>
       <p>
          
