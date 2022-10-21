@@ -194,6 +194,8 @@
           <input name="PMC" id="PMC" value="{{row[0]['PMcheck']}}" type="hidden">
           <input name="stc" id="stc" value="{{row[0]['stcon_id']}}" type="hidden">
           <input name="CPMC" id="CPMC" value="{{row[0]['conPMcheck']}}" type="hidden">
+          <input name="condif" id="condif" value="{{row[0]['condiff']}}" type="hidden">
+          <input name="pjidd" id="pjidd" value="{{row[0]['pj_id']}}" type="hidden" >
           <div>
               <form action="/project/{{row[0]['pj_id']}}/closeProject" method="post">
                 <input type="submit" id="closepj" onclick="return confirm('ยืนยันการยุติโครงการ')" value="ยุติโครงการ">
@@ -269,6 +271,18 @@
   }
   </script>
 
+<script>
+  var pjidd = document.getElementById("pjidd").value
+  var condif = Number(document.getElementById("condif").value)
+  var stcc = Number(document.getElementById('stc').value);
+  var cpmc = document.getElementById('CPMC').value;
+  if ( stcc == 6 &&  cpmc != "wait" && condif < 0 ) {
+      window.onload = function() {
+      // similar behavior as clicking on a link
+      window.location.href = ("http://localhost:5000/project/"+pjidd+"/conauto");
+      }
+  }
+</script>
   {% endblock %}
   
   

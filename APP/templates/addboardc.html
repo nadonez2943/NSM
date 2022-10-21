@@ -79,6 +79,7 @@
         <td id="usft">{{result['user_fullname']}}</td>
         <td id="usrt">{{result['role_name']}}</td>
         <td id="dlt">
+            <input type="hidden" id="boid" value="{{result['bo_id']}}">
             <button type="button" class="btn btn-primary"data-bs-toggle="modal" data-bs-target="#myModal1">ลบ</button>
                 <div class="modal" id="myModal1">
                     <div class="modal-dialog modal-dialog-centered">
@@ -89,7 +90,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
                             <!-- Modal body -->
-                            <div class="modal-body">
+                            <div class="modal-body" id="mobody">
                             คุณต้องการที่จะลบ คุณ {{result['user_fullname']}} ตำแหน่ง {{result['role_name']}} ใช่หรือไม่
                             </div>
                             <!-- Modal footer -->
@@ -106,4 +107,8 @@
         <input class="btn btn-primary btn-lg" type="button" id="fini" value="เสร็จสิ้น">
         </a>
         </center>
+        <script>
+            var fullname = document.getElementById('usft').innerHTML
+            document.getElementById('mobody').innerHTML = fullname;
+        </script>
     {% endblock %}
