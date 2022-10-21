@@ -108,6 +108,27 @@ def project(id):
         cursor.close()
         conn.close()
     
+@app.route('/project/<int:id>/conauto', methods=['GET','POST'])
+def conauto(id):
+    conn = None
+    cursor = None
+    try:
+        stcon_id = 7
+        conapp_status = 'yes'
+        conPMcheck = 'yes'
+        sql = "UPDATE process SET stcon_id=%s,conapp_status=%s,conPMcheck=%s WHERE pj_id=%s"
+        data = (stcon_id,conapp_status,conPMcheck, id)
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute(sql, data)
+        conn.commit()
+        return redirect('/project/'+str(id))
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close() 
+
 #หน้าร่างโครงการ
 
 @app.route('/project/<int:id>/draft', methods=[ 'GET'])
@@ -174,13 +195,27 @@ def consider(id):
         cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate,TIME_FORMAT(ev_time, %s) as evtime FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 2 WHERE nsm_project.projects.pj_id = %s order by nsm_project.events.ev_id desc",(format,tformat,id))
         ev = cursor.fetchall()
         std = row[0]['stdraft_id']
+        stc = row[0]['stcon_id']
+        cpmc = row[0]['conPMcheck']
+        condif = row[0]['condiff']
+        stcc = int(stc)
+        
         cursor.execute("SELECT *,CASE WHEN nsm_project.manager.user_id = nsm_project.users.user_id THEN 'manager' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 1 OR nsm_project.board.role_id = 2 THEN 'board' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 3 THEN 'assistant' END AS role FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id or nsm_project.manager.user_id = nsm_project.users.user_id Where nsm_project.projects.pj_id = %s and nsm_project.users.user_id = %s group by nsm_project.users.user_id",(id ,user))
         role = cursor.fetchone()
+        # if ( stcc == 6 and condif < 0 and cpmc != 'wait') :
+        #     stcon_id = 7
+        #     conapp_status = 'yes'
+        #     conPMcheck = 'yes'
+        #     update = "UPDATE process SET stcon_id=%s,conapp_status=%s,conPMcheck=%s WHERE pj_id = %s"
+        #     data1 = (stcon_id,conapp_status,conPMcheck,id)
+        #     cursor.execute(update, data1)
+        #     conn.commit()
+        #     return "yes"
         if (manager ==  role['role']) :
             if (std == 5) :
                 return render_template('consider.html', row=row , rows=rows ,id=id ,ev=ev,role=role)
             elif (std < 5) :
-                return render_template('errorcon.html')
+                    return render_template('errorcon.html')
         elif(phase == role['bo_phase'] ):
             if (assistant == role['role']) :
                 return render_template('consider.html', row=row , rows=rows ,id=id ,ev=ev,role=role)
@@ -193,6 +228,27 @@ def consider(id):
     finally:
         cursor.close()
         conn.close()
+
+@app.route('/project/<int:id>/considerauto', methods=['GET','POST'])
+def considerauto(id):
+    conn = None
+    cursor = None
+    try:
+        stcon_id = 7
+        conapp_status = 'yes'
+        conPMcheck = 'yes'
+        sql = "UPDATE process SET stcon_id=%s,conapp_status=%s,conPMcheck=%s WHERE pj_id=%s"
+        data = (stcon_id,conapp_status,conPMcheck, id)
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute(sql, data)
+        conn.commit()
+        return redirect('/project/'+str(id)+'/consider')
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close() 
 
 #หน้าตรวจสอบโครงการ
 @app.route('/project/<int:id>/examine', methods=[ 'GET'])
@@ -308,7 +364,7 @@ def PMac(id):
 def addboardd(id):
     conn = None
     cursor = None
-    phase = '1'
+    phase = 1
     user = session['user_id']
     manager = 'manager'
     assistant = 'assistant'
@@ -367,7 +423,7 @@ def addboardd2():
 def addboardc(id):
     conn = None
     cursor = None
-    phase = '2'
+    phase = 2
     user = session['user_id']
     manager = 'manager'
     assistant = 'assistant'
@@ -387,9 +443,8 @@ def addboardc(id):
     if (manager ==  role['role'] and stc == 1 ) :
             return render_template('PMac.html', id=id,row=row,rows=rows,crole=crole)
     elif (manager ==  role['role'] and stc > 1 ) :
-            return render_template('inept.html', id=id,row=row,rows=rows,crole=crole)        
-    if(phase == role['bo_phase'] ):
-        if (assistant == role['role']) :
+            return render_template('inept.html', id=id,row=row,rows=rows,crole=crole)           
+    if (assistant == role['role'] and stc > 1 and phase == role['bo_phase'] ) :
             return render_template('addboardc.html', id=id,row=row,rows=rows,crole=crole)
     else:
         return render_template('inept.html', row=row , rows=rows ,id=id )
@@ -565,7 +620,7 @@ def draftevent(id):
 def considerEvent(id):
     conn = None
     cursor = None
-    phase = 1
+    phase = 2
     user = session['user_id']
     manager = 'manager'
     assistant = 'assistant'
@@ -587,13 +642,12 @@ def considerEvent(id):
             return render_template('considerEventB.html', row=row , id=id )
         elif (manager ==  role['role'] and stc < 7) :
             return render_template('considerEvent.html', row=row , id=id )
-        elif(phase == role['bo_phase'] and manager !=  role['role']):
-            if (assistant == role['role'] and stc < 7) :
-                return render_template('draftEvent.html', row=row ,id=id)
-            elif (assistant == role['role'] and stc == 7) :
-                return render_template('draftEventB.html', row=row ,id=id)
-            elif (board ==  role['role']) :
-                return render_template('draftEventB.html', row=row ,id=id)
+        elif (assistant == role['role'] and stc < 7 and phase == role['bo_phase']) :
+            return render_template('considerEvent.html', row=row ,id=id)
+        elif (assistant == role['role'] and stc == 7 and phase == role['bo_phase']) :
+            return render_template('considerEventB.html', row=row ,id=id)
+        elif (board ==  role['role'] and phase == role['bo_phase']) :
+            return render_template('considerEventB.html', row=row ,id=id)
         else:
             return render_template('inept.html', row=row ,id=id )
     except Exception as e:

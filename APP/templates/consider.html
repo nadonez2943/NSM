@@ -273,12 +273,12 @@
                 <h5>ระยะเวลา</h5>
               </div>
               <div class="card-body">
-                
+                <input name="conappd" value="{{row[0]['conapp_date']}}" type="hidden" >
               </div>
             </div>
           </div>
         </p>
-
+        <input name="pjidd" id="pjidd" value="{{row[0]['pj_id']}}" type="hidden" >
         <div class="leftcolumn">
           <div class="card">
             <div class="card-body">
@@ -456,4 +456,18 @@
         document.getElementById('cfint').innerHTML = "-";
       }
   </script>
+
+  <script>
+    var pjidd = document.getElementById("pjidd").value
+    var condif = Number(document.getElementById("condif").value)
+    var stcc = Number(document.getElementById('stc').value);
+    var cpmc = document.getElementById('CPMC').value;
+    if ( stcc == 6 &&  cpmc != "wait" && condif < 0 ) {
+        window.onload = function() {
+        // similar behavior as clicking on a link
+        window.location.href = ("http://localhost:5000/project/"+pjidd+"/considerauto");
+        }
+    }
+  </script>
+
   {% endblock %}
