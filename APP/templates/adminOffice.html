@@ -1,6 +1,7 @@
-{% extends 'layoutt.html' %} 
+{% extends 'layout.html' %} 
 {% block body %}
 <body>
+  <a id="myBtn" href="/admin" class='btn' >ย้อนกลับ</a>
     <br><br>
     <center>
        <div class="card" style="width: 80%;text-align: left;">
@@ -31,29 +32,12 @@
       <div class="card-body">
           <div class="row">
               <div class="col-md-6">
-                 <h3>สำนักงาน</h3>
-                 <table class="table table-striped" >  
-                  <thead>  
-                    <tr class="header">  
-                      <th><center>รหัส</center></th>
-                      <th><center>ชื่อสำนักงาน</center></th>
-                      <th><center>ชื่อย่อ</center></th>
-                    </tr>  
-                  </thead>  
-                  <tbody>  
-                    {% for result in office %}
-                    <tr>
-                      <td align="center">{{result['of_id']}}</td>
-                      <td><a href = "/project/{{result['pj_id']}}">{{result['of_name']}}</a></td>        
-                      <td>{{result['of_shname']}}</td>    
-                    </tr>
-                    {% endfor %}
-                  </tbody>  
-                </table>  
+                <h3>สำนักงาน</h3>
+              
               </div>
               <div class="col-md-6">
-                 <h3>กอง</h3>
-                 <div name="dvid"  id="dv_name" >
+                <h3>กอง</h3>
+                <div name="dvid"  id="dv_name" >
               </div>
               </div>
             </div>
@@ -63,32 +47,32 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 </script>
 <script>
-    $(document).ready(function () {
-        function load_data(type, category_id) {
-        $.ajax({
-        url: "/division",
-        method: "POST",
-        data: { type: type, category_id: category_id },
-        dataType: "json",
-        success: function (data) {
-            var html = "";
-            for (var count = 0; count < data.length; count++) {
-                html += '<li value="' + data[count].id + '">' + data[count].name + "</li>";
-            }
-            if (type == "ofid") {
-                $("#ofid").html(html);
-                $("#ofid").selectpicker("refresh");
-            } else {
-                $("#dv_name").html(html);
-            }
-            },
-        });
-        }
-        $(document).on("change", "#ofid", function () {
-        var category_id = $("#ofid").val();
-        load_data("dvid", category_id);
-        });
-    });
+  $(document).ready(function () {
+      function load_data(type, category_id) {
+      $.ajax({
+      url: "/division",
+      method: "POST",
+      data: { type: type, category_id: category_id },
+      dataType: "json",
+      success: function (data) {
+          var html = "";
+          for (var count = 0; count < data.length; count++) {
+              html += '<li value="' + data[count].id + '">' + data[count].name + "</li>";
+          }
+          if (type == "ofid") {
+              $("#ofid").html(html);
+              $("#ofid").selectpicker("refresh");
+          } else {
+              $("#dv_name").html(html);
+          }
+          },
+      });
+      }
+      $(document).on("change", "#ofid", function () {
+      var category_id = $("#ofid").val();
+      load_data("dvid", category_id);
+      });
+  });
 </script>
 <script>
     function myFunction() {

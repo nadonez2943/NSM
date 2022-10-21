@@ -1,142 +1,142 @@
-  {% extends 'layoutt.html' %}
-  {% block body %}
-    <head>
-      <style>
-        .link {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          top: 0;
-          left: 0;
-          z-index: 1;
-        }
-      </style>
-    </head>
-    <body>
-      <br>
-      <div class="container">
-        <div class="row">
-          <div class="col-md-5">
-            <div class="card"style="padding: 15px;">
-              <div class="row">
-                <div class="col-md-5" align="right">
-                  <h3>พนักงาน :</h3>
-                </div>
-                <div class="col-md-7">
-                  <h3>{{em[0]['row_num']}}&nbsp;&nbsp;&nbsp;คน</h3>
-                </div>
+{% extends 'layoutt.html' %}
+{% block body %}
+  <head>
+    <style>
+      .link {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <br>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-5">
+          <div class="card"style="padding: 15px;">
+            <div class="row">
+              <div class="col-md-5" align="right">
+                <h3>พนักงาน :</h3>
               </div>
-              <a href="/admin/employee">
-                <span class="link"></span>
-              </a>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card"style="padding: 15px;">
-              <div class="row">
-                <div class="col-md-7" align="right">
-                  <h3>สำนักงาน :</h3>
-                </div>
-                <div class="col-md-5" >
-                  <h3>{{of[0]['row_num']}}</h3>
-                </div>
+              <div class="col-md-7">
+                <h3>{{em[0]['row_num']}}&nbsp;&nbsp;&nbsp;คน</h3>
               </div>
-              <a href="/admin/office">
-                <span class="link"></span>
-              </a>
             </div>
-          </div>
-          <div class="col-md-3">
-            <div class="card"style="padding: 15px;">
-              <div class="row">
-                <div class="col-md-6" align="right">
-                  <h3>กอง :</h3>
-                </div>
-                <div class="col-md-6" >
-                  <h3>{{dv[0]['row_num']}}</h3>
-                </div>
-              </div>
-              <a href="/admin/office">
-                <span class="link"></span>
-              </a>
-            </div>
+            <a href="/admin/employee">
+              <span class="link"></span>
+            </a>
           </div>
         </div>
-        
-        <div class="card"style="margin-top: 20px;padding:10px;">
-
-          <div class="row" >
-            <div class="col-md-4">
-              
-                <div class="card-body" style="padding: 5px;" align="center">
-                  <h1>{{pjAll[0]['row_num']}}</h1>
-                  <h3>โครงการทั้งหมด</h3>
-                </div>
-              
-            </div>
-
-            <div class="col-md-8" style="padding-top: 8px;padding-bottom:8px;">
-              <div class="row">
-                <div class="col-md-4">
-                  <div class="card" style="padding-bottom:5%;border-color: orange;">
-                    <center>
-                    <h1>{{st1[0]['row_num']}}</h3>
-                    อยู่ในระหว่างดำเนินการ
-                    </center>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="card" style="padding-bottom:5%;border-color: green;">
-                    <center>
-                    <h1>{{st2[0]['row_num']}}</h3>
-                    เสร็จสิ้น
-                    </center>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="card" style="padding-bottom:5%;border-color:red;">
-                    <center>
-                    <h1>{{st3[0]['row_num']}}</h3>
-                    ยุติโครงการ
-                    </center>
-                  </div>
-                </div>
+        <div class="col-md-4">
+          <div class="card"style="padding: 15px;">
+            <div class="row">
+              <div class="col-md-7" align="right">
+                <h3>สำนักงาน :</h3>
+              </div>
+              <div class="col-md-5" >
+                <h3>{{of[0]['row_num']}}</h3>
               </div>
             </div>
-
+            <a href="/admin/office">
+              <span class="link"></span>
+            </a>
+          </div>
         </div>
-     
-        <hr>
-        
-        <table id="myTableMN" class="table table-striped" >  
-          <thead>  
-            <tr class="header">  
-              <th><center>ลำดับ</center></th>
-              <th><center>ชื่อโครงการ</center></th>
-              <th ><center>เลขสารบัญ</center></th>
-              <th ><center>ผู้รับผิดชอบ</center></th>
-              <th ><center>ความคืบหน้า</center></th>
-            </tr>  
-          </thead>  
-          <tbody>  
-            {% for result in row %}
-            <tr>
-              <td align="center">{{result['row_num']}}</td>
-              <td ><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
-              <td> {{result['pj_refNumber']}}</td>
-              <td>{{result['user_fullname']}}</td>
-              <td><center>{{result['x']}} %</center></td>        
-            </tr>
-            {% endfor %}
-          </tbody>  
-        </table>  
-      
+        <div class="col-md-3">
+          <div class="card"style="padding: 15px;">
+            <div class="row">
+              <div class="col-md-6" align="right">
+                <h3>กอง :</h3>
+              </div>
+              <div class="col-md-6" >
+                <h3>{{dv[0]['row_num']}}</h3>
+              </div>
+            </div>
+            <a href="/admin/office">
+              <span class="link"></span>
+            </a>
+          </div>
+        </div>
       </div>
-    <script>
-    $(document).ready(function(){
-      $('#myTableMN').dataTable();
-    });
-    </script>
       
-    </body>
-  {% endblock %}
+      <div class="card"style="margin-top: 20px;padding:10px;">
+
+        <div class="row" >
+          <div class="col-md-4">
+            
+              <div class="card-body" style="padding: 5px;" align="center">
+                <h1>{{pjAll[0]['row_num']}}</h1>
+                <h3>โครงการทั้งหมด</h3>
+              </div>
+            
+          </div>
+
+          <div class="col-md-8" style="padding-top: 8px;padding-bottom:8px;">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="card" style="padding-bottom:5%;border-color: orange;">
+                  <center>
+                  <h1>{{st1[0]['row_num']}}</h3>
+                  อยู่ในระหว่างดำเนินการ
+                  </center>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card" style="padding-bottom:5%;border-color: green;">
+                  <center>
+                  <h1>{{st2[0]['row_num']}}</h3>
+                  เสร็จสิ้น
+                  </center>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card" style="padding-bottom:5%;border-color:red;">
+                  <center>
+                  <h1>{{st3[0]['row_num']}}</h3>
+                  ยุติโครงการ
+                  </center>
+                </div>
+              </div>
+            </div>
+          </div>
+
+      </div>
+   
+      <hr>
+      
+      <table id="myTableMN" class="table table-striped" >  
+        <thead>  
+          <tr class="header">  
+            <th><center>ลำดับ</center></th>
+            <th><center>ชื่อโครงการ</center></th>
+            <th ><center>เลขสารบัญ</center></th>
+            <th ><center>ผู้รับผิดชอบ</center></th>
+            <th ><center>ความคืบหน้า</center></th>
+          </tr>  
+        </thead>  
+        <tbody>  
+          {% for result in row %}
+          <tr>
+            <td align="center">{{result['row_num']}}</td>
+            <td ><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
+            <td> {{result['pj_refNumber']}}</td>
+            <td>{{result['user_fullname']}}</td>
+            <td><center>{{result['x']}} %</center></td>        
+          </tr>
+          {% endfor %}
+        </tbody>  
+      </table>  
+    
+    </div>
+  <script>
+  $(document).ready(function(){
+    $('#myTableMN').dataTable();
+  });
+  </script>
+    
+  </body>
+{% endblock %}
