@@ -2,145 +2,481 @@
   {% extends 'layout.html' %}
   
   {% block body %}
-      <body>
-      <a id="myBtn" href="/project/{{row[0]['pj_id']}}" class='btn' >ย้อนกลับ</a>
-      <div class="row">
+  <head>
+  <style>
+    input[id="nstt"]{
+      height: 35px;
+      width: 110px;
+      border: none;
+      border-radius: 5px;
+      color:black;
+      background: transparent;
+      text-align: center;  
+    }
+    input[id="nstt2"]{
+      height: 35px;
+      width: 210px;
+      border: none;
+      border-radius: 5px;
+      color:black;
+      background: transparent;
+      text-align: center;  
+    }
+    a {
+      display:block;
+    }
+    * {
+        box-sizing: border-box;
+      }
+    .openBtn {
+      display: block;
+      justify-content: left;
+      }
+    .openButton {
+      border: none;
+      border-radius: 5px;
+      background-color: #2E4778;
+      color: white;
+      padding: 14px 20px;
+      cursor: pointer;
+      }
+    .loginPopup {
+        position: relative;
+        text-align: center;
+        width: 100%;
+      }
+    .formPopup {
+        display: none;
+        position: fixed;
+        left: 50%;
+        top: 5%;
+        transform: translate(-50%, 5%);
+        border: 3px solid #999999;
+        z-index: 9;
+      }
+    .formContainer {
+        max-width: 300px;
+        padding: 20px;
+        background-color: #fff;
+      }
+    .formContainer input[type=date] {
+        width: 100%;
+        padding: 15px;
+        margin: 5px 0 20px 0;
+        border: none;
+        background: #eee;
+      }
+    .formContainer input[type=date]:focus {
+        background-color: #ddd;
+        outline: none;
+      }
+      .formContainer input[type=text] {
+        width: 100%;
+        padding: 15px;
+        margin: 5px 0 20px 0;
+        text-align: center;
+        border: none;
+        background: #eee;
+      }
+    .formContainer input[type=text]:focus {
+        background-color: #ddd;
+        outline: none;
+      }
+    .formContainer .btn {
+        padding: 12px 20px;
+        border: none;
+        background-color: #2E4778;
+        color: #fff;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 15px;
+      }
+    .formContainer .cancel {
+        background-color: grey;
+      }
+    .formContainer .btn:hover,
+    .openButton:hover {
+        opacity: 1;
+      }
+    .c25 {
+          float: right;
+          width: 36%;
+          text-align: right;
+          margin-top: 11px;
+        }
+    .c75 {
+            float: left;
+            width: 50%;
+            text-align: left;
+            margin-top: 6px;
+        }
+        input[id="mstac"]{
+      height: 35px;
+      width: 250px;
+      border: none;
+      background: transparent;
+      text-align: center;
+      font-size: 1.5em;
+    }
+    input[id="mdiffc"]{
+      height: 35px;
+      width: 50px;
+      border: none;
+      background: transparent;
+      text-align: center;
+      font-size: 1.5em;
+    }
+    input[id="mdayc"]{
+      height: 35px;
+      width: 50px;
+      border: none;
+      background: transparent;
+      text-align: center;
+      font-size: 1.5em;
+    }
+    input[id="winsta"]{
+      height: 35px;
+      width: 230px;
+      border: none;
+      font-size: 20px;
+      background: transparent;
+      text-align: right;
+      margin-top: 20px;
+    }
+    input[id="windiff"]{
+      height: 35px;
+      width: 50px;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      background: green;
+      font-size: 20px;
+      text-align: center;
+    }
+    input[id="winday"]{
+      height: 35px;
+      width: 36px;
+      border: none;
+      font-size: 20px;
+      background: transparent;
+      text-align: left;
+      
+    }
+    input[id="consta"]{
+      height: 35px;
+      width: 230px;
+      border: none;
+      font-size: 20px;
+      background: transparent;
+      text-align: right;
+      margin-top: 20px;
+    }
+    input[id="condif"]{
+      height: 35px;
+      width: 50px;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      background: green;
+      font-size: 20px;
+      text-align: center;
+    }
+    input[id="conday"]{
+      height: 35px;
+      width: 36px;
+      border: none;
+      font-size: 20px;
+      background: transparent;
+      text-align: left;
+      
+    }
+    input[id="statuscon"]{
+      height: 40px;
+      width: 130px;
+      border: none;
+      border-radius: 5px;
+      background: transparent;
+      text-align: center;
+      
+    }
+    /* The Modal (background) */
+    .modallc {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      padding-top: 100px; /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modallc-content {
+      background-color: white;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid rgb(161, 161, 161);
+      width: 80%;
+    }
+
+    /* The Close Button */
+    .close {
+      color: #ffffff;
+      float: right;
+      font-size: 38px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+  </head>
+  <a id="myBtn" href="/project/{{row[0]['pj_id']}}" class='btn' >ย้อนกลับ</a>
+  <div class="row">
         <p>
           <br><h1>พิจารณาผลโครงการ</h1>
-        </p>
-        <div class="leftcolumn">
-          <div class="card">
-            <div >
-              <form action="/action_page.php">
-                <div class="row">
-                  <h align="right" >เลขสรรบัญ {{row[0]['pj_refNumber']}}</h>
-                </div>
-                <div class="row">
-                  <div class="col-25">
-                    <label>ชื่อโครงการ</label>
-                  </div>
-                  <div class="col-75">
-                    <label>{{row[0]['pj_name']}}</label>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-25">
-                    <label>ผู้รับผิดชอบโครงการ</label>
-                  </div>
-                  <div class="col-75">
-                    <label>{{rows[0]['user_fullname']}}</label>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-25">
-                    <label>คณะกรรมการ</label>
-                  </div>
-                  <div class="col-75">
-                    {% for result in row %}
-                    <div class="row"><div class="col-75"><label>{{result['user_fullname']}}</label></div><div class="col-25"><label >{{result['role_name']}}</label></div></div>
-                    {% endfor %}
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-25">
-                    <label>วันที่เริ่มโครงการ</label>
-                  </div>
-                  <div class="col-75">
-                    <label>{{row[0]['startdate']}}</label>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-25">
-                    <label>งบประมาณ</label>
-                  </div>
-                  <div class="col-75">
-                    <label>{{row[0]['pjamount']}} บาท</label>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-25">
-                    <label>รายละเอียด</label>
-                  </div>
-                  <div class="col-75">
-                    <label>{{row[0]['pj_detail']}}
-                    </label>
-                  </div>
-                </div>
-              </form>
+          <div class="card-group">
+            <div class="card">
+              <div class="card-header">
+                <center><h5>สถานะ</h5></center>
+              </div>
+              <div class="card-body" align="center">
+                  <progress id="file" value="{{row[0]['stcon_percent']}}" max="100"></progress>    
+                  <br><br>
+                  <label for="file">{{row[0]['stcon_name']}}</label>
+                  <input name="windif" id="windif" value="{{row[0]['windiff']}}" type="hidden"> 
+                        <input name="bdate" id="bdate" value="{{row[0]['buy_date']}}" type="hidden">
+                        <input name="idate" id="idate" value="{{row[0]['invite_date']}}" type="hidden">
+                        <input name="pdate" id="pdate" value="{{row[0]['prop_date']}}" type="hidden">
+                        <input name="fdate" id="fdate" value="{{row[0]['finishcon_date']}}" type="hidden">
+                        <input name="rdate" id="rdate" value="{{row[0]['report_date']}}" type="hidden">
+                        <input name="rtime" id="rtime" value="{{row[0]['report_time']}}" type="hidden">
+                        <input name="wdate" id="wdate" value="{{row[0]['winner_date']}}" type="hidden">
+                        <input name="CPMC" id="CPMC" value="{{row[0]['conPMcheck']}}" type="hidden">
+                        <input name="stc" id="stc" value="{{row[0]['stcon_id']}}" type="hidden">
+                        <input name="conapp" value="{{row[0]['conapp_status']}}" type="hidden" >
+                        <input name="conappd" id="conappd" value="{{row[0]['conapp_date']}}" type="hidden" >
+              </div>
+            </div>
+            <p></p>
+            <input name="conappd" value="{{row[0]['conapp_date']}}" type="hidden" >
+            <div class="card" id="divd" style="margin-left:5px;">
+              <div class="card-header" align="center">
+                <h5>ติดตามการพิจารณาผล</h5>
+              </div>
+              <div class="card-body">
+                <lable>
+                  <input name="conapp" id="conapp" value="{{row[0]['conapp_status']}}" type="hidden" >
+                  
+                  <input type="hidden" id="winsta" value="จะประกาศผู้ชนะในอีก" disabled="disabled"/>
+                  <input type="hidden" id="windiff" value="{{row[0]['windiff']}}" disabled="disabled"/>
+                  <input type="hidden" id="winday" value="วัน" disabled="disabled"/>
+                  
+                  <input type="hidden" id="consta" value="เวลารออุทธรณ์คงเหลือ" disabled="disabled"/>
+                  <input type="hidden" id="condif" value="{{row[0]['condiff']}}" disabled="disabled"/>
+                  <input type="hidden" id="conday" value="วัน" disabled="disabled"/>
+                  
+                </lable>
+                <center>
+                  <input type ="hidden"id="statuscon" value="" disabled="disabled"/>
+                </center>
+              </div>
             </div>
           </div>
+        </p>
+        <input name="pjidd" id="pjidd" value="{{row[0]['pj_id']}}" type="hidden" >
+        <div class="leftcolumn">
           <div class="card">
-            <div class="row">
-              <div class="col-25">
-                <label>วันที่ประกาศผลบริษัทผู้รับเหมา</label>
+            <div class="card-body">
+              <h5>รายละเอียดโครงการ</h5><hr>
+              <div class="row">
+                <div class="col-25">
+                  <label>เลขสารบัญ</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['pj_refNumber']}}</label>
+                </div>
               </div>
-              <div class="col-75">
-                <label>{{row[0]['conttdate']}}</label>
+              <div class="row">
+                <div class="col-25">
+                  <label>ชื่อโครงการ</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['pj_name']}}</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>ผู้รับผิดชอบโครงการ</label>
+                </div>
+                <div class="col-75">
+                  <label>{{rows[0]['user_fullname']}}</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>คณะกรรมการ</label>
+                </div>
+                <div class="col-75">
+                  {% for result in row %}
+                <div class="row"><div class="col-50"><label id="usf">{{result['user_fullname']}}</label></div><div class="col-25"><label id="usr">{{result['role_name']}}</label></div></div>
+                {% endfor %}
+                </div>
+              </div><br>
+              <div class="row">
+                <div class="col-25">
+                  <label>วันที่เริ่มโครงการ</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['startdate']}}</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>งบประมาณ</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['pjamount']}} บาท</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>รายละเอียด</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['pj_detail']}}
+                  </label>
+                </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-25">
-                <label>บริษัทผู้รับเหมา</label>
+          </div>
+
+          <div class="card" style="margin-top: 8px;">
+            <div class="card-body">
+              <h5>ข้อมูลบริษัท</h5><hr>
+              <div class="row">
+                <div class="col-25">
+                  <label>วันที่ประกาศผล</label>
+                </div>
+                <div class="col-75">
+                  <label id="cdatet">{{row[0]['conttdate']}}</label>
+                </div>
               </div>
-              <div class="col-75">
-                <label>{{row[0]['contt_name']}}</label>
+              <div class="row">
+                <div class="col-25">
+                  <label>บริษัทผู้รับเหมา</label>
+                </div>
+                <div class="col-75">
+                  <label id="cnamet">{{row[0]['contt_name']}}</label>
+                </div>
+              </div><div class="row">
+                <div class="col-25">
+                  <label>อีเมล</label>
+                </div>
+                <div class="col-75">
+                  <label id="cemailt">{{row[0]['contt_email']}}</label>
+                </div>
+              </div><div class="row">
+                <div class="col-25">
+                  <label>เบอร์โทรศัพท์</label>
+                </div>
+                <div class="col-75">
+                  <label id="ctelt">{{row[0]['contt_tel']}}</label>
+                </div>
+              </div><div class="row">
+                <div class="col-25">
+                  <label>วงเงิน</label>
+                </div>
+                <div class="col-75">
+                  <label id="cfint">{{row[0]['contt_fin']}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;บาท</label>
+                </div>
               </div>
-            </div><div class="row">
-              <div class="col-25">
-                <label>อีเมล</label>
-              </div>
-              <div class="col-75">
-                <label>{{row[0]['contt_email']}}</label>
-              </div>
-            </div><div class="row">
-              <div class="col-25">
-                <label>วันที่เริ่ม</label>
-              </div>
-              <div class="col-75">
-                <label>{{row[0]['conttstart']}}</label>
-              </div>
-            </div><div class="row">
-              <div class="col-25">
-                <label>วันที่สิ้นสุด</label>
-              </div>
-              <div class="col-75">
-                <label>{{row[0]['conttend']}}</label>
-              </div>
-            </div><div class="row">
-              <div class="col-25">
-                <label>ระยะเวลาคงเหลือ</label>
-                
-              </div>
-              <div class="col-75">
-                <label>{{row[0]['condiff']}} วัน</label>
-              </div>
+              <input id="conttid" value="{{row[0]['contt_id']}}" type="hidden">
             </div>
           </div>
         </div>
          
         <div class="rightcolumn" style="background-color:#ffffff;">
+          
           <div class="card">
-            <center>
-            <h1>สถานะ</h1>
-            <progress id="file" value="{{row[0]['stcon_percent']}}" max="100"></progress>    
-            <br>
-            
-            <label for="file">{{row[0]['stcon_name']}}</label>
-            </center>
+            <div class="card-header">
+            <center><h5>การนัดหมาย</h5></center>
+            </div>
+            <div class="card-body">
+              <center>
+              <p id="evn">{{ev[0]['ev_name']}}</p>
+              <p id="evd">วันที่ {{ev[0]['evdate']}}</p>
+              <p id="evt">เวลา {{ev[0]['evtime']}} น.</p>
+              </center>
+              <a align="right" href="considerEvent">ดูเพิ่มเติม</a>
+            </div>
           </div>
-          <div class="card">
-            <h3>กิจกรรม</h3>
-            <p>{{ev[0]['ev_name']}}</p>
-            <p>วันที่ {{ev[0]['evdate']}}</p>
-            <p>เวลา {{ev[0]['evtime']}} น.</p>
-            <a align="right" href="considerEvent">ดูเพิ่มเติม</a>
+          <div class="card" style="margin-top: 5px;">
+            <div class="card-body">
+              <a align="center" href="doc/2">เอกสารโครงการ</a>
+            </div>
           </div>
-          <div class="card">
-            <a align="center" href="doc/2">เอกสารโครงการ</a>
+          <div class="card" style="margin-top:8px;">
+            <div class="card-body" align="center">
+              <a href="/project/{{row[0]['pj_id']}}/addpacview">เพิ่มประกาศจากกองพัสดุ</a>
+            </div>
           </div>
         </div>
+
+        <div id="modallc" class="modallc">
+          <div class="modallc-content" id="modallc-con">
+            <span class="close" id="clo">&times;</span>
+            <center>
+            <input type="text" id="mstac" value="จะประกาศผู้ชนะในอีก" disabled="disabled"/>
+                        <input type="text" id="mdiffc" value="{{row[0]['windiff']}}" disabled="disabled"/>
+                        <input id="mdayc" value="วัน" disabled="disabled"/>
+            </center>
+          </div>
       </div>
-      <br>
-      
-      
+
+  </div>
+  <br>
+
+  <script>
+    var popupForm = document.getElementById("popupForm");
+    function openForm() {
+      document.getElementById("popupForm").style.display = "block";
+    }
+    function closeForm() {
+      document.getElementById("popupForm").style.display = "none";
+    }
+    window.onclick = document.getElementById("popupForm").style.display = "none";
+  </script>
+
+  <script>
+    if (document.getElementById('cnamet').innerHTML == "None")  {
+        document.getElementById('cdatet').innerHTML = "-";
+        document.getElementById('cnamet').innerHTML = "-";
+        document.getElementById('cemailt').innerHTML = "-";
+        document.getElementById('ctelt').innerHTML = "-";
+        document.getElementById('cfint').innerHTML = "-";
+      }
+  </script>
+
+  <script>
+    var pjidd = document.getElementById("pjidd").value
+    var condif = Number(document.getElementById("condif").value)
+    var stcc = Number(document.getElementById('stc').value);
+    var cpmc = document.getElementById('CPMC').value;
+    if ( stcc == 6 &&  cpmc != "wait" && condif < 0 ) {
+        window.onload = function() {
+        // similar behavior as clicking on a link
+        window.location.href = ("http://localhost:5000/project/"+pjidd+"/considerauto");
+        }
+    }
+  </script>
+
   {% endblock %}
