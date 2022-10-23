@@ -1,71 +1,84 @@
 {% extends 'layout.html' %} 
 {% block body %}
-<body>
-<br>
-<center>
-<div class="row">
-  <div class="col-md-6">
-     สำนักงาน
-     <select name="ofid" id="ofid" class="form-control" title="Select office"> 
-     <option value=""></option>
-        {% for row in office %}
-              <option value="{{row.of_id}}">{{row.of_name}}</option>
-        {% endfor %}
-     </select>
-  </div>
-  <div class="col-md-6">
-     กอง
-     <div name="dvid"  id="dv_name" >
-  </div>
-  </div>
-</div>
-<h2>The XMLHttpRequest Object</h2>
-<button type="button" onclick="loadDoc()">Change Content</button>
-<div id="demo">
-</div>
-</center>
+<head>
+    <style>
+        .btn {
+        padding: 2px;
+        background-color: rgba(10, 39, 97, 0.83); 
+        color: #FFFFFF;
+        font-size: 12px;
+        } 
+        
+        .btn-outline {
+        padding: 2px;
+        background-color: #FFFFFF; 
+        color: rgba(10, 39, 97, 0.83);
+        font-size: 12px;
+        border: 1px solid rgba(10, 39, 97, 0.83);
+        }
 
+        .btnB {
+        padding: 10px 40px;
+        background-color: rgba(10, 39, 97, 0.83); 
+        color: #FFFFFF;
+        font-weight: bold;
+        font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+  <a id="myBtn" href="/admin" class='btnB' >ย้อนกลับ</a>
+    <br>
+    <center>
+       <div  style="width: 100%;text-align: left;">
+        
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                        <h3>สำนักงาน</h3>
+                        {% for row in office %}
+                            <div class="card" >
+                                <div class="row">
+                                    <div class="col-md-8"><a style="padding-left: 5px;">{{row.of_name}}</a></div>
+                                    <div class="col-md-4">
+                                        <a href="#" class='btn btn-outline' >แก้ไข</a>
+                                        <a href="/delete/office/{{row['of_id']}}" class='btn btn-danger' style="background-color: rgb(255, 27, 27);">ลบ</a>
+                                        <a value="{{row.of_id}}" onclick="load_data('{{row.of_id}}')" class='btn' style="width: 75px;color:#FFFFFF;">กอง ></a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                </div>
+                <div class="col-md-6">
+                        <h3>กอง</h3>
+                        <div class="card" style="height: 60%;padding: 10px;">
+                        <div name="dvid"  id="dv_name" >
+                        </div>
+                </div>
+              </div>
+        </div>
+    </div> 
+
+    
+    </center>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 <script>
-   function loadDoc() {
-     const xhttp = new XMLHttpRequest();
-     xhttp.onload = function() {
-       document.getElementById("demo").innerHTML =
-       this.responseText;
-     }
-     xhttp.open("GET", "ajax_info.txt");
-     xhttp.send();
-   }
-</script>
-<script>
-  $(document).ready(function () {
-      function load_data(type, category_id) {
+      function load_data(of_id) {
       $.ajax({
-      url: "/division",
+      url: "/division1",
       method: "POST",
-      data: { type: type, category_id: category_id },
+      data: { of_id: of_id },
       dataType: "json",
       success: function (data) {
-         var html = "";
-         for (var count = 0; count < data.length; count++) {
-            html += '<li value="' + data[count].id + '">' + data[count].name + "</li>";
-
-         }
-         if (type == "ofid") {
-            $("#ofid").html(html);
-            $("#ofid").selectpicker("refresh");
-         } else {
+          var html = "";
+          for (var count = 0; count < data.length; count++) {
+            html += '<div class="row"><div class="col-md-9">'+ data[count].name +'</div><div class="col-md-3" style="text-align:right;"><a style="text-align:left;" href="edit/' + data[count].id + '" class="btn btn-outline" >แก้ไข</a><a href="/delete/division/' + data[count].id + '" class="btn btn-danger" style="background-color: rgb(255, 27, 27);margin-left:1px;">ลบ</a></div></div><hr style="margin: 2px;">';
+                
+          }
             $("#dv_name").html(html);
-            
-         }
-         },
+          },
       });
-   }
-
-   $(document).on("change", "#ofid", function () {
-      var category_id = $("#ofid").val();
-      load_data("dvid", category_id);
-   });
-});
+      }
 </script>
-</body> 
+</body>
 {% endblock %}
