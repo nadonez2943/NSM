@@ -129,6 +129,14 @@ if (usrole != "manager")  {
   var stcc = Number(document.getElementById('stc').value);
   var cpmc = document.getElementById('CPMC').value;
   var condif = Number(document.getElementById('condif').value);
+  if (stcc == 2 && cpmc != "wait" && usrole == "assistant") {
+    document.getElementById('addctt').innerHTML = "รอผู้รับผิดชอบโครงการกรอกวันที่";
+    document.getElementById('addctt').style.color = "gray";
+  }
+  if (stcc == 2 && cpmc == "wait" && usrole == "manager") {
+    document.getElementById('addctt').innerHTML = "รอเลขาธิการกรอกวันที่";
+    document.getElementById('addctt').style.color = "gray";
+  }
   if (stcc == 2 && cpmc != "wait" && usrole == "manager") {
     document.getElementById('openf').style.display = "block";
     document.getElementById('buyd').style.display = "block";
@@ -168,6 +176,7 @@ if (usrole != "manager")  {
   if (stcc == 6 && cpmc != "wait" && usrole == "assistant") {
     document.getElementById('appbottonc').type = "submit";
     document.getElementById('appbottonc').value = "พ้นอุทธรณ์";
+    document.getElementById('appbottonc2').type = "submit";
   }
   
   if (stcc == 6 && cpmc == "wait" && usrole == "manager") {
@@ -197,22 +206,31 @@ if (usrole != "manager")  {
   var stcc = Number(document.getElementById('stc').value);
   var usrole = document.getElementById('userrole').value;
   var windif = Number(document.getElementById('windif').value);
-  document.getElementById('addcontt').innerHTML = "";
-  document.getElementById('editcontt').innerHTML = "";
-  document.getElementById('addctt').innerHTML = "";
+  var cid = Number(document.getElementById("conttid").value);
   if (stcc == 1 && usrole == "manager")  {
       document.getElementById('addboardc').innerHTML = "เพิ่มรายชื่อคณะกรรมการ";
     }
   if (stcc > 1 && usrole == "manager")  {
       document.getElementById('addboardc').innerHTML = "";
     }
-  if ( usrole == "manager")  {
+  if (usrole == "manager")  {
     document.getElementById('editpj').innerHTML = "";
+ 
     }
   if (stcc == 5 && windif <= 0 && usrole == "assistant")  {
     document.getElementById('addctt').innerHTML = "**โปรดเพิ่มบริษัทที่ชนะ**";
     document.getElementById('addcontt').innerHTML = "เพิ่ม";
     document.getElementById('editcontt').innerHTML = "แก้ไข";
+    if (cid > 0) {
+    document.getElementById('addcontt').style.display= "none";
+    }
+    else {
+    document.getElementById('editcontt').style.display= "none";
+    }
+    }
+  if (stcc == 5 && windif <= 0 && usrole == "manager")  {
+    document.getElementById('addctt').innerHTML = "รอเลขาธิการเพิ่มบริษัทผู้ชนะ";
+    document.getElementById('addctt').style.color = "gray";
     }
 </script>
 
@@ -394,7 +412,7 @@ if (usrole != "manager")  {
 <script>
   var stcc = Number(document.getElementById('stc').value);
   var cpmc = document.getElementById('CPMC').value;
-  var conapp = Number(document.getElementById('conapp').value);
+  var conapp = document.getElementById('conapp').value;
   var difc = Number(document.getElementById('mdiffc').value);
   if (stcc == 1){
     document.getElementById('statuscon').value = "รอกำหนดคณะกรรมการ";
@@ -404,20 +422,102 @@ if (usrole != "manager")  {
     document.getElementById('statuscon').style.width = "35%";
   }
   if (stcc == 2 && cpmc != "wait"){
-    document.getElementById('statuscon').value = "รอกรอกวันที่";
+    document.getElementById('statuscon').value = "รอดำเนินการ";
     document.getElementById('statuscon').type = "text";
     document.getElementById('statuscon').style.background = "gray";
     document.getElementById('statuscon').style.color = "white";
     document.getElementById('statuscon').style.width = "20%";
-    document.getElementById('statuscon').style.marginTop = "30px";
+    document.getElementById('statuscon').style.marginTop = "20px";
   }
   if (stcc == 2 && cpmc == "wait"){
-    document.getElementById('statuscon').value = "รอกรอกวันที่";
+    document.getElementById('statuscon').value = "รอดำเนินการ";
     document.getElementById('statuscon').type = "text";
     document.getElementById('statuscon').style.background = "gray";
     document.getElementById('statuscon').style.color = "white";
     document.getElementById('statuscon').style.width = "20%";
-    document.getElementById('statuscon').style.marginTop = "30px";
+    document.getElementById('statuscon').style.marginTop = "20px";
+  }
+  if (stcc == 3 && cpmc != "wait"){
+    document.getElementById('statuscon').value = "กำลังพิจารณาผล";
+    document.getElementById('statuscon').type = "text";
+    document.getElementById('statuscon').style.background = "gray";
+    document.getElementById('statuscon').style.color = "white";
+    document.getElementById('statuscon').style.width = "30%";
+    document.getElementById('statuscon').style.marginTop = "20px";
+  }
+  if (stcc == 3 && cpmc == "wait"){
+    document.getElementById('statuscon').value = "พิจารณาผลเสร็จสิ้น";
+    document.getElementById('statuscon').type = "text";
+    document.getElementById('statuscon').style.background = "green";
+    document.getElementById('statuscon').style.color = "white";
+    document.getElementById('statuscon').style.width = "30%";
+    document.getElementById('statuscon').style.marginTop = "20px";
+  }
+  if (stcc == 4 && cpmc != "wait"){
+    document.getElementById('statuscon').value = "รอรายงานผล";
+    document.getElementById('statuscon').type = "text";
+    document.getElementById('statuscon').style.background = "gray";
+    document.getElementById('statuscon').style.color = "white";
+    document.getElementById('statuscon').style.width = "30%";
+    document.getElementById('statuscon').style.marginTop = "20px";
+  }
+  if (stcc == 5 && cpmc != "wait"){
+    document.getElementById('statuscon').value = "กำลังกำหนดวันประกาศผู้ชนะ";
+    document.getElementById('statuscon').type = "text";
+    document.getElementById('statuscon').style.background = "gray";
+    document.getElementById('statuscon').style.color = "white";
+    document.getElementById('statuscon').style.width = "40%";
+    document.getElementById('statuscon').style.marginTop = "20px";
+  }
+  if (stcc == 5 && windif > 0 && cpmc == "wait"){
+    document.getElementById('winsta').type = "text";
+    document.getElementById('windiff').type = "text";
+    document.getElementById('winday').type = "text";
+  }
+  if (stcc == 5 && windif <= 0 && cpmc == "wait"){
+    document.getElementById('statuscon').value = "รอกำหนดบริษัทผู้ชนะ";
+    document.getElementById('statuscon').type = "text";
+    document.getElementById('statuscon').style.background = "gray";
+    document.getElementById('statuscon').style.color = "white";
+    document.getElementById('statuscon').style.width = "40%";
+    document.getElementById('statuscon').style.marginTop = "20px";
+  }
+  if (stcc == 6 && conapp != "yes" && conapp != "no" && cpmc != "wait"){
+    document.getElementById('consta').type = "text";
+    document.getElementById('condif').type = "text";
+    document.getElementById('conday').type = "text";
+  }
+  if (stcc == 6 && conapp == "yes" && cpmc == "wait"){
+    document.getElementById('statuscon').value = "รอยืนยันการพ้นอุทธรณ์";
+    document.getElementById('statuscon').type = "text";
+    document.getElementById('statuscon').style.background = "gray";
+    document.getElementById('statuscon').style.color = "white";
+    document.getElementById('statuscon').style.width = "35%";
+    document.getElementById('statuscon').style.marginTop = "20px";
+  }
+  if (stcc == 6 && conapp == "no" && cpmc == "wait"){
+    document.getElementById('statuscon').value = "รอยืนยันการมีอุทธรณ์";
+    document.getElementById('statuscon').type = "text";
+    document.getElementById('statuscon').style.background = "gray";
+    document.getElementById('statuscon').style.color = "white";
+    document.getElementById('statuscon').style.width = "35%";
+    document.getElementById('statuscon').style.marginTop = "20px";
+  }
+  if (stcc == 6 && conapp == "no" && cpmc == "no"){
+    document.getElementById('statuscon').value = "ยุติโครงการ";
+    document.getElementById('statuscon').type = "text";
+    document.getElementById('statuscon').style.background = "red";
+    document.getElementById('statuscon').style.color = "white";
+    document.getElementById('statuscon').style.width = "20%";
+    document.getElementById('statuscon').style.marginTop = "20px";
+  }
+  if (stcc == 7 && conapp == "yes" && cpmc == "yes"){
+    document.getElementById('statuscon').value = "เสร็จสิ้น";
+    document.getElementById('statuscon').type = "text";
+    document.getElementById('statuscon').style.background = "green";
+    document.getElementById('statuscon').style.color = "white";
+    document.getElementById('statuscon').style.width = "15%";
+    document.getElementById('statuscon').style.marginTop = "20px";
   }
 </script>
 
@@ -452,16 +552,6 @@ if (usrole != "manager")  {
   }
   }
   </script>
-
-    <script>
-    var cid = Number(document.getElementById("conttid").value);
-    if (cid > 0) {
-    document.getElementById('addcontt').style.display= "none";
-    }
-    else {
-    document.getElementById('editcontt').style.display= "none";
-    }
-    </script> 
 
     <script>
     var evn = document.getElementById("evn").innerHTML;

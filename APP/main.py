@@ -222,22 +222,8 @@ def consider(id):
         cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate,TIME_FORMAT(ev_time, %s) as evtime FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 2 WHERE nsm_project.projects.pj_id = %s order by nsm_project.events.ev_id desc",(format,tformat,id))
         ev = cursor.fetchall()
         std = row[0]['stdraft_id']
-        stc = row[0]['stcon_id']
-        cpmc = row[0]['conPMcheck']
-        condif = row[0]['condiff']
-        stcc = int(stc)
-        
         cursor.execute("SELECT *,CASE WHEN nsm_project.manager.user_id = nsm_project.users.user_id THEN 'manager' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 1 OR nsm_project.board.role_id = 2 THEN 'board' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 3 THEN 'assistant' END AS role FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id or nsm_project.manager.user_id = nsm_project.users.user_id Where nsm_project.projects.pj_id = %s and nsm_project.users.user_id = %s group by nsm_project.users.user_id",(id ,user))
         role = cursor.fetchone()
-        # if ( stcc == 6 and condif < 0 and cpmc != 'wait') :
-        #     stcon_id = 7
-        #     conapp_status = 'yes'
-        #     conPMcheck = 'yes'
-        #     update = "UPDATE process SET stcon_id=%s,conapp_status=%s,conPMcheck=%s WHERE pj_id = %s"
-        #     data1 = (stcon_id,conapp_status,conPMcheck,id)
-        #     cursor.execute(update, data1)
-        #     conn.commit()
-        #     return "yes"
         if (manager ==  role['role']) :
             if (std == 5) :
                 return render_template('consider.html', row=row , rows=rows ,id=id ,ev=ev,role=role)
@@ -247,7 +233,7 @@ def consider(id):
             if (assistant == role['role']) :
                 return render_template('consider.html', row=row , rows=rows ,id=id ,ev=ev,role=role)
             elif (board ==  role['role']) :
-                return render_template('considerB.html', row=row , rows=rows ,id=id ,ev=ev)
+                return render_template('considerB.html', row=row , rows=rows ,id=id ,ev=ev,role=role)
         else:
             return render_template('inept.html', row=row , rows=rows ,id=id ,ev=ev)
     except Exception as e:
@@ -331,6 +317,25 @@ def closeProject(id):
     cursor = None
     try:
         pj_status = 'closed'
+        sql = "UPDATE projects SET pj_status=%s WHERE pj_id=%s"
+        data = (pj_status, id)
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute(sql, data)
+        conn.commit()
+        return redirect('/project/'+str(id))
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close() 
+
+@app.route('/project/<int:id>/conclosed', methods=['GET','POST'])
+def conclosed(id):
+    conn = None
+    cursor = None
+    try:
+        pj_status = 'closed'
         if pj_status and request.method == 'POST':
             sql = "UPDATE projects SET pj_status=%s WHERE pj_id=%s"
             data = (pj_status, id)
@@ -338,12 +343,12 @@ def closeProject(id):
             cursor = conn.cursor()
             cursor.execute(sql, data)
             conn.commit()
-        return redirect('/project/'+str(id))
+        return redirect('/project/'+str(id)+'/consider')
     except Exception as e:
            print(e)
     finally:
            cursor.close() 
-           conn.close() 
+           conn.close()
 
 #PMเพิ่มคณะกรรมการ
 @app.route('/project/<int:id>/PMad', methods=[ 'POST'])
@@ -1044,6 +1049,8 @@ def update_stc(id):
         rtime = request.form['rtime']
         wdate = request.form['wdate']
         cdate = request.form['conappd']
+        capp = request.form['conapp']
+        pj_status = ''
         if (stcc == 2 and cpmc != "wait"):
             if (cbd == "1"):
                 stcon = 2
@@ -1141,7 +1148,7 @@ def update_stc(id):
             conapp_date = cdate
             conapp_status = 'yes'
             conPMcheck = 'wait'
-        elif (stcc == 6 and cpmc == "wait" ):
+        elif (stcc == 6 and capp == 'yes' and cpmc == "wait" ):
             stcon = 7
             buy_date = bdate
             invite_date = idate
@@ -1153,11 +1160,27 @@ def update_stc(id):
             conapp_date = cdate
             conapp_status = 'yes'
             conPMcheck = 'yes'
-        sql = "UPDATE process SET stcon_id=%s,buy_date=%s,invite_date=%s,prop_date=%s,finishcon_date=%s,report_date=%s,report_time=%s,winner_date=%s,conapp_date=%s,conapp_status=%s,conPMcheck=%s WHERE pj_id=%s"
-        data = (stcon,buy_date,invite_date,prop_date,finishcon_date,report_date,report_time,winner_date,conapp_date,conapp_status,conPMcheck, id)
+        elif (stcc == 6 and capp == 'no' and cpmc == "wait" ):
+            stcon = 6
+            buy_date = bdate
+            invite_date = idate
+            prop_date = pdate
+            finishcon_date = fdate
+            report_date = rdate
+            report_time = rtime
+            winner_date = wdate
+            conapp_date = cdate
+            conapp_status = 'no'
+            conPMcheck = 'no'
+            pj_status = 'closed'
         conn = mysql.connect()
         cursor = conn.cursor()
+        sql = "UPDATE process SET stcon_id=%s,buy_date=%s,invite_date=%s,prop_date=%s,finishcon_date=%s,report_date=%s,report_time=%s,winner_date=%s,conapp_date=%s,conapp_status=%s,conPMcheck=%s WHERE pj_id=%s"
+        data = (stcon,buy_date,invite_date,prop_date,finishcon_date,report_date,report_time,winner_date,conapp_date,conapp_status,conPMcheck, id)
         cursor.execute(sql, data)
+        sql1 = "UPDATE projects SET pj_status=%s WHERE pj_id=%s"
+        data1 = (pj_status, id)
+        cursor.execute(sql1, data1)
         conn.commit()
         return redirect('/project/'+str(id)+'/consider')
     except Exception as e:
@@ -1203,6 +1226,27 @@ def unapproved(id):
         cursor.execute(sql, data)
         conn.commit()
         return redirect('/project/'+str(id)+'/draft')
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close() 
+        conn.close()
+
+#มีอุทธรณ์
+@app.route('/project/<int:id>/consider/appeal', methods=['POST'])
+def uappeal(id):
+    conn = None
+    cursor = None
+    try:
+        conapp_status = 'no'
+        cpmch = 'wait'
+        sql = "UPDATE process SET conapp_status=%s,conPMcheck=%s WHERE pj_id=%s"
+        data = (conapp_status,cpmch, id)
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute(sql, data)
+        conn.commit()
+        return redirect('/project/'+str(id)+'/consider')
     except Exception as e:
         print(e)
     finally:

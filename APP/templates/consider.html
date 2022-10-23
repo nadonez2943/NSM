@@ -136,48 +136,58 @@
     }
     input[id="winsta"]{
       height: 35px;
-      width: 90px;
+      width: 230px;
       border: none;
+      font-size: 20px;
       background: transparent;
-      text-align: center;
+      text-align: right;
+      margin-top: 20px;
     }
     input[id="windiff"]{
       height: 35px;
       width: 50px;
       border: none;
       border-radius: 6px;
-      background: transparent;
+      color: white;
+      background: green;
+      font-size: 20px;
       text-align: center;
     }
     input[id="winday"]{
       height: 35px;
-      width: 70px;
+      width: 36px;
       border: none;
+      font-size: 20px;
       background: transparent;
-      text-align: center;
+      text-align: left;
       
     }
     input[id="consta"]{
       height: 35px;
-      width: 90px;
+      width: 230px;
       border: none;
+      font-size: 20px;
       background: transparent;
-      text-align: center;
+      text-align: right;
+      margin-top: 20px;
     }
-    input[id="condiff"]{
+    input[id="condif"]{
       height: 35px;
       width: 50px;
       border: none;
       border-radius: 6px;
-      background: transparent;
+      color: white;
+      background: green;
+      font-size: 20px;
       text-align: center;
     }
     input[id="conday"]{
       height: 35px;
-      width: 70px;
+      width: 36px;
       border: none;
+      font-size: 20px;
       background: transparent;
-      text-align: center;
+      text-align: left;
       
     }
     input[id="statuscon"]{
@@ -241,7 +251,7 @@
               <div class="card-body" align="center">
                   <progress id="file" value="{{row[0]['stcon_percent']}}" max="100"></progress>    
                   <br><br>
-                  <label for="file">{{row[0]['stcon_name']}}</label><p style="color: red;" id="addctt">**โปรดเพิ่มบริษัทที่ชนะ**</p>
+                  <label for="file">{{row[0]['stcon_name']}}</label><p style="color: red;" id="addctt"></p>
                   <form action="/project/{{row[0]['pj_id']}}/consider" id="updatestcc" method="post">
                     <input name="checkboxdate" id="checkboxdate" value="0" type="hidden">
                         <input name="bdate" value="{{row[0]['buy_date']}}" type="hidden">
@@ -265,6 +275,7 @@
                         <input name="conappd" value="{{row[0]['conapp_date']}}" type="hidden" >
                     <input type="hidden" id="appbottonc"onclick="return confirm('ยืนยัน')" value="ยืนยัน" >
                   </form>
+                  <div align="center"><form action="/project/{{row[0]['pj_id']}}/consider/appeal" method="post"><input type="hidden" id="appbottonc2" onclick="return confirm('ยืนยัน')" value="มีอุทธรณ์" ></form></div>
                   <div class="openBtn">
                     <button class="openButton" onclick="openForm()" id="openf" style="display: none;"><strong id="formbutton">กรอกวันที่</strong></button>
                   </div>
@@ -330,16 +341,15 @@
               <div class="card-body">
                 <lable>
                   <input name="conapp" id="conapp" value="{{row[0]['conapp_status']}}" type="hidden" >
-                  <center>
+                  
                   <input type="hidden" id="winsta" value="จะประกาศผู้ชนะในอีก" disabled="disabled"/>
                   <input type="hidden" id="windiff" value="{{row[0]['windiff']}}" disabled="disabled"/>
                   <input type="hidden" id="winday" value="วัน" disabled="disabled"/>
-                  </center>
-                  <center>
-                    <input type="hidden" id="consta" value="เวลารออุทธรณ์คงเหลือ" disabled="disabled"/>
-                    <input type="hidden" id="condif" value="{{row[0]['condiff']}}" disabled="disabled"/>
-                    <input type="hidden" id="conday" value="วัน" disabled="disabled"/>
-                    </center>
+                  
+                  <input type="hidden" id="consta" value="เวลารออุทธรณ์คงเหลือ" disabled="disabled"/>
+                  <input type="hidden" id="condif" value="{{row[0]['condiff']}}" disabled="disabled"/>
+                  <input type="hidden" id="conday" value="วัน" disabled="disabled"/>
+                  
                 </lable>
                 <center>
                   <input type ="hidden"id="statuscon" value="" disabled="disabled"/>
@@ -458,7 +468,7 @@
                 </div>
               </div>
               <input id="conttid" value="{{row[0]['contt_id']}}" type="hidden">
-              <p align="right"><a href="/addcontractor/{{id}}" id="addcontt">เพิ่ม</a><a href="/editcontractor/{{id}}" id="editcontt"> แก้ไข</a></p>
+              <p align="right"><a href="/addcontractor/{{id}}" id="addcontt"></a><a href="/editcontractor/{{id}}" id="editcontt"></a></p>
             </div>
           </div>
         </div>
