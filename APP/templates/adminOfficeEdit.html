@@ -13,15 +13,15 @@
 <body>
 <a id="myBtn" href="/admin/employee" class='btn' >ย้อนกลับ</a>
 <br>
+</br>
 <center>
 <div class="card" style="width: 80%;">
   <div class="card-header" align="center">
-    <h2>แก้ไขข้อมูลสำนักงาน</h2>
+    <h1>แก้ไขข้อมูลพนักงาน</h1>
   </div>
   <div class="card-body">
     <form action="" method="post">
-      สำนักงาน
-      <input tupe="text" value="dfgas" >
+      <br>
       <input type="submit" class="btn" value="ยืนยัน">
     </form>
     
@@ -33,7 +33,7 @@
   $(document).ready(function () {
       function load_data(type, category_id) {
       $.ajax({
-      url: "/division1",
+      url: "/division",
       method: "POST",
       data: { type: type, category_id: category_id },
       dataType: "json",
