@@ -1,0 +1,98 @@
+<doctype html>
+    {% extends 'layout.html' %}
+    {% block body %}
+    <center>
+       <h1 class="display-4">USER</h1>
+    </center> 
+    <div class="jumbotron">
+    <form action="/adduser" method="post">
+       <br>         
+       <dl>
+       <p>
+          user_name:<input name="user_name" value="" type="text" style="width: 210; " placeholder="ชื่อuser" autocomplete="off" required> 
+       </p>
+       <p>
+        user_fullname: <input name="user_fullname" value="" type="text" style="width: 500px;" placeholder="ชื่อ-นามสกุล" autocomplete="off" required> 
+       </p>
+       <p>
+          email:<input name="user_email" value="" type="text" style="width: 250; " placeholder="email " autocomplete="off" required>
+        </p>
+          <p>
+          password:<input name="user_password" value="" type="text" style="width: 220; " placeholder="password " autocomplete="off" required> 
+       </p>
+       <p>
+        <label for="user_role">role:</label>
+            <select name="user_role" id="user_role">
+             <option value="user">user</option>
+             <option value="admin">admin</option>
+            </select>
+       </p>
+       <p>tel.:<input name="tel" value="" type="text" style="width:170px; " placeholder="เบอร์โทรศัพท์" autocomplete="off" required>&nbsp;&nbsp; &nbsp;</p>
+       <p>
+         
+         
+        <div class="row">
+            <div class="col-md-6">
+                 สำนักงาน:
+                <select name="ofid"  id="ofid" class="form-control" title="Select office" required> 
+                    {% for row in office %}
+                        <option value="{{row.of_id}}">{{row.of_name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6">
+                 กอง:
+                <select name="dvid"  id="dv_name" class="form-control" title="Select division" required>
+                 
+              </select>
+            </div>
+        </div>
+    </p>
+       <br>
+       <br>
+       <br>
+       <CENTER>
+       <p>
+          <input type="submit" class="btn" value="submit">
+       </p>
+       </CENTER>
+       </dl>
+    </div>   
+ </form>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+ <script>
+    $(document).ready(function () {
+       
+        function load_data(type, category_id) {
+        $.ajax({
+        url: "/divisions",
+        method: "POST",
+        data: { type: type, category_id: category_id },
+        dataType: "json",
+        success: function (data) {
+            var html = "";
+            for (var count = 0; count < data.length; count++) {
+                html += '<option value="' + data[count].id + '">' + data[count].name + "</option>";
+ 
+            }
+            if (type == "ofid") {
+                $("#ofid").html(html);
+                $("#ofid").selectpicker("refresh");
+            } else {
+                $("#dv_name").html(html);
+                
+            }
+            },
+        });
+    }
+ 
+    $(document).on("change", "#ofid", function () {
+            var category_id = $("#ofid").val();
+            load_data("dvid", category_id);
+        });
+ });
+ </script>
+ 
+ {% endblock %}

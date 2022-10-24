@@ -287,19 +287,17 @@ def examine(id):
         dis = cursor.fetchall()
         cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate,TIME_FORMAT(ev_time, %s) as evtime FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 3 WHERE nsm_project.projects.pj_id = %s order by nsm_project.events.ev_id desc",(format,tformat,id))
         ev = cursor.fetchall()
-        cursor.execute("SELECT * FROM (SELECT *,CAST((nsm_project.process.stex_id+1) AS UNSIGNED) stex FROM nsm_project.process ) a LEFT JOIN (SELECT * FROM nsm_project.status_examine) b ON a.stex = b.stex_id WHERE a.pj_id = %s", id)
-        nst = cursor.fetchall()
-        stc = nst[0]['stcon_id']
+        stc = row[0]['stcon_id']
         cursor.execute("SELECT *,CASE WHEN nsm_project.manager.user_id = nsm_project.users.user_id THEN 'manager' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 1 OR nsm_project.board.role_id = 2 THEN 'board' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 3 THEN 'assistant' END AS role FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id or nsm_project.manager.user_id = nsm_project.users.user_id Where nsm_project.projects.pj_id = %s and nsm_project.users.user_id = %s group by nsm_project.users.user_id",(id ,user))
         role = cursor.fetchone()
         if (manager ==  role['role']) :
                 if (stc == 6) :
-                    return render_template('examine.html', row=row , rows=rows ,id=id ,ev=ev,dis=dis,nst=nst)
+                    return render_template('examine.html', row=row , rows=rows ,id=id ,ev=ev,dis=dis)
                 elif (stc < 6) :
                     return render_template('errorex.html')
         elif(phase == role['bo_phase'] ):
             if (assistant == role['role']) :
-                return render_template('examine.html', row=row , rows=rows ,id=id ,ev=ev,dis=dis,nst=nst)
+                return render_template('examine.html', row=row , rows=rows ,id=id ,ev=ev,dis=dis)
             elif (board ==  role['role']) :
                 return render_template('examineB.html', row=row , rows=rows ,id=id ,ev=ev,dis=dis)
         else:
@@ -1918,6 +1916,134 @@ def deleteDivision(id):
         cursor.close() 
         conn.close()
 
+# เรียกชื่่อuserมาแสดง  ใน listuser.html
+@app.route('/listuser',methods=['GET'])
+def listuser():
+    conn = None
+    cursor = None
+    id = session['user_id']
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        cursor.execute("SELECT * FROM users left join office on nsm_project.users.of_id = nsm_project.office.of_id left join division on nsm_project.users.dv_id = nsm_project.division.dv_id WHERE NOT user_id = %s",(id))
+        row = cursor.fetchall()
+        return render_template("listuser.html",row=row) 
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        conn.close()
+
+# เรียกหน้าแอด งชั้นนี้มี r 2ตัว
+@app.route('/adduserr',methods=['GET'])
+def adduserr():
+    cursor = mysql.connect().cursor(pymysql.cursors.DictCursor)
+    cursor.execute("SELECT * FROM office ORDER BY of_id")
+    office = cursor.fetchall()
+    return render_template("adduser.html", office=office) 
+
+@app.route("/divisions",methods=["POST","GET"])
+def divisions():
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        if request.method == 'POST':
+            category_id = request.form['category_id'] 
+            result = cursor.execute("SELECT * FROM  division WHERE of_id = %s ORDER BY dv_name ASC", [category_id])
+            division = cursor.fetchall() 
+            OutputArray = []
+            for result in division:
+                outputObj = {
+                    'id': result['dv_id'],
+                    'name': result['dv_name']}
+                OutputArray.append(outputObj)
+            return jsonify(OutputArray) 
+
+# ทำการแอดดuser ฟังชั้นนี้มี r 1ตัว
+@app.route('/adduser', methods=['POST'])
+def adduser():
+    conn = None
+    cursor = None
+    try:
+        user_name = request.form['user_name']
+        user_fullname = request.form['user_fullname']
+        user_email = request.form['user_email']
+        user_password = request.form['user_password']
+        user_role = request.form['user_role']
+        tel = request.form['tel']
+        of_id = request.form['ofid']
+        dv_id = request.form['dvid']
+        if  user_name and user_fullname and user_email and user_password and user_role and tel and of_id and dv_id and request.method == 'POST':
+            sql = "INSERT INTO users (user_name, user_fullname, user_email, user_password, user_role, tel, of_id, dv_id) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)"
+            data = (user_name,user_fullname,user_email,user_password,user_role,tel,of_id,dv_id,)
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute(sql, data)
+            conn.commit()
+            return redirect('/listuser')
+        else:
+            return 'Error while adding user'
+    except Exception as e:
+           print(e)
+
+#ลบuser  รับค่าจาก adduser.html
+@app.route('/delete_user/<int:id>')
+def delete_user(id):
+    conn = None
+    cursor = None
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM users WHERE user_id=%s",(id))
+        conn.commit()
+        flash('ลบรายชื่อสำเร็จ')
+        return redirect('/listuser')
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close() 
+        conn.close()
+
+# เรียก html edituser.html 
+@app.route('/core_edituser/<int:id>',methods=['GET'])
+def core_edituser(id):
+    cursor = mysql.connect().cursor(pymysql.cursors.DictCursor)
+    cursor.execute("SELECT * FROM office ORDER BY of_id")
+    office = cursor.fetchall()
+    cursor = mysql.connect().cursor(pymysql.cursors.DictCursor)
+    cursor.execute("SELECT * FROM users where user_id =%s",(id))
+    rows = cursor.fetchall()
+    return render_template("edituser.html", office=office, rows=rows)
+
+#แก้ไขuser รับค่าจาก edituser.html
+@app.route('/edit_user', methods=['POST'])
+def edit_user():
+    conn = None
+    cursor = None
+    try:
+        user_name = request.form['user_name']
+        user_fullname = request.form['user_fullname']
+        user_email = request.form['user_email']
+        user_password = request.form['user_password']
+        user_role = request.form['user_role']
+        tel = request.form['tel']
+        of_id = request.form['ofid']
+        dv_id = request.form['dvid']
+        id = request.form['id']
+        if  user_name and user_fullname and user_email and user_password and user_role and tel and of_id and dv_id and  request.method == 'POST':
+            sql = "UPDATE users SET user_name=%s, user_fullname=%s, user_email=%s, user_password=%s, user_role=%s,tel=%s ,of_id=%s ,dv_id=%s  WHERE user_id=%s"
+            data = data = (user_name,user_fullname,user_email,user_password,user_role,tel,of_id,dv_id, id)
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute(sql, data)
+            conn.commit()
+            flash('User updated successfully!')
+            return redirect('/listuser')
+        else:
+            return 'Error while updating user'
+    except Exception as e:
+           print(e)
 
 @app.route('/t')
 def test():
