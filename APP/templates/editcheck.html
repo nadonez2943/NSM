@@ -1,0 +1,269 @@
+<doctype html>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    {% extends 'layout.html' %}  
+      {% block body %}
+       <BR>
+       <BR>
+    
+       <div class="jumbotron">
+          <center><h1>การตรวจงวดงาน</h1></center>
+          <form action="/upchecksss" method="post">
+            <br>
+              <p><input name="pj_id" value="{{row[0]['pj_id']}}" type="hidden"></p>
+                 <div class="row">
+                    <div class="col-25">
+                      <H1>งวดที่ 1 </H1>
+                      <br>
+                      <div class="col-75">
+                        <label><input name="ins_no" value="1" type="hidden" style="width:300px; "  placeholder="งวดที่" autocomplete="off" required> </p></label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-25">
+                          <label>เลขที่สัญญา</label>
+                        </div>
+                        <div class="col-75">
+                          <label><input name="contractNo" value="{{row[0]['conNo']}}" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" style="width:300px; " placeholder="เลขที่สัญญา" autocomplete="off" required> </p></label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-25">
+                          <label>วันที่ตรวจรับ</label>
+                        </div>
+                        <div class="col-75">
+                          <label><input name="check_date" value="{{row[0]['check_date']}}" type="date"></input></label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-25">
+                          <label>รายละเอียดการตรวจรับ</label>
+                        </div>
+                        <div class="col-75">
+                          <label><input name="check_detail" value="{{row[0]['check_detail']}}" type="text" style="width:700px; height: 100px;  " placeholder="" autocomplete="off" required> </p></label>
+                        </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-25">
+                            <label>วันที่เบิกจ่าย</label>
+                          </div>
+                          <div class="col-75">
+                          <label><input name="ins_date" value="{{row[0]['ins_date']}}" type="date"></input></label>
+                          </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-25">
+                          <label>ยอดที่เบิกจ่าย</label>
+                        </div>
+                        <div class="col-75">
+                          <label><input name="ins_amount" value="" type="text" class="mask" onchange="sum()" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" id="number1" type="text" style="width:300px; " placeholder="ยอดที่เบิกจ่าย" autocomplete="off" required> </p></label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-25">
+                          <label>รายละเอียดการเบิกจ่าย</label>
+                        </div>
+                        <div class="col-75">
+                          <label><input name="ins_detail" value="{{row[0]['ins_detail']}}" type="text" style="width:700px; height: 100px; " placeholder="" autocomplete="off" required> </p></label>
+                        </div>
+                      </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-25">
+                          <H1>งวดที่ 2 </H1>
+                          <br>
+                        <div class="col-75">
+                            <label><input name="ins_no1" value="2" type="hidden" style="width:300px; "  placeholder="งวดที่" autocomplete="off" required> </p></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-25">
+                        <label>เลขที่สัญญา</label>
+                      </div>
+                      <div class="col-75">
+                        <label><input name="contractNo1" value="{{row[1]['conNo']}}" type="text"  oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" style="width:300px; " placeholder="เลขที่สัญญา" autocomplete="off" required> </p></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-25">
+                        <label>วันที่ตรวจรับ</label>
+                      </div>
+                      <div class="col-75">
+                        <label><input name="check_date1" value="{{row[1]['check_date']}}" type="date"></input></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-25">
+                        <label>รายละเอียดการตรวจรับ</label>
+                      </div>
+                      <div class="col-75">
+                        <label><input name="check_detail1" value="{{row[1]['check_detail']}}" type="text" style="width:700px; height: 100px;  " placeholder="" autocomplete="off" required> </p></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                          <label>วันที่เบิกจ่าย</label>
+                        </div>
+                        <div class="col-75">
+                        <label><input name="ins_date1" value="{{row[1]['ins_date']}}" type="date"></input></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-25">
+                        <label>ยอดที่เบิกจ่าย</label>
+                      </div>
+                      <div class="col-75">
+                        <label><input name="ins_amount1" value="" type="text"  id="number2" class="mask" onchange="sum()" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" type="text" style="width:300px; " placeholder="ยอดที่เบิกจ่าย" autocomplete="off" required> </p></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-25">
+                        <label>รายละเอียดการเบิกจ่าย</label>
+                      </div>
+                      <div class="col-75">
+                        <label><input name="ins_detail1" value="{{row[1]['ins_detail']}}" type="text" style="width:700px; height: 100px; " placeholder="" autocomplete="off" required> </p></label>
+                      </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-25">
+                          <H1>งวดที่ 3 </H1>
+                          <br>
+                        <div class="col-75">
+                            <label><input name="ins_no2" value="3" type="hidden" style="width:300px; "  placeholder="งวดที่" autocomplete="off" required> </p></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-25">
+                        <label>เลขที่สัญญา</label>
+                      </div>
+                      <div class="col-75">
+                        <label><input name="contractNo2" value="{{row[2]['conNo']}}" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" style="width:300px; " placeholder="เลขที่สัญญา" autocomplete="off" required> </p></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-25">
+                        <label>วันที่ตรวจรับ</label>
+                      </div>
+                      <div class="col-75">
+                        <label><input name="check_date2" value="{{row[2]['check_date']}}" type="date"></input></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-25">
+                        <label>รายละเอียดการตรวจรับ</label>
+                      </div>
+                      <div class="col-75">
+                        <label><input name="check_detail2" value="{{row[2]['check_detail']}}" type="text" style="width:700px; height: 100px;  " placeholder="" autocomplete="off" required> </p></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                          <label>วันที่เบิกจ่าย</label>
+                        </div>
+                        <div class="col-75">
+                        <label><input name="ins_date2" value="{{row[2]['ins_date']}}" type="date"></input></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-25">
+                        <label>ยอดที่เบิกจ่าย</label>
+                      </div>
+                      <div class="col-75">
+                        <label><input name="ins_amount2" value="" id="number3" class="mask" type="text"  onchange="sum()" style="width:300px; " placeholder="ยอดที่เบิกจ่าย" autocomplete="off" required> </p></label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-25">
+                        <label>รายละเอียดการเบิกจ่าย</label>
+                      </div>
+                      <div class="col-75">
+                        <label><input name="ins_detail2" value="{{row[2]['ins_detail']}}" type="text" style="width:700px; height: 100px; " placeholder="" autocomplete="off" required> </p></label>
+                      </div>
+                    </div>
+                  </div>
+                  <label><input name="contt_m" value="{{row[0]['contt_fin']}}" type="hidden" id="number4" style="width:300px; "  placeholder="งวดที่" autocomplete="off" required> </p></label>
+                  </div>
+                    <p><input name="check_id1" value="{{row[0]['check_id']}}" type="hidden"></p>
+                    <p><input name="check_id2" value="{{row[1]['check_id']}}" type="hidden"></p>
+                    <p><input name="check_id3" value="{{row[2]['check_id']}}" type="hidden"></p>
+                    <hr>
+                   <center><input type="submit" class="btn" value="แก้ไข"></center>
+                    </div>
+                 
+                  </div>
+              
+              </div>
+            </form>
+          </script>
+          <script>
+            function sum(){
+                var c1 = Number(document.getElementById("number1").value);
+                var c2 = Number(document.getElementById("number2").value);
+                var c3 = Number(document.getElementById("number3").value);
+                var c4 = Number(document.getElementById("number4").value);
+                var num1 = parseInt(c2)+parseInt(c3);
+                var num2 = parseInt(c1)+parseInt(c3);
+                var num3 = parseInt(c1)+parseInt(c2);
+                var mvalue1 = parseInt(c4)-parseInt(Number(num1));
+                var mvalue2 = parseInt(c4)-parseInt(Number(num2));
+                var mvalue3 = parseInt(c4)-parseInt(Number(num3));
+                var mmvalue1 = parseInt(Number(mvalue1))/2;
+                var mmvalue2 = parseInt(Number(mvalue2))/2;
+                var mmvalue3 = parseInt(Number(mvalue3))/2;
+                if(c1+c2+c3 > c4){
+                  alert('ยอดเบิกจ่ายเกิน'+c4);
+                  return false;
+                  }
+                else if(mvalue1 < 0 || mvalue2 < 0 || mvalue3 < 0){
+                  alert('ยอดเบิกจ่ายเกิน'+c4);
+                  return false;}
+                else if(mvalue1 >= 0 || mvalue2 >= 0 || mvalue3 >= 0){
+                    if(c2 > 0 && c3 > 0){
+                      document.getElementById('number1').value = parseInt(Number(mvalue1));
+                      }
+                    else if(c1 > 0 && c3 > 0){
+                      document.getElementById('number2').value = parseInt(Number(mvalue2));
+                      }
+                    else if(c1 > 0 && c2 > 0){
+                      document.getElementById('number3').value = parseInt(Number(mvalue3));
+                      }
+                      else if(c3>0){
+                      document.getElementById('number3').value = c3;
+                  }
+                    else
+                      document.getElementById('number3').value = '';}
+                else{
+                    document.getElementById('number3').value = 'ผิดพลาด';}
+            }
+      </script>   
+      <script>
+    
+        $("input.mask").each((i,ele)=>{
+            let clone=$(ele).clone(false)
+            clone.attr("type","text")
+            let ele1=$(ele)
+            clone.val(Number(ele1.val()).toLocaleString("en"))
+            $(ele).after(clone)
+            $(ele).hide()
+            clone.mouseenter(()=>{
+        
+              ele1.show()
+              clone.hide()
+            })
+            setInterval(()=>{
+              let newv=Number(ele1.val()).toLocaleString("en")
+              if(clone.val()!=newv){
+                clone.val(newv)
+              }
+            },10)
+        
+            $(ele).mouseleave(()=>{
+              $(clone).show()
+              $(ele1).hide()
+            })
+            
+        
+          })
+        </script> 
+  {% endblock %}
+  </html>

@@ -1,0 +1,71 @@
+{% extends 'layout.html' %} 
+{% block body %}
+<body>
+<br>
+<center>
+<div class="row">
+  <div class="col-md-6">
+     สำนักงาน
+     <select name="ofid" id="ofid" class="form-control" title="Select office"> 
+     <option value=""></option>
+        {% for row in office %}
+              <option value="{{row.of_id}}">{{row.of_name}}</option>
+        {% endfor %}
+     </select>
+  </div>
+  <div class="col-md-6">
+     กอง
+     <div name="dvid"  id="dv_name" >
+  </div>
+  </div>
+</div>
+<h2>The XMLHttpRequest Object</h2>
+<button type="button" onclick="loadDoc()">Change Content</button>
+<div id="demo">
+</div>
+</center>
+
+<script>
+   function loadDoc() {
+     const xhttp = new XMLHttpRequest();
+     xhttp.onload = function() {
+       document.getElementById("demo").innerHTML =
+       this.responseText;
+     }
+     xhttp.open("GET", "ajax_info.txt");
+     xhttp.send();
+   }
+</script>
+<script>
+  $(document).ready(function () {
+      function load_data(type, category_id) {
+      $.ajax({
+      url: "/division",
+      method: "POST",
+      data: { type: type, category_id: category_id },
+      dataType: "json",
+      success: function (data) {
+         var html = "";
+         for (var count = 0; count < data.length; count++) {
+            html += '<li value="' + data[count].id + '">' + data[count].name + "</li>";
+
+         }
+         if (type == "ofid") {
+            $("#ofid").html(html);
+            $("#ofid").selectpicker("refresh");
+         } else {
+            $("#dv_name").html(html);
+            
+         }
+         },
+      });
+   }
+
+   $(document).on("change", "#ofid", function () {
+      var category_id = $("#ofid").val();
+      load_data("dvid", category_id);
+   });
+});
+</script>
+</body> 
+{% endblock %}

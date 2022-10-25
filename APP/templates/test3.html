@@ -1,0 +1,245 @@
+<!DOCTYPE html>  
+<html lang="en">   
+<head>   
+  <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">   
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css"></style>
+  <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+  <style>
+    body {font-family: Arial;}
+    
+    /* Style the tab */
+    .tab {
+      overflow: hidden;
+      border: 1px solid #ccc;
+      background-color: #f1f1f1;
+    }
+    
+    /* Style the buttons inside the tab */
+    .tab button {
+      background-color: inherit;
+      float: left;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      transition: 0.3s;
+      font-size: 17px;
+    }
+    
+    /* Change background color of buttons on hover */
+    .tab button:hover {
+      background-color: #ddd;
+    }
+    
+    /* Create an active/current tablink class */
+    .tab button.active {
+      background-color: #ccc;
+    }
+    
+    /* Style the tab content */
+    .tabcontent {
+      display: none;
+      padding: 6px 12px;
+      -webkit-animation: fadeEffect 1s;
+      animation: fadeEffect 1s;
+    }
+    
+    /* Fade in tabs */
+    @-webkit-keyframes fadeEffect {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    
+    @keyframes fadeEffect {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    </style>
+</head>  
+<body style="margin:20px auto">  
+  <div class="tab">
+    <button class="tablinks" onclick="openCity(event, 'Manager')" id="defaultOpen">โครงการที่เป็นผู้รับผิดชอบ</button>
+    <button class="tablinks" onclick="openCity(event, 'Board')">โครงการที่เป็นคณะกรรมการ</button>
+    <button class="tablinks" onclick="openCity(event, 'Draft')">ชุดร่าง</button>
+    <button class="tablinks" onclick="openCity(event, 'Consider')">ชุดพิจารณาผล</button>
+    <button class="tablinks" onclick="openCity(event, 'Examine')">ชุดตรวจรับ</button>
+  </div>
+
+  <div id="Manager" class="tabcontent">
+    <table id="myTableMN" class="table table-striped" >  
+      <thead>  
+        <tr>  
+          <th><center>ลำดับ</center></th>
+          <th><center>ชื่อโครงการ</center></th>
+          <th ><center>เลขสารบัญ</center></th>
+          <th ><center>ผู้รับผิดชอบ</center></th>
+          <th><center>กิจกรรม</center></th>
+          <th ><center>ความคืบหน้า</center></th>
+        </tr>  
+      </thead>  
+      <tbody>  
+        {% for result in MN %}
+        <tr>
+          <td>{{result['row_num']}}</td>
+          <td><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
+          <td> {{result['pj_refNumber']}}</td>
+          <td>{{result['user_fullname']}}</td>
+          <td>{{result['ev_name']}}</td>
+          <td><center>{{result['x']}} %</center></td>        
+        </tr>
+        {% endfor %}
+      </tbody>  
+    </table>  
+  </div>
+  
+  <div id="Board" class="tabcontent">
+    <table id="myTableBO" class="table table-striped" >  
+      <thead>  
+        <tr>  
+          <th><center>ลำดับ</center></th>
+          <th><center>ชื่อโครงการ</center></th>
+          <th ><center>เลขสารบัญ</center></th>
+          <th ><center>ผู้รับผิดชอบ</center></th>
+          <th><center>กิจกรรม</center></th>
+          <th ><center>ความคืบหน้า</center></th>
+        </tr>  
+      </thead>  
+      <tbody>  
+        {% for result in BO %}
+        <tr>
+          <td>{{result['row_num']}}</td>
+          <td><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
+          <td> {{result['pj_refNumber']}}</td>
+          <td>{{result['user_fullname']}}</td>
+          <td>{{result['ev_name']}}</td>
+          <td><center>{{result['x']}} %</center></td>        
+        </tr>
+        {% endfor %}
+      </tbody>  
+    </table>  
+  </div>
+
+  <div id="Draft" class="tabcontent">
+    <table id="myTableDR" class="table table-striped" >  
+      <thead>  
+        <tr>  
+          <th><center>ลำดับ</center></th>
+          <th><center>ชื่อโครงการ</center></th>
+          <th ><center>เลขสารบัญ</center></th>
+          <th ><center>ผู้รับผิดชอบ</center></th>
+          <th><center>กิจกรรม</center></th>
+          <th ><center>ความคืบหน้า</center></th>
+        </tr>  
+      </thead>  
+      <tbody>  
+        {% for result in DR %}
+        <tr>
+          <td>{{result['row_num']}}</td>
+          <td><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
+          <td> {{result['pj_refNumber']}}</td>
+          <td>{{result['user_fullname']}}</td>
+          <td>{{result['ev_name']}}</td>
+          <td><center>{{result['x']}} %</center></td>        
+        </tr>
+        {% endfor %}
+      </tbody>  
+    </table>  
+  </div>
+
+  <div id="Consider" class="tabcontent">
+    <table id="myTableCO" class="table table-striped" >  
+      <thead>  
+        <tr>  
+          <th><center>ลำดับ</center></th>
+          <th><center>ชื่อโครงการ</center></th>
+          <th ><center>เลขสารบัญ</center></th>
+          <th ><center>ผู้รับผิดชอบ</center></th>
+          <th><center>กิจกรรม</center></th>
+          <th ><center>ความคืบหน้า</center></th>
+        </tr>  
+      </thead>  
+      <tbody>  
+        {% for result in CO %}
+        <tr>
+          <td>{{result['row_num']}}</td>
+          <td><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
+          <td> {{result['pj_refNumber']}}</td>
+          <td>{{result['user_fullname']}}</td>
+          <td>{{result['ev_name']}}</td>
+          <td><center>{{result['x']}} %</center></td>        
+        </tr>
+        {% endfor %}
+      </tbody>  
+    </table>  
+  </div>
+
+  <div id="Examine" class="tabcontent">
+      <table id="myTableEX" class="table table-striped" >  
+        <thead>  
+          <tr>  
+            <th><center>ลำดับ</center></th>
+            <th><center>ชื่อโครงการ</center></th>
+            <th ><center>เลขสารบัญ</center></th>
+            <th ><center>ผู้รับผิดชอบ</center></th>
+            <th><center>กิจกรรม</center></th>
+            <th ><center>ความคืบหน้า</center></th>
+          </tr>  
+        </thead>  
+        <tbody>  
+          {% for result in EX %}
+          <tr>
+            <td>{{result['row_num']}}</td>
+            <td><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
+            <td> {{result['pj_refNumber']}}</td>
+            <td>{{result['user_fullname']}}</td>
+            <td>{{result['ev_name']}}</td>
+            <td><center>{{result['x']}} %</center></td>        
+          </tr>
+          {% endfor %}
+        </tbody>  
+      </table>  
+  </div>
+
+  <br>
+  <center>
+  <a class="btn btn-primary btn-lg" href="/addProject" role="button">เพิ่มโครงการใหม่</a>
+  </center>
+
+</body>  
+
+<script>
+$(document).ready(function(){
+    $('#myTableMN').dataTable();
+});
+$(document).ready(function(){
+    $('#myTableBO').dataTable();
+});
+$(document).ready(function(){
+    $('#myTableDR').dataTable();
+});
+$(document).ready(function(){
+    $('#myTableCO').dataTable();
+});
+$(document).ready(function(){
+    $('#myTableEX').dataTable();
+});
+
+function openCity(evt, cityName) {
+var i, tabcontent, tablinks;
+tabcontent = document.getElementsByClassName("tabcontent");
+for (i = 0; i < tabcontent.length; i++) {
+  tabcontent[i].style.display = "none";
+}
+tablinks = document.getElementsByClassName("tablinks");
+for (i = 0; i < tablinks.length; i++) {
+  tablinks[i].className = tablinks[i].className.replace(" active", "");
+}
+document.getElementById(cityName).style.display = "block";
+evt.currentTarget.className += " active";
+}
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
+
+</html>  

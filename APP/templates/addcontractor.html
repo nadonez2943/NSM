@@ -1,0 +1,110 @@
+<doctype html>
+    {% extends 'layout.html' %}
+    {% block body %}
+    <br>
+    <a class="btn btn-primary btn-lg" type="submit" href="/project/{{id}}/consider" value="ย้อนกลับ">ย้อนกลับ</a>
+    <br><br>
+        <form action="/addcontractor/{{id}}" method="post">
+            <div class="card">
+              <div class="card-body">
+                <br><center><h3 class="display-4">เพิ่มข้อมูล</h3></center><br> 
+                <div class="row">
+                  <div class="col-25">
+                    <label>วันที่ประกาศผล</label>
+                  </div>
+                  <div class="col-75">
+                    <p><input name="contt_date" value="" type="date" placeholder="วันที่ประกาศผลบริษัทผู้รับเหมา" required> </p>
+                  </div>
+                </div>
+                
+                <div class="row">
+                  <div class="col-25">
+                    <label>บริษัทผู้รับเหมา</label>
+                  </div>
+                  <div class="col-75">
+                    <p><input name="contt_name" value="" type="text" style="width:60%;" placeholder="ชื่อบริษัทผู้รับเหมา" required> </p>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                      <label>ที่อยู่บริษัทผู้รับเหมา</label>
+                    </div>
+                    <div class="col-75">
+                        <p><textarea name="contt_address" value="" type="text" style="width:100%; height:90;" placeholder="ที่อยู่บริษัทผู้รับเหมา" required></textarea></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                      <label>เบอร์โทรศัพท์</label>
+                    </div>
+                    <div class="col-75">
+                      <p><input name="contt_tel" id="contt_tel" value="" type="text"  placeholder="เบอร์โทรศัพท์" required> </p>
+                    </div>
+                  </div>
+                <div class="row">
+                  <div class="col-25">
+                    <label>อีเมล</label>
+                  </div>
+                  <div class="col-75">
+                    <p><input name="contt_email" value="" type="text" style="width:60%;" placeholder="อีเมล" required></p>
+                  </div>
+                </div>
+                <input id="numnum" value="{{rows[0]['pj_amount']}}" type="hidden" placeholder="วงเงิน" required>
+                <div class="row">
+                  <div class="col-25">
+                    <label>วงเงิน</label>
+                  </div>
+                  <div class="col-75">
+                    <p><input name="contt_fin" id="contt_fin" value="" class="mask" type="text" placeholder="วงเงิน" required> </p>
+                  </div>
+                </div>
+                  <CENTER><input type="submit" class="btn" value="เพิ่มข้อมูล" onclick="return confirm('ตรวจสอบข้อมูลครบถ้วนแล้ว ?')"></CENTER>
+                </div>
+              </div>
+            </div>
+        </form>
+        <script>
+          $("input.mask").each((i,ele)=>{
+              let clone=$(ele).clone(false)
+              clone.attr("type","text")
+              let ele1=$(ele)
+              clone.val(Number(ele1.val()).toLocaleString("en"))
+              $(ele).after(clone)
+              $(ele).hide()
+              clone.mouseenter(()=>{
+          
+                ele1.show()
+                clone.hide()
+              })
+              setInterval(()=>{
+                let newv=Number(ele1.val()).toLocaleString("en")
+                if(clone.val()!=newv){
+                  clone.val(newv)
+                }
+              },10)
+          
+              $(ele).mouseleave(()=>{
+                $(clone).show()
+                $(ele1).hide()
+              })
+              
+          
+            })
+          </script>
+          <script>
+            document.getElementById("contt_tel").oninput = function() {checkValues()};
+            document.getElementById("contt_fin").oninput = function() {checkValues()};
+            function checkValues() {
+               document.getElementById("contt_fin").value = document.getElementById("contt_fin").value.replace(/[^0-9.]/g, ''); 
+               document.getElementById("contt_fin").value = document.getElementById("contt_fin").value.replace(/(\..*)\./g, '$1');
+               document.getElementById("contt_tel").value = document.getElementById("contt_tel").value.replace(/[^0-9.]/g, ''); 
+               document.getElementById("contt_tel").value = document.getElementById("contt_tel").value.replace(/(\..*)\./g, '$1');
+               var num1 = Number(document.getElementById('numnum').value);
+               var num2 = Number(document.getElementById('contt_fin').value);
+                    if (num2 > num1) {
+                        alert("วงเงินเกินกว่างบประมาณ");
+                        document.getElementById('contt_fin').value= num1 ;
+                    }
+                }
+            </script>
+ {% endblock %}

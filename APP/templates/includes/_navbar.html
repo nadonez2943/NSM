@@ -1,0 +1,31 @@
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light " style="background-color: rgba(10, 39, 97, 0.83)!important;">
+  <div class="container-fluid">
+    <a ALIGN="left" class="navbar-brand" style="color:#f1f1f1;" id="mynav" href="/home"> <img style="position: relative; top:1px;" src="https://raw.githubusercontent.com/nadonez2943/NSM/f31dca026ae6a9de92c9ec5026ca82c92133662c/APP/templates/includes/2.png" width="109" height="25" class="d-inline-block align-top">&nbsp;&nbsp;พิพิธภัณฑ์วิทยาศาสตร์แห่งชาติ</a>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+    <ul class="navbar-nav ml-auto">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <body>
+      <div class="w3-dropdown-hover">
+        <button class="w3-button" style="color: #ffffff;">{{session.user_fullname}} 
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="w3-dropdown-content w3-bar-block w3-card-4">
+          <a href="{{ url_for('logout') }}" class="w3-bar-item w3-button">ออกจากระบบ</a>
+        </div>
+      </div>
+      <p id="user_role" hidden>{{session.user_role}}</p>
+      </body>
+</nav>
+<script>
+  var user_role = document.getElementById("user_role").innerHTML
+  var mynav = document.getElementById("mynav").innerHTML
+  if (user_role == "admin"){
+    document.getElementById("mynav").href = "/admin";
+  }
+  if (user_role == "user"){
+    document.getElementById("mynav").href = "/home";
+  }
+</script>
+

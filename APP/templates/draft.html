@@ -1,0 +1,269 @@
+<doctype html>
+  {% extends 'layout.html' %}
+  
+  {% block body %}
+  <head>
+    <style>
+      input[id="appbotton2"]{
+      border: none;
+      height: 48px;
+      border-radius: 4px;
+      background: transparent;
+      text-align: center;
+      
+    }
+    input[id="sta"]{
+      height: 35px;
+      width: 90px;
+      border: none;
+      background: transparent;
+      text-align: center;
+    }
+    input[id="diff"]{
+      height: 35px;
+      width: 50px;
+      border: none;
+      border-radius: 6px;
+      background: transparent;
+      text-align: center;
+    }
+    input[id="day"]{
+      height: 35px;
+      width: 70px;
+      border: none;
+      background: transparent;
+      text-align: center;
+      
+    }
+    input[id="status"]{
+      height: 40px;
+      width: 130px;
+      border: none;
+      border-radius: 5px;
+      background: transparent;
+      text-align: center;
+      
+    }
+    
+    input[id="msta"]{
+      height: 35px;
+      width: 250px;
+      border: none;
+      background: transparent;
+      text-align: center;
+      font-size: 1.5em;
+    }
+    input[id="mdiff"]{
+      height: 35px;
+      width: 50px;
+      border: none;
+      background: transparent;
+      text-align: center;
+      font-size: 1.5em;
+    }
+    input[id="mday"]{
+      height: 35px;
+      width: 50px;
+      border: none;
+      background: transparent;
+      text-align: center;
+      font-size: 1.5em;
+    }
+    /* The Modal (background) */
+    .modall {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      padding-top: 100px; /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modall-content {
+      background-color: #ff0000;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid rgb(161, 161, 161);
+      width: 80%;
+    }
+
+    /* The Close Button */
+    .close {
+      color: #ffffff;
+      float: right;
+      font-size: 38px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+  </head>
+  <a id="myBtn" href="/project/{{row[0]['pj_id']}}" class='btn' >ย้อนกลับ</a>
+  <div class="row">
+    <p>
+      <br><h1>ร่างโครงการ และราคากลาง</h1>
+      <div class="card-group">
+     
+        <div class="card" style="margin-right:5px;">
+          <div class="card-header" align="center">
+            <h5>สถานะ</h5>
+          </div>
+          <div class="card-body" align="center">
+            <progress id="file" value="{{row[0]['stdraft_percent']}}" max="100"> </progress>    
+            <br><br>
+            <label for="file">{{row[0]['stdraft_name']}}</label>
+            <form action="/project/{{row[0]['pj_id']}}/draft" method="post">
+              <input name="std" id="std" value="{{row[0]['stdraft_id']}}" type="hidden">
+              <input name="startd" value="{{row[0]['start_draft']}}" type="hidden">
+              <input name="PMC" id="PMC" value="{{row[0]['PMcheck']}}" type="hidden">
+              <input name="userrole" id="userrole" value="{{role['role']}}" type="hidden">
+              <input type="hidden" name="appr" value="{{row[0]['draftapp_status']}}" >
+              <p id="dayform" style="display: none;">โปรดเลือกวันเริ่มต้น</p>
+              <input name="stdr" id="stdr" value="" type="hidden"></input>
+            <br><br>
+            <div align="center"><input type="hidden" id="appbotton" onclick="return confirm('ยืนยัน')" value="ยืนยัน" ></form></div>
+            <div align="center"><form action="/project/{{row[0]['pj_id']}}/draft/unapproved" method="post"><input type="hidden" id="appbotton2" onclick="return confirm('ยืนยัน')" value="" ></form></div>
+            
+          </div>  
+        </div>
+        <p></p>
+        <div class="card" id="divd" style="margin-left:5px;">
+          <div class="card-header" align="center">
+            <h5>ติดตามการร่าง TOR</h5>
+          </div>
+          <div class="card-body">
+            <lable>เริ่มการร่าง TOR และราคากลาง</lable>
+            <lable id="dstart">วันที่ {{diff[0]['startdate']}}</lable><br>
+            <lable>สิ้นสุดการร่าง TOR และราคากลาง</lable>
+            <lable id="dend">วันที่ {{diff[0]['endproject_date']}}</lable><br><br>
+            <lable>
+              <!-- <input type="hidden" id="strd" value="{{diff[0]['startdate']}}" > -->
+              <input type="hidden" id="appr" value="{{row[0]['draftapp_status']}}" >
+              <center>
+              <input type="text" id="sta" value="คงเหลือ" disabled="disabled"/>
+              <input type="text" id="diff" value="{{diff[0]['diff']}}" disabled="disabled"/>
+              <input id="day" value="วัน" disabled="disabled"/>
+              </center>
+            </lable>
+            <center>
+              <input type ="hidden"id="status" value="" disabled="disabled"/>
+            </center>
+          </div>
+        </div>
+
+      </div>
+    </p>
+
+    <div class="leftcolumn">
+      <div class="card">
+        <div class="card-body">
+          <h5>รายละเอียดโครงการ</h5><hr>
+            <div class="row">
+              <div class="col-25">
+                <label>เลขสารบัญ</label>
+              </div>
+              <div class="col-75">
+                <label>{{row[0]['pj_refNumber']}}</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-25">
+                <label>ชื่อโครงการ</label>
+              </div>
+              <div class="col-75">
+                <label>{{row[0]['pj_name']}}</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-25">
+                <label>ผู้รับผิดชอบโครงการ</label>
+              </div>
+              <div class="col-75">
+                <label>{{rows[0]['user_fullname']}}</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-25">
+                <label>คณะกรรมการ</label>
+              </div>
+              <div class="col-75">
+                {% for result in row %}
+                <div class="row"><div class="col-50"><label id="usf">{{result['user_fullname']}}</label></div><div class="col-25"><label id="usr">{{result['role_name']}}</label></div></div>
+                {% endfor %}
+                <div align="Right"><a href="addboardd" id="addboardd" role="button"> แก้ไขรายชื่อคณะกรรมการ</a></div>
+              </div>
+            </div><br>
+            <div class="row">
+              <div class="col-25">
+                <label>วันที่เริ่มโครงการ</label>
+              </div>
+              <div class="col-75">
+                <label>{{row[0]['startdate']}}</label>
+              </div>
+            </div><div class="row">
+              <div class="col-25">
+                <label>งบประมาณ</label>
+              </div>
+              <div class="col-75">
+                <label>{{row[0]['pjamount']}} บาท</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-25">
+                <label>รายละเอียด</label>
+              </div>
+              <div class="col-75">
+                <label>{{row[0]['pj_detail']}}
+                </label>
+              </div>
+            </div>
+              <p align="right"><a id="editpj"href="/project/{{id}}/editproject" >แก้ไข</a></p>
+        </div>
+      </div>
+    </div>
+
+        <div class="rightcolumn" style="background-color:#ffffff;">
+          <div class="card">
+            <div class="card-header" align="center">
+              <h5>การนัดหมาย</h5>
+            </div>
+            <div class="card-body" align="center">
+              <p id="evn">{{ev[0]['ev_name']}}</p>
+              <p id="evd">วันที่ {{ev[0]['evdate']}}</p>
+              <p id="evt">เวลา {{ev[0]['evtime']}} น.</p>
+              <a align="right" href="draftEvent">ดูเพิ่มเติม</a>
+            </div>  
+          </div>
+
+          <div class="card" style="margin-top:8px;">
+            <div class="card-body" align="center">
+              <a href="doc/1">เอกสารโครงการ</a>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      <br>
+    <div id="modall" class="modall">
+      <div class="modall-content" id="modall-con">
+        <span class="close" id="clo">&times;</span>
+        <center>
+        <input type="text" id="msta" value="ระยะเวลาร่างคงเหลือ" disabled="disabled"/>
+                    <input type="text" id="mdiff" value="{{diff[0]['diff']}}" disabled="disabled"/>
+                    <input id="mday" value="วัน" disabled="disabled"/>
+        </center>
+      </div>
+  </div>
+
+  {% endblock %}

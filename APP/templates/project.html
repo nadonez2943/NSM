@@ -1,0 +1,288 @@
+<doctype html>
+  {% extends 'layout.html' %}
+  
+  {% block body %}
+  <head>
+    <style>
+      input[id="closepj"]{
+      height: 70px;
+      width: 245px;
+      margin-top: 8px;
+      border-radius: 4px;
+      text-align: center;
+      font-size: 18px;
+      }
+      input[id="pmnoti"]{
+      height: 39px;
+      width: 250px;
+      border: none;
+      background: transparent;
+      text-align: center;
+      font-size: 1.5em;
+    }
+      /* The Modal (background) */
+.pjmodal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  text-align: right;
+  font-size: 38px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+    </style>
+  </head>
+  
+  <a id="myBtn" href="/home" class='btn' >ย้อนกลับ</a>
+
+  <br>
+      <div class="row">
+        <div class="leftcolumn">
+          <div class="card">
+            <div class="card-body">
+              <h3>รายละเอียดโครงการ</h3><hr>
+              <div class="row">
+                <div class="col-25">
+                  <label>เลขสารบัญ</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['pj_refNumber']}}</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>ชื่อโครงการ</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['pj_name']}}</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>ผู้รับผิดชอบโครงการ</label>
+                </div>
+                <div class="col-75">
+                  <label>{{rows[0]['user_fullname']}}</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>วันที่เริ่มโครงการ</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['startdate']}}</label>
+                </div>
+              </div><div class="row">
+                <div class="col-25">
+                  <label>งบประมาณ</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['pjamount']}} บาท</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>รายละเอียด</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['pj_detail']}}
+                  </label>
+                </div>
+              </div>
+              <br>
+              <div class="card-group">
+                <div class="card">
+                  <div class="card-header" align="center">
+                    <h5 >ร่างโครงการ</h5>
+                  </div>
+                  <div class="card-body" align="center">
+                    <progress id="file" value="{{row[0]['stdraft_percent']}}" max="100"></progress>    
+                    <br><br>
+                    <p for="file">{{row[0]['stdraft_name']}}</p>
+                    <p><a href="{{id}}/draft" class="card-link">ดูเพิ่มเติม</a></p>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" align="center">
+                    <h5>พิจารณาโครงการ</h5>
+                  </div>
+                  <div class="card-body" align="center">
+                    <progress id="file" value="{{row[0]['stcon_percent']}}" max="100"></progress>    
+                    <br><br>
+                    <p for="file">{{row[0]['stcon_name']}}</p>
+                    <p><a href="{{id}}/consider" class="card-link">ดูเพิ่มเติม</a></p>
+                  </div>  
+                </div>
+                <div class="card">
+                  <div class="card-header" align="center">
+                    <h5>ตรวจรับโครงการ</h5>
+                  </div>
+                  <div class="card-body" align="center">
+                    <progress id="file" value="{{row[0]['stex_percent']}}" max="100"> 0% </progress>    
+                    <br><br>
+                    <p for="file">{{row[0]['stex_name']}}</p>
+                    <p><a href="{{id}}/examine" class="card-link">ดูเพิ่มเติม</a></p>
+                  </div>  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+        <div class="rightcolumn" style="background-color:#ffffff;">
+          <div class="card">
+            <div class="card-header" align="center">
+              <h5>ความคืบหน้า</h5>
+            </div>
+            <div class="card-body" align="center">
+              <progress id="file" value="{{row[0]['x']}}" max="100"></progress>    
+              <br>
+              <label for="file">{{row[0]['x']}} %</label>
+            </div>
+          </div>
+          <div class="card" style="margin-top:5px;">
+            <div class="card-header"> 
+              <h5>ขั้นตอนล่าสุดจาก กพ.</h5>
+            </div> 
+            <div class="card-body">
+              <p id="pacde" type="hidden">{{pac[0]['pac_detail']}}</p>
+              <p id="pacda">วันที่ {{pac[0]['pacdate']}}</p>
+            </div>
+          </div>
+          <div class="card" style="margin-top:5px;">
+            <div class="card-header">
+            <center><h5>การนัดหมาย</h5></center>
+            </div>
+            <div class="card-body">
+            <center>
+            <p id="evn">{{ev[0]['ev_name']}}</p>
+            <p id="evd">วันที่ {{ev[0]['evdate']}}</p>
+            <p id="evt">เวลา {{ev[0]['evtime']}} น.</p>
+            </center>
+            </div>
+          </div>
+          <input name="userrole" id="userrole" value="{{role['role']}}" type="hidden">
+          <input name="std" id="std" value="{{row[0]['stdraft_id']}}" type="hidden">
+          <input name="PMC" id="PMC" value="{{row[0]['PMcheck']}}" type="hidden">
+          <input name="stc" id="stc" value="{{row[0]['stcon_id']}}" type="hidden">
+          <input name="CPMC" id="CPMC" value="{{row[0]['conPMcheck']}}" type="hidden">
+          <input name="condif" id="condif" value="{{row[0]['condiff']}}" type="hidden">
+          <input name="pjidd" id="pjidd" value="{{row[0]['pj_id']}}" type="hidden" >
+          <div>
+              <form action="/project/{{row[0]['pj_id']}}/closeProject" method="post">
+                <input type="submit" id="closepj" onclick="return confirm('ยืนยันการยุติโครงการ')" value="ยุติโครงการ">
+              </form>
+          </div>
+        </div>
+      </div>
+
+      <div id="pjmodal" class="pjmodal">
+
+        <div class="modal-content">
+          <label>
+          <span class="close">&times;</span>
+          <center>
+          <input type="text" id="pmnoti" value="สถานะต้องการการยืนยัน" disabled="disabled"/>
+          </center>
+          </label>
+        </div>
+      
+      </div>
+    </div>
+    <p id="user_role" hidden>{{user_role}}</p>
+
+  <script>
+    var user_role = document.getElementById("user_role").innerHTML
+    var myBtn = document.getElementById("myBtn").innerHTML
+    if (user_role == "admin"){
+      document.getElementById("myBtn").href = "/admin";
+    }
+    if (user_role == "user"){
+      document.getElementById("myBtn").href = "/home";
+    }
+  </script>
+
+  <script>
+    var pacde = document.getElementById("pacde").innerHTML
+    var pacda = document.getElementById("pacda").innerHTML
+    if (pacde == "None"){
+      document.getElementById("pacde").innerHTML = "-";
+      document.getElementById("pacde").style.textAlign = "center";
+    }
+    if (pacda == "วันที่ None"){
+      document.getElementById("pacda").style.display = "none";
+    }
+  </script>
+
+<script>
+  var pjmodal = document.getElementById("pjmodal");
+  var span = document.getElementsByClassName("close")[0];
+  var stdd = Number(document.getElementById('std').value);
+  var pmc = document.getElementById('PMC').value;
+  var stcc = Number(document.getElementById('stc').value);
+  var cpmc = document.getElementById('CPMC').value;
+  var usrole = document.getElementById('userrole').value;
+  if (stdd == 2 && pmc == "wait" && usrole == "manager" || stdd == 3 && pmc == "wait" && usrole == "manager" || stcc == 3 && cpmc == "wait" && usrole == "manager" || stcc == 6 && cpmc == "wait" && usrole == "manager") {
+  window.onload = function() {
+    pjmodal.style.display = "block";
+  }
+  
+  span.onclick = function() {
+    pjmodal.style.display = "none";
+  }
+  window.onclick = function(event) {
+    if (event.target == pjmodal) {
+      pjmodal.style.display = "none";
+    }
+  }
+  }
+  else{
+    window.onload = function() {
+    modal.style.display = "none";
+  }
+  }
+  </script>
+
+<script>
+  var pjidd = document.getElementById("pjidd").value
+  var condif = Number(document.getElementById("condif").value)
+  var stcc = Number(document.getElementById('stc').value);
+  var cpmc = document.getElementById('CPMC').value;
+  if ( stcc == 6 &&  cpmc != "wait" && condif < 0 ) {
+      window.onload = function() {
+      // similar behavior as clicking on a link
+      window.location.href = ("http://localhost:5000/project/"+pjidd+"/conauto");
+      }
+  }
+</script>
+  {% endblock %}
+  
+  

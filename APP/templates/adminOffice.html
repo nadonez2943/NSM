@@ -1,0 +1,98 @@
+{% extends 'layout.html' %} 
+{% block body %}
+<body>
+  <a id="myBtn" href="/admin" class='btn' >ย้อนกลับ</a>
+    <br><br>
+    <center>
+       <div class="card" style="width: 80%;text-align: left;">
+        <div class="card-header">
+            <h1>สำนักงาน/กอง</h1>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                   <h3>สำนักงาน</h3>
+                   <select name="ofid" id="ofid" class="form-control" title="Select office"> 
+                   <option value="">เลือกสำนักงาน</option>
+                      {% for row in office %}
+                            <option value="{{row.of_id}}">{{row.of_name}}</option>
+                      {% endfor %}
+                   </select>
+                </div>
+                <div class="col-md-6">
+                   <h3>กอง</h3>
+                   <div name="dvid"  id="dv_name" >
+                </div>
+                </div>
+              </div>
+        </div>
+    </div> 
+
+    <div class="card" style="width: 80%;text-align: left;">
+      <div class="card-body">
+          <div class="row">
+              <div class="col-md-6">
+                <h3>สำนักงาน</h3>
+              
+              </div>
+              <div class="col-md-6">
+                <h3>กอง</h3>
+                <div name="dvid"  id="dv_name" >
+              </div>
+              </div>
+            </div>
+      </div>
+    </div> 
+    </center>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+</script>
+<script>
+  $(document).ready(function () {
+      function load_data(type, category_id) {
+      $.ajax({
+      url: "/division",
+      method: "POST",
+      data: { type: type, category_id: category_id },
+      dataType: "json",
+      success: function (data) {
+          var html = "";
+          for (var count = 0; count < data.length; count++) {
+              html += '<li value="' + data[count].id + '">' + data[count].name + "</li>";
+          }
+          if (type == "ofid") {
+              $("#ofid").html(html);
+              $("#ofid").selectpicker("refresh");
+          } else {
+              $("#dv_name").html(html);
+          }
+          },
+      });
+      }
+      $(document).on("change", "#ofid", function () {
+      var category_id = $("#ofid").val();
+      load_data("dvid", category_id);
+      });
+  });
+</script>
+<script>
+    function myFunction() {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("customers");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[1];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }       
+      }
+    }
+</script>
+</body>
+{% endblock %}

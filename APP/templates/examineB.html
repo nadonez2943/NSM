@@ -1,0 +1,239 @@
+<doctype html>
+  {% extends 'layout.html' %}
+  
+  {% block body %}
+  <head>
+    <style>
+    input[id="nstt"]{
+      height: 35px;
+      width: 110px;
+      border: none;
+      border-radius: 5px;
+      color:black;
+      background: transparent;
+      text-align: center;  
+    }
+    input[id="nstt2"]{
+      height: 35px;
+      width: 210px;
+      border: none;
+      border-radius: 5px;
+      color:black;
+      background: transparent;
+      text-align: center;  
+    }
+  </style>
+  </head>
+      
+  <div class="row">
+    <p>
+      <br><h1>ตรวจรับโครงการ</h1>
+      <div class="card-group">
+        <div class="card">
+          <div class="card-header">
+            <center><h5>สถานะ</h5> </center>
+          </div>
+          <div class="card-body" align="center">
+            <br>
+            <br>
+           
+            <progress id="file" value="{{row[0]['stex_percent']}}" max="100"></progress>    
+            <br>
+            <label  id="sh" for="file">{{row[0]['stex_name']}}</label>
+            <br>
+            <p id="shw"></p>
+            <p id="shw1"></p>
+            <form action="/project/{{row[0]['pj_id']}}/examinex" method="post">
+              <input name="std" id="stex" value="{{row[0]['stex_id']}}" type="hidden">
+              <input name="PMC" id="pop" value="{{row[0]['PMcheck']}}" type="hidden">
+              <br><br>
+            
+              <input name="userrole" id="userrole1" value="{{role['role']}}" type="hidden">
+          </div>
+        </div>
+        <p></p>
+        <div class="card" id="divd" style="margin-left:5px;">
+          <div class="card-header" align="center">
+            <h5>การตรวจงาน</h5>
+          </div>
+          <div class="card-body">
+            <div class="newspaper">
+              {% for row in dis %}
+              <a>งวดที่ :</a>
+              <a id="c1">{{row['ins_no']}}</a><br>
+              <a>ประจำวันที่ :</a><br>
+              <a id="c2">{{row['checkdate']}}</a><br>
+              <a>รายละเอียด :</a><br>
+              <a id="c3">{{row['check_detail']}}</a><br>
+              <a>ยอดเบิกจ่าย :</a>
+              <a id="c4">{{row['ins_amount']}}</a><br>
+              <a>%การเบิกจ่าย :</a>
+              <a id="c5">{{row['ff']}}</a><br>
+                {% endfor %}
+          </div> 
+      
+      </div>
+        </div>
+      </div>
+    </p>
+      <div class="leftcolumn">
+        <div class="card">
+          <div class="card-body">
+            <h5>รายละเอียดโครงการ</h5><hr>
+              <div class="row">
+                <div class="col-25">
+                  <label>เลขสารบัญ</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['pj_refNumber']}}</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>ชื่อโครงการ</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['pj_name']}}</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>ผู้รับผิดชอบโครงการ</label>
+                </div>
+                <div class="col-75">
+                  <label>{{rows[0]['user_fullname']}}</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>คณะกรรมการ</label>
+                </div>
+                <div class="col-75">
+                  {% for result in row %}
+                  <div class="row">
+                    <div class="col-50">
+                      <label id="fname">{{result['user_fullname']}}</label>
+                    </div>
+                    <div class="col-25">
+                      <label  id="rname">{{result['role_name']}}</label>
+                    </div>
+                  </div>
+                  {% endfor %}
+                  <input id="user" value="{{row['user_fullname']}}" type="hidden">
+               
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>รายละเอียดโครงการ</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['pj_detail']}} บาท</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>งบประมาณ</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['pj_financeAmount']}} บาท</label>
+                </div>
+              </div>
+        </div>
+        </div>
+        
+        <div class="card" style="margin-top: 8px;">
+          <div class="card-body">
+            <h5>ข้อมูลบริษัท</h5><hr>
+            <div class="row">
+              <div class="col-25">
+                <label>บริษัทผู้รับเหมา</label>
+              </div>
+              <div class="col-75">
+                <label>{{row[0]['contt_name']}}</label>
+              </div>
+            </div><div class="row">
+              <div class="col-25">
+                <label>อีเมล</label>
+              </div>
+              <div class="col-75">
+                <label>{{row[0]['contt_email']}}</label>
+              </div>
+            </div><div class="row">
+              <div class="col-25">
+                <label>เบอร์โทรศัพท์</label>
+              </div>
+              <div class="col-75">
+                <label>{{row[0]['contt_tel']}}</label>
+              </div>
+            </div><div class="row">
+              <div class="col-25">
+                <label>วันที่ประกาศผล</label>
+              </div>
+              <div class="col-75">
+                <label>{{row[0]['conttdate']}}</label>
+              </div>
+            </div><div class="row">
+              <div class="col-25">
+                <label>เงินที่บริษัทขอมา</label>
+              </div>
+              <div class="col-75">
+                <label>{{row[0]['contt_fin']}} บาท</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="rightcolumn" style="background-color:#ffffff;">
+        <div class="card">
+          <div class="card-header">
+            <h3>การประชุม</h3>
+          </div>
+          <div class="card-body" align="center">
+            <p id="evn">{{ev[0]['ev_name']}}</p>
+            <p id="evd">วันที่ {{ev[0]['evdate']}}</p>
+            <p id="evt">เวลา {{ev[0]['evtime']}} น.</p>
+            <a align="right" href="examineEvent">ดูเพิ่มเติม</a>
+          </div> 
+        </div>
+    </div>
+  </div>
+  <br>
+  <a class="btn btn-primary btn-lg"  type="button" href="/project/{{row[0]['pj_id']}}">ย้อนกลับ</a>
+
+
+
+  <script>
+    var c1 = document.getElementById("c1").innerHTML;
+    var c2 = document.getElementById("c2").innerHTML;
+    var c3 = document.getElementById("c3").innerHTML;
+    var c4 = document.getElementById("c4").innerHTML;
+    var c5 = document.getElementById("c5").innerHTML;
+    if (c1 == "None"){
+      document.getElementById("c1").innerHTML = "-";
+      document.getElementById("c2").innerHTML = "-";
+      document.getElementById("c3").innerHTML = "-";
+      document.getElementById("c4").innerHTML = "-";
+      document.getElementById("c5").innerHTML = "-";
+  
+    }
+  </script>
+  
+<script>
+  var de = document.getElementById("de").innerHTML;
+  if (de == "None" ){
+    document.getElementById("de").innerHTML = "-";
+
+  }
+</script>
+  
+  <script>
+    var fname = document.getElementById("fname").innerHTML;
+    var rname = document.getElementById("rname").innerHTML;
+    if (fname == "None" && rname == "None" ){
+      document.getElementById("fname").innerHTML = "-";
+      document.getElementById("rname").innerHTML = "-";
+    }
+  </script>
+
+  {% endblock %}
