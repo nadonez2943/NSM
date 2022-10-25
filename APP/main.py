@@ -1735,23 +1735,6 @@ def admin():
         cursor.close() 
         conn.close()
 
-@app.route('/admin/office')
-def adminOffice():
-    conn = None
-    cursor = None
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
-        format = '%Y'
-        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 543 YEAR ), %s) as curyear,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 542 YEAR ), %s) as curyear1,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 541 YEAR ), %s) as curyear2,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 544 YEAR ), %s) as curyear11,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 545 YEAR ), %s) as curyear22 FROM office ORDER BY of_id",(format,format,format,format,format))
-        office = cursor.fetchall()
-        return render_template('adminOffice.html',office=office)
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close() 
-        conn.close()
-
 @app.route('/admin/employee')
 def adminEmployee():
     conn = None
@@ -1835,6 +1818,23 @@ def deleteUser(id):
         cursor.close() 
         conn.close()
 
+@app.route('/admin/office')
+def adminOffice():
+    conn = None
+    cursor = None
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        format = '%Y'
+        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 543 YEAR ), %s) as curyear,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 542 YEAR ), %s) as curyear1,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 541 YEAR ), %s) as curyear2,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 544 YEAR ), %s) as curyear11,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 545 YEAR ), %s) as curyear22 FROM office ORDER BY of_id",(format,format,format,format,format))
+        office = cursor.fetchall()
+        return render_template('adminOffice.html',office=office)
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close() 
+        conn.close()
+
 @app.route('/admin/office/edit/<int:id>',methods=['GET'])
 def adminOfficeEdit(id):
     conn = None
@@ -1842,11 +1842,9 @@ def adminOfficeEdit(id):
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT * FROM nsm_project.users LEFT JOIN nsm_project.office ON nsm_project.users.of_id=nsm_project.office.of_id LEFT JOIN nsm_project.division ON nsm_project.users.dv_id=nsm_project.division.dv_id WHERE nsm_project.users.user_id=%s;",(id))
-        row = cursor.fetchall()
-        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 543 YEAR ), %s) as curyear,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 542 YEAR ), %s) as curyear1,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 541 YEAR ), %s) as curyear2,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 544 YEAR ), %s) as curyear11,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 545 YEAR ), %s) as curyear22 FROM office ORDER BY of_id",(format,format,format,format,format))
+        cursor.execute("SELECT * FROM nsm_project.office LEFT JOIN nsm_project.division ON nsm_project.office.of_id=nsm_project.division.of_id WHERE nsm_project.office.of_id=%s",id)
         office = cursor.fetchall()
-        return render_template('adminEmployeeEdit.html',row=row,office=office)
+        return render_template('adminOfficeEdit.html',office=office)
     except Exception as e:
         print(e)
     finally:
@@ -1861,22 +1859,39 @@ def editOffice(id):
     conn = mysql.connect()
     cursor = conn.cursor()
     try:
-        user_name = request.form['of_name']
-        user_fullname = request.form['of_fullname']
-        user_email = request.form['user_email']
-        user_role = request.form['user_role']
-        tel = request.form['tel']
-        of_id = request.form['of_id']
-        dv_id = request.form['dv_id']
-        if  user_name and user_fullname and user_email and user_role and tel and of_id and dv_id and request.method == 'POST':
+        of_name = request.form['of_name']
+        of_shname = request.form['of_shname']
+        if  of_name and of_shname and request.method == 'POST':
             cursor = conn.cursor(pymysql.cursors.DictCursor)
-            sql = "UPDATE pacel SET user_name=%s,user_fullname=%s,user_email=%s,user_role=%s,tel=%s,of_id=%s,dv_id and WHERE user_id=%s"
-            data = (user_name,user_fullname,user_email,user_role,tel,of_id,dv_id,id)
+            sql = "UPDATE office SET of_name=%s,of_shname=%s WHERE of_id=%s ;"
+            data = (of_name,of_shname,id)
             cursor.execute(sql, data)
             conn.commit()
-            return redirect ('/admin/employee')
+            return redirect ('/admin/office/edit/'+str(id))
         else:
             return 'Error'
+    except Exception as e:
+           print(e)
+    finally:
+        cursor.close() 
+        conn.close()
+
+@app.route('/editDivision/<int:id>/<int:dv>', methods=['POST'])
+def editDivision(id,dv):
+    conn = None
+    cursor = None
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    try:
+        dv_name = request.form['dv_name']
+        dv_shname = request.form['dv_shname']
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        sql = "UPDATE division SET dv_name=%s,dv_shname=%s WHERE dv_id=%s;"
+        data = (dv_name,dv_shname,dv)
+        cursor.execute(sql, data)
+        conn.commit()
+        return redirect ('/admin/office/edit/'+str(id))
+        
     except Exception as e:
            print(e)
     finally:
@@ -1915,6 +1930,7 @@ def deleteDivision(id):
     finally:
         cursor.close() 
         conn.close()
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # เรียกชื่่อuserมาแสดง  ใน listuser.html
 @app.route('/listuser',methods=['GET'])
@@ -2044,6 +2060,8 @@ def edit_user():
             return 'Error while updating user'
     except Exception as e:
            print(e)
+
+# -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 @app.route('/t')
 def test():

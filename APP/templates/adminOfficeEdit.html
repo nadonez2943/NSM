@@ -11,19 +11,45 @@
   </style>
 </hedd>
 <body>
-<a id="myBtn" href="/admin/employee" class='btn' >ย้อนกลับ</a>
+<a id="myBtn" href="/admin/office" class='btn' >ย้อนกลับ</a>
 <br>
 </br>
 <center>
 <div class="card" style="width: 80%;">
   <div class="card-header" align="center">
-    <h1>แก้ไขข้อมูลพนักงาน</h1>
+    <h1>แก้ไขข้อมูลสำนักงาน</h1>
   </div>
-  <div class="card-body">
-    <form action="" method="post">
-      <br>
-      <input type="submit" class="btn" value="ยืนยัน">
+  <div class="card-body" align="left">
+    <h2>สำนักงาน</h2>
+    <form action="/editOffice/{{office[0]['of_id']}}" method="post">
+      <div class="row">
+        <div class="col-md-8">
+          <input value="{{office[0]['of_name']}}" name="of_name" type="text" style="width:100%;" placeholder="ชื่อสำนักงาน" autocomplete="off" required>
+        </div>
+        <div class="col-md-2" style="text-align: left;padding:0px 5px;">
+          <input value="{{office[0]['of_shname']}}" name="of_shname" type="text" style="width:100%;" placeholder="ชื่อกอง" autocomplete="off" required>
+        </div>
+        <div class="col-md-2" style="text-align: left;padding:0px 5px;">
+          <input type="submit" class="btn" value="อัพเดต" style="padding: 8px;font-size: 16px;width: 90%;">
+        </div>
+      </div>
     </form>
+    <h2>กอง</h2>
+    {% for row in office %}
+    <form action="/editDivision/{{row.of_id}}/{{row.dv_id}}" method="post">
+      <div class="row">
+        <div class="col-md-8">
+          <input value="{{row.dv_name}}" name="dv_name" type="text" style="width:100%;" placeholder="ชื่อกอง" autocomplete="off" required>
+        </div>
+        <div class="col-md-2" style="text-align: left;padding:0px 5px;">
+          <input value="{{row.dv_shname}}" name="dv_shname" type="text" style="width:100%;" placeholder="ชื่อกอง" autocomplete="off" required>
+        </div>
+        <div class="col-md-2" style="text-align: left;padding:0px 5px;">
+          <input type="submit" class="btn" style="width: 90%;border:1px solid rgba(10, 39, 97, 0.83);padding: 7px;font-size: 16px;color: rgba(10, 39, 97, 0.83);background-color: #FFFF;border-radius: 6px;" value="อัพเดต" style="padding: 8px;font-size: 16px;">
+        </div>
+      </div>
+    </form>   <hr style="margin: 5px;">                    
+    {% endfor %}
     
   </div>
 </div>
