@@ -139,7 +139,9 @@
           <div class="card-body" align="center">
             <progress id="file" value="{{row[0]['stdraft_percent']}}" max="100"> </progress>    
             <br><br>
-            <label for="file">{{row[0]['stdraft_name']}}</label>
+            <label for="file">{{row[0]['stdraft_name']}}</label><br>
+          </label><p style="color: green; display: none;" id="enddd">ส่งกอง พส. ดำเนินการในวันที่ {{row[0]['endddate']}}</p>
+          </label><p style="color: green; display: none;" id="enddt">เวลา {{row[0]['enddtime']}} น.</p>
             <input name="std" id="std" value="{{row[0]['stdraft_id']}}" type="hidden">
             <input name="startd" value="{{row[0]['start_draft']}}" type="hidden">
             <input name="PMC" id="PMC" value="{{row[0]['PMcheck']}}" type="hidden">

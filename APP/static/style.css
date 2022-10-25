@@ -299,3 +299,8 @@ input[id="addnoti"]{
   text-align: right;
   font-size: 26px;
 }
+.newspaper {
+  column-count: 3;
+  column-gap: 20px;
+  column-rule: 2px solid lightblue;
+}

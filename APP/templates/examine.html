@@ -2,28 +2,6 @@
   {% extends 'layout.html' %}
   
   {% block body %}
-  <head>
-    <style>
-    input[id="nstt"]{
-      height: 35px;
-      width: 110px;
-      border: none;
-      border-radius: 5px;
-      color:black;
-      background: transparent;
-      text-align: center;  
-    }
-    input[id="nstt2"]{
-      height: 35px;
-      width: 210px;
-      border: none;
-      border-radius: 5px;
-      color:black;
-      background: transparent;
-      text-align: center;  
-    }
-  </style>
-  </head>
       
   <div class="row">
     <p>
@@ -42,12 +20,12 @@
             <label  id="sh" for="file">{{row[0]['stex_name']}}</label>
             <br>
             <p id="sD"></p>
+            <p id="sD1"> </p>
             <p id="shw"></p>
-            <p id="mess"></p>
             <form action="/project/{{row[0]['pj_id']}}/examinex" method="post">
               <input name="std" id="stex" value="{{row[0]['stex_id']}}" type="hidden">
-              <input name="PMC" id="pop" value="{{row[0]['PMcheck']}}" type="hidden">
-              <div align="center"><input type="hidden" id="appbotton" onclick="return confirm('ยืนยัน')" value="ยืนยัน" ></form></div>
+              <input name="PMC" id="pop" value="{{row[0]['examPMcheck']}}" type="hidden">
+              <div align="center"><input type="hidden" id="submitcheck" onclick="return confirm('ยืนยัน')" value="ยืนยัน" ></form></div>
               <input name="userrole" id="userrole1" value="{{role['role']}}" type="hidden">
               {% for row in one %}
               <input name="sd1" id="sd1" value="{{row['daten']}}" type="hidden">
@@ -80,8 +58,8 @@
               <a id="c5">{{row['ff']}} %</a><br>
                 {% endfor %}
           </div> 
-          <input id="conttid" value="{{dis[0]['ins_no']}} " type="hidden">
-          <p align="right"><a href="/project/{{id}}/check" id="addcontt">เพิ่ม</a><a href="/editcheck/{{id}}" id="editcontt"> แก้ไข</a></p> 
+          <input id="check" value="{{dis[0]['ins_no']}} " type="hidden">
+          <p align="right"><a href="/project/{{id}}/check" id="addcheck">เพิ่ม</a><a href="/editcheck/{{id}}" id="editcheck"> แก้ไข</a></p> 
       </div>
         </div>
       </div>
@@ -135,6 +113,14 @@
               </div>
               <div class="row">
                 <div class="col-25">
+                  <label>รายละเอียดโครงการ</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['pj_detail']}} บาท</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
                   <label>งบประมาณ</label>
                 </div>
                 <div class="col-75">
@@ -142,18 +128,10 @@
                 </div>
               </div>
         </div>
-
+       </div>
         <div class="card" style="margin-top: 8px;">
           <div class="card-body">
             <h5>ข้อมูลบริษัท</h5><hr>
-            <div class="row">
-              <div class="col-25">
-                <label>วันที่ประกาศผลบริษัทผู้รับเหมา</label>
-              </div>
-              <div class="col-75">
-                <label>{{row[0]['conttdate']}}</label>
-              </div>
-            </div>
             <div class="row">
               <div class="col-25">
                 <label>บริษัทผู้รับเหมา</label>
@@ -170,32 +148,31 @@
               </div>
             </div><div class="row">
               <div class="col-25">
+                <label>เบอร์โทรศัพท์</label>
+              </div>
+              <div class="col-75">
+                <label>{{row[0]['contt_tel']}}</label>
+              </div>
+            </div><div class="row">
+              <div class="col-25">
                 <label>วันที่ประกาศผล</label>
               </div>
               <div class="col-75">
-                <label>{{row[0]['contt_date']}}</label>
+                <label>{{row[0]['conttdate']}}</label>
               </div>
             </div><div class="row">
               <div class="col-25">
                 <label>เงินที่บริษัทขอมา</label>
               </div>
               <div class="col-75">
-                <label>{{row[0]['contt_fin']}}</label>
-              </div>
-            </div><div class="row">
-              <div class="col-25">
-                <label>ระยะเวลาคงเหลือ</label>
-                
-              </div>
-              <div class="col-75">
-                <label>{{row[0]['condiff']}} วัน</label>
+                <label>{{row[0]['contt_fin']}} บาท</label>
               </div>
             </div>
           </div>
         </div>
       </div>
-      </div>
-
+      
+  
       <div class="rightcolumn" style="background-color:#ffffff;">
         <div class="card">
           <div class="card-header" align="center">
@@ -237,14 +214,6 @@
 </script>
 
 <script>
-  var sh = document.getElementById("sh").innerHTML;
-  var fname = document.getElementById("fname").innerHTML;
-  if (fname == "None"){
-    document.getElementById("sh").style.display =  "None";
-  }
-</script>
-
-<script>
   var fname = document.getElementById("fname").innerHTML;
   var rname = document.getElementById("rname").innerHTML;
   if (fname == "None" && rname == "None" ){
@@ -266,48 +235,48 @@
   var pmc = document.getElementById('pop').value;
 
   if (stdd == "3" && pmc != "wait" && pmc != "prewait" && usrole == "assistant")  {
-    document.getElementById('appbotton').type = "submit";
+    document.getElementById('submitcheck').type = "submit";
     document.getElementById('pop').value = 'wait';
-    document.getElementById('mess').innerHTML  = "ส่งงวดที่1ให้ managerตรวจ";
+    document.getElementById('submitcheck').value   = "ส่งตรวจงวดที่1";
 }
   if (stdd == "3" && pmc == "wait" && usrole == "assistant")  {
-    document.getElementById('shw').innerHTML  = "manager: กำลังตรวจสอบการเบิกจ่าย";
+    document.getElementById('shw').innerHTML  = "ผู้ดูแลโครงการ: กำลังตรวจสอบการเบิกจ่าย";
   }
   if (stdd == "3" && pmc == "wait" && usrole == "manager")  {
-    document.getElementById('appbotton').type = "submit";
+    document.getElementById('submitcheck').type = "submit";
     document.getElementById('pop').value = 'yes';
     document.getElementById('stex').value = '4';
-    document.getElementById('appbotton').innerHTML  = "อนุมัติ";
+    document.getElementById('submitcheck').value  = "ยืนยัน";
     document.getElementById('shw').innerHTML  = "ตรวจสอบการเบิกจ่ายงวดที่1";
   }
   if (stdd == "4" && pmc == "yes" && usrole == "assistant")  {
-    document.getElementById('appbotton').type = "submit";
+    document.getElementById('submitcheck').type = "submit";
     document.getElementById('pop').value = 'wait';
-    document.getElementById('mess').innerHTML  = "ส่งงวดที่2ให้ managerตรวจ";
+    document.getElementById('mess').innerHTML  = "ส่งตรวจงวดที่2";
   }
   if (stdd == "4" && pmc == "wait" && usrole == "assistant")  {
-    document.getElementById('shw').innerHTML  = "manager: กำลังตรวจสอบการเบิกจ่าย";
+    document.getElementById('shw').innerHTML  = "ผู้ดูแลโครงการ: กำลังตรวจสอบการเบิกจ่าย";
   }
   if (stdd == "4" && pmc == "wait" && usrole == "manager")  {
-    document.getElementById('appbotton').type = "submit";
+    document.getElementById('submitcheck').type = "submit";
     document.getElementById('pop').value = 'yes';
     document.getElementById('stex').value = '5';
-    document.getElementById('appbotton').innerHTML  = "อนุมัติ";
+    document.getElementById('submitcheck').value  = "ยืนยัน";
     document.getElementById('shw').innerHTML  = "ตรวจสอบการเบิกจ่ายงวดที่2";
   }
   if (stdd == "5" && pmc == "yes" && usrole == "assistant")  {
-    document.getElementById('appbotton').type = "submit";
+    document.getElementById('submitcheck').type = "submit";
     document.getElementById('pop').value = 'wait';
-    document.getElementById('mess').innerHTML  = "ส่งงวดที่3ให้ managerตรวจ";
+    document.getElementById('mess').innerHTML  = "ส่งตรวจงวดที่3";
   }
   if (stdd == "5" && pmc == "wait" && usrole == "assistant")  {
-    document.getElementById('shw').innerHTML  = "กำลังตรวจสอบการเบิกจ่าย";
+    document.getElementById('shw').innerHTML  = "ผู้ดูแลโครงการ: กำลังตรวจสอบการเบิกจ่าย";
   }
   if (stdd == "5" && pmc == "wait" && usrole == "manager")  {
-    document.getElementById('appbotton').type = "submit";
+    document.getElementById('submitcheck').type = "submit";
     document.getElementById('pop').value = 'yes';
     document.getElementById('stex').value = '6';
-    document.getElementById('appbotton').innerHTML  = "อนุมัติ";
+    document.getElementById('submitcheck').value  = "ยืนยัน";
     document.getElementById('shw').innerHTML  = "ตรวจสอบการเบิกจ่ายงวดที่3";
   }
 </script>  
@@ -337,21 +306,26 @@
     
     </script> 
 <script>
-  var conttid = Number(document.getElementById("conttid").value);
+  var check = Number(document.getElementById("check").value);
   var userrole = document.getElementById('userrole1').value;
-  var stex = document.getElementById('stex').value;
-  if (conttid == "-" ||conttid == "None") {
-  document.getElementById('addcontt').style.display= "none";
+  var stex =  Number(document.getElementById('stex').value);
+  if (check == "-" ||check == "None") {
+  document.getElementById('addcheck').style.display= "none";
+  document.getElementById('editcheck').style.display= "none";
   }
   else if (userrole == "manager" ){
-  document.getElementById('addcontt').style.display= "none";
-  document.getElementById('editcontt').style.display= "none";
+  document.getElementById('addcheck').style.display= "none";
+  document.getElementById('editcheck').style.display= "none";
   }
-  else if (userrole == "assistant" && stex == 2 ){
-  document.getElementById('addcontt').style.display= "block";
-  document.getElementById('editcontt').style.display= "none";
+  else if (userrole == "assistant" && stex > 2 ){
+  document.getElementById('addcheck').style.display= "none";
+  document.getElementById('editcheck').style.display= "block";
   }
-  document.getElementById('addcontt').style.display= "none";
+  else{
+  document.getElementById('addcheck').style.display= "block";
+  document.getElementById('editcheck').style.display= "none";
+  }
+
 
  
 </script> 
@@ -375,35 +349,37 @@
       var sd2 = Number(document.getElementById("sd2").value);
       var sd3 = Number(document.getElementById("sd3").value);
       var stex = Number(document.getElementById("stex").value);
+      var pop = document.getElementById('pop').value;
       if(sd1 == 7 && stex == 3){
         document.getElementById('sD').innerHTML  = "เหลือเวลา 7 วัน";
         }
-      else if(sd2 == 7 && stex == 3){
+      else if(sd2 == 7 && stex == 4){
         document.getElementById('sD').innerHTML  = "เหลือเวลา 7 วัน";
       }
-      else if(sd3 == 7 && stex == 3){
+      else if(sd3 == 7 && stex == 5){
         document.getElementById('sD').innerHTML  = "เหลือเวลา 7 วัน";
       }
-      else if(sd1 == 3 && stex == 4 ){
+      else if(sd1 == 3 && stex == 3 ){
         document.getElementById('sD').innerHTML  = "เหลือเวลา 3 วัน";
         }
       else if(sd2 == 3 && stex == 4 ){
         document.getElementById('sD').innerHTML  = "เหลือเวลา 3 วัน";
       }
-      else if(sd3 == 3 && stex == 4 ){
+      else if(sd3 == 3 && stex == 5 ){
         document.getElementById('sD').innerHTML  = "เหลือเวลา 3 วัน";
       }
-      if(sd1 <0 && stex == 3 ){
-        document.getElementById('sD').innerHTML  = "เลยชำระงวดที่1";
+      else if(sd1 <0 && stex == 3   ){
+        document.getElementById('sD').innerHTML  = "เลยชำระงวดที่1 มา  "+Math.abs(sd1)+"  วัน";
         }
-      else if(sd2 <0 && stex == 4 ){
-        document.getElementById('sD').innerHTML  = "เลยชำระงวดที่2";
+      else if(sd2 <0 && stex == 4  ){
+        document.getElementById('sD').innerHTML  = "เลยชำระงวดที่2 มา  "+Math.abs(sd2)+"  วัน";
       }
-      else if(sd3 <0 && stex == 5){
-        document.getElementById('sD').innerHTML  = "เลยชำระงวดที่3";
+      else if(sd3 <0 && stex == 5  ){
+        document.getElementById('sD').innerHTML  = "เลยชำระงวดที่3 มา  "+Math.abs(sd3)+"  วัน";
       }
       if(sd1 == 0 && stex == 3 ){
         document.getElementById('sD').innerHTML  = "ส่งงวดที่1วันสุดท้าย";
+       
         }
       else if(sd2 == 0 && stex == 4 ){
         document.getElementById('sD').innerHTML  = "ส่งงวดที่2วันสุดท้าย";
