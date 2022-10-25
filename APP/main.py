@@ -1938,21 +1938,19 @@ def addcheck():
         ins_amount = request.form['ins_amount']
         ins_detail = request.form['ins_detail']
         ins_no1 = request.form['ins_no1']
-        contractNo1 = request.form['contractNo1']
         check_date1 = request.form['check_date1']
         check_detail1 = request.form['check_detail1']
         ins_date1 = request.form['ins_date1']
         ins_amount1 = request.form['ins_amount1']
         ins_detail1 = request.form['ins_detail1']
         ins_no2 = request.form['ins_no2']
-        contractNo2 = request.form['contractNo']
         check_date2 = request.form['check_date2']
         check_detail2 = request.form['check_detail2']
         ins_date2 = request.form['ins_date2']
         ins_amount2 = request.form['ins_amount2']
         ins_detail2 = request.form['ins_detail2']
         contt_m = request.form['contt_m']
-        if  pj_id and ins_no and contractNo and check_date and check_detail and ins_date and ins_amount and ins_detail and ins_no1 and contractNo1 and check_date1 and check_detail1 and ins_date1 and ins_amount1 and ins_detail1 and ins_no2 and contractNo2 and check_date2 and check_detail2 and ins_date2 and ins_amount2 and ins_detail2 and  request.method == 'POST':
+        if  pj_id and ins_no and contractNo and check_date and check_detail and ins_date and ins_amount and ins_detail and ins_no1  and check_date1 and check_detail1 and ins_date1 and ins_amount1 and ins_detail1 and ins_no2  and check_date2 and check_detail2 and ins_date2 and ins_amount2 and ins_detail2 and  request.method == 'POST':
             sql = "INSERT INTO checks (pj_id, ins_no, conNo, check_date, check_detail, ins_date, ins_amount, ins_detail) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)"
             data = (pj_id,ins_no,contractNo,check_date,check_detail,ins_date,ins_amount,ins_detail, )
             conn = mysql.connect()
@@ -1960,13 +1958,13 @@ def addcheck():
             cursor.execute(sql, data)
             conn.commit()
             sql = "INSERT INTO checks (pj_id, ins_no, conNo, check_date, check_detail, ins_date, ins_amount, ins_detail) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)"
-            data1 = (pj_id,ins_no1,contractNo1,check_date1,check_detail1,ins_date1,ins_amount1,ins_detail1, )
+            data1 = (pj_id,ins_no1,contractNo,check_date1,check_detail1,ins_date1,ins_amount1,ins_detail1, )
             conn = mysql.connect()
             cursor = conn.cursor()
             cursor.execute(sql, data1)
             conn.commit()
             sql = "INSERT INTO checks (pj_id, ins_no, conNo, check_date, check_detail, ins_date, ins_amount, ins_detail) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)"
-            data2 = (pj_id,ins_no2,contractNo2,check_date2,check_detail2,ins_date2,ins_amount2,ins_detail2, )
+            data2 = (pj_id,ins_no2,contractNo,check_date2,check_detail2,ins_date2,ins_amount2,ins_detail2, )
             conn = mysql.connect()
             cursor = conn.cursor()
             cursor.execute(sql, data2)
@@ -1986,7 +1984,6 @@ def addcheck():
            cursor.close() 
            conn.close()
 
-# --------------------------------------------------------------------------------------------------------
 @app.route('/editcheck/<int:id>', methods=['GET'])
 def editcheck(id):
     conn = None
@@ -2013,14 +2010,12 @@ def upchecksss():
         ins_amount = request.form['ins_amount']
         ins_detail = request.form['ins_detail']
         ins_no1 = request.form['ins_no1']
-        contractNo1 = request.form['contractNo1']
         check_date1 = request.form['check_date1']
         check_detail1 = request.form['check_detail1']
         ins_date1 = request.form['ins_date1']
         ins_amount1 = request.form['ins_amount1']
         ins_detail1 = request.form['ins_detail1']
         ins_no2 = request.form['ins_no2']
-        contractNo2 = request.form['contractNo2']
         check_date2 = request.form['check_date2']
         check_detail2 = request.form['check_detail2']
         ins_date2 = request.form['ins_date2']
@@ -2029,7 +2024,7 @@ def upchecksss():
         check_id1 = request.form['check_id1']
         check_id2 = request.form['check_id2']
         check_id3 = request.form['check_id3']
-        if  pj_id and ins_no and contractNo and check_date and check_detail and ins_date and ins_amount and ins_detail and ins_no1 and contractNo1 and check_date1 and check_detail1 and ins_date1 and ins_amount1 and ins_detail1 and ins_no2 and contractNo2 and check_date2 and check_detail2 and ins_date2 and ins_amount2 and ins_detail2 and  request.method == 'POST':
+        if  pj_id and ins_no and contractNo and check_date and check_detail and ins_date and ins_amount and ins_detail and ins_no1  and check_date1 and check_detail1 and ins_date1 and ins_amount1 and ins_detail1 and ins_no2  and check_date2 and check_detail2 and ins_date2 and ins_amount2 and ins_detail2 and  request.method == 'POST':
             sql = "UPDATE checks SET  conNo=%s, check_date=%s, check_detail=%s, ins_date=%s, ins_amount=%s, ins_detail=%s WHERE check_id =%s"
             data = (contractNo,check_date,check_detail,ins_date,ins_amount,ins_detail,check_id1, )
             conn = mysql.connect()
@@ -2037,13 +2032,13 @@ def upchecksss():
             cursor.execute(sql, data)
             conn.commit()
             sql = "UPDATE checks SET  conNo=%s, check_date=%s, check_detail=%s, ins_date=%s, ins_amount=%s, ins_detail=%s WHERE check_id =%s"
-            data1 = (contractNo1,check_date1,check_detail1,ins_date1,ins_amount1,ins_detail1,check_id2, )
+            data1 = (contractNo,check_date1,check_detail1,ins_date1,ins_amount1,ins_detail1,check_id2, )
             conn = mysql.connect()
             cursor = conn.cursor()
             cursor.execute(sql, data1)
             conn.commit()
             sql = "UPDATE checks SET  conNo=%s, check_date=%s, check_detail=%s, ins_date=%s, ins_amount=%s, ins_detail=%s WHERE check_id =%s"
-            data2 = (contractNo2,check_date2,check_detail2,ins_date2,ins_amount2,ins_detail2,check_id3, )
+            data2 = (contractNo,check_date2,check_detail2,ins_date2,ins_amount2,ins_detail2,check_id3, )
             conn = mysql.connect()
             cursor = conn.cursor()
             cursor.execute(sql, data2)
@@ -2068,8 +2063,29 @@ def update_stdx(id):
         stdd = int(std)
         print(type(std))
         print(std)
-        sql = "UPDATE process SET stex_id=%s,PMcheck=%s WHERE pj_id=%s"
-        data = (std,pmc,id)
+        if(stdd == 3 and pmc != "wait"):
+            stex = 3
+            examPMcheck = 'wait'
+        elif(stdd == 3 and pmc == "wait"):
+             stex = 4
+             examPMcheck = ''
+        elif(stdd == 4 and pmc != "wait"):
+            stex = 4
+            examPMcheck = 'wait'
+        elif(stdd == 4 and pmc == "wait"):
+             stex = 5
+             examPMcheck = ''
+        elif(stdd == 5 and pmc != "wait"):
+            stex = 5
+            examPMcheck = 'wait'
+        elif(stdd == 5 and pmc == "wait"):
+             stex = 6
+             examPMcheck = ''
+        elif(stdd == 6):
+             stex = 6
+             examPMcheck = 'yes'
+        sql = "UPDATE process SET stex_id=%s,examPMcheck=%s WHERE pj_id=%s"
+        data = (stex,examPMcheck,id)
         conn = mysql.connect()
         cursor = conn.cursor()
         cursor.execute(sql, data)
