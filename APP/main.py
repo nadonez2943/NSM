@@ -620,13 +620,16 @@ def draftevent(id):
         cursor.execute("SET lc_time_names = 'th_TH'")
         cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.events.ev_id) as row_num,DATE_FORMAT(DATE_ADD(ev_date , INTERVAL 543 YEAR ), %s) as evdate,TIME_FORMAT(ev_time, %s) as evtime FROM nsm_project.projects LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id AND nsm_project.events.ev_phase = 1 WHERE nsm_project.projects.pj_id = %s", (format,tformat,id))
         row = cursor.fetchall()
-        cursor.execute("SELECT nsm_project.process.start_draft,DATE_FORMAT(DATE_ADD(start_draft , INTERVAL 543 YEAR ), %s) as startdate,DATE_FORMAT(DATE_ADD(ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY), INTERVAL 543 YEAR ), %s) AS endproject_date,DATEDIFF(ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY),date(now())) AS diff,nsm_project.process.stdraft_id FROM nsm_project.process WHERE nsm_project.process.pj_id = %s", (format,format,id))
+        cursor.execute("SELECT nsm_project.process.PMcheck,nsm_project.process.start_draft,DATE_FORMAT(DATE_ADD(start_draft , INTERVAL 543 YEAR ), %s) as startdate,DATE_FORMAT(DATE_ADD(ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY), INTERVAL 543 YEAR ), %s) AS endproject_date,DATEDIFF(ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY),date(now())) AS diff,nsm_project.process.stdraft_id FROM nsm_project.process WHERE nsm_project.process.pj_id = %s", (format,format,id))
         diff = cursor.fetchall()
         drift = int(diff[0]['diff'])
         std = int(diff[0]['stdraft_id'])
+        pmc = diff[0]['PMcheck']
         cursor.execute("SELECT *,CASE WHEN nsm_project.manager.user_id = nsm_project.users.user_id THEN 'manager' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 1 OR nsm_project.board.role_id = 2 THEN 'board' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 3 THEN 'assistant' END AS role FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id or nsm_project.manager.user_id = nsm_project.users.user_id Where nsm_project.projects.pj_id = %s and nsm_project.users.user_id = %s group by nsm_project.users.user_id",(id ,user))
         role = cursor.fetchone()
-        if (manager ==  role['role'] and drift > 30 or drift < 0 or std == 5) :
+        if(std <= 2 and pmc != 'prewait' and pmc != 'wait'):
+            return render_template('draftEventB.html', row=row , id=id )
+        elif (manager ==  role['role'] and drift > 30 or drift < 0 or std == 5 ) :
             return render_template('draftEventB.html', row=row , id=id )
         elif (manager ==  role['role'] and drift >= 1 or drift <= 30) :
             return render_template('draftEvent.html', row=row , id=id )
