@@ -273,7 +273,7 @@
                         <input type="hidden" name="report_time"  value="{{row[0]['report_time']}}">
                         <input type="hidden" value="{{row[0]['winner_date']}}" name="winner_date" >
                         <input name="conappd" value="{{row[0]['conapp_date']}}" type="hidden" >
-                    <input type="hidden" id="appbottonc"onclick="return confirm('ยืนยัน')" value="ยืนยัน" >
+                    <input type="hidden" id="appbottonc" value="ยืนยัน" >
                   </form>
                   <div align="center"><form action="/project/{{row[0]['pj_id']}}/consider/appeal" method="post"><input type="hidden" id="appbottonc2" onclick="return confirm('ยืนยัน')" value="มีอุทธรณ์" ></form></div>
                   <div class="openBtn">
@@ -325,7 +325,7 @@
                         <input name="stc" id="stc" value="{{row[0]['stcon_id']}}" type="hidden">
                         <input name="conapp" value="{{row[0]['conapp_status']}}" type="hidden" >
                         <input name="conappd" id="conappd" value="{{row[0]['conapp_date']}}" type="hidden" >
-                        <button type="submit" onclick="return confirm('ยืนยัน')" class="btn">เสร็จสิ้น</button>
+                        <button type="submit" class="btn">เสร็จสิ้น</button>
                         <button type="button" class="btn cancel" onclick="closeForm()">ยกเลิก</button>
                       </form>
                     </div>

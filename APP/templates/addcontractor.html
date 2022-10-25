@@ -1,6 +1,41 @@
 <doctype html>
     {% extends 'layout.html' %}
     {% block body %}
+    <head>
+      <style>
+         .addpjm {
+         display: none; /* Hidden by default */
+         position: fixed; /* Stay in place */
+         z-index: 1; /* Sit on top */
+         padding-top: 100px; /* Location of the box */
+         left: 0;
+         top: 0;
+         width: 100%; /* Full width */
+         height: 100%; /* Full height */
+         overflow: auto; /* Enable scroll if needed */
+         background-color: rgb(0,0,0); /* Fallback color */
+         background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+         }
+
+         /* Modal Content */
+         .addpjm-content {
+         background-color: #fefefe;
+         margin: auto;
+         padding: 20px;
+         text-align: center;
+         border: 1px solid #888;
+         width: 40%;
+         }
+         input[id="addpjnoti"]{
+         height: 39px;
+         width: 350px;
+         border: none;
+         background: transparent;
+         text-align: right;
+         font-size: 26px;
+         }
+      </style>
+   </head>
     <br>
     <a class="btn btn-primary btn-lg" type="submit" href="/project/{{id}}/consider" value="ย้อนกลับ">ย้อนกลับ</a>
     <br><br>
@@ -58,11 +93,24 @@
                     <p><input name="contt_fin" id="contt_fin" value="" class="mask" type="text" placeholder="วงเงิน" required> </p>
                   </div>
                 </div>
-                  <CENTER><input type="submit" class="btn" value="เพิ่มข้อมูล" onclick="return confirm('ตรวจสอบข้อมูลครบถ้วนแล้ว ?')"></CENTER>
+                  <CENTER><input type="submit" class="btn" value="เพิ่มข้อมูล" ></CENTER>
                 </div>
               </div>
             </div>
         </form>
+        <div id="addpjm" class="addpjm">
+
+          <div class="addpjm-content">
+            <label>
+            <center>
+            <input type="text" id="addpjnoti" value="วงเงินเกินกว่างบประมาณ" disabled="disabled"/>
+            </center>
+            <br>
+            <input type="button" id="closepjm" class="btn" onclick="closepjm()" value="รับทราบ">
+            </label>
+          </div>
+        
+        </div>
         <script>
           $("input.mask").each((i,ele)=>{
               let clone=$(ele).clone(false)
@@ -94,6 +142,7 @@
           <script>
             document.getElementById("contt_tel").oninput = function() {checkValues()};
             document.getElementById("contt_fin").oninput = function() {checkValues()};
+            var addpjm = document.getElementById("addpjm");
             function checkValues() {
                document.getElementById("contt_fin").value = document.getElementById("contt_fin").value.replace(/[^0-9.]/g, ''); 
                document.getElementById("contt_fin").value = document.getElementById("contt_fin").value.replace(/(\..*)\./g, '$1');
@@ -102,9 +151,17 @@
                var num1 = Number(document.getElementById('numnum').value);
                var num2 = Number(document.getElementById('contt_fin').value);
                     if (num2 > num1) {
-                        alert("วงเงินเกินกว่างบประมาณ");
-                        document.getElementById('contt_fin').value= num1 ;
-                    }
+                      addpjm.style.display = "block";
+                      document.getElementById('contt_fin').value= num1 ;
+                  }
+              }
+            function closepjm() {
+                addpjm.style.display = "none";
+                };
+            window.onclick = function(event) {
+                  if (event.target == addpjm) {
+                  addpjm.style.display = "none";
+                  }
                 }
             </script>
  {% endblock %}

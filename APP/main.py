@@ -147,7 +147,7 @@ def draft(id):
             format = '%e %b %Y'
             tformat = '%H:%i'
             cursor.execute("SET lc_time_names = 'th_TH'")
-            cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(startproject_date , INTERVAL 543 YEAR ), %s) as startdate, FORMAT(pj_amount, 0) as pjamount FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id AND nsm_project.board.bo_phase = 1 LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.board.role_id", (format,id))
+            cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(end_draft_date , INTERVAL 543 YEAR ), %s) as endddate,TIME_FORMAT(end_draft_time, %s) as enddtime,DATE_FORMAT(DATE_ADD(startproject_date , INTERVAL 543 YEAR ), %s) as startdate, FORMAT(pj_amount, 0) as pjamount FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id AND nsm_project.board.bo_phase = 1 LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s order by nsm_project.board.role_id", (format,tformat,format,id))
             row = cursor.fetchall()
             cursor.execute("SELECT * FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id WHERE nsm_project.projects.pj_id = %s ", id)
             rows = cursor.fetchall()
@@ -622,7 +622,7 @@ def draftevent(id):
         row = cursor.fetchall()
         cursor.execute("SELECT nsm_project.process.PMcheck,nsm_project.process.start_draft,DATE_FORMAT(DATE_ADD(start_draft , INTERVAL 543 YEAR ), %s) as startdate,DATE_FORMAT(DATE_ADD(ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY), INTERVAL 543 YEAR ), %s) AS endproject_date,DATEDIFF(ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY),date(now())) AS diff,nsm_project.process.stdraft_id FROM nsm_project.process WHERE nsm_project.process.pj_id = %s", (format,format,id))
         diff = cursor.fetchall()
-        drift = int(diff[0]['diff'])
+        drift = (diff[0]['diff'])
         std = int(diff[0]['stdraft_id'])
         pmc = diff[0]['PMcheck']
         cursor.execute("SELECT *,CASE WHEN nsm_project.manager.user_id = nsm_project.users.user_id THEN 'manager' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 1 OR nsm_project.board.role_id = 2 THEN 'board' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 3 THEN 'assistant' END AS role FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id or nsm_project.manager.user_id = nsm_project.users.user_id Where nsm_project.projects.pj_id = %s and nsm_project.users.user_id = %s group by nsm_project.users.user_id",(id ,user))
@@ -1325,24 +1325,21 @@ def addProject():
         pj_financeAmount = request.form['financeAmount']
         pj_budgetSource = request.form['budgetSource']
         pj_budgetYears = request.form['budgetYears']
-        if  pj_refNumber and of_id and dv_id and pj_name and pj_type and pj_amount and pj_detail and pj_financeAmount and pj_budgetSource and pj_budgetYears and request.method == 'POST':
-            sql1 = "INSERT INTO projects (pj_refNumber,of_id,dv_id,pj_name,pj_type,pj_amount,pj_detail,pj_financeAmount,pj_budgetSource,pj_budgetYears) VALUES(%s, %s, %s, %s,%s, %s, %s, %s, %s, %s)"
-            data1 = (pj_refNumber,of_id,dv_id,pj_name,pj_type,pj_amount,pj_detail,pj_financeAmount,pj_budgetSource,pj_budgetYears)
-            cursor.execute(sql1, data1)
-            cursor = conn.cursor(pymysql.cursors.DictCursor)
-            cursor.execute("SELECT pj_id FROM nsm_project.projects order by pj_id DESC;")
-            sql2 = cursor.fetchall()
-            pj_id = sql2[0]['pj_id']
-            sql3 = "INSERT INTO manager (user_id,pj_id) VALUES(%s, %s)"
-            data3 = (user,pj_id)
-            cursor.execute(sql3, data3)
-            sql4 = "INSERT INTO process (pj_id,stdraft_id,stcon_id,stex_id,startproject_date) VALUES(%s,%s,%s,%s,%s)"
-            data4 = (pj_id,1,1,1,date.today())
-            cursor.execute(sql4, data4)
-            conn.commit()
-            return redirect ('/home')
-        else:
-            return 'Error'
+        sql1 = "INSERT INTO projects (pj_refNumber,of_id,dv_id,pj_name,pj_type,pj_amount,pj_detail,pj_financeAmount,pj_budgetSource,pj_budgetYears) VALUES(%s, %s, %s, %s,%s, %s, %s, %s, %s, %s)"
+        data1 = (pj_refNumber,of_id,dv_id,pj_name,pj_type,pj_amount,pj_detail,pj_financeAmount,pj_budgetSource,pj_budgetYears)
+        cursor.execute(sql1, data1)
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        cursor.execute("SELECT pj_id FROM nsm_project.projects order by pj_id DESC;")
+        sql2 = cursor.fetchall()
+        pj_id = sql2[0]['pj_id']
+        sql3 = "INSERT INTO manager (user_id,pj_id) VALUES(%s, %s)"
+        data3 = (user,pj_id)
+        cursor.execute(sql3, data3)
+        sql4 = "INSERT INTO process (pj_id,stdraft_id,stcon_id,stex_id,startproject_date) VALUES(%s,%s,%s,%s,%s)"
+        data4 = (pj_id,1,1,1,date.today())
+        cursor.execute(sql4, data4)
+        conn.commit()
+        return redirect ('/home')
     except Exception as e:
         print(e)
     finally:

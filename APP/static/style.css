@@ -268,3 +268,34 @@ input {
   font-weight: bold;
   font-size: 18px;
 }
+.addmodal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.addmodal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid #888;
+  width: 40%;
+}
+input[id="addnoti"]{
+  height: 39px;
+  width: 300px;
+  border: none;
+  background: transparent;
+  text-align: right;
+  font-size: 26px;
+}

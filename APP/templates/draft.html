@@ -122,7 +122,9 @@
           <div class="card-body" align="center">
             <progress id="file" value="{{row[0]['stdraft_percent']}}" max="100"> </progress>    
             <br><br>
-            <label for="file">{{row[0]['stdraft_name']}}</label>
+            <label for="file">{{row[0]['stdraft_name']}}</label><br>
+            </label><p style="color: green; display: none;" id="enddd">ส่งกอง พส. ดำเนินการในวันที่ {{row[0]['endddate']}}</p>
+            </label><p style="color: green; display: none;" id="enddt">เวลา {{row[0]['enddtime']}} น.</p>
             <form action="/project/{{row[0]['pj_id']}}/draft" method="post">
               <input name="std" id="std" value="{{row[0]['stdraft_id']}}" type="hidden">
               <input name="startd" value="{{row[0]['start_draft']}}" type="hidden">
@@ -132,8 +134,8 @@
               <p id="dayform" style="display: none;">โปรดเลือกวันเริ่มต้น</p>
               <input name="stdr" id="stdr" value="" type="hidden"></input>
             <br><br>
-            <div align="center"><input type="hidden" id="appbotton" onclick="return confirm('ยืนยัน')" value="ยืนยัน" ></form></div>
-            <div align="center"><form action="/project/{{row[0]['pj_id']}}/draft/unapproved" method="post"><input type="hidden" id="appbotton2" onclick="return confirm('ยืนยัน')" value="" ></form></div>
+            <div align="center"><input type="hidden" id="appbotton" value="ยืนยัน" ></form></div>
+            <div align="center"><form action="/project/{{row[0]['pj_id']}}/draft/unapproved" method="post"><input type="hidden" id="appbotton2" value="" ></form></div>
             
           </div>  
         </div>
