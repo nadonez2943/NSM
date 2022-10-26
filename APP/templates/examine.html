@@ -110,13 +110,13 @@
                   <form action="/project/{{row[0]['pj_id']}}/examine" method="post" class="formContainer">
                     <input name="userrole" id="userrole" value="{{role['role']}}" type="hidden">
                         <label>
-                          <strong style="display: none;">วันที่เริ่มต้น</strong>
+                          <strong>วันที่เริ่มต้น</strong>
                         </label>
-                        <input type="hidden" value="0000-00-00" name="contt_start" id="contt_start" required>
+                        <input type="date" value="0000-00-00" name="contt_start" id="contt_start" required>
                         <label>
-                          <strong style="display: none;">วันที่สิ้นสุด</strong>
+                          <strong>วันที่สิ้นสุด</strong>
                         </label>
-                        <input type="hidden" value="0000-00-00" name="contt_end" id="contt_end" required>
+                        <input type="date" value="0000-00-00" name="contt_end" id="contt_end" required>
                         <input name="conttst" id="conttst" value="{{row[0]['contt_start']}}" type="hidden">
                         <input name="contten" id="contten" value="{{row[0]['contt_end']}}" type="hidden">
                         <input name="conttid" id="conttid" value="{{row[0]['contt_id']}}" type="hidden">
@@ -358,6 +358,9 @@ var pmc = document.getElementById('pop').value;
 if (stdd == "1" && pmc != "prewait" && pmc != "wait" && usrole == "manager"){
   document.getElementById('exalert').innerHTML = "**โปรดเพิ่มคณะกรรมการ**";
 }
+if (stdd == "1" && pmc == "prewait" && usrole == "manager"){
+  document.getElementById('openfex').style.display = "block";
+}
 </script>
 
 <script>
@@ -484,84 +487,84 @@ if (stdd == "1" && pmc != "prewait" && pmc != "wait" && usrole == "manager"){
       var sd3 = Number(document.getElementById("sd3").value);
       var stex = Number(document.getElementById("stex").value);
       var usrole = document.getElementById('userrole1').value;
-      if(sd1 == 7 && stex == 3){
+      if(sd1 == 7 && stex == 2){
         document.getElementById('shwoone').innerHTML  = "เหลือเวลา 7 วัน";
         document.getElementById('shwoone').style.background = "green";
         document.getElementById('shwoone').style.color = "white";
         document.getElementById('shwoone').style.width = "50%";
         document.getElementById('shwoone').style.marginTop = "20px";
         }
-      if(sd2 == 7 && stex == 4){
+      if(sd2 == 7 && stex == 3){
         document.getElementById('shwoone').innerHTML  = "เหลือเวลา 7 วัน";
         document.getElementById('shwoone').style.background = "green";
         document.getElementById('shwoone').style.color = "white";
         document.getElementById('shwoone').style.width = "50%";
         document.getElementById('shwoone').style.marginTop = "20px";
       }
-      if(sd3 == 7 && stex == 5){
+      if(sd3 == 7 && stex == 4){
         document.getElementById('shwoone').innerHTML  = "เหลือเวลา 7 วัน";
         document.getElementById('shwoone').style.background = "green";
         document.getElementById('shwoone').style.color = "white";
         document.getElementById('shwoone').style.width = "50%";
         document.getElementById('shwoone').style.marginTop = "20px";
       }
-      if(sd1 == 3 && stex == 3 ){
+      if(sd1 == 3 && stex == 2 ){
         document.getElementById('shwoone').innerHTML  = "เหลือเวลา 3 วัน";
         document.getElementById('shwoone').style.background = "green";
         document.getElementById('shwoone').style.color = "white";
         document.getElementById('shwoone').style.width = "50%";
         document.getElementById('shwoone').style.marginTop = "20px";
         }
-      if(sd2 == 3 && stex == 4 ){
+      if(sd2 == 3 && stex == 3 ){
         document.getElementById('shwoone').innerHTML  = "เหลือเวลา 3 วัน";
         document.getElementById('shwoone').style.background = "green";
         document.getElementById('shwoone').style.color = "white";
         document.getElementById('shwoone').style.width = "50%";
         document.getElementById('shwoone').style.marginTop = "20px";
       }
-      if(sd3 == 3 && stex == 5 ){
+      if(sd3 == 3 && stex == 4 ){
         document.getElementById('shwoone').innerHTML  = "เหลือเวลา 3 วัน";
         document.getElementById('shwoone').style.background = "green";
         document.getElementById('shwoone').style.color = "white";
         document.getElementById('shwoone').style.width = "50%";
         document.getElementById('shwoone').style.marginTop = "20px";
       }
-      if(sd1 <0 && stex == 3 && usrole == 'assistant'){
+      if(sd1 <0 && stex == 2 && usrole == 'assistant'){
         document.getElementById('shwoone').innerHTML  = "**เลยวันส่งงวดที่1 มา"+Math.abs(sd1)+" วัน**";
         document.getElementById('shwoone').style.background = "red";
         document.getElementById('shwoone').style.color = "white";
         document.getElementById('shwoone').style.width = "50%";
         document.getElementById('shwoone').style.marginTop = "20px";
         }
-      if(sd2 <0 && stex == 4 && usrole == 'assistant'){
+      if(sd2 <0 && stex == 3 && usrole == 'assistant'){
         document.getElementById('shwoone').innerHTML  = "**เลยวันส่งงวดที่2 มา"+Math.abs(sd2)+" วัน**";
         document.getElementById('shwoone').style.background = "red";
         document.getElementById('shwoone').style.color = "white";
         document.getElementById('shwoone').style.width = "50%";
         document.getElementById('shwoone').style.marginTop = "20px";
       }
-      if(sd3 <0 && stex == 5 && usrole == 'assistant'){
+      if(sd3 <0 && stex == 4 && usrole == 'assistant'){
         document.getElementById('shwoone').innerHTML  = "**เลยวันส่งงวดที่3 มา"+Math.abs(sd3)+" วัน**";
         document.getElementById('shwoone').style.background = "red";
         document.getElementById('shwoone').style.color = "white";
         document.getElementById('shwoone').style.width = "50%";
         document.getElementById('shwoone').style.marginTop = "20px";
       }
-      if(sd1 == 0 && stex == 3 ){
+      if(sd1 == 0 && stex == 2 ){
         document.getElementById('shwoone').innerHTML  = "วันส่งงวดที่1";
         document.getElementById('shwoone').style.background = "green";
         document.getElementById('shwoone').style.color = "white";
         document.getElementById('shwoone').style.width = "30%";
         document.getElementById('shwoone').style.marginTop = "10px";
         }
-      else if(sd2 == 0 && stex == 4 ){
+      else if(sd2 == 0 && stex == 3 ){
         document.getElementById('shwoone').innerHTML  = "วันส่งงวดที่2";
         document.getElementById('shwoone').style.background = "green";
         document.getElementById('shwoone').style.color = "white";
         document.getElementById('shwoone').style.width = "30%";
         document.getElementById('shwoone').style.marginTop = "10px";
       }
-      else if(sd3 == 0 && stex == 5){
+      else if(sd3 == 0 && stex == 4){
         document.getElementById('shwoone').innerHTML  = "วันส่งงวดที่3;";
         document.getElementById('shwoone').style.background = "green";
         document.getElementById('shwoone').style.color = "white";

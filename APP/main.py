@@ -530,7 +530,7 @@ def addboarde(id):
            return render_template('PMae.html', id=id,row=row,rows=rows,crole=crole)
     elif (manager ==  role['role'] and ste > 1 or epmc == "prewait" or epmc == "wait") :
             return render_template('inept.html', id=id,row=row,rows=rows,crole=crole)        
-    elif (assistant == role['role'] and ste == 1 or ste == 2 or ste == 3 or ste == 4 or ste == 5 or ste == 6) :
+    elif (assistant == role['role'] and ste == 1 or ste == 2 or ste == 3 or ste == 4 or ste == 5 ) :
             return render_template('addboarde.html', id=id,row=row,rows=rows,crole=crole)
     else:
         return render_template('inept.html', row=row , rows=rows ,id=id )
@@ -1241,8 +1241,6 @@ def update_ste(id):
         stdd = int(std)
         print(type(stdd))
         print(std)
-        contt_st = conttst
-        contt_en = contten
         if(stdd == 1 and pmc == "prewait"):
             stex = 1
             examPMcheck = 'wait'
@@ -1251,24 +1249,38 @@ def update_ste(id):
         if(stdd == 2 and pmc != "wait"):
             stex = 2
             examPMcheck = 'wait'
+            contt_st = conttst
+            contt_en = contten
         elif(stdd == 2 and pmc == "wait"):
              stex = 3
              examPMcheck = ''
+             contt_st = conttst
+             contt_en = contten
         elif(stdd == 3 and pmc != "wait"):
             stex = 3
             examPMcheck = 'wait'
+            contt_st = conttst
+            contt_en = contten
         elif(stdd == 3 and pmc == "wait"):
              stex = 4
              examPMcheck = ''
+             contt_st = conttst
+             contt_en = contten
         elif(stdd == 4 and pmc != "wait"):
             stex = 4
             examPMcheck = 'wait'
+            contt_st = conttst
+            contt_en = contten
         elif(stdd == 4 and pmc == "wait"):
              stex = 5
              examPMcheck = ''
+             contt_st = conttst
+             contt_en = contten
         elif(stdd == 5):
              stex = 5
              examPMcheck = 'yes'
+             contt_st = conttst
+             contt_en = contten
         sql = "UPDATE process SET stex_id=%s,examPMcheck=%s WHERE pj_id=%s"
         data = (stex,examPMcheck,id)
         conn = mysql.connect()
