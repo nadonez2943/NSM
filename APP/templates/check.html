@@ -284,19 +284,21 @@
       })
     </script>
     <script>
-    function myFunction() {
-      var cdate1 = document.getElementById("cdate1").value;
-      var ndate1 = document.getElementById("ndate1").value;
-      var cdate2 = document.getElementById("cdate2").value;
-      var ndate2 = document.getElementById("ndate2").value;
-      var cdate3 = document.getElementById("cdate3").value;
-      var ndate3 = document.getElementById("ndate3").value;
-      var end = document.getElementById("end").value;
-      document.getElementById("cdate2").setAttribute("min",ndate1); 
-      document.getElementById("ndate2").setAttribute("min",cdate2); 
-      document.getElementById("cdate3").setAttribute("min",ndate2);
-      document.getElementById("ndate3").setAttribute("min",cdate3);  
-    }
-    </script>
+      function myFunction() {
+        var cdate1 = document.getElementById("cdate1").value;
+        var ndate1 = document.getElementById("ndate1").value;
+        var cdate2 = document.getElementById("cdate2").value;
+        var ndate2 = document.getElementById("ndate2").value;
+        var cdate3 = document.getElementById("cdate3").value;
+        var ndate3 = document.getElementById("ndate3").value;
+        var end = document.getElementById("ndate3").value;
+        
+        document.getElementById("ndate1").setAttribute("min",cdate1); 
+        document.getElementById("cdate2").setAttribute("min",ndate1); 
+        document.getElementById("ndate2").setAttribute("min",cdate2); 
+        document.getElementById("cdate3").setAttribute("min",ndate2);
+        document.getElementById("ndate2").setAttribute("min",cdate2);  
+      }
+      </script>
 {% endblock %}
 </html>
