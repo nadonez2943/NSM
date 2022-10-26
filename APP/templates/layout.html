@@ -106,7 +106,10 @@ if (usrole != "manager")  {
     document.getElementById('appbotton').type = "submit";
     document.getElementById('appbotton').value = "ส่งกอง พส. ดำเนินการ";
   }
-  
+  if (stdd == "5")  {
+    document.getElementById('enddd').style.display = "block";
+    document.getElementById('enddt').style.display = "block";
+  }
   
 </script>
 
@@ -182,6 +185,7 @@ if (usrole != "manager")  {
   if (stcc == 6 && cpmc == "wait" && usrole == "manager") {
     document.getElementById('appbottonc').type = "submit";
   }
+
   function handleChange(checkbox) {
     if(checkbox.checked == true){
       document.getElementById('buyd').style.display = "none";
@@ -595,6 +599,7 @@ if (usrole != "manager")  {
       var cmng = document.getElementById("cmng").value;
       var cboa = Number(document.getElementById("cboa").value);
       var cas = document.getElementById("cas").value;
+      var addmodal = document.getElementById("addmodal");
       if (usft == "None"){
         document.getElementById("usft").style.display = "none";
         document.getElementById("usrt").style.display = "none";
@@ -619,11 +624,24 @@ if (usrole != "manager")  {
         document.getElementById("fini").type = "hidden";
       }
       function unfinished() {
-        alert("จำนวนกรรมการต้องเป็นจำนวนคี่")
+        addmodal.style.display = "block";
+        document.getElementById("addnoti").value = "จำนวนกรรมการต้องเป็นจำนวนคี่";
       }
       function unfinishedAll() {
-        alert("คณะกรรมการยังไม่ครบ")
+        addmodal.style.display = "block";
+        document.getElementById("addnoti").value = "คณะกรรมการยังไม่ครบ";
       }
+      
+      
+      function closemod() {
+        addmodal.style.display = "none";
+      };
+      window.onclick = function(event) {
+        if (event.target == addmodal) {
+          addmodal.style.display = "none";
+        }
+      }
+      
       </script>
 
 
