@@ -3,9 +3,35 @@
     {% block body %}
     <style>
         input[type='text'] { font-size: 16px; }
-        </style>
+        #myBtn {
+          position: fixed;
+          bottom: 20px;
+          left: 30px;
+          z-index: 99;
+          font-size: 18px;
+          border: none;
+          outline: none;
+          background-color: rgba(10, 39, 97, 0.83);
+          color: white;
+          cursor: pointer;
+          padding: 15px;
+          border-radius: 4px;
+        }
+    
+        #myBtn:hover {
+          background-color: #555;
+        }
+    
+        .btnB {
+          padding: 10px 40px;
+          background-color: rgba(10, 39, 97, 0.83); 
+          color: #FFFFFF;
+          font-weight: bold;
+          font-size: 16px;
+        }
+    </style>
     <br>
-    <a class="btn btn-primary btn-lg" type="submit" href="/project/{{id}}/examine" value="ย้อนกลับ">ย้อนกลับ</a>
+    <a id="myBtn" href="/project/{{row[0]['pj_id']}}/examineEvent" class='btnB' >ย้อนกลับ</a>
     <br>
     <div class="jumbotron">
         <center><h1>กิจกรรม</h1></center>
