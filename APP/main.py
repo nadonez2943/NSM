@@ -1969,7 +1969,7 @@ def addcheck():
             cursor = conn.cursor()
             cursor.execute(sql, data2)
             conn.commit()
-            sql = "UPDATE process SET  stex_id = 3 where pc_id =%s"
+            sql = "UPDATE process SET  stex_id = 3 where pj_id =%s"
             data3 = (pj_id, )
             conn = mysql.connect()
             cursor = conn.cursor()

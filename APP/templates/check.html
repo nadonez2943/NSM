@@ -32,7 +32,7 @@
                         <label>วันที่ตรวจรับ</label>
                       </div>
                       <div class="col-75">
-                        <label><input name="check_date" value="" type="date" id="cdate1" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
+                        <label><input name="check_date" value="" type="date" id="cdate1" onchange="myFunction()" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
                       </div>
                     </div>
                     <div class="row">
@@ -48,7 +48,7 @@
                           <label>วันที่เบิกจ่าย</label>
                         </div>
                         <div class="col-75">
-                        <label><input name="ins_date" value="" type="date" id="ndate1" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
+                        <label><input name="ins_date" value="" type="date" id="ndate1" onchange="myFunction()" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
                         </div>
                     </div>
                     <div class="row">
@@ -81,7 +81,7 @@
                       <label>วันที่ตรวจรับ</label>
                     </div>
                     <div class="col-75">
-                      <label><input name="check_date1" value="" type="date" id="cdate2" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
+                      <label><input name="check_date1" value="" type="date" id="cdate2" onchange="myFunction()" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
                     </div>
                   </div>
                   <div class="row">
@@ -97,7 +97,7 @@
                         <label>วันที่เบิกจ่าย</label>
                       </div>
                       <div class="col-75">
-                      <label><input name="ins_date1" value="" type="date" id="ndate2" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
+                      <label><input name="ins_date1" value="" type="date" id="ndate2" onchange="myFunction()" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
                       </div>
                   </div>
                   <div class="row">
@@ -130,7 +130,7 @@
                       <label>วันที่ตรวจรับ</label>
                     </div>
                     <div class="col-75">
-                      <label><input name="check_date2" value="" type="date" id="cdate3" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
+                      <label><input name="check_date2" value="" type="date" id="cdate3" onchange="myFunction()" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
                     </div>
                   </div>
                   <div class="row">
@@ -146,7 +146,7 @@
                         <label>วันที่เบิกจ่าย</label>
                       </div>
                       <div class="col-75">
-                      <label><input name="ins_date2" value="" type="date" id="ndate3" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
+                      <label><input name="ins_date2" value="" type="date" id="ndate3" onchange="myFunction()" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
                       </div>
                   </div>
                   <div class="row">
@@ -174,6 +174,8 @@
             
             </div>
           </form>
+          <input name="contt_start" value="{{row[0]['contt_start']}}" type="hidden" id="start" style="width:300px; "  placeholder="งวดที่" autocomplete="off" required> </p>
+          <input name="contt_end" value="{{row[0]['contt_end']}}" type="hidden" id="end" style="width:300px; "  placeholder="งวดที่" autocomplete="off" required> </p>
   <script>
           function check(){
             var c1 = Number(document.getElementById("number1").value);
@@ -282,15 +284,19 @@
       })
     </script>
     <script>
+    function myFunction() {
       var cdate1 = document.getElementById("cdate1").value;
       var ndate1 = document.getElementById("ndate1").value;
       var cdate2 = document.getElementById("cdate2").value;
       var ndate2 = document.getElementById("ndate2").value;
       var cdate3 = document.getElementById("cdate3").value;
       var ndate3 = document.getElementById("ndate3").value;
-      if (cdate1 != ""){
-        document.getElementById('cdate2').min = ndate1;
-      }
+      var end = document.getElementById("end").value;
+      document.getElementById("cdate2").setAttribute("min",ndate1); 
+      document.getElementById("ndate2").setAttribute("min",cdate2); 
+      document.getElementById("cdate3").setAttribute("min",ndate2);
+      document.getElementById("ndate3").setAttribute("min",cdate3);  
+    }
     </script>
 {% endblock %}
 </html>
