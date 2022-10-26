@@ -59,6 +59,9 @@
         font-weight: bold;
         font-size: 18px;
      }
+     table tr {
+      cursor: pointer;
+    }
     </style>
 </head>  
 <body>
@@ -86,13 +89,13 @@
     </thead>  
     <tbody>  
       {% for result in MN %}
-      <tr>
+      <tr href = "/project/{{result['pj_id']}}">
         <td align="center">{{result['row_num']}}</td>
-        <td ><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
+        <td >{{result['pj_name']}}</td>        
         <td> {{result['pj_refNumber']}}</td>
         <td>{{result['user_fullname']}}</td>
-        <td><center>{{result['x']}} %</center></td>        
-      </tr>
+        <td><center>{{result['x']}} %</center></td>  
+      </tr> 
       {% endfor %}
     </tbody>  
   </table>  
@@ -235,6 +238,13 @@ evt.currentTarget.className += " active";
 }
 // Get the element with id="defaultOpen" and click on it
 document.getElementById("defaultOpen").click();
+
+$(document).ready(function(){
+    $('table tr').click(function(){
+        window.location = $(this).attr('href');
+        return false;
+    });
+});
 </script>
 </body> 
 {% endblock %}

@@ -1,0 +1,129 @@
+
+    {% extends 'layout.html' %}
+    {% block body %}
+    <br>
+    <div class="card">
+        <div class="card-body">
+            <center>
+                <h1>เพิ่มพนักงาน</h1>
+             </center> <hr>
+            <form action="/adduser" method="post">
+                <div class="row" style="margin: 5px;">
+                    <div class="col-md-4" style="text-align: right;">
+                        <label>ชื่อผู้ใช้:</label>
+                    </div>
+                    <div class="col-md-5">
+                        <input name="user_name" value="" type="text" style="width: 100%; " placeholder="ชื่อผู้ใช้" autocomplete="off" required>
+                    </div>
+                </div>
+                <div class="row" style="margin: 5px;">
+                    <div class="col-md-4" style="text-align: right;">
+                        <label>รหัสผ่าน:</label>
+                    </div>
+                    <div class="col-md-5">
+                        <input name="user_password" value="" type="text" style="width: 100%; " placeholder="รหัสผ่าน " autocomplete="off" required>
+                    </div>
+                </div>
+                <div class="row" style="margin: 5px;">
+                    <div class="col-md-4" style="text-align: right;">
+                        <label for="user_role">ชื่อ-นามสกุล:</label>
+                        
+                    </div>
+                    <div class="col-md-5">
+                        <input name="user_fullname" value="" type="text" style="width: 100%; " placeholder="ชื่อ-นามสกุล" autocomplete="off" required>  
+                    </div>
+                </div>
+                <div class="row" style="margin: 5px;">
+                    <div class="col-md-4" style="text-align: right;">
+                        <label for="user_role">อีเมล:</label>
+                    </div>
+                    <div class="col-md-5">
+                        <input name="user_email" value="" type="text" style="width: 100%; " placeholder="email " autocomplete="off" required>
+                    </div>
+                </div>
+                <div class="row" style="margin: 5px;">
+                    <div class="col-md-4" style="text-align: right;">
+                        <label for="user_role">เบอร์โทรศัพท์:</label>
+                    </div>
+                    <div class="col-md-5">
+                        <input name="tel" value="" type="text" style="width: 100%; " placeholder="เบอร์โทรศัพท์" autocomplete="off" required>
+                    </div>
+                </div>
+                <div class="row" style="margin: 5px;">
+                    <div class="col-md-4" style="text-align: right;">
+                        <label for="user_role">สถานะ:</label>
+                        
+                    </div>
+                    <div class="col-md-5">
+                        <select name="user_role" id="user_role" class="form-control" style="width: 100%; ">
+                            <option value="" hidden></option>
+                            <option value="user">user</option>
+                            <option value="admin">admin</option>
+                        </select>    
+                    </div>
+                </div>
+                <div class="row" style="margin: 5px;">
+                    <div class="col-md-4" style="text-align: right;">
+                        <label for="user_role">สำนักงาน:</label>
+                    </div>
+                    <div class="col-md-5">
+                        <select name="ofid"  id="ofid" class="form-control" title="Select office" style="width: 100%; "> 
+                            <option value="" hidden></option>
+                            {% for row in office %}
+                                <option value="{{row.of_id}}">{{row.of_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="row" style="margin: 5px;">
+                    <div class="col-md-4" style="text-align: right;">
+                        <label for="user_role">กอง:</label>
+                    </div>
+                    <div class="col-md-5">
+                        <select name="dvid"  id="dv_name" class="form-control" title="Select division" style="width: 100%; " required></select>
+                    </div>
+                </div>
+                <CENTER>
+                    <p>
+                       <input type="submit" class="btn" value="เพิ่มโครงการ">
+                    </p>
+                    </CENTER>
+            </form>
+        </div>
+    </div>    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+<script>
+    $(document).ready(function () {
+        function load_data(type, category_id) {
+        $.ajax({
+        url: "/divisions",
+        method: "POST",
+        data: { type: type, category_id: category_id },
+        dataType: "json",
+        success: function (data) {
+            var html = "";
+            for (var count = 0; count < data.length; count++) {
+                html += '<option value="' + data[count].id + '">' + data[count].name + "</option>";
+ 
+            }
+            if (type == "ofid") {
+                $("#ofid").html(html);
+                $("#ofid").selectpicker("refresh");
+            } else {
+                $("#dv_name").html(html);
+                
+            }
+            },
+        });
+    }
+    $(document).on("change", "#ofid", function () {
+            var category_id = $("#ofid").val();
+            load_data("dvid", category_id);
+        });
+ });
+ </script>
+ 
+ {% endblock %}
