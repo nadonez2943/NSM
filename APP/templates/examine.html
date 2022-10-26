@@ -516,14 +516,14 @@ if (stdd == "2"  && pmc == "prewait" && usrole =="assistant"){
     document.getElementById('exambutton').type = "submit";
     document.getElementById('exambutton').innerHTML  = "อนุมัติ";
   }
-  if (stdd == "4"  && usrole == "assistant" && sd2 <= 0)  {
+  if (stdd == "4" && pmc != "wait" && usrole == "assistant" && sd2 <= 0)  {
     document.getElementById('exambutton').type = "submit";
   }
   if (stdd == "4" && pmc == "wait" && usrole == "manager" && sd2 <= 0)  {
     document.getElementById('exambutton').type = "submit";
     document.getElementById('exambutton').innerHTML  = "อนุมัติ";
   }
-  if (stdd == "5" && usrole == "assistant" && sd3 <= 0)  {
+  if (stdd == "5" && pmc != "wait" && usrole == "assistant" && sd3 <= 0)  {
     document.getElementById('exambutton').type = "submit";
   
   }
