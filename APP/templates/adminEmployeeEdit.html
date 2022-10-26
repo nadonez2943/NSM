@@ -20,7 +20,7 @@
     <h1>แก้ไขข้อมูลพนักงาน</h1>
   </div>
   <div class="card-body">
-    <form action="" method="post">
+    <form action="/edituser/{{row[0]['user_id']}}" method="post">
       <div class="row" style="text-align: left;">
         <div class="col-md-6" style="border-right: 2px solid #ddd;" >
           <div class="row">
@@ -49,7 +49,7 @@
           <div class="row" style="margin-top: 8px;">
             <div class="col-md-4" ><h4>สำนักงาน</h4></div>
             <div class="col-md-8" >
-              <select name="ofid" id="ofid" class="form-control" title="Select office"> 
+              <select name="of_id" id="ofid" class="form-control" title="Select office"> 
                 <option value="{{row[0]['of_id']}}" hidden>{{row[0]['of_shname']}}</option>
                    {% for row in office %}
                          <option value="{{row.of_id}}">{{row.of_shname}}</option>
@@ -60,7 +60,7 @@
           <div class="row" style="margin-top: 8px;">
             <div class="col-md-4" ><h4>กอง</h4></div>
             <div class="col-md-8" >
-              <select name="dvid"  id="dv_shname" class="form-control" title="Select division">
+              <select name="dv_id"  id="dv_name" class="form-control" title="Select division">
                 <option value="{{row[0]['dv_id']}}" hidden>{{row[0]['dv_shname']}}</option>
               </select>
             </div>
@@ -93,7 +93,7 @@
             $("#ofid").html(html);
             $("#ofid").selectpicker("refresh");
          } else {
-            $("#dv_shname").html(html);
+            $("#dv_name").html(html);
             
          }
          },

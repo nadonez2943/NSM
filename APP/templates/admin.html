@@ -10,6 +10,9 @@
         left: 0;
         z-index: 1;
       }
+      table tr {
+          cursor: pointer;
+      }
     </style>
   </head>
   <body>
@@ -120,10 +123,10 @@
         </thead>  
         <tbody>  
           {% for result in row %}
-          <tr>
+          <tr href = "/project/{{result['pj_id']}}">
             <td align="center">{{result['row_num']}}</td>
-            <td ><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
-            <td> {{result['pj_refNumber']}}</td>
+            <td>{{result['pj_name']}}</td>        
+            <td>{{result['pj_refNumber']}}</td>
             <td>{{result['user_fullname']}}</td>
             <td><center>{{result['x']}} %</center></td>        
           </tr>
@@ -135,6 +138,13 @@
   <script>
   $(document).ready(function(){
     $('#myTableMN').dataTable();
+  });
+
+  $(document).ready(function(){
+    $('table tr').click(function(){
+        window.location = $(this).attr('href');
+        return false;
+    });
   });
   </script>
     

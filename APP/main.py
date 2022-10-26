@@ -1755,6 +1755,56 @@ def adminEmployee():
     finally:
         cursor.close() 
         conn.close()
+    
+@app.route('/admin/adduser',methods=['GET'])
+def adduserr():
+    cursor = mysql.connect().cursor(pymysql.cursors.DictCursor)
+    cursor.execute("SELECT * FROM office ORDER BY of_id")
+    office = cursor.fetchall()
+    return render_template("adminAddUser.html", office=office) 
+
+@app.route('/adduser', methods=['POST'])
+def adduser():
+    conn = None
+    cursor = None
+    try:
+        user_name = request.form['user_name']
+        user_fullname = request.form['user_fullname']
+        user_email = request.form['user_email']
+        user_password = request.form['user_password']
+        user_role = request.form['user_role']
+        tel = request.form['tel']
+        of_id = request.form['ofid']
+        dv_id = request.form['dvid']
+        if  user_name and user_fullname and user_email and user_password and user_role and tel and of_id and dv_id and request.method == 'POST':
+            sql = "INSERT INTO users (user_name, user_fullname, user_email, user_password, user_role, tel, of_id, dv_id) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)"
+            data = (user_name,user_fullname,user_email,user_password,user_role,tel,of_id,dv_id,)
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute(sql, data)
+            conn.commit()
+            return redirect('/admin/employee')
+        else:
+            return 'Error while adding user'
+    except Exception as e:
+           print(e)
+
+@app.route("/divisions",methods=["POST","GET"])
+def divisions():
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        if request.method == 'POST':
+            category_id = request.form['category_id'] 
+            result = cursor.execute("SELECT * FROM  division WHERE of_id = %s ORDER BY dv_name ASC", [category_id])
+            division = cursor.fetchall() 
+            OutputArray = []
+            for result in division:
+                outputObj = {
+                    'id': result['dv_id'],
+                    'name': result['dv_name']}
+                OutputArray.append(outputObj)
+            return jsonify(OutputArray) 
 
 @app.route('/admin/employee/edit/<int:id>',methods=['GET'])
 def adminEmployeeEdit(id):
@@ -1773,7 +1823,6 @@ def adminEmployeeEdit(id):
     finally:
         cursor.close() 
         conn.close()
-    
 
 @app.route('/edituser/<int:id>', methods=['POST'])
 def editUser(id):
@@ -1789,13 +1838,13 @@ def editUser(id):
         tel = request.form['tel']
         of_id = request.form['of_id']
         dv_id = request.form['dv_id']
-        if  user_name and user_fullname and user_email and user_role and tel and of_id and dv_id and request.method == 'POST':
+        if user_name and user_fullname and user_email and user_role and tel and of_id and dv_id and request.method == 'POST':
             cursor = conn.cursor(pymysql.cursors.DictCursor)
-            sql = "UPDATE pacel SET user_name=%s,user_fullname=%s,user_email=%s,user_role=%s,tel=%s,of_id=%s,dv_id and WHERE user_id=%s"
+            sql = "UPDATE users SET user_name=%s,user_fullname=%s,user_email=%s,user_role=%s,tel=%s,of_id=%s,dv_id=%s WHERE user_id=%s ;"
             data = (user_name,user_fullname,user_email,user_role,tel,of_id,dv_id,id)
             cursor.execute(sql, data)
             conn.commit()
-            return redirect ('/admin/employee')
+            return redirect ('/admin/employee/edit/'+str(id))
         else:
             return 'Error'
     except Exception as e:
@@ -1933,96 +1982,10 @@ def deleteDivision(id):
     finally:
         cursor.close() 
         conn.close()
+
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-# เรียกชื่่อuserมาแสดง  ใน listuser.html
-@app.route('/listuser',methods=['GET'])
-def listuser():
-    conn = None
-    cursor = None
-    id = session['user_id']
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT * FROM users left join office on nsm_project.users.of_id = nsm_project.office.of_id left join division on nsm_project.users.dv_id = nsm_project.division.dv_id WHERE NOT user_id = %s",(id))
-        row = cursor.fetchall()
-        return render_template("listuser.html",row=row) 
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close()
-        conn.close()
-
-# เรียกหน้าแอด งชั้นนี้มี r 2ตัว
-@app.route('/adduserr',methods=['GET'])
-def adduserr():
-    cursor = mysql.connect().cursor(pymysql.cursors.DictCursor)
-    cursor.execute("SELECT * FROM office ORDER BY of_id")
-    office = cursor.fetchall()
-    return render_template("adduser.html", office=office) 
-
-@app.route("/divisions",methods=["POST","GET"])
-def divisions():
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
-        if request.method == 'POST':
-            category_id = request.form['category_id'] 
-            result = cursor.execute("SELECT * FROM  division WHERE of_id = %s ORDER BY dv_name ASC", [category_id])
-            division = cursor.fetchall() 
-            OutputArray = []
-            for result in division:
-                outputObj = {
-                    'id': result['dv_id'],
-                    'name': result['dv_name']}
-                OutputArray.append(outputObj)
-            return jsonify(OutputArray) 
-
 # ทำการแอดดuser ฟังชั้นนี้มี r 1ตัว
-@app.route('/adduser', methods=['POST'])
-def adduser():
-    conn = None
-    cursor = None
-    try:
-        user_name = request.form['user_name']
-        user_fullname = request.form['user_fullname']
-        user_email = request.form['user_email']
-        user_password = request.form['user_password']
-        user_role = request.form['user_role']
-        tel = request.form['tel']
-        of_id = request.form['ofid']
-        dv_id = request.form['dvid']
-        if  user_name and user_fullname and user_email and user_password and user_role and tel and of_id and dv_id and request.method == 'POST':
-            sql = "INSERT INTO users (user_name, user_fullname, user_email, user_password, user_role, tel, of_id, dv_id) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)"
-            data = (user_name,user_fullname,user_email,user_password,user_role,tel,of_id,dv_id,)
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            cursor.execute(sql, data)
-            conn.commit()
-            return redirect('/listuser')
-        else:
-            return 'Error while adding user'
-    except Exception as e:
-           print(e)
-
-#ลบuser  รับค่าจาก adduser.html
-@app.route('/delete_user/<int:id>')
-def delete_user(id):
-    conn = None
-    cursor = None
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor.execute("DELETE FROM users WHERE user_id=%s",(id))
-        conn.commit()
-        flash('ลบรายชื่อสำเร็จ')
-        return redirect('/listuser')
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close() 
-        conn.close()
 
 # เรียก html edituser.html 
 @app.route('/core_edituser/<int:id>',methods=['GET'])
