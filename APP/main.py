@@ -818,10 +818,10 @@ def addeventc(id):
     if (manager ==  role['role'] and stc == 7) :
         return render_template('inept.html', id=id,row=row)
     elif (manager ==  role['role'] and stc < 7) :
-        return render_template('addeventd.html', row=row , id=id )
+        return render_template('addeventc.html', row=row , id=id )
     elif(phase == role['bo_phase'] and manager !=  role['role']):
         if (assistant == role['role'] and stc < 7) :
-            return render_template('addeventd.html', row=row ,id=id)
+            return render_template('addeventc.html', row=row ,id=id)
         elif (assistant == role['role'] and stc == 7) :
             return render_template('inept.html', row=row ,id=id)
         elif (board ==  role['role']) :
