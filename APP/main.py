@@ -293,19 +293,25 @@ def examine(id):
         two = cursor.fetchall()
         cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(ins_date , INTERVAL 543 YEAR ), %s) as checkdate,DATEDIFF(ins_date,date(now())) AS daten FROM nsm_project.projects LEFT JOIN nsm_project.checks ON nsm_project.projects.pj_id = nsm_project.checks.pj_id   WHERE nsm_project.projects.pj_id = %s and  nsm_project.checks.ins_no = 3 ",(format,id))
         three = cursor.fetchall()
+        cursor.execute("SELECT * FROM checks where pj_id = %s and ins_no = 1 ",(id))
+        check1 = cursor.fetchall()
+        cursor.execute("SELECT * FROM checks where pj_id = %s and ins_no = 2 ",(id))
+        check2 = cursor.fetchall()
+        cursor.execute("SELECT * FROM checks where pj_id = %s and ins_no = 3 ",(id))
+        check3 = cursor.fetchall()
         stc = row[0]['stcon_id']
         cursor.execute("SELECT *,CASE WHEN nsm_project.manager.user_id = nsm_project.users.user_id THEN 'manager' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 1 OR nsm_project.board.role_id = 2 THEN 'board' WHEN nsm_project.board.user_id = nsm_project.users.user_id AND nsm_project.board.role_id = 3 THEN 'assistant' END AS role FROM nsm_project.projects LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.pj_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id LEFT JOIN nsm_project.tbl_role ON nsm_project.board.role_id = nsm_project.tbl_role.role_id LEFT JOIN nsm_project.users ON nsm_project.board.user_id = nsm_project.users.user_id or nsm_project.manager.user_id = nsm_project.users.user_id Where nsm_project.projects.pj_id = %s and nsm_project.users.user_id = %s group by nsm_project.users.user_id",(id ,user))
         role = cursor.fetchone()
         if (manager ==  role['role']) :
                 if (stc == 7) :
-                    return render_template('examine.html', row=row , rows=rows ,id=id ,ev=ev,dis=dis, role=role, one=one, two=two, three=three)
+                    return render_template('examine.html', row=row , rows=rows ,id=id ,ev=ev,dis=dis, role=role, one=one, two=two, three=three,check1=check1,check2=check2,check3=check3)
                 elif (stc < 7) :
                     return render_template('errorex.html')
         elif(phase == role['bo_phase'] ):
             if (assistant == role['role']) :
-                return render_template('examine.html', row=row , rows=rows ,id=id ,ev=ev,dis=dis, role=role, one=one, two=two, three=three)
+                return render_template('examine.html', row=row , rows=rows ,id=id ,ev=ev,dis=dis, role=role, one=one, two=two, three=three,check1=check1,check2=check2,check3=check3)
             elif (board ==  role['role']) :
-                return render_template('examineB.html', row=row , rows=rows ,id=id ,ev=ev,dis=dis,role=role, one=one, two=two, three=three)
+                return render_template('examineB.html', row=row , rows=rows ,id=id ,ev=ev,dis=dis,role=role, one=one, two=two, three=three,check1=check1,check2=check2,check3=check3)
         else:
             return render_template('inept.html', row=row , rows=rows ,id=id ,ev=ev,dis=dis,role=role)
     except Exception as e:
@@ -2123,6 +2129,81 @@ def examineup(id):
            cursor.close() 
            conn.close()
 
+@app.route('/adddatecontt/<int:id>')
+def adddatecontt(id):
+    conn = None
+    cursor = None
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        cursor.execute("SELECT * FROM nsm_project.projects left join nsm_project.process on nsm_project.projects.pj_id = nsm_project.process.pj_id left join nsm_project.contractor on nsm_project.process.contt_id = nsm_project.contractor.contt_id WHERE nsm_project.projects.pj_id=%s", id)
+        row = cursor.fetchall()
+        return render_template('adddatecontt.html',row=row)
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close()
+
+@app.route('/adddatecontt2', methods=['POST'])
+def adddatecontt2():
+    conn = None
+    cursor = None
+    try:
+        contt = request.form['contt']
+        pj_id = request.form['pj_id']
+        datestart = request.form['datestart']
+        dateend = request.form['dateend']
+        sql = "UPDATE contractor SET contt_start = %s, contt_end = %s where contt_id =%s"
+        data = (datestart,dateend,contt,)
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute(sql,data)
+        conn.commit()
+        return redirect('/project/'+str(pj_id)+'/examine')
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close()
+
+@app.route('/editdatecontt/<int:id>')
+def editdatecontt(id):
+    conn = None
+    cursor = None
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        cursor.execute("SELECT * FROM nsm_project.projects left join nsm_project.process on nsm_project.projects.pj_id = nsm_project.process.pj_id left join nsm_project.contractor on nsm_project.process.contt_id = nsm_project.contractor.contt_id WHERE nsm_project.projects.pj_id=%s", id)
+        row = cursor.fetchall()
+        return render_template('editdatecontt.html',row=row)
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close()
+
+@app.route('/editdatecontt2', methods=['POST'])
+def editdatecontt2():
+    conn = None
+    cursor = None
+    try:
+        contt = request.form['contt']
+        pj_id = request.form['pj_id']
+        datestart = request.form['datestart']
+        dateend = request.form['dateend']
+        sql = "UPDATE contractor SET contt_start = %s, contt_end = %s where contt_id =%s"
+        data = (datestart,dateend,contt,)
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute(sql,data)
+        conn.commit()
+        return redirect('/project/'+str(pj_id)+'/examine')
+    except Exception as e:
+           print(e)
+    finally:
+           cursor.close() 
+           conn.close()
 
 if __name__ == "__main__":
     app.run(debug=True)

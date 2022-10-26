@@ -35,6 +35,15 @@
               {% for row in three %}
               <input name="sd3" id="sd3" value="{{row['daten']}}" type="hidden">
               {% endfor %}
+              {% for row in check1 %}
+              <input name="ck1" id="ck1" value="{{row['ins_amount']}}" type="text">
+              {% endfor %}
+              {% for row in check2 %}
+              <input name="ck2" id="ck2" value="{{row['ins_amount']}}" type="text">
+              {% endfor %}
+              {% for row in check3 %}
+              <input name="ck3" id="ck3" value="{{row['ins_amount']}}" type="text">
+              {% endfor %}
           </div>
         </div>
         <p></p>
@@ -126,6 +135,14 @@
                   <label>{{row[0]['pj_financeAmount']}} บาท</label>
                 </div>
               </div>
+              <div class="row">
+                <div class="col-25">
+                  <label> ยอดเงินคงเหลือ</label>
+                </div>
+                <div class="col-75">
+                  <label id="butjet">{{row[0]['contt_fin']}} บาท</label>
+                </div>
+              </div>
         </div>
        </div>
         <div class="card" style="margin-top: 8px;">
@@ -167,6 +184,23 @@
                 <label>{{row[0]['contt_fin']}} บาท</label>
               </div>
             </div>
+            <div class="row">
+              <div class="col-25">
+                <label>วันเริ่มการทำงาน</label>
+              </div>
+              <div class="col-75">
+                <label  id ="contt_start">{{row[0]['contt_start']}} บาท</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-25">
+                <label>วันสิ้นสุดการทำงาน</label>
+              </div>
+              <div class="col-75">
+                <label id ="contt_end">{{row[0]['contt_end']}} บาท</label>
+              </div>
+            </div>
+            <p align="right"><a href="/adddatecontt/{{row[0]['pj_id']}}" id="adddatecontt">เพิ่ม</a><a href="/editdatecontt/{{row[0]['pj_id']}}"  id="editdatecontt"> แก้ไข</a></p>
           </div>
         </div>
       </div>
@@ -228,6 +262,14 @@
     document.getElementById("c4").innerHTML = "-";
     document.getElementById("c5").innerHTML = "-";
 
+  }
+</script>
+<script>
+  var conttend = document.getElementById("conttend").innerHTML;
+  var conttstart = document.getElementById("conttstart").innerHTML;
+  if (conttstart == "None"){
+    document.getElementById("conttstart").innerHTML = "-";
+    document.getElementById("conttend").innerHTML = "-";
   }
 </script>
 
@@ -496,6 +538,23 @@
   }
 </script> 
 <script>
+  var stex = Number(document.getElementById('stex').value);
+  var conttstart = document.getElementById('conttstart').value;
+  var conttend = document.getElementById('conttend').value;
+  if (conttstart == '-' || conttstart == 'None' ) {
+  document.getElementById('adddatecontt').style.display= "block";
+  document.getElementById('editdatecontt').style.display= "none";
+  }
+  else if (userrole == "manager" && stex == 2){
+  document.getElementById('adddatecontt').style.display= "none";
+  document.getElementById('editdatecontt').style.display= "block";
+  }
+  else if (userrole == "assistant" && stex >= 2 ){
+  document.getElementById('editdatecontt').style.display= "block";
+  document.getElementById('adddatecontt').style.display= "none";
+  }
+</script> 
+<script>
   var sd1 = Number(document.getElementById("sd1").value);
   var sd2 = Number(document.getElementById("sd2").value);
   var sd3 = Number(document.getElementById("sd3").value);
@@ -526,7 +585,26 @@
     document.getElementById('exambutton').type = "submit";
     document.getElementById('exambutton').innerHTML  = "อนุมัติ";
   }
- 
 </script> 
+<script>
+  var stex = Number(document.getElementById('stex').value);
+  var ck1 = Number(document.getElementById('ck1').value);
+  var ck2 = Number(document.getElementById('ck2').value);
+  var ck3 = Number(document.getElementById('ck3').value);
+  var butjet = Number(document.getElementById('butjet').value);
+  if (stex == 4 ) {
+    var num = parseInt(butjet.value) - parseInt(ck1.value);
+    document.getElementById('butjet').innerHTML = num+"  บาท";
+  }
+  else if (stex == 5 ) {
+    var num = parseInt(butjet.value) - (parseInt(ck1.value)+parseInt(ck2.value));
+    document.getElementById('butjet').innerHTML = num;
+  }
+  else if (stex == 6 ) {
+    var num = parseInt(butjet.value) - (parseInt(ck1.value)+parseInt(ck2.value)+parseInt(ck3.value));
+    document.getElementById('butjet').innerHTML = num;
+  }
 
+
+</script> 
   {% endblock %}
