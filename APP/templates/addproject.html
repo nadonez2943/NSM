@@ -92,11 +92,7 @@
             </div>
             <div class="col-md-4">
                งบประมาณ
-               <input name="amount" value="" id="num1" oninput="" class="mask" type="text" style="width:100%;" placeholder="งบประมาณ" autocomplete="off" required>
-            </div>
-            <div class="col-md-4">
-               วงเงิน
-               <input name="financeAmount" value="" class="mask" id="num2" oninput="" type="text" style="width:100%; " title="วงเงินต้องน้อยกว่างบประมาณ" placeholder="วงเงิน "  autocomplete="off" required>
+               <input name="amount" value="" id="num1" oninput="" type="text" style="width:100%;" placeholder="งบประมาณ" autocomplete="off" required>
             </div>
          </div>
       </p>
@@ -217,27 +213,10 @@ $("input.mask").each((i,ele)=>{
 </script>
 <script>
 document.getElementById("num1").oninput = function() {checkValues()};
-document.getElementById("num2").oninput = function() {checkValues()};
 var addpjm = document.getElementById("addpjm");
 function checkValues() {
    document.getElementById("num1").value = document.getElementById("num1").value.replace(/[^0-9.]/g, ''); 
    document.getElementById("num1").value = document.getElementById("num1").value.replace(/(\..*)\./g, '$1');
-   document.getElementById("num2").value = document.getElementById("num2").value.replace(/[^0-9.]/g, ''); 
-   document.getElementById("num2").value = document.getElementById("num2").value.replace(/(\..*)\./g, '$1');
-   var num1 = Number(document.getElementById('num1').value);
-   var num2 = Number(document.getElementById('num2').value);
-        if (num2 > num1) {
-            addpjm.style.display = "block";
-            document.getElementById('num2').value= num1 ;
-        }
-    }
-   function closepjm() {
-      addpjm.style.display = "none";
-      };
-   window.onclick = function(event) {
-        if (event.target == addpjm) {
-         addpjm.style.display = "none";
-        }
-      }
-</script>
+   }
+   </script>
 {% endblock %}
