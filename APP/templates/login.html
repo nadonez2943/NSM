@@ -89,7 +89,7 @@ h3{
 <div class="card">
     </br>
     <h3 style="margin: 20px 10px 10px;font-family: Arial;">Sign In</h3>
-    <form action="{{ url_for('login') }}" method="post">
+    <form action="/login" method="post">
         <div class="msg">{{ msg }}</div><br>
         <input id="user_name" name="user_name" type="text" placeholder="Username"/></br><br>
         <input id="user_password" name="user_password" type="password" placeholder="Password"/></br><br><br>

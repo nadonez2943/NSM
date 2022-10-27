@@ -130,7 +130,7 @@
         <tbody>  
           {% for result in em %}
           <tr>
-            <td style="width: 10%;" align="center">{{result['user_id']}}</td>    
+            <td style="width: 10%;" align="center">{{result['row_num']}}</td>    
             <td style="width: 15%;"align="center">{{result['user_name']}}</td>      
             <td style="width: 20%;"align="center">{{result['user_fullname']}}</td>
             <td style="width: 20%;"align="center">{{result['user_email']}}</td>
@@ -164,11 +164,12 @@
           <th hidden><center>กอง</center></th>
           <th></th>
         </tr>  
-      </thead>  
+      </thead> 
+      <input type="hidden" id="cadmin" value="{{ad2[0]['cadmin']}}" >
       <tbody>  
         {% for result in ad %}
         <tr>
-          <td style="width: 10%;" align="center">{{result['user_id']}}</td>    
+          <td style="width: 10%;" align="center" id="rn">{{result['row_num']}}</td>    
             <td style="width: 15%;"align="center">{{result['user_name']}}</td>      
             <td style="width: 20%;"align="center">{{result['user_fullname']}}</td>
             <td style="width: 20%;"align="center">{{result['user_email']}}</td>
@@ -177,7 +178,7 @@
             <td hidden align="center">{{result['of_name']}}</td>
             <td hidden align="center">{{result['dv_shname']}}</td>  
             <td hidden align="center">{{result['dv_name']}}</td>
-            <td style="width: 20%;"align="center">
+            <td style="width: 20%;"align="center" id="editad">
               <a href="/edit/user/{{result['user_id']}}" class='btn' >แก้ไข</a>
               <a href="/delete/user/{{result['user_id']}}" class='btn btn-danger' style="background-color: rgb(255, 27, 27);">ลบ</a>
             </td>
@@ -213,6 +214,11 @@ evt.currentTarget.className += " active";
 }
 // Get the element with id="defaultOpen" and click on it
 document.getElementById("defaultOpen").click();
+</script>
+<script>
+  var cad = Number(document.getElementById("cadmin").value);
+  var rn = Number(document.getElementById("rn").innerHTML);
+  document.getElementById("editad").innerHTML = "";
 </script>
 </body> 
 {% endblock %}
