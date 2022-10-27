@@ -2225,7 +2225,7 @@ def adduser():
                 cursor = conn.cursor()
                 cursor.execute(sql, data)
                 conn.commit()
-                return redirect('/listuser')
+                return redirect('/admin/employee')
             else:
                 return 'Error while adding user'
         except Exception as e:
