@@ -70,6 +70,8 @@
   <button class="tablinks" onclick="openCity(event, 'Draft')">ชุดร่าง</button>
   <button class="tablinks" onclick="openCity(event, 'Consider')">ชุดพิจารณาผล</button>
   <button class="tablinks" onclick="openCity(event, 'Examine')">ชุดตรวจรับ</button>
+  <button class="tablinks" onclick="openCity(event, 'End')" style="color: rgb(247, 43, 43);">โครงการที่ยุติ</button>
+  <button class="tablinks" onclick="openCity(event, 'Success')" style="color: green;">โครงการที่สำเร็จ</button>
   </center>
 </div>
 
@@ -198,6 +200,56 @@
     </table>  
 </div>
 
+<div id="End" class="tabcontent">
+  <table id="myTableEn" class="table table-striped" >  
+    <thead>  
+      <tr class="header">  
+        <th><center>ลำดับ</center></th>
+        <th><center>ชื่อโครงการ</center></th>
+        <th ><center>เลขสารบัญ</center></th>
+        <th ><center>ผู้รับผิดชอบ</center></th>
+        <th ><center>ความคืบหน้า</center></th>
+      </tr>  
+    </thead>  
+    <tbody>  
+      {% for result in En %}
+      <tr onclick="document.location='/project/{{result.pj_id}}'" >
+        <td align="center">{{result['row_num']}}</td>
+        <td>{{result['pj_name']}}</td>
+        <td> {{result['pj_refNumber']}}</td>
+        <td>{{result['user_fullname']}}</td>
+        <td><center>{{result['x']}} %</center></td>        
+      </tr>
+      {% endfor %}
+    </tbody>  
+  </table>  
+</div>
+
+<div id="Success" class="tabcontent">
+  <table id="myTableSu" class="table table-striped" >  
+    <thead>  
+      <tr class="header">  
+        <th><center>ลำดับ</center></th>
+        <th><center>ชื่อโครงการ</center></th>
+        <th ><center>เลขสารบัญ</center></th>
+        <th ><center>ผู้รับผิดชอบ</center></th>
+        <th ><center>ความคืบหน้า</center></th>
+      </tr>  
+    </thead>  
+    <tbody>  
+      {% for result in Su %}
+      <tr onclick="document.location='/project/{{result.pj_id}}'" >
+        <td align="center">{{result['row_num']}}</td>
+        <td>{{result['pj_name']}}</td>
+        <td> {{result['pj_refNumber']}}</td>
+        <td>{{result['user_fullname']}}</td>
+        <td><center>{{result['x']}} %</center></td>        
+      </tr>
+      {% endfor %}
+    </tbody>  
+  </table>  
+</div>
+
 <br>
 <center>
   <a class="btn btn-primary btn-lg" href="/addProject" role="button">เพิ่มโครงการใหม่</a>
@@ -218,6 +270,12 @@ $(document).ready(function(){
 });
 $(document).ready(function(){
   $('#myTableEX').dataTable();
+});
+$(document).ready(function(){
+  $('#myTableEn').dataTable();
+});
+$(document).ready(function(){
+  $('#myTableSu').dataTable();
 });
 
 function openCity(evt, cityName) {

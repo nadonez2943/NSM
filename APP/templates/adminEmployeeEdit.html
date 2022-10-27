@@ -44,7 +44,13 @@
         <div class="col-md-6" >
           <div class="row">
             <div class="col-md-4" ><h4>สถานะ</h4></div>
-            <div class="col-md-8" ><input name="user_role" type="text" value="{{row[0]['user_role']}} " style="width: 100%;"/></div>
+            <div class="col-md-8" >
+              <select name="user_role" id="user_role" class="form-control" style="width: 100%; ">
+                <option value="{{row[0]['user_role']}}" hidden>{{row[0]['user_role']}}</option>
+                <option value="user">user</option>
+                <option value="admin">admin</option>
+              </select>
+            </div>
           </div>
           <div class="row" style="margin-top: 8px;">
             <div class="col-md-4" ><h4>สำนักงาน</h4></div>
