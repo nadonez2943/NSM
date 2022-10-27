@@ -293,7 +293,7 @@
                         <label>
                         <strong id="reportd" style="display: none;">วันและเวลาที่ส่งรายงานผล</strong>
                         </label>
-                        <input type="hidden" value="" min="{{row[0]['today']}}" name="report_date" id="report_date" required><br>
+                        <input type="hidden" value="" max="{{row[0]['today']}}T{{row[0]['timenow']}}" name="report_date" id="report_date" required><br>
                         <label>
                         <strong id="winnerd" style="display: none;">วันที่ประกาศผู้ชนะ</strong>
                         </label>
@@ -464,6 +464,20 @@
           
           <div class="card">
             <div class="card-header">
+            <center><h5>วันที่</h5></center>
+            </div>
+            <div class="card-body">
+              
+              <p>วันประกาศซื้อจ้าง:</p><p>{{row[0]['buy_date']}}</p>
+              <p>วันที่ยื่นคุณสมบัติ:</p><p>{{row[0]['prop_date']}}</p>
+              <p>วันที่ส่งรายงานผล:</p><p>{{row[0]['report_date']}}</p>
+              
+              <a align="right" href="considerEvent">แก้ไข</a>
+            </div>
+          </div>
+          <p></p>
+          <div class="card">
+            <div class="card-header">
             <center><h5>การนัดหมาย</h5></center>
             </div>
             <div class="card-body">
@@ -475,11 +489,13 @@
               <a align="right" href="considerEvent">ดูเพิ่มเติม</a>
             </div>
           </div>
+          <p></p>
           <div class="card" style="margin-top: 5px;">
             <div class="card-body">
               <a align="center" href="doc/2">เอกสารโครงการ</a>
             </div>
           </div>
+          <p></p>
           <div class="card" style="margin-top:8px;">
             <div class="card-body" align="center">
               <a href="/project/{{row[0]['pj_id']}}/addpacview">เพิ่มประกาศจากกองพัสดุ</a>
