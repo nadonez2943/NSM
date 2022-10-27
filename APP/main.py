@@ -29,7 +29,7 @@ def login():
         user_name = request.form['user_name']
         user_password = request.form['user_password']
         password = (user_password+salt).encode()
-        passwordDB = h=hashlib.md5(password).hexdigest()
+        passwordDB = hashlib.md5(password).hexdigest()
         cursor = mysql.connect().cursor(pymysql.cursors.DictCursor)
         cursor.execute('SELECT * FROM users WHERE user_name = % s AND user_password = % s', (user_name, passwordDB))
         account = cursor.fetchone()
@@ -2221,7 +2221,7 @@ def adduserPOST():
             of_id = request.form['ofid']
             dv_id = request.form['dvid']
             password = (user_password+salt).encode()
-            passwordDB = h=hashlib.md5(password).hexdigest()
+            passwordDB = hashlib.md5(password).hexdigest()
             if  user_name and user_fullname and user_email and user_password and user_role and tel and of_id and dv_id and request.method == 'POST':
                 sql = "INSERT INTO users (user_name, user_fullname, user_email, user_password, user_role, tel, of_id, dv_id) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)"
                 data = (user_name,user_fullname,user_email,passwordDB,user_role,tel,of_id,dv_id,)
