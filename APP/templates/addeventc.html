@@ -57,7 +57,7 @@
               <h5>วันที่และเวลา</h5>
             </div>
             <div class="col-75">
-            <input name="evdate" min="{{row[0]['today']}}" value="" type="datetime-local"> </input>
+            <input name="evdate" min="{{row[0]['today']}}T{{row[0]['timenow']}}" value="" type="datetime-local"> </input>
             <input name="evphase" value="2" type="hidden">
             <input name="pjid" value="{{row[0]['pj_id']}}" type="hidden">
             </div>
