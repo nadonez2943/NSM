@@ -91,6 +91,9 @@ if (usrole != "chairman")  {
   if (stdd == "2" && pmc == "wait" && usrole == "chairman")  {
     document.getElementById('appbotton').type = "submit";
   }
+  if (stdd == "2" && pmc == "wait" && usrole == "assistant")  {
+    document.getElementById('rtnoti').innerHTML = "รอประธานยืนยัน";
+  }
   if (stdd == "3" && pmc != "wait" && usrole == "assistant") {
     document.getElementById('appbotton').value = "อนุมัติ";
     document.getElementById('appbotton2').value = "ไม่อนุมัติ";
@@ -122,6 +125,9 @@ if (usrole != "chairman")  {
   if (stdd > 1 && usrole == "manager")  {
       document.getElementById('addboardd').innerHTML = "";
     }
+  if (stdd == 5 )  {
+      document.getElementById('addboardd').innerHTML = "";
+    }
   if ( usrole == "chairman")  {
       document.getElementById('addboardd').innerHTML = "";
     }
@@ -133,11 +139,11 @@ if (usrole != "chairman")  {
   var cpmc = document.getElementById('CPMC').value;
   var condif = Number(document.getElementById('condif').value);
   if (stcc == 2 && cpmc != "wait" && usrole == "manager") {
-    document.getElementById('addctt').innerHTML = "รอเลขาธิการกรอกวันที่";
+    document.getElementById('addctt').innerHTML = "รอเลขานุการกรอกวันที่";
     document.getElementById('addctt').style.color = "gray";
   }
   if (stcc == 2 && cpmc == "wait" && usrole == "manager") {
-    document.getElementById('addctt').innerHTML = "รอเลขาธิการกรอกวันที่";
+    document.getElementById('addctt').innerHTML = "รอเลขานุการกรอกวันที่";
     document.getElementById('addctt').style.color = "gray";
   }
   if (stcc == 2 && cpmc != "wait" && usrole == "assistant") {
@@ -224,7 +230,7 @@ if (usrole != "chairman")  {
     }
     }
   if (stcc == 5 && windif <= 0 && usrole == "chairman")  {
-    document.getElementById('addctt').innerHTML = "รอเลขาธิการเพิ่มบริษัทผู้ชนะ";
+    document.getElementById('addctt').innerHTML = "รอเลขานุการเพิ่มบริษัทผู้ชนะ";
     document.getElementById('addctt').style.color = "gray";
     }
 </script>
@@ -591,6 +597,7 @@ if (usrole != "chairman")  {
       var cboa = Number(document.getElementById("cboa").value);
       var cas = document.getElementById("cas").value;
       var addmodal = document.getElementById("addmodal");
+      
       if (usft == "None"){
         document.getElementById("usft").style.display = "none";
         document.getElementById("usrt").style.display = "none";
@@ -602,14 +609,15 @@ if (usrole != "chairman")  {
       if (cas == "1"){
         $("#rid option[value='3']").hide();
       }
-      if(cboa % 2 == 0 && cboa != 0) {
-        document.getElementById("finil").href = "#";
-        document.getElementById("fini").onclick = function() {unfinished()};
-      }
       if (cmng == "0" || cas == "0" || cboa == 0){
         document.getElementById("finil").href = "#";
         document.getElementById("fini").onclick = function() {unfinishedAll()};
       }
+      else if(cboa % 2 == 0 ) {
+        document.getElementById("finil").href = "#";
+        document.getElementById("fini").onclick = function() {unfinished()};
+      }
+      
       else if (document.getElementById("PMR").value == "PM" ){
         document.getElementById("finished").type = "submit";
         document.getElementById("fini").type = "hidden";
@@ -617,6 +625,7 @@ if (usrole != "chairman")  {
       function unfinished() {
         addmodal.style.display = "block";
         document.getElementById("addnoti").value = "จำนวนกรรมการต้องเป็นจำนวนคี่";
+        document.getElementById("addnoti").style.width = "100%";
       }
       function unfinishedAll() {
         addmodal.style.display = "block";
@@ -665,18 +674,5 @@ if (usrole != "chairman")  {
       }
       </script>
       
-      <script>
-        var pjmodal = document.getElementById("clmodal");
-        var pjstt = Number(document.getElementById("pjstt").value);
-        document.getElementById("clbutton").onclick = function() {clpj()};
-        if (pjstt == 3){
-          window.onload = function() {
-            clmodal.style.display = "block";
-          }
-        }
-        function clpj() {
-          window.location.href = ("/home");
-          }
-      </script>
   </body>
 </html>
