@@ -44,14 +44,6 @@
                         </div>
                       </div>
                       <div class="row">
-                          <div class="col-25">
-                            <label>วันที่เบิกจ่าย</label>
-                          </div>
-                          <div class="col-75">
-                          <label><input name="ins_date" value="{{row[0]['ins_date']}}" type="date" id="ndate1" onchange="myFunction()" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
-                          </div>
-                      </div>
-                      <div class="row">
                         <div class="col-25">
                           <label>ยอดที่เบิกจ่าย</label>
                         </div>
@@ -92,14 +84,7 @@
                         <label><input name="check_detail1" value="{{row[1]['check_detail']}}" type="text" style="width:700px; height: 100px;  " placeholder="" autocomplete="off" required> </p></label>
                       </div>
                     </div>
-                    <div class="row">
-                        <div class="col-25">
-                          <label>วันที่เบิกจ่าย</label>
-                        </div>
-                        <div class="col-75">
-                        <label><input name="ins_date1" value="{{row[1]['ins_date']}}" type="date" id="ndate2" onchange="myFunction()" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
-                        </div>
-                    </div>
+                   
                     <div class="row">
                       <div class="col-25">
                         <label>ยอดที่เบิกจ่าย</label>
@@ -141,14 +126,7 @@
                         <label><input name="check_detail2" value="{{row[2]['check_detail']}}" type="text" id="ndate3" style="width:700px; height: 100px;  " placeholder="" autocomplete="off" required> </p></label>
                       </div>
                     </div>
-                    <div class="row">
-                        <div class="col-25">
-                          <label>วันที่เบิกจ่าย</label>
-                        </div>
-                        <div class="col-75">
-                        <label><input name="ins_date2" value="{{row[2]['ins_date']}}" type="date" onchange="myFunction()" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
-                        </div>
-                    </div>
+                  
                     <div class="row">
                       <div class="col-25">
                         <label>ยอดที่เบิกจ่าย</label>
@@ -287,5 +265,39 @@
           }
         }
 </script>  
+<script>
+  function myFunction() {
+    var ccdate1 = document.getElementById("cdate1").value;
+    var ccdate2 = document.getElementById("cdate2").value;
+    var ccdate3 = document.getElementById("cdate3").value;
+    var day1 = new Date(ccdate1);
+    var day2 = new Date(ccdate2);
+    var dd = day1.getDate() + 1;
+    var mm = day1.getMonth() + 1; //January is 0!
+    var yyyy = day1.getFullYear();
+    var dd1 = day2.getDate() + 1;
+    var mm1 = day2.getMonth() + 1; //January is 0!
+    var yyyy1 = day2.getFullYear();
+    if (dd < 10) {
+        dd = '0' + dd;
+      }
+
+    if (mm < 10) {
+        mm = '0' + mm;
+      } 
+    if (dd1 < 10) {
+        dd = '0' + dd;
+      }
+
+    if (mm1 < 10) {
+        mm = '0' + mm;
+      }   
+      day1 = yyyy + '-' + mm + '-' + dd;
+      day2 = yyyy1 + '-' + mm1 + '-' + dd1;
+      document.getElementById("cdate2").setAttribute("min", day1);  
+      document.getElementById("cdate3").setAttribute("min", day2);  
+   
+  }
+  </script>
   {% endblock %}
   </html>
