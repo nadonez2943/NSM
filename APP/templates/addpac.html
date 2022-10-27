@@ -45,11 +45,11 @@
                     <div class="row">
                         <div class="col-50">
                             <h6>รายละเอียดประกาศ :</h6>
-                            <h6>{{result['pac_detail']}}</h6>
+                            <h6 id="det">{{result['pac_detail']}}</h6>
                         </div>
                         <div class="col-20">
                             <h6>วันที่ประกาศ :</h6>
-                            <h6>{{result['pacdate']}}</h6>
+                            <h6 id="dat">{{result['pacdate']}}</h6>
                         </div>
                         <div class="col-15" style="padding: 10px;">
                             <a class="btn-outline btn-lg" href="/editpac/{{id}}/{{result['pac_id']}}" style="margin-top: 6px;"> แก้ไข</a>
@@ -63,4 +63,11 @@
 			{% endfor %}
         </div>
         </div>
+        <script>
+          var dd = document.getElementById('det').innerHTML
+          if (dd == "None"){
+            document.getElementById('det').innerHTML = "-";
+            document.getElementById('dat').innerHTML = "-";
+          }
+        </script>
     {% endblock %}
