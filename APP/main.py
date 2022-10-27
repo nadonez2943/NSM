@@ -14,8 +14,11 @@ import os
 from wtforms.validators import InputRequired
 from datetime import date,datetime,time
 from dateutil.parser import parse
+import hashlib
 
 ALLOWED_EXTENSIONS = {'doc', 'pdf'}
+
+salt = "fe5Dkui^!gdf"
 
 # log in
 @app.route('/')
@@ -25,8 +28,10 @@ def login():
     if request.method == 'POST' and 'user_name' in request.form and 'user_password' in request.form:
         user_name = request.form['user_name']
         user_password = request.form['user_password']
+        password = (user_password+salt).encode()
+        passwordDB = h=hashlib.md5(password).hexdigest()
         cursor = mysql.connect().cursor(pymysql.cursors.DictCursor)
-        cursor.execute('SELECT * FROM users WHERE user_name = % s AND user_password = % s', (user_name, user_password, ))
+        cursor.execute('SELECT * FROM users WHERE user_name = % s AND user_password = % s', (user_name, passwordDB))
         account = cursor.fetchone()
         if account:
             session['loggedin'] = True
@@ -2003,11 +2008,11 @@ def editUser(id):
             dv_id = request.form['dv_id']
             if  user_name and user_fullname and user_email and user_role and tel and of_id and dv_id and request.method == 'POST':
                 cursor = conn.cursor(pymysql.cursors.DictCursor)
-                sql = "UPDATE pacel SET user_name=%s,user_fullname=%s,user_email=%s,user_role=%s,tel=%s,of_id=%s,dv_id and WHERE user_id=%s"
+                sql = "UPDATE users SET user_name=%s,user_fullname=%s,user_email=%s,user_role=%s,tel=%s,of_id=%s,dv_id=%s WHERE user_id=%s"
                 data = (user_name,user_fullname,user_email,user_role,tel,of_id,dv_id,id)
                 cursor.execute(sql, data)
                 conn.commit()
-                return redirect ('/admin/employee')
+                return redirect ('/admin/employee/edit/'+str(id))
             else:
                 return 'Error'
         except Exception as e:
@@ -2168,18 +2173,6 @@ def deleteDivision(id):
             conn.close()
     else:
         return render_template('inept.html')
-# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-# เรียกหน้าแอด งชั้นนี้มี r 2ตัว
-@app.route('/admin/adduser',methods=['GET'])
-def adduserr():
-    if session['user_role']=="admin":
-        cursor = mysql.connect().cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT * FROM office ORDER BY of_id")
-        office = cursor.fetchall()
-        return render_template("adminAddUser.html", office=office) 
-    else:
-        return render_template('inept.html')
 
 @app.route("/divisions",methods=["POST","GET"])
 def divisions():
@@ -2200,10 +2193,20 @@ def divisions():
             return jsonify(OutputArray) 
     else:
         return render_template('inept.html')
-
+    
+@app.route('/admin/adduser',methods=['GET'])
+def adduserGET():
+    if session['user_role']=="admin":
+        cursor = mysql.connect().cursor(pymysql.cursors.DictCursor)
+        cursor.execute("SELECT * FROM office ORDER BY of_id")
+        office = cursor.fetchall()
+        return render_template("adminAddUser.html", office=office) 
+    else:
+        return render_template('inept.html')
+    
 # ทำการแอดดuser ฟังชั้นนี้มี r 1ตัว
 @app.route('/adduser', methods=['POST'])
-def adduser():
+def adduserPOST():
     if session['user_role']=="admin":
         conn = None
         cursor = None
@@ -2216,9 +2219,11 @@ def adduser():
             tel = request.form['tel']
             of_id = request.form['ofid']
             dv_id = request.form['dvid']
+            password = (user_password+salt).encode()
+            passwordDB = h=hashlib.md5(password).hexdigest()
             if  user_name and user_fullname and user_email and user_password and user_role and tel and of_id and dv_id and request.method == 'POST':
                 sql = "INSERT INTO users (user_name, user_fullname, user_email, user_password, user_role, tel, of_id, dv_id) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)"
-                data = (user_name,user_fullname,user_email,user_password,user_role,tel,of_id,dv_id,)
+                data = (user_name,user_fullname,user_email,passwordDB,user_role,tel,of_id,dv_id,)
                 conn = mysql.connect()
                 cursor = conn.cursor()
                 cursor.execute(sql, data)
@@ -2230,69 +2235,8 @@ def adduser():
             print(e)
     else:
         return render_template('inept.html')
-
-#ลบuser  รับค่าจาก adduser.html
-@app.route('/delete_user/<int:id>')
-def delete_user(id):
-    if session['user_role']=="admin":
-        conn = None
-        cursor = None
-        try:
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            cursor.execute("DELETE FROM users WHERE user_id=%s",(id))
-            conn.commit()
-            flash('ลบรายชื่อสำเร็จ')
-            return redirect('/listuser')
-        except Exception as e:
-            print(e)
-        finally:
-            cursor.close() 
-            conn.close()
-    else:
-        return render_template('inept.html')
-
-# เรียก html edituser.html 
-@app.route('/core_edituser/<int:id>',methods=['GET'])
-def core_edituser(id):
-    cursor = mysql.connect().cursor(pymysql.cursors.DictCursor)
-    cursor.execute("SELECT * FROM office ORDER BY of_id")
-    office = cursor.fetchall()
-    cursor = mysql.connect().cursor(pymysql.cursors.DictCursor)
-    cursor.execute("SELECT * FROM users where user_id =%s",(id))
-    rows = cursor.fetchall()
-    return render_template("edituser.html", office=office, rows=rows)
-
-#แก้ไขuser รับค่าจาก edituser.html
-@app.route('/edit_user', methods=['POST'])
-def edit_user():
-    conn = None
-    cursor = None
-    try:
-        user_name = request.form['user_name']
-        user_fullname = request.form['user_fullname']
-        user_email = request.form['user_email']
-        user_password = request.form['user_password']
-        user_role = request.form['user_role']
-        tel = request.form['tel']
-        of_id = request.form['ofid']
-        dv_id = request.form['dvid']
-        id = request.form['id']
-        if  user_name and user_fullname and user_email and user_password and user_role and tel and of_id and dv_id and  request.method == 'POST':
-            sql = "UPDATE users SET user_name=%s, user_fullname=%s, user_email=%s, user_password=%s, user_role=%s,tel=%s ,of_id=%s ,dv_id=%s  WHERE user_id=%s"
-            data = data = (user_name,user_fullname,user_email,user_password,user_role,tel,of_id,dv_id, id)
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            cursor.execute(sql, data)
-            conn.commit()
-            flash('User updated successfully!')
-            return redirect('/listuser')
-        else:
-            return 'Error while updating user'
-    except Exception as e:
-           print(e)
-
-# -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 @app.route('/t')
 def test():
