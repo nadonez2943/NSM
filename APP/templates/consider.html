@@ -468,9 +468,9 @@
             </div>
             <div class="card-body">
               
-              <p>วันประกาศซื้อจ้าง:</p><p>{{row[0]['buy_date']}}</p>
-              <p>วันที่ยื่นคุณสมบัติ:</p><p>{{row[0]['prop_date']}}</p>
-              <p>วันที่ส่งรายงานผล:</p><p>{{row[0]['report_date']}}</p>
+              <p>วันประกาศซื้อจ้าง:</p><p id="dat1">{{row[0]['buydate']}}</p>
+              <p>วันที่ยื่นคุณสมบัติ:</p><p id="dat2">{{row[0]['propdate']}}</p>
+              <p>วันที่ส่งรายงานผล:</p><p id="dat3">{{row[0]['reportdate']}}</p>
               
               <a align="right" href="considerEvent">แก้ไข</a>
             </div>
@@ -567,6 +567,20 @@
         
       buyday = yyyy + '-' + mm + '-' + dd;
       document.getElementById("prop_date").setAttribute("min", buyday);
+    }
+  </script>
+  <script>
+    var dat1 = document.getElementById('dat1').innerHTML
+    var dat2 = document.getElementById('dat2').innerHTML
+    var dat3 = document.getElementById('dat3').innerHTML
+    if (dat1 == "None"){
+      document.getElementById('dat1').innerHTML = "-";
+    }
+    if (dat2 == "None"){
+      document.getElementById('dat2').innerHTML = "-";
+    }
+    if (dat3 == "None"){
+      document.getElementById('dat3').innerHTML = "-";
     }
   </script>
   {% endblock %}
