@@ -814,10 +814,12 @@ def addeventc2():
     try:
         ev_name = request.form['evname']
         ev_detail = request.form['evdetail']
-        ev_date = request.form['evdate']
+        evd = request.form['evdate']
         ev_phase = request.form['evphase']
+        datee = parse(evd)
+        ev_time = datee.time()
+        ev_date = datee.date()
         pj_id = request.form['pjid']
-        ev_time = request.form['evtime']
 # validate the received values
         if ev_name and ev_detail and ev_date and ev_phase and pj_id and request.method == 'POST':
 # save edits
@@ -1062,7 +1064,6 @@ def update_stc(id):
     cpmc = request.form['CPMC']
     cbd = request.form['checkboxdate']
     buydate = request.form['buy_date']
-    invitedate = request.form['invite_date']
     propdate = request.form['prop_date']
     finishcondate = request.form['finishcon_date']
     reportdate = request.form['report_date']
@@ -1070,7 +1071,6 @@ def update_stc(id):
     winnerdate = request.form['winner_date']
     try:
         bdate = request.form['bdate']
-        idate = request.form['idate']
         pdate = request.form['pdate']
         fdate = request.form['fdate']
         rdate = request.form['rdate']
@@ -1083,7 +1083,6 @@ def update_stc(id):
             if (cbd == "1"):
                 stcon = 2
                 buy_date = buydate
-                invite_date = invitedate
                 prop_date = propdate
                 finishcon_date = '0000-00-00'
                 report_date = '0000-00-00'
@@ -1095,7 +1094,6 @@ def update_stc(id):
             elif (cbd == "0"):
                 stcon = 2
                 buy_date = '0000-00-00'
-                invite_date = '0000-00-00'
                 prop_date = '0000-00-00'
                 finishcon_date = '0000-00-00'
                 report_date = '0000-00-00'
@@ -1107,7 +1105,6 @@ def update_stc(id):
         elif (stcc == 2 and cpmc == "wait"):
             stcon = 3
             buy_date = bdate
-            invite_date = idate
             prop_date = pdate
             finishcon_date = finishcondate
             report_date = '0000-00-00'
@@ -1119,7 +1116,6 @@ def update_stc(id):
         elif (stcc == 3 and cpmc != "wait"):
             stcon = 3
             buy_date = bdate
-            invite_date = idate
             prop_date = pdate
             finishcon_date = fdate
             report_date = '0000-00-00'
@@ -1131,7 +1127,6 @@ def update_stc(id):
         elif (stcc == 3 and cpmc == "wait"):
             stcon = 4
             buy_date = bdate
-            invite_date = idate
             prop_date = pdate
             finishcon_date = fdate
             report_date = '0000-00-00'
@@ -1143,7 +1138,6 @@ def update_stc(id):
         elif (stcc == 4):
             stcon = 5
             buy_date = bdate
-            invite_date = idate
             prop_date = pdate
             finishcon_date = fdate
             report_date = reportdate
@@ -1155,7 +1149,6 @@ def update_stc(id):
         elif (stcc == 5 and cpmc != "wait" ):
             stcon = 5
             buy_date = bdate
-            invite_date = idate
             prop_date = pdate
             finishcon_date = fdate
             report_date = rdate
@@ -1167,7 +1160,6 @@ def update_stc(id):
         elif (stcc == 6 and cpmc != "wait" ):
             stcon = 6
             buy_date = bdate
-            invite_date = idate
             prop_date = pdate
             finishcon_date = fdate
             report_date = rdate
@@ -1179,7 +1171,6 @@ def update_stc(id):
         elif (stcc == 6 and capp == 'yes' and cpmc == "wait" ):
             stcon = 7
             buy_date = bdate
-            invite_date = idate
             prop_date = pdate
             finishcon_date = fdate
             report_date = rdate
@@ -1191,7 +1182,6 @@ def update_stc(id):
         elif (stcc == 6 and capp == 'no' and cpmc == "wait" ):
             stcon = 6
             buy_date = bdate
-            invite_date = idate
             prop_date = pdate
             finishcon_date = fdate
             report_date = rdate
@@ -1203,8 +1193,8 @@ def update_stc(id):
             pj_status = '3'
         conn = mysql.connect()
         cursor = conn.cursor()
-        sql = "UPDATE process SET stcon_id=%s,buy_date=%s,invite_date=%s,prop_date=%s,finishcon_date=%s,report_date=%s,report_time=%s,winner_date=%s,conapp_date=%s,conapp_status=%s,conPMcheck=%s WHERE pj_id=%s"
-        data = (stcon,buy_date,invite_date,prop_date,finishcon_date,report_date,report_time,winner_date,conapp_date,conapp_status,conPMcheck, id)
+        sql = "UPDATE process SET stcon_id=%s,buy_date=%s,prop_date=%s,finishcon_date=%s,report_date=%s,report_time=%s,winner_date=%s,conapp_date=%s,conapp_status=%s,conPMcheck=%s WHERE pj_id=%s"
+        data = (stcon,buy_date,prop_date,finishcon_date,report_date,report_time,winner_date,conapp_date,conapp_status,conPMcheck, id)
         cursor.execute(sql, data)
         sql1 = "UPDATE projects SET pj_status=%s WHERE pj_id=%s"
         data1 = (pj_status, id)
@@ -1659,12 +1649,13 @@ def editproject2():
         refNumber = request.form['refNumber']
         name = request.form['name']
         detail = request.form['detail']
+        pj_amount = request.form['amount']
         pj_id = request.form['pjid']
 # validate the received values
         if refNumber and name  and detail and pj_id and request.method == 'POST':
 # save edits
-            sql = "UPDATE projects SET pj_refNumber=%s,  pj_name=%s,  pj_detail=%s WHERE pj_id=%s"
-            data = (refNumber, name, detail, pj_id)
+            sql = "UPDATE projects SET pj_refNumber=%s,  pj_name=%s,  pj_detail=%s, pj_amount=%s WHERE pj_id=%s"
+            data = (refNumber, name, detail,pj_amount, pj_id)
             conn = mysql.connect()
             cursor = conn.cursor()
             cursor.execute(sql, data)

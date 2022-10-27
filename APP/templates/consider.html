@@ -255,7 +255,6 @@
                   <form action="/project/{{row[0]['pj_id']}}/consider" id="updatestcc" method="post">
                     <input name="checkboxdate" id="checkboxdate" value="0" type="hidden">
                         <input name="bdate" value="{{row[0]['buy_date']}}" type="hidden">
-                        <input name="idate" value="{{row[0]['invite_date']}}" type="hidden">
                         <input name="pdate" value="{{row[0]['prop_date']}}" type="hidden">
                         <input name="fdate" value="{{row[0]['finishcon_date']}}" type="hidden">
                         <input name="rdate" value="{{row[0]['report_date']}}" type="hidden">
@@ -266,7 +265,6 @@
                         <input name="conapp" value="{{row[0]['conapp_status']}}" type="hidden" >
                         <input name="userrole" value="{{role['role']}}" type="hidden">
                         <input type="hidden" value="{{row[0]['buy_date']}}" name="buy_date" >
-                        <input type="hidden" value="{{row[0]['invite_date']}}" name="invite_date" >
                         <input type="hidden" value="{{row[0]['prop_date']}}" name="prop_date" >
                         <input type="hidden" value="{{row[0]['finishcon_date']}}" name="finishcon_date" >
                         <input type="hidden" value="{{row[0]['report_date']}}" name="report_date" >
@@ -287,15 +285,11 @@
                         <label>
                           <strong id="buyd" style="display: none;">วันประกาศซื้อจ้าง</strong>
                         </label>
-                        <input type="hidden" value="0000-00-00" min="{{row[0]['today']}}" name="buy_date" id="buy_date" required>
-                        <label>
-                          <strong id="invited" style="display: none;">วันประกาศเชิญ</strong>
-                        </label>
-                        <input type="hidden" value="0000-00-00" min="{{row[0]['today']}}" name="invite_date" id="invite_date" required>
+                        <input type="hidden" value="" min="{{row[0]['today']}}" name="buy_date" id="buy_date" required>
                         <label>
                         <strong id="propd" style="display: none;">วันที่ยื่นคุณสมบัติ</strong>
                         </label>
-                        <input type="hidden" value="0000-00-00" min="{{row[0]['today']}}" name="prop_date" id="prop_date" required>
+                        <input type="hidden" value="" min="{{row[0]['today']}}" name="prop_date" id="prop_date" required>
                         <label>
                         <strong id="finishcond" style="display: none;">วันพิจารณาแล้วเสร็จ</strong>
                         </label>
@@ -315,7 +309,6 @@
                         </div>
                         <input name="checkboxdate" id="checkboxdate" value="0" type="hidden">
                         <input name="bdate" id="bdate" value="{{row[0]['buy_date']}}" type="hidden">
-                        <input name="idate" id="idate" value="{{row[0]['invite_date']}}" type="hidden">
                         <input name="pdate" id="pdate" value="{{row[0]['prop_date']}}" type="hidden">
                         <input name="fdate" id="fdate" value="{{row[0]['finishcon_date']}}" type="hidden">
                         <input name="rdate" id="rdate" value="{{row[0]['report_date']}}" type="hidden">
@@ -555,5 +548,14 @@
         }
     }
   </script>
-
+  <script>
+    var budd = document.getElementById("buy_date").value
+    var buda = budd+1
+    
+    document.getElementById("buy_date").onchange = function() {datecheck()}
+    function datecheck(){
+      alert (buda)
+      
+    }
+  </script>
   {% endblock %}

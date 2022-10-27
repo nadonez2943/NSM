@@ -59,9 +59,6 @@
         font-weight: bold;
         font-size: 18px;
      }
-     table tr {
-      cursor: pointer;
-    }
     </style>
 </head>  
 <body>
@@ -239,12 +236,7 @@ evt.currentTarget.className += " active";
 // Get the element with id="defaultOpen" and click on it
 document.getElementById("defaultOpen").click();
 
-$(document).ready(function(){
-    $('table tr').click(function(){
-        window.location = $(this).attr('href');
-        return false;
-    });
-  });
+
 </script>
 </body> 
 {% endblock %}
