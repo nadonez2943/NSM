@@ -10,8 +10,23 @@
         left: 0;
         z-index: 1;
       }
-      table tr {
-          cursor: pointer;
+      /* Style the tab content */
+      .tabcontent {
+        display: none;
+        padding: 6px 12px;
+        -webkit-animation: fadeEffect 1s;
+        animation: fadeEffect 1s;
+        border: 1px solid #ccc;
+      }
+      
+      /* Fade in tabs */
+      @-webkit-keyframes fadeEffect {
+        from {opacity: 0;}
+        to {opacity: 1;}
+      }
+      @keyframes fadeEffect {
+        from {opacity: 0;}
+        to {opacity: 1;}
       }
     </style>
   </head>
@@ -69,9 +84,9 @@
       <div class="card"style="margin-top: 20px;padding:10px;">
 
         <div class="row" >
-          <div class="col-md-4">
+          <div class="col-md-4" onclick="openCity(event, 'Manager')" id="defaultOpen">
             
-              <div class="card-body" style="padding: 5px;" align="center">
+              <div class="card-body" style="padding: 5px;" align="center" >
                 <h1>{{pjAll[0]['row_num']}}</h1>
                 <h3>โครงการทั้งหมด</h3>
               </div>
@@ -81,7 +96,7 @@
           <div class="col-md-8" style="padding-top: 8px;padding-bottom:8px;">
             <div class="row">
               <div class="col-md-4">
-                <div class="card" style="padding-bottom:5%;border-color: green;">
+                <div class="card" style="padding-bottom:5%;border-color: green;cursor: grab;" onclick="openCity(event, 'success')" >
                   <center>
                   <h1>{{st2[0]['row_num']}}</h3>
                   เสร็จสิ้น
@@ -89,7 +104,7 @@
                 </div>
               </div>
               <div class="col-md-4">
-                <div class="card" style="padding-bottom:5%;border-color: orange;">
+                <div class="card" style="padding-bottom:5%;border-color: orange;" onclick="openCity(event, 'onGoing')" >
                   <center>
                   <h1>{{st1[0]['row_num']}}</h3>
                   อยู่ในระหว่างดำเนินการ
@@ -97,7 +112,7 @@
                 </div>
               </div>
               <div class="col-md-4">
-                <div class="card" style="padding-bottom:5%;border-color:red;">
+                <div class="card" style="padding-bottom:5%;border-color:red;" onclick="openCity(event, 'end')" >
                   <center>
                   <h1>{{st3[0]['row_num']}}</h3>
                   ยุติโครงการ
@@ -110,42 +125,137 @@
       </div>
    
       <hr>
-      
-      <table id="myTableMN" class="table table-striped" >  
-        <thead>  
-          <tr class="header">  
-            <th><center>ลำดับ</center></th>
-            <th><center>ชื่อโครงการ</center></th>
-            <th ><center>เลขสารบัญ</center></th>
-            <th ><center>ผู้รับผิดชอบ</center></th>
-            <th ><center>ความคืบหน้า</center></th>
-          </tr>  
-        </thead>  
-        <tbody>  
-          {% for result in row %}
-          <tr href = "/project/{{result['pj_id']}}">
-            <td align="center">{{result['row_num']}}</td>
-            <td>{{result['pj_name']}}</td>        
-            <td>{{result['pj_refNumber']}}</td>
-            <td>{{result['user_fullname']}}</td>
-            <td><center>{{result['x']}} %</center></td>        
-          </tr>
-          {% endfor %}
-        </tbody>  
-      </table>  
-    
+
+      <div id="Manager" class="tabcontent">
+        <table id="myTableMN" class="table table-striped" >  
+          <thead>  
+            <tr class="header">  
+              <th><center>ลำดับ</center></th>
+              <th><center>ชื่อโครงการ</center></th>
+              <th ><center>เลขสารบัญ</center></th>
+              <th ><center>ผู้รับผิดชอบ</center></th>
+              <th ><center>ความคืบหน้า</center></th>
+            </tr>  
+          </thead>  
+          <tbody>  
+            {% for result in row %}
+            <tr onclick="document.location='/project/{{result.pj_id}}'" >
+              <td align="center">{{result['row_num']}}</td>
+              <td>{{result['pj_name']}}</td>        
+              <td>{{result['pj_refNumber']}}</td>
+              <td>{{result['user_fullname']}}</td>
+              <td><center>{{result['x']}} %</center></td>        
+            </tr>
+            {% endfor %}
+          </tbody>  
+        </table>  
+      </div>
+
+      <div id="success" class="tabcontent">
+        <table id="myTableSuc" class="table table-striped" >  
+          <thead>  
+            <tr class="header">  
+              <th><center>ลำดับ</center></th>
+              <th><center>ชื่อโครงการ</center></th>
+              <th ><center>เลขสารบัญ</center></th>
+              <th ><center>ผู้รับผิดชอบ</center></th>
+              <th ><center>ความคืบหน้า</center></th>
+            </tr>  
+          </thead>  
+          <tbody>  
+            {% for result in row %}
+            <tr onclick="document.location='/project/{{result.pj_id}}'" >
+              <td align="center">{{result['row_num']}}</td>
+              <td>{{result['pj_name']}}</td>        
+              <td>{{result['pj_refNumber']}}</td>
+              <td>{{result['user_fullname']}}</td>
+              <td><center>{{result['x']}} %</center></td>        
+            </tr>
+            {% endfor %}
+          </tbody>  
+        </table>  
+      </div>
+
+      <div id="onGoing" class="tabcontent">
+        <table id="myTableOnG" class="table table-striped" >  
+          <thead>  
+            <tr class="header">  
+              <th><center>ลำดับ</center></th>
+              <th><center>ชื่อโครงการ</center></th>
+              <th ><center>เลขสารบัญ</center></th>
+              <th ><center>ผู้รับผิดชอบ</center></th>
+              <th ><center>ความคืบหน้า</center></th>
+            </tr>  
+          </thead>  
+          <tbody>  
+            {% for result in row %}
+            <tr onclick="document.location='/project/{{result.pj_id}}'" >
+              <td align="center">{{result['row_num']}}</td>
+              <td>{{result['pj_name']}}</td>        
+              <td>{{result['pj_refNumber']}}</td>
+              <td>{{result['user_fullname']}}</td>
+              <td><center>{{result['x']}} %</center></td>        
+            </tr>
+            {% endfor %}
+          </tbody>  
+        </table>  
+      </div>
+
+      <div id="end" class="tabcontent">
+        <table id="myTableEnd" class="table table-striped" >  
+          <thead>  
+            <tr class="header">  
+              <th><center>ลำดับ</center></th>
+              <th><center>ชื่อโครงการ</center></th>
+              <th ><center>เลขสารบัญ</center></th>
+              <th ><center>ผู้รับผิดชอบ</center></th>
+              <th ><center>ความคืบหน้า</center></th>
+            </tr>  
+          </thead>  
+          <tbody>  
+            {% for result in row %}
+            <tr onclick="document.location='/project/{{result.pj_id}}'" >
+              <td align="center">{{result['row_num']}}</td>
+              <td>{{result['pj_name']}}</td>        
+              <td>{{result['pj_refNumber']}}</td>
+              <td>{{result['user_fullname']}}</td>
+              <td><center>{{result['x']}} %</center></td>        
+            </tr>
+            {% endfor %}
+          </tbody>  
+        </table>  
+      </div>
+
     </div>
   <script>
   $(document).ready(function(){
     $('#myTableMN').dataTable();
   });
-
   $(document).ready(function(){
-    $('table tr').click(function(){
-        window.location = $(this).attr('href');
-        return false;
-    });
+    $('#myTableSuc').dataTable();
   });
+  $(document).ready(function(){
+    $('#myTableOnG').dataTable();
+  });
+  $(document).ready(function(){
+    $('#myTableEnd').dataTable();
+  });
+
+  function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+  tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+  tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+  }
+  // Get the element with id="defaultOpen" and click on it
+  document.getElementById("defaultOpen").click();
   </script>
     
   </body>
