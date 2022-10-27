@@ -113,14 +113,15 @@
                   <label>รายละเอียด</label>
                 </div>
                 <div class="col-75">
-                  <label>{{row[0]['pj_detail']}}
+                  <label><p style="width:520px;">{{row[0]['pj_detail']}}</p>
                   </label>
                 </div>
+                <p align="right" ><a id="editpj" href="/project/{{id}}/editproject" style="display: none;">แก้ไข</a></p>
               </div>
               <br>
               <div class="card-group">
                 <div class="card">
-                  <div class="card-header" align="center">
+                  <div class="card-header" align="center" id="draftcard">
                     <h5 >ร่างโครงการ</h5>
                   </div>
                   <div class="card-body" align="center">
@@ -131,7 +132,7 @@
                   </div>
                 </div>
                 <div class="card">
-                  <div class="card-header" align="center">
+                  <div class="card-header" align="center" id="concard">
                     <h5>พิจารณาโครงการ</h5>
                   </div>
                   <div class="card-body" align="center">
@@ -142,7 +143,7 @@
                   </div>  
                 </div>
                 <div class="card">
-                  <div class="card-header" align="center">
+                  <div class="card-header" align="center" id="excard">
                     <h5>ตรวจรับโครงการ</h5>
                   </div>
                   <div class="card-body" align="center">
@@ -195,11 +196,9 @@
           <input name="stc" id="stc" value="{{row[0]['stcon_id']}}" type="hidden">
           <input name="CPMC" id="CPMC" value="{{row[0]['conPMcheck']}}" type="hidden">
           <input name="condif" id="condif" value="{{row[0]['condiff']}}" type="hidden">
+          <input name="ste" id="ste" value="{{row[0]['stex_id']}}" type="hidden">
           <input name="pjidd" id="pjidd" value="{{row[0]['pj_id']}}" type="hidden" >
           <div>
-              <form action="/project/{{row[0]['pj_id']}}/closeProject" method="post">
-                <input type="submit" id="closepj" onclick="return confirm('ยืนยันการยุติโครงการ')" value="ยุติโครงการ">
-              </form>
           </div>
         </div>
       </div>
@@ -219,6 +218,19 @@
     </div>
     <p id="user_role" hidden>{{user_role}}</p>
 
+    <div id="clmodal" class="clmodal">
+      <input type="hidden" id="pjstt" value="{{rows[0]['pj_status']}}" disabled="disabled"/>
+      <div class="clmodal-content">
+        <label>
+        <center>
+        <input type="text" id="clnoti" value="โครงการได้ยุติลงแล้ว" disabled="disabled"/>
+        </center>
+        <br>
+        <input type="button" id="clbutton" class="btn" value="กลับไปหน้าหลัก">
+        </label>
+      </div>
+    
+    </div>
   <script>
     var user_role = document.getElementById("user_role").innerHTML
     var myBtn = document.getElementById("myBtn").innerHTML
@@ -276,11 +288,33 @@
   var condif = Number(document.getElementById("condif").value)
   var stcc = Number(document.getElementById('stc').value);
   var cpmc = document.getElementById('CPMC').value;
+  var stdd = Number(document.getElementById('std').value);
+  var usrole = document.getElementById('userrole').value;
+  if (stdd == 1 && usrole == "manager"){
+    document.getElementById('editpj').style.display = "block";
+  }
   if ( stcc == 6 &&  cpmc != "wait" && condif < 0 ) {
       window.onload = function() {
       // similar behavior as clicking on a link
       window.location.href = ("http://localhost:5000/project/"+pjidd+"/conauto");
       }
+  }
+</script>
+<script>
+  var stdd = Number(document.getElementById('std').value);
+  var stcc = Number(document.getElementById('stc').value);
+  var stee = Number(document.getElementById('ste').value);
+  if (stdd < 5){
+    document.getElementById('draftcard').style.background= "green";
+    document.getElementById('draftcard').style.color= "white";
+  }
+  if (stdd == 5 && stcc < 7){
+    document.getElementById('concard').style.background= "green";
+    document.getElementById('concard').style.color= "white";
+  }
+  if (stdd == 5 && stcc == 7 && stee < 6){
+    document.getElementById('excard').style.background= "green";
+    document.getElementById('excard').style.color= "white";
   }
 </script>
   {% endblock %}

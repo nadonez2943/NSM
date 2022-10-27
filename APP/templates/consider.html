@@ -287,28 +287,28 @@
                         <label>
                           <strong id="buyd" style="display: none;">วันประกาศซื้อจ้าง</strong>
                         </label>
-                        <input type="hidden" value="0000-00-00" name="buy_date" id="buy_date" required>
+                        <input type="hidden" value="0000-00-00" min="{{row[0]['today']}}" name="buy_date" id="buy_date" required>
                         <label>
                           <strong id="invited" style="display: none;">วันประกาศเชิญ</strong>
                         </label>
-                        <input type="hidden" value="0000-00-00" name="invite_date" id="invite_date" required>
+                        <input type="hidden" value="0000-00-00" min="{{row[0]['today']}}" name="invite_date" id="invite_date" required>
                         <label>
                         <strong id="propd" style="display: none;">วันที่ยื่นคุณสมบัติ</strong>
                         </label>
-                        <input type="hidden" value="0000-00-00" name="prop_date" id="prop_date" required>
+                        <input type="hidden" value="0000-00-00" min="{{row[0]['today']}}" name="prop_date" id="prop_date" required>
                         <label>
                         <strong id="finishcond" style="display: none;">วันพิจารณาแล้วเสร็จ</strong>
                         </label>
-                        <input type="hidden" value="" name="finishcon_date" id="finishcon_date" required>
+                        <input type="hidden" value="" min="{{row[0]['today']}}" name="finishcon_date" id="finishcon_date" required>
                         <label>
                         <strong id="reportd" style="display: none;">วันและเวลาที่ส่งรายงานผล</strong>
                         </label>
-                        <input type="hidden" value="" name="report_date" id="report_date" required>
+                        <input type="hidden" value="" min="{{row[0]['today']}}" name="report_date" id="report_date" required>
                         <div id="reptime" style="display: none;"><input type="text" id="timepicker" name="report_time" id="report_time" value="00:00"></div>
                         <label>
                         <strong id="winnerd" style="display: none;">วันที่ประกาศผู้ชนะ</strong>
                         </label>
-                        <input type="hidden" value="" name="winner_date" id="winner_date" required>
+                        <input type="hidden" value="" name="winner_date" min="{{row[0]['today']}}" id="winner_date" required>
                         <div class="row" id="noinfo">
                           <div class="c25"><input type='checkbox' onchange='handleChange(this); '></div>
                           <div class="c75"><p>ไม่มีข้อมูล</p></div>
@@ -419,11 +419,10 @@
                   <label>รายละเอียด</label>
                 </div>
                 <div class="col-75">
-                  <label>{{row[0]['pj_detail']}}
+                  <label><p style="width:520px;">{{row[0]['pj_detail']}}</p>
                   </label>
                 </div>
               </div>
-              <p align="right"><a href="/project/{{id}}/editproject" id="editpj">แก้ไข</a></p>
             </div>
           </div>
 
@@ -513,7 +512,17 @@
 
   </div>
   <br>
-
+  <div id="clmodal" class="clmodal">
+    <input type="hidden" id="pjstt" value="{{row[0]['pj_status']}}" disabled="disabled"/>
+    <div class="clmodal-content">
+      <label>
+      <center>
+      <input type="text" id="clnoti" value="โครงการได้ยุติลงแล้ว" disabled="disabled"/>
+      </center>
+      <br>
+      <input type="button" id="clbutton" class="btn" value="กลับไปหน้าหลัก">
+      </label>
+    </div>
   <script>
     var popupForm = document.getElementById("popupForm");
     function openForm() {

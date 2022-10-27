@@ -43,7 +43,7 @@
                         <h4>ชื่อ</h4>
                         </div>
                         <div class="col-md-10">
-                            <p> <input name="evname" value="" type="text" style="width:100%; " placeholder="หัวข้อการนัดหมาย" autocomplete="off" required> </p>
+                            <p> <input name="evname" value="" type="text" style="width:100%; " maxlength="45" placeholder="หัวข้อการนัดหมาย" autocomplete="off" required> </p>
                         </div>
                     </div>
                     <div class="row">
@@ -51,25 +51,17 @@
                         <h4>รายละเอียด</h4>
                         </div>
                         <div class="col-md-10">
-                        <p> <textarea name="evdetail" value="" style="width:100%; height: 80px;  " placeholder="รายละเอียด " autocomplete="off" required>{{row[0]['ev_detail']}}</textarea> </p>
+                        <p> <textarea name="evdetail" value="" style="width:100%; height: 80px;  " maxlength="300" placeholder="รายละเอียด " autocomplete="off" required>{{row[0]['ev_detail']}}</textarea> </p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-2">
-                        <h4>วันที่</h4>
+                        <h5>วันที่และเวลา</h5>
                         </div>
                         <div class="col-md-10">
-                            <input name="evdate" value="" type="date" min="{{diff[0]['start_draft']}}" max="{{diff[0]['endproject_date']}}"></input>
+                            <input name="evdate" value="" type="datetime-local" min="{{diff[0]['start_draft']}}" max="{{diff[0]['endproject_date']}}"></input>
                             <input name="evphase" value="1" type="hidden">
                             <input name="pjid" value="{{row[0]['pj_id']}}" type="hidden">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <h4>เวลา</h4>
-                        </div>
-                        <div class="col-md-10">
-                            <input id="timepicker" name="evtime" type="text" style="width:70px" value="00:00">
                         </div>
                     </div>
                     <center><input type="submit" class="btn btn-primary btn-lg" value="ยืนยัน" ></center>

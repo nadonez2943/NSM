@@ -22,7 +22,7 @@
                 </select>
               
         <select name="roleid" id="rid" size="1">
-            <option hidden>ตำแหน่ง</option>
+            <option value="0" hidden>ตำแหน่ง</option>
             <option id="mng" value="1">ประธาน<br>
             <option id="boa" value="2">กรรมการ<br>
             <option id="as" value="3">เลขาธิการ<br>
@@ -35,7 +35,7 @@
         <input name="bophase" value="2" type="hidden">
         <input name="pjid" value="{{row[0]['pj_id']}}" type="hidden">
         <br>
-        <button type="button" class="btn btn-primary"data-bs-toggle="modal" data-bs-target="#myModal">เพิ่มคณะกรรมการ</button>
+        <button type="button" class="btn btn-primary"data-bs-toggle="modal" data-bs-target="#myModal" id="addbo" disabled>เพิ่มคณะกรรมการ</button>
         <div class="modal" id="myModal">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">

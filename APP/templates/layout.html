@@ -69,7 +69,7 @@
 
 <script>
 var usrole = document.getElementById('userrole').value;
-if (usrole != "manager")  {
+if (usrole != "chairman")  {
       document.getElementById('closepj').type = "hidden";
     }
 </script>
@@ -88,7 +88,7 @@ if (usrole != "manager")  {
     document.getElementById('appbotton').value = "เสร็จสิ้น";
     document.getElementById('appbotton').type = "submit";
   }
-  if (stdd == "2" && pmc == "wait" && usrole == "manager")  {
+  if (stdd == "2" && pmc == "wait" && usrole == "chairman")  {
     document.getElementById('appbotton').type = "submit";
   }
   if (stdd == "3" && pmc != "wait" && usrole == "assistant") {
@@ -99,12 +99,12 @@ if (usrole != "manager")  {
     document.getElementById('appbotton2').style.color = "white";
     document.getElementById('appbotton2').style.background = "#2E4778";
   }
-  if (stdd == "3" && pmc == "wait" && usrole == "manager")  {
+  if (stdd == "3" && pmc == "wait" && usrole == "chairman")  {
     document.getElementById('appbotton').type = "submit";
   }
   if (stdd == "4" && pmc == "yes" && usrole == "assistant")  {
     document.getElementById('appbotton').type = "submit";
-    document.getElementById('appbotton').value = "ส่งกอง พส. ดำเนินการ";
+    document.getElementById('appbotton').value = "ส่งกองพัสดุดำเนินการ";
   }
   if (stdd == "5")  {
     document.getElementById('enddd').style.display = "block";
@@ -122,8 +122,8 @@ if (usrole != "manager")  {
   if (stdd > 1 && usrole == "manager")  {
       document.getElementById('addboardd').innerHTML = "";
     }
-  if ( usrole == "manager")  {
-    document.getElementById('editpj').innerHTML = "";
+  if ( usrole == "chairman")  {
+      document.getElementById('addboardd').innerHTML = "";
     }
 </script>
 
@@ -136,11 +136,11 @@ if (usrole != "manager")  {
     document.getElementById('addctt').innerHTML = "รอผู้รับผิดชอบโครงการกรอกวันที่";
     document.getElementById('addctt').style.color = "gray";
   }
-  if (stcc == 2 && cpmc == "wait" && usrole == "manager") {
+  if (stcc == 2 && cpmc == "wait" && usrole == "chairman") {
     document.getElementById('addctt').innerHTML = "รอเลขาธิการกรอกวันที่";
     document.getElementById('addctt').style.color = "gray";
   }
-  if (stcc == 2 && cpmc != "wait" && usrole == "manager") {
+  if (stcc == 2 && cpmc != "wait" && usrole == "chairman") {
     document.getElementById('openf').style.display = "block";
     document.getElementById('buyd').style.display = "block";
     document.getElementById('buy_date').type = "date";
@@ -159,7 +159,7 @@ if (usrole != "manager")  {
     document.getElementById('appbottonc').type = "submit";
     document.getElementById('appbottonc').value = "พิจารณาผลเสร็จ";
   }
-  if (stcc == 3 && cpmc == "wait" && usrole == "manager") {
+  if (stcc == 3 && cpmc == "wait" && usrole == "chairman") {
     document.getElementById('appbottonc').type = "submit";
   }
   if (stcc == 4 && usrole == "assistant") {
@@ -182,7 +182,7 @@ if (usrole != "manager")  {
     document.getElementById('appbottonc2').type = "submit";
   }
   
-  if (stcc == 6 && cpmc == "wait" && usrole == "manager") {
+  if (stcc == 6 && cpmc == "wait" && usrole == "chairman") {
     document.getElementById('appbottonc').type = "submit";
   }
 
@@ -217,9 +217,8 @@ if (usrole != "manager")  {
   if (stcc > 1 && usrole == "manager")  {
       document.getElementById('addboardc').innerHTML = "";
     }
-  if (usrole == "manager")  {
-    document.getElementById('editpj').innerHTML = "";
- 
+  if ( usrole == "chairman")  {
+      document.getElementById('addboardc').innerHTML = "";
     }
   if (stcc == 5 && windif <= 0 && usrole == "assistant")  {
     document.getElementById('addctt').innerHTML = "**โปรดเพิ่มบริษัทที่ชนะ**";
@@ -232,7 +231,7 @@ if (usrole != "manager")  {
     document.getElementById('editcontt').style.display= "none";
     }
     }
-  if (stcc == 5 && windif <= 0 && usrole == "manager")  {
+  if (stcc == 5 && windif <= 0 && usrole == "chairman")  {
     document.getElementById('addctt').innerHTML = "รอเลขาธิการเพิ่มบริษัทผู้ชนะ";
     document.getElementById('addctt').style.color = "gray";
     }
@@ -611,11 +610,11 @@ if (usrole != "manager")  {
       if (cas == "1"){
         $("#rid option[value='3']").hide();
       }
-      if(cboa % 2 == 0) {
+      if(cboa % 2 == 0 && cboa != 0) {
         document.getElementById("finil").href = "#";
         document.getElementById("fini").onclick = function() {unfinished()};
       }
-      if (cmng == "0" || cas == "0" || cboa < 3){
+      if (cmng == "0" || cas == "0" || cboa == 0){
         document.getElementById("finil").href = "#";
         document.getElementById("fini").onclick = function() {unfinishedAll()};
       }
@@ -644,6 +643,21 @@ if (usrole != "manager")  {
       
       </script>
 
+      <script>
+        document.getElementById("single").onchange = function() {disa()};
+        document.getElementById("rid").onchange = function() {disa()};
+        function disa() {
+        var boardname = document.getElementById("single").value
+        var boardrole = document.getElementById("rid").value
+            if (boardrole != "0" && boardname != ''){
+                document.getElementById("addbo").disabled = false; 
+        } 
+            else if (boardname == ''){
+                document.getElementById("addbo").disabled = true;
+            }
+      }
+
+      </script>
 
       <!-- หน้าอีเว้นท์ -->
       <script>
@@ -659,5 +673,18 @@ if (usrole != "manager")  {
       }
       </script>
       
+      <script>
+        var pjmodal = document.getElementById("clmodal");
+        var pjstt = Number(document.getElementById("pjstt").value);
+        document.getElementById("clbutton").onclick = function() {clpj()};
+        if (pjstt == 3){
+          window.onload = function() {
+            clmodal.style.display = "block";
+          }
+        }
+        function clpj() {
+          window.location.href = ("http://localhost:5000/home");
+          }
+      </script>
   </body>
 </html>

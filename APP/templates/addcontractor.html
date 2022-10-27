@@ -48,7 +48,7 @@
                     <label>วันที่ประกาศผล</label>
                   </div>
                   <div class="col-75">
-                    <p><input name="contt_date" value="" type="date" placeholder="วันที่ประกาศผลบริษัทผู้รับเหมา" required> </p>
+                    <p><input name="contt_date" value="" type="date" min="{{row[0]['today']}}" placeholder="วันที่ประกาศผลบริษัทผู้รับเหมา" required> </p>
                   </div>
                 </div>
                 
@@ -98,7 +98,7 @@
                     <label>วันที่เริ่ม</label>
                   </div>
                   <div class="col-75">
-                    <p><input name="contt_start" id="contt_start" value=""  type="date"  required> </p>
+                    <p><input name="contt_start" id="contt_start" value="" min="{{row[0]['today']}}"  type="date"  required> </p>
                   </div>
                 </div>
                 <div class="row">
@@ -106,7 +106,7 @@
                     <label>วันที่สิ้นสุด</label>
                   </div>
                   <div class="col-75">
-                    <p><input name="contt_end" id="contt_end" value="" type="date"  required> </p>
+                    <p><input name="contt_end" id="contt_end" value="" min="{{row[0]['today']}}" type="date"  required> </p>
                   </div>
                 </div>
                   <CENTER><input type="submit" class="btn" value="เพิ่มข้อมูล" ></CENTER>

@@ -132,7 +132,7 @@
               <input name="userrole" id="userrole" value="{{role['role']}}" type="hidden">
               <input type="hidden" name="appr" value="{{row[0]['draftapp_status']}}" >
               <p id="dayform" style="display: none;">โปรดเลือกวันเริ่มต้น</p>
-              <input name="stdr" id="stdr" value="" min="{{row[0]['today']}}" type="hidden"></input>
+              <input name="stdr" id="stdr" value="" min="{{row[0]['today']}}" type="hidden" required></input>
             <br><br>
             <div align="center"><input type="hidden" id="appbotton" value="ยืนยัน" ></form></div>
             <div align="center"><form action="/project/{{row[0]['pj_id']}}/draft/unapproved" method="post"><input type="hidden" id="appbotton2" value="" ></form></div>
@@ -226,11 +226,10 @@
                 <label>รายละเอียด</label>
               </div>
               <div class="col-75">
-                <label>{{row[0]['pj_detail']}}
+                <label><p style="width:520px;">{{row[0]['pj_detail']}}</p>
                 </label>
               </div>
             </div>
-              <p align="right"><a id="editpj"href="/project/{{id}}/editproject" >แก้ไข</a></p>
         </div>
       </div>
     </div>
@@ -267,5 +266,15 @@
         </center>
       </div>
   </div>
-
+  <div id="clmodal" class="clmodal">
+    <input type="hidden" id="pjstt" value="{{row[0]['pj_status']}}" disabled="disabled"/>
+    <div class="clmodal-content">
+      <label>
+      <center>
+      <input type="text" id="clnoti" value="โครงการได้ยุติลงแล้ว" disabled="disabled"/>
+      </center>
+      <br>
+      <input type="button" id="clbutton" class="btn" value="กลับไปหน้าหลัก">
+      </label>
+    </div>
   {% endblock %}

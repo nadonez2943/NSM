@@ -84,6 +84,23 @@
                     <p><input name="contt_fin" id="contt_fin" value="{{row[0]['contt_fin']}}" class="mask" type="text" placeholder="วงเงิน" required> </p>
                   </div>
                 </div>
+                <div class="row">
+                  <div class="col-25">
+                    <label>วันที่เริ่ม</label>
+                  </div>
+                  <div class="col-75">
+                    <p><input name="contt_start" id="contt_start" value="{{row[0]['contt_start']}}" min="{{row[0]['today']}}"  type="date"  required> </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-25">
+                    <label>วันที่สิ้นสุด</label>
+                  </div>
+                  <div class="col-75">
+                    <p><input name="contt_end" id="contt_end" value="{{row[0]['contt_end']}}" min="{{row[0]['today']}}" type="date"  required> </p>
+                  </div>
+                </div>
+                <input name="contt_id" id="contt_id" value="{{row[0]['contt_id']}}" type="hidden">
                 <CENTER><p><input type="submit" class="btn" value="แก้ไขข้อมูล" ></p></CENTER>
               </div>
             </div>

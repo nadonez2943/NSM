@@ -21,11 +21,10 @@
                     {% endfor %}
                 </select>
               
-        <select name="roleid" id="rid" size="1">
-            <option hidden>ตำแหน่ง</option>
+        <select name="roleid" id="rid" size="1" required>
+            <option value="0" hidden>ตำแหน่ง</option>
             <option id="mng" value="1">ประธาน<br>
             <option id="boa" value="2">กรรมการ<br>
-            <option id="as" value="3">เลขาธิการ<br>
         </select>
         </div>
         </p>
@@ -35,7 +34,7 @@
         <input name="bophase" value="2" type="hidden">
         <input name="pjid" value="{{row[0]['pj_id']}}" type="hidden">
         <br>
-        <button type="button" class="btn btn-primary"data-bs-toggle="modal" data-bs-target="#myModal">เพิ่มคณะกรรมการ</button>
+        <button type="button" class="btn btn-primary"data-bs-toggle="modal" data-bs-target="#myModal" id="addbo" disabled>เพิ่มคณะกรรมการ</button>
         <div class="modal" id="myModal">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -74,18 +73,18 @@
         <th>ตำแหน่ง</th>
         <th>ลบรายชื่อ</th>
         </tr>
-        {% for result in row %}
+        {% for result in row2 %}
         <tr>
         <td id="usft">{{result['user_fullname']}}</td>
         <td id="usrt">{{result['role_name']}}</td>
-        <td id="dlt"><a type="submit" class="btn btn-primary"  href="/project/{{result['pj_id']}}/deleteboardc/{{result['bo_id']}}"  >ลบ</a> 
+        <td id="dlt"><a type="submit" class="btn btn-primary"  href="/project/{{result['pj_id']}}/deleteboardc/{{result['bo_id']}}"  >ลบ</a>
         </td>  
         </tr>
         {% endfor %} 
     </table>
     <input id="PMR" value="AS" type="hidden">
     <br><br><center>
-    <a id="finil" href="/project/{{row[0]['pj_id']}}/consider">
+    <a id="finil" href="/project/{{row2[0]['pj_id']}}/consider">
     <input class="btn btn-primary btn-lg" type="button" id="fini" value="เสร็จสิ้น">
     </a>
     </center>
