@@ -1,80 +1,210 @@
-{% extends 'layout.html' %} 
+{% extends 'layoutt.html' %} 
+
 {% block body %}
-<head>
-    <style>
-        .modal {
-                position: fixed;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.5);
-                opacity: 0;
-                visibility: hidden;
-                transform: scale(1.1);
-                transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
-            }
-
-            .modal-content {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background-color: white;
-                padding: 1rem 1.5rem;
-                width: 24rem;
-                border-radius: 0.5rem;
-            }
-
-            .close-button {
-                float: right;
-                width: 1.5rem;
-                line-height: 1.5rem;
-                text-align: center;
-                cursor: pointer;
-                border-radius: 0.25rem;
-                background-color: lightgray;
-            }
-
-            .close-button:hover {
-                background-color: darkgray;
-            }
-
-            .show-modal {
-                opacity: 1;
-                visibility: visible;
-                transform: scale(1.0);
-                transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
-            }
+<head>  
+  <style>
+    body {font-family: Arial;}
+    
+    /* Style the tab content */
+    .tabcontent {
+      display: none;
+      padding: 6px 12px;
+      -webkit-animation: fadeEffect 1s;
+      animation: fadeEffect 1s;
+      border: 1px solid #ccc;
+    }
+    
+    /* Fade in tabs */
+    @-webkit-keyframes fadeEffect {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    @keyframes fadeEffect {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    .btn {
+        padding: 10px 40px;
+        background-color: rgba(10, 39, 97, 0.83); 
+        color: #FFFFFF;
+        font-weight: bold;
+        font-size: 18px;
+     }
     </style>
-</head>
+</head>  
 <body>
-    <button class="trigger">Click here to trigger the modal!</button>
-    <div class="modal">
-        <div class="modal-content">
-            <span class="close-button"></span>
-            <h1>Hello, I am a modal!</h1>
-        </div>
-    </div>
+<br>
+  <center>
+  <div class="card" onclick="openCity(event, 'Manager')" id="defaultOpen">โครงการที่เป็นผู้รับผิดชอ</div>
+  <div class="card" onclick="openCity(event, 'Board')">โครงการที่เป็นคณะกรรมการ</div>
+  <div class="card" onclick="openCity(event, 'Draft')">ชุดร่าง</div>
+  <div class="card" onclick="openCity(event, 'Consider')">ชุดพิจารณาผล</div>
+  <div class="card" onclick="openCity(event, 'Examine')">ชุดตรวจรับ</div>
+  </center>
+
+<div id="Manager" class="tabcontent">
+  <table id="myTableMN" class="table table-striped" >  
+    <thead>  
+      <tr class="header">  
+        <th><center>ลำดับ</center></th>
+        <th><center>ชื่อโครงการ</center></th>
+        <th ><center>เลขสารบัญ</center></th>
+        <th ><center>ผู้รับผิดชอบ</center></th>
+        <th ><center>ความคืบหน้า</center></th>
+      </tr>  
+    </thead>  
+    <tbody>  
+      {% for result in MN %}
+      <tr onclick="document.location='/project/{{result.pj_id}}'" >
+        <td align="center">{{result['row_num']}}</td>
+        <td>{{result['pj_name']}}</td>      
+        <td> {{result['pj_refNumber']}}</td>
+        <td>{{result['user_fullname']}}</td>
+        <td><center>{{result['x']}} %</center></td>  
+      </tr> 
+      {% endfor %}
+    </tbody>  
+  </table>  
+</div>
+
+<div id="Board" class="tabcontent">
+  <table id="myTableBO" class="table table-striped" >  
+    <thead>  
+      <tr class="header">  
+        <th><center>ลำดับ</center></th>
+        <th><center>ชื่อโครงการ</center></th>
+        <th ><center>เลขสารบัญ</center></th>
+        <th ><center>ผู้รับผิดชอบ</center></th>
+        <th ><center>ความคืบหน้า</center></th>
+      </tr>  
+    </thead>  
+    <tbody>  
+      {% for result in BO %}
+      <tr onclick="document.location='/project/{{result.pj_id}}'" >
+        <td align="center">{{result['row_num']}}</td>
+        <td>{{result['pj_name']}}</td>    
+        <td> {{result['pj_refNumber']}}</td>
+        <td>{{result['user_fullname']}}</td>
+        <td><center>{{result['x']}} %</center></td>        
+      </tr>
+      {% endfor %}
+    </tbody>  
+  </table>  
+</div>
+
+<div id="Draft" class="tabcontent">
+  <table id="myTableDR" class="table table-striped" >  
+    <thead>  
+      <tr class="header">  
+        <th align="center"><center>ลำดับ</center></th>
+        <th><center>ชื่อโครงการ</center></th>
+        <th ><center>เลขสารบัญ</center></th>
+        <th ><center>ผู้รับผิดชอบ</center></th>
+        <th ><center>ความคืบหน้า</center></th>
+      </tr>  
+    </thead>  
+    <tbody>  
+      {% for result in DR %}
+      <tr onclick="document.location='/project/{{result.pj_id}}'" >
+        <td align="center">{{result['row_num']}}</td>
+        <td>{{result['pj_name']}}</td>       
+        <td> {{result['pj_refNumber']}}</td>
+        <td>{{result['user_fullname']}}</td>
+        <td><center>{{result['x']}} %</center></td>        
+      </tr>
+      {% endfor %}
+    </tbody>  
+  </table>  
+</div>
+
+<div id="Consider" class="tabcontent">
+  <table id="myTableCO" class="table table-striped" >  
+    <thead>  
+      <tr class="header">  
+        <th><center>ลำดับ</center></th>
+        <th><center>ชื่อโครงการ</center></th>
+        <th ><center>เลขสารบัญ</center></th>
+        <th ><center>ผู้รับผิดชอบ</center></th>
+        <th ><center>ความคืบหน้า</center></th>
+      </tr>  
+    </thead>  
+    <tbody>  
+      {% for result in CO %}
+      <tr onclick="document.location='/project/{{result.pj_id}}'" >
+        <td align="center">{{result['row_num']}}</td>
+        <td>{{result['pj_name']}}</td>      
+        <td> {{result['pj_refNumber']}}</td>
+        <td>{{result['user_fullname']}}</td>
+        <td><center>{{result['x']}} %</center></td>        
+      </tr>
+      {% endfor %}
+    </tbody>  
+  </table>  
+</div>
+
+<div id="Examine" class="tabcontent">
+    <table id="myTableEX" class="table table-striped" >  
+      <thead>  
+        <tr class="header">  
+          <th><center>ลำดับ</center></th>
+          <th><center>ชื่อโครงการ</center></th>
+          <th ><center>เลขสารบัญ</center></th>
+          <th ><center>ผู้รับผิดชอบ</center></th>
+          <th ><center>ความคืบหน้า</center></th>
+        </tr>  
+      </thead>  
+      <tbody>  
+        {% for result in EX %}
+        <tr onclick="document.location='/project/{{result.pj_id}}'" >
+          <td align="center">{{result['row_num']}}</td>
+          <td>{{result['pj_name']}}</td>
+          <td> {{result['pj_refNumber']}}</td>
+          <td>{{result['user_fullname']}}</td>
+          <td><center>{{result['x']}} %</center></td>        
+        </tr>
+        {% endfor %}
+      </tbody>  
+    </table>  
+</div>
+
+<br>
+<center>
+  <a class="btn btn-primary btn-lg" href="/addProject" role="button">เพิ่มโครงการใหม่</a>
+</center>
 
 <script>
-    const modal = document.querySelector(".modal");
-    const trigger = document.querySelector(".trigger");
-    const closeButton = document.querySelector(".close-button");
+$(document).ready(function(){
+  $('#myTableMN').dataTable();
+});
+$(document).ready(function(){
+  $('#myTableBO').dataTable();
+});
+$(document).ready(function(){
+  $('#myTableDR').dataTable();
+});
+$(document).ready(function(){
+  $('#myTableCO').dataTable();
+});
+$(document).ready(function(){
+  $('#myTableEX').dataTable();
+});
 
-    function toggleModal() {
-        modal.classList.toggle("show-modal");
-    }
+function openCity(evt, cityName) {
+var i, tabcontent, tablinks;
+tabcontent = document.getElementsByClassName("tabcontent");
+for (i = 0; i < tabcontent.length; i++) {
+tabcontent[i].style.display = "none";
+}
+tablinks = document.getElementsByClassName("tablinks");
+for (i = 0; i < tablinks.length; i++) {
+tablinks[i].className = tablinks[i].className.replace(" active", "");
+}
+document.getElementById(cityName).style.display = "block";
+evt.currentTarget.className += " active";
+}
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
 
-    function windowOnClick(event) {
-        if (event.target === modal) {
-            toggleModal();
-        }
-    }
-
-    trigger.addEventListener("click", toggleModal);
-    closeButton.addEventListener("click", toggleModal);
-    window.addEventListener("click", windowOnClick);
 </script>
-</body>
+</body> 
 {% endblock %}

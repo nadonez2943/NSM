@@ -86,7 +86,7 @@
     </thead>  
     <tbody>  
       {% for result in MN %}
-      <tr href = "/project/{{result['pj_id']}}">
+      <tr onclick="document.location='/project/{{result.pj_id}}'" >
         <td align="center">{{result['row_num']}}</td>
         <td>{{result['pj_name']}}</td>      
         <td> {{result['pj_refNumber']}}</td>
@@ -111,7 +111,7 @@
     </thead>  
     <tbody>  
       {% for result in BO %}
-      <tr href = "/project/{{result['pj_id']}}">
+      <tr onclick="document.location='/project/{{result.pj_id}}'" >
         <td align="center">{{result['row_num']}}</td>
         <td>{{result['pj_name']}}</td>    
         <td> {{result['pj_refNumber']}}</td>
@@ -136,7 +136,7 @@
     </thead>  
     <tbody>  
       {% for result in DR %}
-      <tr href = "/project/{{result['pj_id']}}">
+      <tr onclick="document.location='/project/{{result.pj_id}}'" >
         <td align="center">{{result['row_num']}}</td>
         <td>{{result['pj_name']}}</td>       
         <td> {{result['pj_refNumber']}}</td>
@@ -161,7 +161,7 @@
     </thead>  
     <tbody>  
       {% for result in CO %}
-      <tr href = "/project/{{result['pj_id']}}">
+      <tr onclick="document.location='/project/{{result.pj_id}}'" >
         <td align="center">{{result['row_num']}}</td>
         <td>{{result['pj_name']}}</td>      
         <td> {{result['pj_refNumber']}}</td>
@@ -186,7 +186,7 @@
       </thead>  
       <tbody>  
         {% for result in EX %}
-        <tr href = "/project/{{result['pj_id']}}">
+        <tr onclick="document.location='/project/{{result.pj_id}}'" >
           <td align="center">{{result['row_num']}}</td>
           <td>{{result['pj_name']}}</td>
           <td> {{result['pj_refNumber']}}</td>
@@ -235,7 +235,6 @@ evt.currentTarget.className += " active";
 }
 // Get the element with id="defaultOpen" and click on it
 document.getElementById("defaultOpen").click();
-
 
 </script>
 </body> 

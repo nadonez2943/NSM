@@ -77,6 +77,8 @@ def home():
         finally:
             cursor.close() 
             conn.close()
+    elif session['user_role']=="admin":
+        return redirect('/admin')
     else:
         return render_template('inept.html')
         
@@ -1065,9 +1067,7 @@ def update_stc(id):
     cbd = request.form['checkboxdate']
     buydate = request.form['buy_date']
     propdate = request.form['prop_date']
-    finishcondate = request.form['finishcon_date']
     reportdate = request.form['report_date']
-    reporttime = request.form['report_time']
     winnerdate = request.form['winner_date']
     try:
         bdate = request.form['bdate']
@@ -1106,7 +1106,7 @@ def update_stc(id):
             stcon = 3
             buy_date = bdate
             prop_date = pdate
-            finishcon_date = finishcondate
+            finishcon_date = '0000-00-00'
             report_date = '0000-00-00'
             report_time = '00:00:00'
             winner_date = '0000-00-00'
@@ -1117,7 +1117,7 @@ def update_stc(id):
             stcon = 3
             buy_date = bdate
             prop_date = pdate
-            finishcon_date = fdate
+            finishcon_date = date.today()
             report_date = '0000-00-00'
             report_time = '00:00:00'
             winner_date = '0000-00-00'
@@ -1139,9 +1139,12 @@ def update_stc(id):
             stcon = 5
             buy_date = bdate
             prop_date = pdate
-            finishcon_date = fdate
-            report_date = reportdate
-            report_time = reporttime
+            finishcon_date = fdate 
+            datee = parse(reportdate)
+            rep_time = datee.time()
+            rep_date = datee.date()
+            report_date = rep_date
+            report_time = rep_time
             winner_date = '0000-00-00'
             conapp_date = '0000-00-00'
             conapp_status = ''
@@ -1903,260 +1906,278 @@ def editpac(id,pac_id):
 #addmin
 @app.route('/admin')
 def admin():
-    conn = None
-    cursor = None
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.projects.pj_id) as row_num ,CAST(((stdraft_percent+stcon_percent+stex_percent)/3) AS DECIMAL(15, 2)) as x FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.mn_id  LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id group by nsm_project.projects.pj_id order by nsm_project.projects.pj_id asc, nsm_project.events.ev_id desc")
-        row = cursor.fetchall()
-        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.projects.pj_id) as row_num FROM nsm_project.projects order by nsm_project.projects.pj_id desc;")
-        pjAll = cursor.fetchall()
-        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.projects.pj_id) as row_num FROM nsm_project.projects where nsm_project.projects.pj_status=1 order by nsm_project.projects.pj_id desc;")
-        st1 = cursor.fetchall()
-        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.projects.pj_id) as row_num FROM nsm_project.projects where nsm_project.projects.pj_status=2 order by nsm_project.projects.pj_id desc;")
-        st2 = cursor.fetchall()
-        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.projects.pj_id) as row_num FROM nsm_project.projects where nsm_project.projects.pj_status=3 order by nsm_project.projects.pj_id desc;")
-        st3 = cursor.fetchall()
-        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.users.user_id) as row_num FROM nsm_project.users order by nsm_project.users.user_id desc;")
-        em = cursor.fetchall()
-        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.office.of_id) as row_num FROM nsm_project.office order by nsm_project.office.of_id desc;")
-        of = cursor.fetchall()
-        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.division.dv_id) as row_num FROM nsm_project.division order by nsm_project.division.dv_id desc;")
-        dv = cursor.fetchall()
-        return render_template('admin.html',row=row,em=em,of=of,dv=dv,st1=st1,st2=st2,st3=st3,pjAll=pjAll)
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close() 
-        conn.close()
+    if session['user_role']=="admin":
+        conn = None
+        cursor = None
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor(pymysql.cursors.DictCursor)
+            cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.projects.pj_id) as row_num ,CAST(((stdraft_percent+stcon_percent+stex_percent)/3) AS DECIMAL(15, 2)) as x FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.mn_id  LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id group by nsm_project.projects.pj_id order by nsm_project.projects.pj_id asc, nsm_project.events.ev_id desc")
+            row = cursor.fetchall()
+            cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.projects.pj_id) as row_num FROM nsm_project.projects order by nsm_project.projects.pj_id desc;")
+            pjAll = cursor.fetchall()
+            cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.projects.pj_id) as row_num FROM nsm_project.projects where nsm_project.projects.pj_status=1 order by nsm_project.projects.pj_id desc;")
+            st1 = cursor.fetchall()
+            cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.projects.pj_id) as row_num FROM nsm_project.projects where nsm_project.projects.pj_status=2 order by nsm_project.projects.pj_id desc;")
+            st2 = cursor.fetchall()
+            cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.projects.pj_id) as row_num FROM nsm_project.projects where nsm_project.projects.pj_status=3 order by nsm_project.projects.pj_id desc;")
+            st3 = cursor.fetchall()
+            cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.users.user_id) as row_num FROM nsm_project.users order by nsm_project.users.user_id desc;")
+            em = cursor.fetchall()
+            cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.office.of_id) as row_num FROM nsm_project.office order by nsm_project.office.of_id desc;")
+            of = cursor.fetchall()
+            cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.division.dv_id) as row_num FROM nsm_project.division order by nsm_project.division.dv_id desc;")
+            dv = cursor.fetchall()
+            return render_template('admin.html',row=row,em=em,of=of,dv=dv,st1=st1,st2=st2,st3=st3,pjAll=pjAll)
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close() 
+            conn.close()
+    else:
+        return render_template('inept.html')
 
 @app.route('/admin/employee')
 def adminEmployee():
-    conn = None
-    cursor = None
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.users.user_id) as row_num FROM nsm_project.users LEFT JOIN nsm_project.office ON nsm_project.users.of_id=nsm_project.office.of_id LEFT JOIN nsm_project.division ON nsm_project.users.dv_id=nsm_project.division.dv_id WHERE nsm_project.users.user_role='user' order by nsm_project.users.user_id desc;")
-        em = cursor.fetchall()
-        cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.users.user_id) as row_num FROM nsm_project.users LEFT JOIN nsm_project.office ON nsm_project.users.of_id=nsm_project.office.of_id LEFT JOIN nsm_project.division ON nsm_project.users.dv_id=nsm_project.division.dv_id WHERE nsm_project.users.user_role='admin' order by nsm_project.users.user_id desc;")
-        ad = cursor.fetchall()
-        return render_template('adminEmployee.html',em=em,ad=ad)
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close() 
-        conn.close()
+    if session['user_role']=="admin":
+        conn = None
+        cursor = None
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor(pymysql.cursors.DictCursor)
+            cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.users.user_id) as row_num FROM nsm_project.users LEFT JOIN nsm_project.office ON nsm_project.users.of_id=nsm_project.office.of_id LEFT JOIN nsm_project.division ON nsm_project.users.dv_id=nsm_project.division.dv_id WHERE nsm_project.users.user_role='user' order by nsm_project.users.user_id desc;")
+            em = cursor.fetchall()
+            cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.users.user_id) as row_num FROM nsm_project.users LEFT JOIN nsm_project.office ON nsm_project.users.of_id=nsm_project.office.of_id LEFT JOIN nsm_project.division ON nsm_project.users.dv_id=nsm_project.division.dv_id WHERE nsm_project.users.user_role='admin' order by nsm_project.users.user_id desc;")
+            ad = cursor.fetchall()
+            return render_template('adminEmployee.html',em=em,ad=ad)
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close() 
+            conn.close()
+    else:
+        return render_template('inept.html')
 
 @app.route('/admin/employee/edit/<int:id>',methods=['GET'])
 def adminEmployeeEdit(id):
-    conn = None
-    cursor = None
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT * FROM nsm_project.users LEFT JOIN nsm_project.office ON nsm_project.users.of_id=nsm_project.office.of_id LEFT JOIN nsm_project.division ON nsm_project.users.dv_id=nsm_project.division.dv_id WHERE nsm_project.users.user_id=%s;",(id))
-        row = cursor.fetchall()
-        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 543 YEAR ), %s) as curyear,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 542 YEAR ), %s) as curyear1,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 541 YEAR ), %s) as curyear2,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 544 YEAR ), %s) as curyear11,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 545 YEAR ), %s) as curyear22 FROM office ORDER BY of_id",(format,format,format,format,format))
-        office = cursor.fetchall()
-        return render_template('adminEmployeeEdit.html',row=row,office=office)
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close() 
-        conn.close()
+    if session['user_role']=="admin":
+        conn = None
+        cursor = None
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor(pymysql.cursors.DictCursor)
+            cursor.execute("SELECT * FROM nsm_project.users LEFT JOIN nsm_project.office ON nsm_project.users.of_id=nsm_project.office.of_id LEFT JOIN nsm_project.division ON nsm_project.users.dv_id=nsm_project.division.dv_id WHERE nsm_project.users.user_id=%s;",(id))
+            row = cursor.fetchall()
+            cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 543 YEAR ), %s) as curyear,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 542 YEAR ), %s) as curyear1,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 541 YEAR ), %s) as curyear2,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 544 YEAR ), %s) as curyear11,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 545 YEAR ), %s) as curyear22 FROM office ORDER BY of_id",(format,format,format,format,format))
+            office = cursor.fetchall()
+            return render_template('adminEmployeeEdit.html',row=row,office=office)
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close() 
+            conn.close()
+    else:
+        return render_template('inept.html')
     
 
 @app.route('/edituser/<int:id>', methods=['POST'])
 def editUser(id):
-    conn = None
-    cursor = None
-    conn = mysql.connect()
-    cursor = conn.cursor()
-    try:
-        user_name = request.form['user_name']
-        user_fullname = request.form['user_fullname']
-        user_email = request.form['user_email']
-        user_role = request.form['user_role']
-        tel = request.form['tel']
-        of_id = request.form['of_id']
-        dv_id = request.form['dv_id']
-        if  user_name and user_fullname and user_email and user_role and tel and of_id and dv_id and request.method == 'POST':
-            cursor = conn.cursor(pymysql.cursors.DictCursor)
-            sql = "UPDATE pacel SET user_name=%s,user_fullname=%s,user_email=%s,user_role=%s,tel=%s,of_id=%s,dv_id and WHERE user_id=%s"
-            data = (user_name,user_fullname,user_email,user_role,tel,of_id,dv_id,id)
-            cursor.execute(sql, data)
-            conn.commit()
-            return redirect ('/admin/employee')
-        else:
-            return 'Error'
-    except Exception as e:
-           print(e)
-    finally:
-        cursor.close() 
-        conn.close()
+    if session['user_role']=="admin":
+        conn = None
+        cursor = None
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        try:
+            user_name = request.form['user_name']
+            user_fullname = request.form['user_fullname']
+            user_email = request.form['user_email']
+            user_role = request.form['user_role']
+            tel = request.form['tel']
+            of_id = request.form['of_id']
+            dv_id = request.form['dv_id']
+            if  user_name and user_fullname and user_email and user_role and tel and of_id and dv_id and request.method == 'POST':
+                cursor = conn.cursor(pymysql.cursors.DictCursor)
+                sql = "UPDATE pacel SET user_name=%s,user_fullname=%s,user_email=%s,user_role=%s,tel=%s,of_id=%s,dv_id and WHERE user_id=%s"
+                data = (user_name,user_fullname,user_email,user_role,tel,of_id,dv_id,id)
+                cursor.execute(sql, data)
+                conn.commit()
+                return redirect ('/admin/employee')
+            else:
+                return 'Error'
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close() 
+            conn.close()
+    else:
+        return render_template('inept.html')
 
 @app.route('/delete/user/<int:id>')
 def deleteUser(id):
-    conn = None
-    cursor = None
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor.execute("DELETE FROM users WHERE user_id=%s", (id))
-        conn.commit()
-        flash('ลบพนักงานเสร็จสิ้น')
-        return redirect('/admin/employee')
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close() 
-        conn.close()
+    if session['user_role']=="admin":
+        conn = None
+        cursor = None
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM users WHERE user_id=%s", (id))
+            conn.commit()
+            flash('ลบพนักงานเสร็จสิ้น')
+            return redirect('/admin/employee')
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close() 
+            conn.close()
+    else:
+        return render_template('inept.html')
 
 @app.route('/admin/office')
 def adminOffice():
-    conn = None
-    cursor = None
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
-        format = '%Y'
-        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 543 YEAR ), %s) as curyear,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 542 YEAR ), %s) as curyear1,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 541 YEAR ), %s) as curyear2,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 544 YEAR ), %s) as curyear11,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 545 YEAR ), %s) as curyear22 FROM office ORDER BY of_id",(format,format,format,format,format))
-        office = cursor.fetchall()
-        return render_template('adminOffice.html',office=office)
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close() 
-        conn.close()
+    if session['user_role']=="admin":
+        conn = None
+        cursor = None
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor(pymysql.cursors.DictCursor)
+            format = '%Y'
+            cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 543 YEAR ), %s) as curyear,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 542 YEAR ), %s) as curyear1,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 541 YEAR ), %s) as curyear2,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 544 YEAR ), %s) as curyear11,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 545 YEAR ), %s) as curyear22 FROM office ORDER BY of_id",(format,format,format,format,format))
+            office = cursor.fetchall()
+            return render_template('adminOffice.html',office=office)
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close() 
+            conn.close()
+    else:
+        return render_template('inept.html')
 
 @app.route('/admin/office/edit/<int:id>',methods=['GET'])
 def adminOfficeEdit(id):
-    conn = None
-    cursor = None
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT * FROM nsm_project.office LEFT JOIN nsm_project.division ON nsm_project.office.of_id=nsm_project.division.of_id WHERE nsm_project.office.of_id=%s",id)
-        office = cursor.fetchall()
-        return render_template('adminOfficeEdit.html',office=office)
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close() 
-        conn.close()
+    if session['user_role']=="admin":
+        conn = None
+        cursor = None
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor(pymysql.cursors.DictCursor)
+            cursor.execute("SELECT * FROM nsm_project.office LEFT JOIN nsm_project.division ON nsm_project.office.of_id=nsm_project.division.of_id WHERE nsm_project.office.of_id=%s",id)
+            office = cursor.fetchall()
+            return render_template('adminOfficeEdit.html',office=office)
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close() 
+            conn.close()
+    else:
+        return render_template('inept.html')
     
 
 @app.route('/editOffice/<int:id>', methods=['POST'])
 def editOffice(id):
-    conn = None
-    cursor = None
-    conn = mysql.connect()
-    cursor = conn.cursor()
-    try:
-        of_name = request.form['of_name']
-        of_shname = request.form['of_shname']
-        if  of_name and of_shname and request.method == 'POST':
-            cursor = conn.cursor(pymysql.cursors.DictCursor)
-            sql = "UPDATE office SET of_name=%s,of_shname=%s WHERE of_id=%s ;"
-            data = (of_name,of_shname,id)
-            cursor.execute(sql, data)
-            conn.commit()
-            return redirect ('/admin/office/edit/'+str(id))
-        else:
-            return 'Error'
-    except Exception as e:
-           print(e)
-    finally:
-        cursor.close() 
-        conn.close()
+    if session['user_role']=="admin":
+        conn = None
+        cursor = None
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        try:
+            of_name = request.form['of_name']
+            of_shname = request.form['of_shname']
+            if  of_name and of_shname and request.method == 'POST':
+                cursor = conn.cursor(pymysql.cursors.DictCursor)
+                sql = "UPDATE office SET of_name=%s,of_shname=%s WHERE of_id=%s ;"
+                data = (of_name,of_shname,id)
+                cursor.execute(sql, data)
+                conn.commit()
+                return redirect ('/admin/office/edit/'+str(id))
+            else:
+                return 'Error'
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close() 
+            conn.close()
+    else:
+        return render_template('inept.html')
 
 @app.route('/editDivision/<int:id>/<int:dv>', methods=['POST'])
 def editDivision(id,dv):
-    conn = None
-    cursor = None
-    conn = mysql.connect()
-    cursor = conn.cursor()
-    try:
-        dv_name = request.form['dv_name']
-        dv_shname = request.form['dv_shname']
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
-        sql = "UPDATE division SET dv_name=%s,dv_shname=%s WHERE dv_id=%s;"
-        data = (dv_name,dv_shname,dv)
-        cursor.execute(sql, data)
-        conn.commit()
-        return redirect ('/admin/office/edit/'+str(id))
-        
-    except Exception as e:
-           print(e)
-    finally:
-        cursor.close() 
-        conn.close()
+    if session['user_role']=="admin":
+        conn = None
+        cursor = None
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        try:
+            dv_name = request.form['dv_name']
+            dv_shname = request.form['dv_shname']
+            cursor = conn.cursor(pymysql.cursors.DictCursor)
+            sql = "UPDATE division SET dv_name=%s,dv_shname=%s WHERE dv_id=%s;"
+            data = (dv_name,dv_shname,dv)
+            cursor.execute(sql, data)
+            conn.commit()
+            return redirect ('/admin/office/edit/'+str(id))
+            
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close() 
+            conn.close()
+    else:
+        return render_template('inept.html')
 
 @app.route('/delete/office/<int:id>')
 def deleteOffice(id):
-    conn = None
-    cursor = None
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor.execute("DELETE FROM office WHERE of_id=%s", (id))
-        cursor.execute("DELETE FROM division WHERE of_id=%s", (id))
-        conn.commit()
-        return redirect('/admin/office')
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close() 
-        conn.close()
+    if session['user_role']=="admin":
+        conn = None
+        cursor = None
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM office WHERE of_id=%s", (id))
+            cursor.execute("DELETE FROM division WHERE of_id=%s", (id))
+            conn.commit()
+            return redirect('/admin/office')
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close() 
+            conn.close()
+    else:
+        return render_template('inept.html')
 
 @app.route('/delete/division/<int:id>')
 def deleteDivision(id):
-    conn = None
-    cursor = None
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor.execute("DELETE FROM division WHERE dv_id=%s", (id))
-        conn.commit()
-        return redirect('/admin/office')
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close() 
-        conn.close()
+    if session['user_role']=="admin":
+        conn = None
+        cursor = None
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM division WHERE dv_id=%s", (id))
+            conn.commit()
+            return redirect('/admin/office')
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close() 
+            conn.close()
+    else:
+        return render_template('inept.html')
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-# เรียกชื่่อuserมาแสดง  ใน listuser.html
-@app.route('/listuser',methods=['GET'])
-def listuser():
-    conn = None
-    cursor = None
-    id = session['user_id']
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT * FROM users left join office on nsm_project.users.of_id = nsm_project.office.of_id left join division on nsm_project.users.dv_id = nsm_project.division.dv_id WHERE NOT user_id = %s",(id))
-        row = cursor.fetchall()
-        return render_template("listuser.html",row=row) 
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close()
-        conn.close()
-
 # เรียกหน้าแอด งชั้นนี้มี r 2ตัว
-@app.route('/adduserr',methods=['GET'])
+@app.route('/admin/adduser',methods=['GET'])
 def adduserr():
-    cursor = mysql.connect().cursor(pymysql.cursors.DictCursor)
-    cursor.execute("SELECT * FROM office ORDER BY of_id")
-    office = cursor.fetchall()
-    return render_template("adduser.html", office=office) 
+    if session['user_role']=="admin":
+        cursor = mysql.connect().cursor(pymysql.cursors.DictCursor)
+        cursor.execute("SELECT * FROM office ORDER BY of_id")
+        office = cursor.fetchall()
+        return render_template("adminAddUser.html", office=office) 
+    else:
+        return render_template('inept.html')
 
 @app.route("/divisions",methods=["POST","GET"])
 def divisions():
+    if session['user_role']=="admin":
         conn = mysql.connect()
         cursor = conn.cursor()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
@@ -2171,51 +2192,59 @@ def divisions():
                     'name': result['dv_name']}
                 OutputArray.append(outputObj)
             return jsonify(OutputArray) 
+    else:
+        return render_template('inept.html')
 
 # ทำการแอดดuser ฟังชั้นนี้มี r 1ตัว
 @app.route('/adduser', methods=['POST'])
 def adduser():
-    conn = None
-    cursor = None
-    try:
-        user_name = request.form['user_name']
-        user_fullname = request.form['user_fullname']
-        user_email = request.form['user_email']
-        user_password = request.form['user_password']
-        user_role = request.form['user_role']
-        tel = request.form['tel']
-        of_id = request.form['ofid']
-        dv_id = request.form['dvid']
-        if  user_name and user_fullname and user_email and user_password and user_role and tel and of_id and dv_id and request.method == 'POST':
-            sql = "INSERT INTO users (user_name, user_fullname, user_email, user_password, user_role, tel, of_id, dv_id) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)"
-            data = (user_name,user_fullname,user_email,user_password,user_role,tel,of_id,dv_id,)
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            cursor.execute(sql, data)
-            conn.commit()
-            return redirect('/listuser')
-        else:
-            return 'Error while adding user'
-    except Exception as e:
-           print(e)
+    if session['user_role']=="admin":
+        conn = None
+        cursor = None
+        try:
+            user_name = request.form['user_name']
+            user_fullname = request.form['user_fullname']
+            user_email = request.form['user_email']
+            user_password = request.form['user_password']
+            user_role = request.form['user_role']
+            tel = request.form['tel']
+            of_id = request.form['ofid']
+            dv_id = request.form['dvid']
+            if  user_name and user_fullname and user_email and user_password and user_role and tel and of_id and dv_id and request.method == 'POST':
+                sql = "INSERT INTO users (user_name, user_fullname, user_email, user_password, user_role, tel, of_id, dv_id) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)"
+                data = (user_name,user_fullname,user_email,user_password,user_role,tel,of_id,dv_id,)
+                conn = mysql.connect()
+                cursor = conn.cursor()
+                cursor.execute(sql, data)
+                conn.commit()
+                return redirect('/listuser')
+            else:
+                return 'Error while adding user'
+        except Exception as e:
+            print(e)
+    else:
+        return render_template('inept.html')
 
 #ลบuser  รับค่าจาก adduser.html
 @app.route('/delete_user/<int:id>')
 def delete_user(id):
-    conn = None
-    cursor = None
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor.execute("DELETE FROM users WHERE user_id=%s",(id))
-        conn.commit()
-        flash('ลบรายชื่อสำเร็จ')
-        return redirect('/listuser')
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close() 
-        conn.close()
+    if session['user_role']=="admin":
+        conn = None
+        cursor = None
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM users WHERE user_id=%s",(id))
+            conn.commit()
+            flash('ลบรายชื่อสำเร็จ')
+            return redirect('/listuser')
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close() 
+            conn.close()
+    else:
+        return render_template('inept.html')
 
 # เรียก html edituser.html 
 @app.route('/core_edituser/<int:id>',methods=['GET'])
@@ -2261,20 +2290,30 @@ def edit_user():
 
 @app.route('/t')
 def test():
-    a=session['user_id']
-    conn = None
-    cursor = None
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT *,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 543 YEAR ), %s) as curyear,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 542 YEAR ), %s) as curyear1,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 541 YEAR ), %s) as curyear2,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 544 YEAR ), %s) as curyear11,DATE_FORMAT(DATE_ADD(curdate(), INTERVAL 545 YEAR ), %s) as curyear22 FROM office ORDER BY of_id",(format,format,format,format,format))
-        office = cursor.fetchall()
-        return render_template('test.html', office=office )
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close() 
-        conn.close()
+    if session['user_role']=="user":
+        conn = None
+        cursor = None
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor(pymysql.cursors.DictCursor)
+            cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.projects.pj_id) as row_num ,CAST(((stdraft_percent+stcon_percent+stex_percent)/3) AS DECIMAL(15, 2)) as x FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.mn_id  LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id WHERE nsm_project.manager.user_id = %s group by nsm_project.projects.pj_id order by nsm_project.projects.pj_id asc, nsm_project.events.ev_id desc",session['user_id'])
+            MN = cursor.fetchall()
+            cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.projects.pj_id) as row_num ,CAST(((stdraft_percent+stcon_percent+stex_percent)/3) AS DECIMAL(15, 2)) as x FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.mn_id  LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id WHERE nsm_project.board.user_id = %s group by nsm_project.projects.pj_id order by nsm_project.projects.pj_id asc, nsm_project.events.ev_id desc",session['user_id'])
+            BO = cursor.fetchall()
+            cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.projects.pj_id) as row_num ,CAST(((stdraft_percent+stcon_percent+stex_percent)/3) AS DECIMAL(15, 2)) as x FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.mn_id  LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id WHERE nsm_project.board.user_id = %s and nsm_project.board.bo_phase = 1 group by nsm_project.projects.pj_id order by nsm_project.projects.pj_id asc, nsm_project.events.ev_id desc",session['user_id'])
+            DR = cursor.fetchall()
+            cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.projects.pj_id) as row_num ,CAST(((stdraft_percent+stcon_percent+stex_percent)/3) AS DECIMAL(15, 2)) as x FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.mn_id  LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id WHERE nsm_project.board.user_id = %s and nsm_project.board.bo_phase = 2 group by nsm_project.projects.pj_id order by nsm_project.projects.pj_id asc, nsm_project.events.ev_id desc",session['user_id'])
+            CO = cursor.fetchall()
+            cursor.execute("SELECT *,ROW_NUMBER() OVER(ORDER BY nsm_project.projects.pj_id) as row_num ,CAST(((stdraft_percent+stcon_percent+stex_percent)/3) AS DECIMAL(15, 2)) as x FROM nsm_project.projects LEFT JOIN nsm_project.process ON nsm_project.projects.pj_id = nsm_project.process.pj_id LEFT JOIN nsm_project.status_draft ON nsm_project.process.stdraft_id = nsm_project.status_draft.stdraft_id LEFT JOIN nsm_project.status_consider ON nsm_project.process.stcon_id = nsm_project.status_consider.stcon_id LEFT JOIN nsm_project.status_examine ON nsm_project.process.stex_id = nsm_project.status_examine.stex_id LEFT JOIN nsm_project.events ON nsm_project.projects.pj_id = nsm_project.events.pj_id LEFT JOIN nsm_project.contractor ON nsm_project.process.contt_id = nsm_project.contractor.contt_id LEFT JOIN nsm_project.manager ON nsm_project.projects.pj_id = nsm_project.manager.mn_id  LEFT JOIN nsm_project.users ON nsm_project.manager.user_id = nsm_project.users.user_id LEFT JOIN nsm_project.board ON nsm_project.projects.pj_id = nsm_project.board.pj_id WHERE nsm_project.board.user_id = %s and nsm_project.board.bo_phase = 3 group by nsm_project.projects.pj_id order by nsm_project.projects.pj_id asc, nsm_project.events.ev_id desc",session['user_id'])
+            EX = cursor.fetchall()
+            return render_template('test.html', BO=BO,MN=MN,DR=DR,CO=CO,EX=EX )
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close() 
+            conn.close()
+    else:
+        return render_template('inept.html')
 
 @app.route('/t2')
 def test2():

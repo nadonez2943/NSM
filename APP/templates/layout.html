@@ -148,14 +148,12 @@ if (usrole != "chairman")  {
     document.getElementById('prop_date').type = "date";
   }
   if (stcc == 2 && cpmc == "wait" && usrole == "assistant") {
-    document.getElementById('openf').style.display = "block";
-    document.getElementById('finishcond').style.display = "block";
-    document.getElementById('finishcon_date').type = "date";
-    document.getElementById('noinfo').style.display = "none";
+    document.getElementById('appbottonc').type = "submit";
+    document.getElementById('appbottonc').value = "เริ่มพิจารณาผล";
   }
   if (stcc == 3 && cpmc != "wait" && usrole == "assistant") {
     document.getElementById('appbottonc').type = "submit";
-    document.getElementById('appbottonc').value = "พิจารณาผลเสร็จ";
+    document.getElementById('appbottonc').value = "พิจารณาแล้วเสร็จ";
   }
   if (stcc == 3 && cpmc == "wait" && usrole == "chairman") {
     document.getElementById('appbottonc').type = "submit";
@@ -163,10 +161,10 @@ if (usrole != "chairman")  {
   if (stcc == 4 && usrole == "assistant") {
     document.getElementById('openf').style.display = "block";
     document.getElementById('reportd').style.display = "block";
-    document.getElementById('report_date').type = "date";
+    document.getElementById('report_date').type = "datetime-local";
     document.getElementById('noinfo').style.display = "none";
     document.getElementById('formbutton').innerHTML = "กรอกวันและเวลาที่ส่งรายงานผล";
-    document.getElementById('reptime').style.display = "block";
+    
   }
   if (stcc == 5 && cpmc != "wait" && usrole == "assistant") {
     document.getElementById('openf').style.display = "block";
@@ -677,7 +675,7 @@ if (usrole != "chairman")  {
           }
         }
         function clpj() {
-          window.location.href = ("http://localhost:5000/home");
+          window.location.href = ("/home");
           }
       </script>
   </body>

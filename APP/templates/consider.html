@@ -291,14 +291,9 @@
                         </label>
                         <input type="hidden" value="" min="{{row[0]['today']}}" name="prop_date" id="prop_date" required>
                         <label>
-                        <strong id="finishcond" style="display: none;">วันพิจารณาแล้วเสร็จ</strong>
-                        </label>
-                        <input type="hidden" value="" min="{{row[0]['today']}}" name="finishcon_date" id="finishcon_date" required>
-                        <label>
                         <strong id="reportd" style="display: none;">วันและเวลาที่ส่งรายงานผล</strong>
                         </label>
-                        <input type="hidden" value="" min="{{row[0]['today']}}" name="report_date" id="report_date" required>
-                        <div id="reptime" style="display: none;"><input type="text" id="timepicker" name="report_time" id="report_time" value="00:00"></div>
+                        <input type="hidden" value="" min="{{row[0]['today']}}" name="report_date" id="report_date" required><br>
                         <label>
                         <strong id="winnerd" style="display: none;">วันที่ประกาศผู้ชนะ</strong>
                         </label>
@@ -549,13 +544,24 @@
     }
   </script>
   <script>
-    var budd = document.getElementById("buy_date").value
-    var buda = budd+1
-    
     document.getElementById("buy_date").onchange = function() {datecheck()}
     function datecheck(){
-      alert (buda)
-      
+      var budd = document.getElementById("buy_date").value;
+      var buyday = new Date(budd);
+      var dd = buyday.getDate() + 1;
+      var mm = buyday.getMonth() + 1; //January is 0!
+      var yyyy = buyday.getFullYear();
+
+      if (dd < 10) {
+        dd = '0' + dd;
+      }
+
+      if (mm < 10) {
+        mm = '0' + mm;
+      } 
+        
+      buyday = yyyy + '-' + mm + '-' + dd;
+      document.getElementById("prop_date").setAttribute("min", buyday);
     }
   </script>
   {% endblock %}
