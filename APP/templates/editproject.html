@@ -24,6 +24,10 @@
             <p>
                 ชื่อโครงการ: <input name="name" value="{{row[0]['pj_name']}}" type="text" style="width:814px;" placeholder="ชื่อโครงการ" maxlength="45" autocomplete="off" required> 
             </p>
+            <div class="col-md-4">
+                งบประมาณ
+                <input name="amount" value="{{row[0]['pj_amount']}}" id="num1" oninput="" class="mask" type="text" style="width:100%;" maxlength="10" placeholder="งบประมาณ" autocomplete="off" required>
+             </div>
              <p>รายละเอียดโครงการ:</p> 
              <p> <textarea name="detail" value="{{row[0]['pj_detail']}}" type="text" maxlength="300" style="width:900px; height: 88;  " placeholder="รายละเอียด " autocomplete="off" required>{{row[0]['pj_detail']}}</textarea> </p>
              <br>
@@ -56,4 +60,40 @@
  
  </div>   
  </form>
+ <script>
+    $("input.mask").each((i,ele)=>{
+        let clone=$(ele).clone(false)
+        clone.attr("type","text")
+        let ele1=$(ele)
+        clone.val(Number(ele1.val()).toLocaleString("en"))
+        $(ele).after(clone)
+        $(ele).hide()
+        clone.mouseenter(()=>{
+    
+          ele1.show()
+          clone.hide()
+        })
+        setInterval(()=>{
+          let newv=Number(ele1.val()).toLocaleString("en")
+          if(clone.val()!=newv){
+            clone.val(newv)
+          }
+        },10)
+    
+        $(ele).mouseleave(()=>{
+          $(clone).show()
+          $(ele1).hide()
+        })
+        
+    
+      })
+    </script>
+    <script>
+        document.getElementById("num1").oninput = function() {checkValues()};
+        var addpjm = document.getElementById("addpjm");
+        function checkValues() {
+           document.getElementById("num1").value = document.getElementById("num1").value.replace(/[^0-9.]/g, ''); 
+           document.getElementById("num1").value = document.getElementById("num1").value.replace(/(\..*)\./g, '$1');
+           }
+    </script>
  {% endblock %}

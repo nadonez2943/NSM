@@ -132,32 +132,28 @@ if (usrole != "chairman")  {
   var stcc = Number(document.getElementById('stc').value);
   var cpmc = document.getElementById('CPMC').value;
   var condif = Number(document.getElementById('condif').value);
-  if (stcc == 2 && cpmc != "wait" && usrole == "assistant") {
-    document.getElementById('addctt').innerHTML = "รอผู้รับผิดชอบโครงการกรอกวันที่";
-    document.getElementById('addctt').style.color = "gray";
-  }
-  if (stcc == 2 && cpmc == "wait" && usrole == "chairman") {
+  if (stcc == 2 && cpmc != "wait" && usrole == "manager") {
     document.getElementById('addctt').innerHTML = "รอเลขาธิการกรอกวันที่";
     document.getElementById('addctt').style.color = "gray";
   }
-  if (stcc == 2 && cpmc != "wait" && usrole == "chairman") {
+  if (stcc == 2 && cpmc == "wait" && usrole == "manager") {
+    document.getElementById('addctt').innerHTML = "รอเลขาธิการกรอกวันที่";
+    document.getElementById('addctt').style.color = "gray";
+  }
+  if (stcc == 2 && cpmc != "wait" && usrole == "assistant") {
     document.getElementById('openf').style.display = "block";
     document.getElementById('buyd').style.display = "block";
     document.getElementById('buy_date').type = "date";
-    document.getElementById('invited').style.display = "block";
-    document.getElementById('invite_date').type = "date";
     document.getElementById('propd').style.display = "block";
     document.getElementById('prop_date').type = "date";
   }
   if (stcc == 2 && cpmc == "wait" && usrole == "assistant") {
-    document.getElementById('openf').style.display = "block";
-    document.getElementById('finishcond').style.display = "block";
-    document.getElementById('finishcon_date').type = "date";
-    document.getElementById('noinfo').style.display = "none";
+    document.getElementById('appbottonc').type = "submit";
+    document.getElementById('appbottonc').value = "เริ่มพิจารณาผล";
   }
   if (stcc == 3 && cpmc != "wait" && usrole == "assistant") {
     document.getElementById('appbottonc').type = "submit";
-    document.getElementById('appbottonc').value = "พิจารณาผลเสร็จ";
+    document.getElementById('appbottonc').value = "พิจารณาแล้วเสร็จ";
   }
   if (stcc == 3 && cpmc == "wait" && usrole == "chairman") {
     document.getElementById('appbottonc').type = "submit";
@@ -165,10 +161,10 @@ if (usrole != "chairman")  {
   if (stcc == 4 && usrole == "assistant") {
     document.getElementById('openf').style.display = "block";
     document.getElementById('reportd').style.display = "block";
-    document.getElementById('report_date').type = "date";
+    document.getElementById('report_date').type = "datetime-local";
     document.getElementById('noinfo').style.display = "none";
     document.getElementById('formbutton').innerHTML = "กรอกวันและเวลาที่ส่งรายงานผล";
-    document.getElementById('reptime').style.display = "block";
+    
   }
   if (stcc == 5 && cpmc != "wait" && usrole == "assistant") {
     document.getElementById('openf').style.display = "block";
@@ -190,15 +186,11 @@ if (usrole != "chairman")  {
     if(checkbox.checked == true){
       document.getElementById('buyd').style.display = "none";
       document.getElementById('buy_date').type = "hidden";
-      document.getElementById('invited').style.display = "none";
-      document.getElementById('invite_date').type = "hidden";
       document.getElementById('propd').style.display = "none";
       document.getElementById('prop_date').type = "hidden";
     }else{
       document.getElementById('buyd').style.display = "block";
       document.getElementById('buy_date').type = "date";
-      document.getElementById('invited').style.display = "block";
-      document.getElementById('invite_date').type = "date";
       document.getElementById('propd').style.display = "block";
       document.getElementById('prop_date').type = "date";
       document.getElementById('checkboxdate').value = "1";
