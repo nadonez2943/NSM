@@ -1,0 +1,94 @@
+{% extends 'layoutt.html' %} 
+
+{% block body %}
+<head>  
+  <style>
+    body {font-family: Arial;}
+    
+    /* Style the tab */
+    .tab {
+      overflow: hidden;
+      border: 1px solid #ccc;
+      background-color: #f1f1f1;
+    }
+    
+    /* Style the buttons inside the tab */
+    .tab button {
+      background-color: inherit;
+      float: center;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      transition: 0.3s;
+      font-size: 17px;
+    }
+    
+    /* Change background color of buttons on hover */
+    .tab button:hover {
+      background-color: #ddd;
+    }
+    
+    /* Create an active/current tablink class */
+    .tab button.active {
+      background-color: #ccc;
+    }
+    
+    /* Style the tab content */
+    .tabcontent {
+      display: none;
+      padding: 6px 12px;
+      -webkit-animation: fadeEffect 1s;
+      animation: fadeEffect 1s;
+      border: 1px solid #ccc;
+    }
+    
+    /* Fade in tabs */
+    @-webkit-keyframes fadeEffect {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    @keyframes fadeEffect {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    .btn {
+        padding: 10px 40px;
+        background-color: rgba(10, 39, 97, 0.83); 
+        color: #FFFFFF;
+        font-weight: bold;
+        font-size: 18px;
+     }
+    </style>
+</head>  
+<body>
+<br>
+  <table id="myTableMN" class="table table-striped" >  
+    <thead>  
+      <tr class="header">  
+        <th><center>ลำดับ</center></th>
+        <th><center>ชื่อโครงการ</center></th>
+        <th ><center>เลขสารบัญ</center></th>
+        <th ><center>ผู้รับผิดชอบ</center></th>
+        <th ><center>ความคืบหน้า</center></th>
+      </tr>  
+    </thead>  
+    <tbody>  
+      {% for result in MN %}
+      <tr>
+        <td align="center">{{result['row_num']}}</td>
+        <td ><a href = "/project/{{result['pj_id']}}">{{result['pj_name']}}</a></td>        
+        <td> {{result['pj_refNumber']}}</td>
+        <td>{{result['user_fullname']}}</td>
+        <td><center>{{result['x']}} %</center></td>        
+      </tr>
+      {% endfor %}
+    </tbody>  
+  </table>  
+<script>
+$(document).ready(function(){
+  $('#myTableMN').dataTable();
+});
+</script>
+</body> 
+{% endblock %}

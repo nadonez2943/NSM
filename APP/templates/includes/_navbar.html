@@ -1,84 +1,31 @@
 <!-- Navigation -->
-<nav class="navbar navbar-expand-sm bg-" style="background-color:rgba(10, 39, 97, 0.83)">
-  <div id="main">
-    <span style="color:#f1f1f1;font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
-  </div>
-  <div class="container">
-    <h1 style="background-color: #f1f1f1"></h1>
+<nav class="navbar navbar-expand-lg navbar-light bg-light " style="background-color: rgba(10, 39, 97, 0.83)!important;">
+  <div class="container-fluid">
+    <a ALIGN="left" class="navbar-brand" style="color:#f1f1f1;" id="mynav" href="/home"> <img style="position: relative; top:1px;" src="https://raw.githubusercontent.com/nadonez2943/NSM/f31dca026ae6a9de92c9ec5026ca82c92133662c/APP/templates/includes/2.png" width="109" height="25" class="d-inline-block align-top">&nbsp;&nbsp;พิพิธภัณฑ์วิทยาศาสตร์แห่งชาติ</a>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+    <ul class="navbar-nav ml-auto">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <body>
-      <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        
-        <hr style="position: relative; top: 140px ; color:#ffffff;">
-        <a href="/"style="position: relative; top: 140px;"class="glyphicon glyphicon-home">หน้าหลัก</a>
-        <a href="#" style="position: relative; top: 140px;">โครงการของฉัน</a>
-      </hr>
-        <hr style="position: relative; top:560px; color:#ffffff;">
-        <a href="#" style="position: relative; top:560px;">ออกจากระบบ</a>
-      </hr>
+      <div class="w3-dropdown-hover">
+        <button class="w3-button" style="color: #ffffff;">{{session.user_fullname}} 
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="w3-dropdown-content w3-bar-block w3-card-4">
+          <a href="{{ url_for('logout') }}" class="w3-bar-item w3-button">ออกจากระบบ</a>
+        </div>
       </div>
+      <p id="user_role" hidden>{{session.user_role}}</p>
       </body>
-    <a ALIGN="RIGHT" class="navbar-brand" style="color:#f1f1f1;" href="/"> <img style="position: relative; top:4px;" src="https://imgz.io/images/2022/09/01/2d60fb4dc07b8ef54.png" width="109" height="25" class="d-inline-block align-top">&nbsp;&nbsp;พิพิธภัณฑ์วิทยาศาสตร์แห่งชาติ</a>
 </nav>
-
-<style>
-  body {
-    font-family: "Lato", sans-serif;
-  }
-
-  .sidenav {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: rgba(10, 39, 97, 0.83);
-    overflow-x: hidden;
-    transition: 0.5s;
-    padding-top: 60px;
-  }
-
-  .sidenav a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 24px;
-    color: #f1f1f1;
-    display: block;
-    transition: 0.3s;
-  }
-
-  .sidenav a:hover {
-    color: #f1f1f1;
-  }
-
-  .sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 24px;
-    margin-left: 50px;
-  }
-
-  #main {
-    transition: margin-left .5s;
-    padding: 16px;
-  }
-
-  @media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-    .sidenav a {font-size: 18px;}
-  }
-</style>
-
 <script>
-  function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
-    document.getElementById("main").style.marginLeft = "250px";
+  var user_role = document.getElementById("user_role").innerHTML
+  var mynav = document.getElementById("mynav").innerHTML
+  if (user_role == "admin"){
+    document.getElementById("mynav").href = "/admin";
   }
-
-  function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
-    document.getElementById("main").style.marginLeft= "0";
+  if (user_role == "user"){
+    document.getElementById("mynav").href = "/home";
   }
 </script>
+

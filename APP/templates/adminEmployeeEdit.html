@@ -1,0 +1,118 @@
+{% extends 'layout.html' %} 
+{% block body %}
+<hedd>
+  <style>
+    input {
+            border: 1px solid #ddd;
+            background-color: #ffffff;
+            padding: 10px;
+            font-size: 16px;
+          }
+  </style>
+</hedd>
+<body>
+<a id="myBtn" href="/admin/employee" class='btn' >ย้อนกลับ</a>
+<br>
+</br>
+<center>
+<div class="card" style="width: 80%;">
+  <div class="card-header" align="center">
+    <h1>แก้ไขข้อมูลพนักงาน</h1>
+  </div>
+  <div class="card-body">
+    <form action="/edituser/{{row[0]['user_id']}}" method="post">
+      <div class="row" style="text-align: left;">
+        <div class="col-md-6" style="border-right: 2px solid #ddd;" >
+          <div class="row">
+            <div class="col-md-4" ><h4>ชื่อผู้ใช้</h4></div>
+            <div class="col-md-8" ><input name="user_name" type="text" value="{{row[0]['user_name']}}" style="width: 100%;"/></div>
+          </div>
+          <div class="row" style="margin-top: 8px;">
+            <div class="col-md-4" ><h4>ชื่อ-นามสกุล</h4></div>
+            <div class="col-md-8" ><input name="user_fullname" type="text" value="{{row[0]['user_fullname']}}" style="width: 100%;"/></div>
+          </div>
+          <div class="row" style="margin-top: 8px;">
+            <div class="col-md-4" ><h4>อีเมล</h4></div>
+            <div class="col-md-8" ><input name="user_email" type="text" value="{{row[0]['user_email']}}" style="width: 100%;"/></div>
+          </div>
+          <div class="row" style="margin-top: 8px;">
+            <div class="col-md-4" ><h4>เบอร์โทร</h4></div>
+            <div class="col-md-8" ><input name="tel" type="number" value="{{row[0]['tel']}}" style="width: 100%;"/></div>
+          </div>
+        </div>
+
+        <div class="col-md-6" >
+          <div class="row">
+            <div class="col-md-4" ><h4>สถานะ</h4></div>
+            <div class="col-md-8" >
+              <select name="user_role" id="user_role" class="form-control" style="width: 100%; ">
+                <option value="{{row[0]['user_role']}}" hidden>{{row[0]['user_role']}}</option>
+                <option value="user">user</option>
+                <option value="admin">admin</option>
+              </select>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 8px;">
+            <div class="col-md-4" ><h4>สำนักงาน</h4></div>
+            <div class="col-md-8" >
+              <select name="of_id" id="ofid" class="form-control" title="Select office"> 
+                <option value="{{row[0]['of_id']}}" hidden>{{row[0]['of_shname']}}</option>
+                   {% for row in office %}
+                         <option value="{{row.of_id}}">{{row.of_shname}}</option>
+                   {% endfor %}
+                </select>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 8px;">
+            <div class="col-md-4" ><h4>กอง</h4></div>
+            <div class="col-md-8" >
+              <select name="dv_id"  id="dv_name" class="form-control" title="Select division">
+                <option value="{{row[0]['dv_id']}}" hidden>{{row[0]['dv_shname']}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <input type="submit" class="btn" value="ยืนยัน">
+    </form>
+    
+  </div>
+</div>
+</center>
+
+<script>
+  $(document).ready(function () {
+      function load_data(type, category_id) {
+      $.ajax({
+      url: "/division",
+      method: "POST",
+      data: { type: type, category_id: category_id },
+      dataType: "json",
+      success: function (data) {
+         var html = "";
+         for (var count = 0; count < data.length; count++) {
+            html += '<option value="' + data[count].id + '">' + data[count].shname + "</option>";
+
+         }
+         if (type == "ofid") {
+            $("#ofid").html(html);
+            $("#ofid").selectpicker("refresh");
+         } else {
+            $("#dv_name").html(html);
+            
+         }
+         },
+      });
+   }
+
+   $(document).on("change", "#ofid", function () {
+      var category_id = $("#ofid").val();
+      load_data("dvid", category_id);
+   });
+});
+</script>
+
+</body> 
+
+{% endblock %}

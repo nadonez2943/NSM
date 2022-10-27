@@ -1,0 +1,65 @@
+<doctype html>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      {% extends 'layout.html' %}
+      {% block body %}
+        <br>
+        <p align="right">
+          <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for project names.." title="Type in a name">
+        </p>
+        <div class="jumbotron">
+        <CENTER><h2>รายชื่อ คนในระบบ</h2><br></CENTER>
+          <table class="table" id="customers">
+              <tr>
+                <th><center>user_id</center></th>
+                <th><center>user_name</center></th>
+                <th style="width:20%"><center>user_fullname</center></th>
+                <th style="width:13%"><center>user_email</center></th>
+                <!-- <th style="width:15%"><center>user_password</center></th> -->
+                <th><center>user_role</center></th>
+                <th style="width:13%"><center>tel</center></th>
+                <th style="width:40%"><center>of_id</center></th>
+                <th style="width:40%"><center>dv_id</center></th>
+                <th style="width:10%"><center>แก้ไข</center></th>
+                <th style="width:10%"><center>ลบ</center></th>
+              </tr>
+              {% for result in row %}
+              <tr>
+                <td>{{result['user_id']}}</td>
+                <td>{{result['user_name']}}</td>        
+                <td>{{result['user_fullname']}}</td>
+                <td>{{result['user_email']}} </td>
+                <td>{{result['user_role']}}</td>
+                <!-- <td>{{result['user_password']}}</td> -->
+                <td>{{result['tel']}}</td>
+                <td>{{result['of_name']}} ({{result['of_shname']}})</td>        
+                <td>{{result['dv_name']}} ({{result['dv_shname']}})</td>
+                <td><a href = "/core_edituser/{{result['user_id']}}">แก้ไข</a></td>
+                <td><a href = "/delete_user/{{result['user_id']}}">ลบ</a></td>      
+              </tr>
+              {% endfor %}
+          </table>
+        </div>
+        <center>
+        <a class="btn btn-primary btn-lg" href="/adduserr" role="button">adduser</a>
+        </center>
+        <script>
+          function myFunction() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("customers");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+              td = tr[i].getElementsByTagName("td")[1];
+              if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                  tr[i].style.display = "";
+                } else {
+                  tr[i].style.display = "none";
+                }
+              }       
+            }
+          }
+          </script>
+      {% endblock %}

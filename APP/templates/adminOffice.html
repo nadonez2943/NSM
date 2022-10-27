@@ -1,0 +1,87 @@
+{% extends 'layout.html' %} 
+{% block body %}
+<head>
+    <style>
+        .btn {
+        padding: 2px;
+        background-color: rgba(10, 39, 97, 0.83); 
+        color: #FFFFFF;
+        font-size: 12px;
+        } 
+        
+        .btn-outline {
+        padding: 2px;
+        background-color: #FFFFFF; 
+        color: rgba(10, 39, 97, 0.83);
+        font-size: 12px;
+        border: 1px solid rgba(10, 39, 97, 0.83);
+        }
+
+        .btnB {
+        padding: 10px 40px;
+        background-color: rgba(10, 39, 97, 0.83); 
+        color: #FFFFFF;
+        font-weight: bold;
+        font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+  <a id="myBtn" href="/admin" class='btnB' >ย้อนกลับ</a>
+    <br>
+    <center>
+       <div  style="width: 100%;text-align: left;">
+        
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                        <h2>สำนักงาน</h2>
+                        {% for row in office %}
+                            <div class="card" style="padding: 5px;">
+                                <div class="row">
+                                    <div class="col-md-8"><a style="padding-left: 5px;">{{row.of_name}}</a></div>
+                                    <div class="col-md-4" style="text-align: right;">
+                                        <a href="/delete/office/{{row['of_id']}}" class='btn btn-danger' style="background-color: rgb(255, 27, 27);">ลบ</a>
+                                        <a value="{{row.of_id}}" onclick="load_data('{{row.of_id}}')" class='btn' style="width: 75px;color:#FFFFFF;">กอง ></a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                </div>
+                <div class="col-md-6">
+                        <h2>กอง</h2>
+                        <div class="card" style="height: 60%;padding: 10px;">
+                            <div id="dv_name" ></div>
+                        </div>
+                        <div id="dv_of" style="text-align:right ;"></div>
+                </div>
+              </div>
+        </div>
+    </div> 
+
+    
+    </center>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<script>
+      function load_data(of_id) {
+      $.ajax({
+      url: "/division1",
+      method: "POST",
+      data: { of_id: of_id },
+      dataType: "json",
+      success: function (data) {
+          var html = "";
+          var link = "";
+          for (var count = 0; count < data.length; count++) {
+            html += '<div class="row"><div class="col-md-9">'+ data[count].name +'</div><div class="col-md-3" style="text-align:right;"><a href="/delete/division/' + data[count].id + '" class="btn btn-danger" style="background-color: rgb(255, 27, 27);margin-left:1px;">ลบ</a></div></div><hr style="margin: 2px;">';
+            
+          }
+          link += '<br><a href="/admin/office/edit/'+ of_id +'" class="btnB btn-outline" style="padding: 10px;font-size: 16px;color: rgba(10, 39, 97, 0.83);background-color: #FFFF;border-radius: 6px;">แก้ไขข้อมูลสำนักงาน</a>';
+            $("#dv_name").html(html);
+            $("#dv_of").html(link);
+          },
+      });
+      }
+</script>
+</body>
+{% endblock %}

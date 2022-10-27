@@ -251,59 +251,10 @@
               <div class="card-body" align="center">
                   <progress id="file" value="{{row[0]['stcon_percent']}}" max="100"></progress>    
                   <br><br>
-                  <label for="file">{{row[0]['stcon_name']}}</label><p style="color: red;" id="addctt"></p>
-                  <form action="/project/{{row[0]['pj_id']}}/consider" id="updatestcc" method="post">
-                    <input name="checkboxdate" id="checkboxdate" value="0" type="hidden">
-                        <input name="bdate" value="{{row[0]['buy_date']}}" type="hidden">
-                        <input name="pdate" value="{{row[0]['prop_date']}}" type="hidden">
-                        <input name="fdate" value="{{row[0]['finishcon_date']}}" type="hidden">
-                        <input name="rdate" value="{{row[0]['report_date']}}" type="hidden">
-                        <input name="rtime" value="{{row[0]['report_time']}}" type="hidden">
-                        <input name="wdate" value="{{row[0]['winner_date']}}" type="hidden">
-                        <input name="CPMC" value="{{row[0]['conPMcheck']}}" type="hidden">
-                        <input name="stc" value="{{row[0]['stcon_id']}}" type="hidden">
-                        <input name="conapp" value="{{row[0]['conapp_status']}}" type="hidden" >
-                        <input name="userrole" value="{{role['role']}}" type="hidden">
-                        <input type="hidden" value="{{row[0]['buy_date']}}" name="buy_date" >
-                        <input type="hidden" value="{{row[0]['prop_date']}}" name="prop_date" >
-                        <input type="hidden" value="{{row[0]['finishcon_date']}}" name="finishcon_date" >
-                        <input type="hidden" value="{{row[0]['report_date']}}" name="report_date" >
-                        <input type="hidden" name="report_time"  value="{{row[0]['report_time']}}">
-                        <input type="hidden" value="{{row[0]['winner_date']}}" name="winner_date" >
-                        <input name="conappd" value="{{row[0]['conapp_date']}}" type="hidden" >
-                    <input type="hidden" id="appbottonc" value="ยืนยัน" >
-                  </form>
-                  <div align="center"><form action="/project/{{row[0]['pj_id']}}/consider/appeal" method="post"><input type="hidden" id="appbottonc2" onclick="return confirm('ยืนยัน')" value="มีอุทธรณ์" ></form></div>
-                  <div class="openBtn">
-                    <button class="openButton" onclick="openForm()" id="openf" style="display: none;"><strong id="formbutton">กรอกวันที่</strong></button>
-                  </div>
-                  <input name="windif" id="windif" value="{{row[0]['windiff']}}" type="hidden">
-                  <div class="loginPopup">
-                    <div class="formPopup" id="popupForm">
-                      <form action="/project/{{row[0]['pj_id']}}/consider" method="post" class="formContainer">
-                        <input name="userrole" id="userrole" value="{{role['role']}}" type="hidden">
-                        <label>
-                          <strong id="buyd" style="display: none;">วันประกาศซื้อจ้าง</strong>
-                        </label>
-                        <input type="hidden" value="" min="{{row[0]['today']}}" name="buy_date" id="buy_date" required>
-                        <label>
-                        <strong id="propd" style="display: none;">วันที่ยื่นคุณสมบัติ</strong>
-                        </label>
-                        <input type="hidden" value="" min="{{row[0]['today']}}" name="prop_date" id="prop_date" required>
-                        <label>
-                        <strong id="reportd" style="display: none;">วันและเวลาที่ส่งรายงานผล</strong>
-                        </label>
-                        <input type="hidden" value="" min="{{row[0]['today']}}" name="report_date" id="report_date" required><br>
-                        <label>
-                        <strong id="winnerd" style="display: none;">วันที่ประกาศผู้ชนะ</strong>
-                        </label>
-                        <input type="hidden" value="" name="winner_date" min="{{row[0]['today']}}" id="winner_date" required>
-                        <div class="row" id="noinfo">
-                          <div class="c25"><input type='checkbox' onchange='handleChange(this); '></div>
-                          <div class="c75"><p>ไม่มีข้อมูล</p></div>
-                        </div>
-                        <input name="checkboxdate" id="checkboxdate" value="0" type="hidden">
+                  <label for="file">{{row[0]['stcon_name']}}</label>
+                  <input name="windif" id="windif" value="{{row[0]['windiff']}}" type="hidden"> 
                         <input name="bdate" id="bdate" value="{{row[0]['buy_date']}}" type="hidden">
+                        <input name="idate" id="idate" value="{{row[0]['invite_date']}}" type="hidden">
                         <input name="pdate" id="pdate" value="{{row[0]['prop_date']}}" type="hidden">
                         <input name="fdate" id="fdate" value="{{row[0]['finishcon_date']}}" type="hidden">
                         <input name="rdate" id="rdate" value="{{row[0]['report_date']}}" type="hidden">
@@ -313,11 +264,6 @@
                         <input name="stc" id="stc" value="{{row[0]['stcon_id']}}" type="hidden">
                         <input name="conapp" value="{{row[0]['conapp_status']}}" type="hidden" >
                         <input name="conappd" id="conappd" value="{{row[0]['conapp_date']}}" type="hidden" >
-                        <button type="submit" class="btn">เสร็จสิ้น</button>
-                        <button type="button" class="btn cancel" onclick="closeForm()">ยกเลิก</button>
-                      </form>
-                    </div>
-                  </div>
               </div>
             </div>
             <p></p>
@@ -383,7 +329,6 @@
                   {% for result in row %}
                 <div class="row"><div class="col-50"><label id="usf">{{result['user_fullname']}}</label></div><div class="col-25"><label id="usr">{{result['role_name']}}</label></div></div>
                 {% endfor %}
-                  <div align="Right"><a href="addboardc" id="addboardc" role="button"> แก้ไขรายชื่อคณะกรรมการ</a></div>
                 </div>
               </div><br>
               <div class="row">
@@ -455,7 +400,6 @@
                 </div>
               </div>
               <input id="conttid" value="{{row[0]['contt_id']}}" type="hidden">
-              <p align="right"><a href="/addcontractor/{{id}}" id="addcontt"></a><a href="/editcontractor/{{id}}" id="editcontt"></a></p>
             </div>
           </div>
         </div>
@@ -500,17 +444,7 @@
 
   </div>
   <br>
-  <div id="clmodal" class="clmodal">
-    <input type="hidden" id="pjstt" value="{{row[0]['pj_status']}}" disabled="disabled"/>
-    <div class="clmodal-content">
-      <label>
-      <center>
-      <input type="text" id="clnoti" value="โครงการได้ยุติลงแล้ว" disabled="disabled"/>
-      </center>
-      <br>
-      <input type="button" id="clbutton" class="btn" value="กลับไปหน้าหลัก">
-      </label>
-    </div>
+
   <script>
     var popupForm = document.getElementById("popupForm");
     function openForm() {
@@ -543,25 +477,5 @@
         }
     }
   </script>
-  <script>
-    document.getElementById("buy_date").onchange = function() {datecheck()}
-    function datecheck(){
-      var budd = document.getElementById("buy_date").value;
-      var buyday = new Date(budd);
-      var dd = buyday.getDate() + 1;
-      var mm = buyday.getMonth() + 1; //January is 0!
-      var yyyy = buyday.getFullYear();
 
-      if (dd < 10) {
-        dd = '0' + dd;
-      }
-
-      if (mm < 10) {
-        mm = '0' + mm;
-      } 
-        
-      buyday = yyyy + '-' + mm + '-' + dd;
-      document.getElementById("prop_date").setAttribute("min", buyday);
-    }
-  </script>
   {% endblock %}

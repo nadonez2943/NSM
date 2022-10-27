@@ -44,7 +44,24 @@
       text-align: center;
       
     }
-    
+    input[id="nstt"]{
+      height: 35px;
+      width: 110px;
+      border: none;
+      border-radius: 5px;
+      color:black;
+      background: transparent;
+      text-align: center;  
+    }
+    input[id="nstt2"]{
+      height: 35px;
+      width: 210px;
+      border: none;
+      border-radius: 5px;
+      color:black;
+      background: transparent;
+      text-align: center;  
+    }
     input[id="msta"]{
       height: 35px;
       width: 250px;
@@ -123,19 +140,12 @@
             <progress id="file" value="{{row[0]['stdraft_percent']}}" max="100"> </progress>    
             <br><br>
             <label for="file">{{row[0]['stdraft_name']}}</label><br>
-            <p style="color: green; display: none;" id="enddd">ส่งกอง พส. ดำเนินการในวันที่ {{row[0]['endddate']}}</p>
-            <p style="color: green; display: none;" id="enddt">เวลา {{row[0]['enddtime']}} น.</p>
-            <form action="/project/{{row[0]['pj_id']}}/draft" method="post">
-              <input name="std" id="std" value="{{row[0]['stdraft_id']}}" type="hidden">
-              <input name="startd" value="{{row[0]['start_draft']}}" type="hidden">
-              <input name="PMC" id="PMC" value="{{row[0]['PMcheck']}}" type="hidden">
-              <input name="userrole" id="userrole" value="{{role['role']}}" type="hidden">
-              <input type="hidden" name="appr" value="{{row[0]['draftapp_status']}}" >
-              <p id="dayform" style="display: none;">โปรดเลือกวันเริ่มต้น</p>
-              <input name="stdr" id="stdr" value="" min="{{row[0]['today']}}" type="hidden" required></input>
-            <br><br>
-            <div align="center"><input type="hidden" id="appbotton" value="ยืนยัน" ></form></div>
-            <div align="center"><form action="/project/{{row[0]['pj_id']}}/draft/unapproved" method="post"><input type="hidden" id="appbotton2" value="" ></form></div>
+          </label><p style="color: green; display: none;" id="enddd">ส่งกอง พส. ดำเนินการในวันที่ {{row[0]['endddate']}}</p>
+          </label><p style="color: green; display: none;" id="enddt">เวลา {{row[0]['enddtime']}} น.</p>
+            <input name="std" id="std" value="{{row[0]['stdraft_id']}}" type="hidden">
+            <input name="startd" value="{{row[0]['start_draft']}}" type="hidden">
+            <input name="PMC" id="PMC" value="{{row[0]['PMcheck']}}" type="hidden">
+            <input type="hidden" name="appr" value="{{row[0]['draftapp_status']}}">
             
           </div>  
         </div>
@@ -203,7 +213,6 @@
                 {% for result in row %}
                 <div class="row"><div class="col-50"><label id="usf">{{result['user_fullname']}}</label></div><div class="col-25"><label id="usr">{{result['role_name']}}</label></div></div>
                 {% endfor %}
-                <div align="Right"><a href="addboardd" id="addboardd" role="button"> แก้ไขรายชื่อคณะกรรมการ</a></div>
               </div>
             </div><br>
             <div class="row">
@@ -255,7 +264,7 @@
           
         </div>
       </div>
-      <br>
+      <br> 
     <div id="modall" class="modall">
       <div class="modall-content" id="modall-con">
         <span class="close" id="clo">&times;</span>

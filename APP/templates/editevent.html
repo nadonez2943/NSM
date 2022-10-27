@@ -1,0 +1,53 @@
+<doctype html>
+    {% extends 'layout.html' %}
+    {% block body %}
+    <style>
+        input[type='text'] { font-size: 16px; }
+        </style>
+    <br>
+    <a id="myBtn" href="/project/{{row[0]['pj_id']}}/{{phase}}Event" class='btn' >ย้อนกลับ</a>
+    <div class="container" style="width: 80%;">
+        <div class="card">
+            <div class="card-header"><h1>แก้ไขกิจกรรม</h1></div>
+            <div class="card-body">
+                <form action="/editevent" method="post">
+                    <div class="row">
+                        <div class="col-md-2">
+                        <h4>ชื่อ</h4>
+                        </div>
+                        <div class="col-md-10">
+                            <p> <input name="evname" id="1" value="{{row[0]['ev_name']}}" type="text" style="width:100%; "  required> </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                        <h4>รายละเอียด</h4>
+                        </div>
+                        <div class="col-md-10">
+                        <p> <textarea name="evdetail" value="{{row[0]['ev_detail']}}" style="width:100%; height: 80px;  " required>{{row[0]['ev_detail']}}</textarea> </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                        <h5>วันที่และเวลา</h5>
+                        </div>
+                        <div class="col-md-10">
+                            <input name="evdate" id="2" value="{{row[0]['ev_date']}}T{{row[0]['evtime']}}"  type="datetime-local"></input>
+                            <input name="evphase" value="{{row[0]['ev_phase']}}"  type="hidden">
+                            <input name="pjid" value="{{row[0]['pj_id']}}"  type="hidden">
+                            <input name="evid" value="{{row[0]['ev_id']}}"  type="hidden">
+                        </div>
+                    </div>
+                    <center><input type="submit" class="btn btn-primary btn-lg" value="ยืนยัน" ></center>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+    <script>
+    document.getElementById("1").onchange = function() {dis()};
+        function dis() {
+        alert (document.getElementById("2").value)
+        }
+        </script>
+    {% endblock %}
