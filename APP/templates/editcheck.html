@@ -7,7 +7,7 @@
   
      <div class="jumbotron">
         <center><h1>การตรวจงวดงาน</h1></center>
-        <form action="/upchecksss" method="post">
+        <form action="/upchecksss" method="post" onSubmit="JavaScript:return check();">
           <br>
             <p><input name="pj_id" value="{{row[0]['pj_id']}}" type="hidden"></p>
             <div class="row">
@@ -15,7 +15,7 @@
                 <label>เลขที่สัญญา</label>
               </div>
               <div class="col-75">
-                <label><input name="contractNo" value="{{row[0]['conNo']}}" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" style="width:300px; " placeholder="เลขที่สัญญา" autocomplete="off" required> </p></label>
+                <label><input name="contractNo" value="{{row[0]['conNo']}}" type="text"  style="width:300px; " placeholder="เลขที่สัญญา" autocomplete="off" required> </p></label>
               </div>
             </div>
             <hr>
@@ -32,7 +32,7 @@
                         <label>วันที่ตรวจรับ</label>
                       </div>
                       <div class="col-75">
-                        <label><input name="check_date" value="" type="date" id="cdate1" onchange="myFunction()" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
+                        <label><input name="check_date" value="{{row[0]['check_date']}}" type="date" id="cdate1" onchange="myFunction()" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
                       </div>
                     </div>
                     <div class="row">
@@ -40,23 +40,15 @@
                         <label>รายละเอียดการตรวจรับ</label>
                       </div>
                       <div class="col-75">
-                        <label><input name="check_detail" value="{{row[0]['check_detail']}}" type="text" style="width:700px; height: 100px;  " placeholder="" autocomplete="off" required> </p></label>
+                        <label><input name="check_detail" value="{{row[0]['check_detail']}}" type="text" style="width:700px; height: 100px;  " placeholder="" autocomplete="off"  maxlength="300" required> </p></label>
                       </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-25">
-                          <label>วันที่เบิกจ่าย</label>
-                        </div>
-                        <div class="col-75">
-                        <label><input name="ins_date" value="" type="date" id="ndate1" onchange="myFunction()" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
-                        </div>
                     </div>
                     <div class="row">
                       <div class="col-25">
                         <label>ยอดที่เบิกจ่าย</label>
                       </div>
                       <div class="col-75">
-                        <label><input name="ins_amount" value="" type="text" class="mask" onchange="sum()" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" id="number1" type="text" style="width:300px; " placeholder="ยอดที่เบิกจ่าย" autocomplete="off" required> </p></label>
+                        <label><input name="ins_amount" value="{{row[0]['ins_amount']}}" type="text" class="mask"  oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" id="number1" type="text" style="width:300px; " placeholder="ยอดที่เบิกจ่าย" autocomplete="off" required> </p></label>
                       </div>
                     </div>
                     <div class="row">
@@ -81,7 +73,7 @@
                       <label>วันที่ตรวจรับ</label>
                     </div>
                     <div class="col-75">
-                      <label><input name="check_date1" value="" type="date" id="cdate2" onchange="myFunction()" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
+                      <label><input name="check_date1" value="{{row[1]['check_date']}}" type="date" id="cdate2" onchange="myFunction()" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
                     </div>
                   </div>
                   <div class="row">
@@ -92,20 +84,13 @@
                       <label><input name="check_detail1" value="{{row[1]['check_detail']}}" type="text" style="width:700px; height: 100px;  " placeholder="" autocomplete="off" required> </p></label>
                     </div>
                   </div>
-                  <div class="row">
-                      <div class="col-25">
-                        <label>วันที่เบิกจ่าย</label>
-                      </div>
-                      <div class="col-75">
-                      <label><input name="ins_date1" value="" type="date" id="ndate2" onchange="myFunction()" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
-                      </div>
-                  </div>
+                 
                   <div class="row">
                     <div class="col-25">
                       <label>ยอดที่เบิกจ่าย</label>
                     </div>
                     <div class="col-75">
-                      <label><input name="ins_amount1" value="" type="text"  id="number2" class="mask" onchange="sum()" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" type="text" style="width:300px; " placeholder="ยอดที่เบิกจ่าย" autocomplete="off" required> </p></label>
+                      <label><input name="ins_amount1" value="{{row[1]['ins_amount']}}" type="text"  id="number2" class="mask"  oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" type="text" style="width:300px; " placeholder="ยอดที่เบิกจ่าย" autocomplete="off" required> </p></label>
                     </div>
                   </div>
                   <div class="row">
@@ -130,7 +115,7 @@
                       <label>วันที่ตรวจรับ</label>
                     </div>
                     <div class="col-75">
-                      <label><input name="check_date2" value="" type="date" id="cdate3" onchange="myFunction()" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
+                      <label><input name="check_date2" value="{{row[2]['check_date']}}" type="date" id="cdate3" onchange="myFunction()" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
                     </div>
                   </div>
                   <div class="row">
@@ -141,20 +126,13 @@
                       <label><input name="check_detail2" value="{{row[2]['check_detail']}}" type="text" id="ndate3" style="width:700px; height: 100px;  " placeholder="" autocomplete="off" required> </p></label>
                     </div>
                   </div>
-                  <div class="row">
-                      <div class="col-25">
-                        <label>วันที่เบิกจ่าย</label>
-                      </div>
-                      <div class="col-75">
-                      <label><input name="ins_date2" value="" type="date" onchange="myFunction()" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
-                      </div>
-                  </div>
+                
                   <div class="row">
                     <div class="col-25">
                       <label>ยอดที่เบิกจ่าย</label>
                     </div>
                     <div class="col-75">
-                      <label><input name="ins_amount2" value="" id="number3" class="mask" type="text"  onchange="sum()" style="width:300px; " placeholder="ยอดที่เบิกจ่าย" autocomplete="off" required> </p></label>
+                      <label><input name="ins_amount2" value="{{row[2]['ins_amount']}}" id="number3" class="mask" type="text"  style="width:300px; " placeholder="ยอดที่เบิกจ่าย" autocomplete="off" required> </p></label>
                     </div>
                   </div>
                   <div class="row">
@@ -247,25 +225,79 @@
             $(ele1).hide()
           })
           
-      
         })
       </script> 
-      <script>
-        function myFunction() {
-          var cdate1 = document.getElementById("cdate1").value;
-          var ndate1 = document.getElementById("ndate1").value;
-          var cdate2 = document.getElementById("cdate2").value;
-          var ndate2 = document.getElementById("ndate2").value;
-          var cdate3 = document.getElementById("cdate3").value;
-          var ndate3 = document.getElementById("ndate3").value;
-          var end = document.getElementById("end").value;
+<script>
+  function myFunction() {
+    var cdate1 = document.getElementById("cdate1").value;
+    var ndate1 = document.getElementById("ndate1").value;
+    var cdate2 = document.getElementById("cdate2").value;
+    var ndate2 = document.getElementById("ndate2").value;
+    var cdate3 = document.getElementById("cdate3").value;
+    var ndate3 = document.getElementById("ndate3").value;
+    var end = document.getElementById("ndate3").value;
     
-          document.getElementById("ndate1").setAttribute("min",cdate1); 
-          document.getElementById("cdate2").setAttribute("min",ndate1); 
-          document.getElementById("ndate2").setAttribute("min",cdate2); 
-          document.getElementById("cdate3").setAttribute("min",ndate2);
-          document.getElementById("ndate3").setAttribute("min",cdate3);  
+    document.getElementById("ndate1").setAttribute("min",cdate1); 
+    document.getElementById("cdate2").setAttribute("min",ndate1); 
+    document.getElementById("ndate2").setAttribute("min",cdate2); 
+    document.getElementById("cdate3").setAttribute("min",ndate2);
+    document.getElementById("ndate2").setAttribute("min",cdate2);  
+  }
+  </script>
+    <script>
+      function check(){
+        var c1 = Number(document.getElementById("number1").value);
+        var c2 = Number(document.getElementById("number2").value);
+        var c3 = Number(document.getElementById("number3").value);
+        var c4 = Number(document.getElementById("number4").value);
+        var num = c1+c2+c3;
+        if (num == c4) {
+          alert("เพิ่มข้อมูลสำเร็จ");
+          return true;
         }
-        </script>
+        else if(num < c4){
+          alert('ยอดเบิกจ่ายไม่ถึง'+c4);
+          return false;
+        }
+        else if(num > c4){
+          alert('ยอดเบิกจ่ายเกิน'+c4);
+          return false;
+        }
+      }
+</script>  
+<script>
+function myFunction() {
+  var ccdate1 = document.getElementById("cdate1").value;
+  var ccdate2 = document.getElementById("cdate2").value;
+  var ccdate3 = document.getElementById("cdate3").value;
+  var day1 = new Date(ccdate1);
+  var day2 = new Date(ccdate2);
+  var dd = day1.getDate() + 1;
+  var mm = day1.getMonth() + 1; //January is 0!
+  var yyyy = day1.getFullYear();
+  var dd1 = day2.getDate() + 1;
+  var mm1 = day2.getMonth() + 1; //January is 0!
+  var yyyy1 = day2.getFullYear();
+  if (dd < 10) {
+      dd = '0' + dd;
+    }
+
+  if (mm < 10) {
+      mm = '0' + mm;
+    } 
+  if (dd1 < 10) {
+      dd = '0' + dd;
+    }
+
+  if (mm1 < 10) {
+      mm = '0' + mm;
+    }   
+    day1 = yyyy + '-' + mm + '-' + dd;
+    day2 = yyyy1 + '-' + mm1 + '-' + dd1;
+    document.getElementById("cdate2").setAttribute("min", day1);  
+    document.getElementById("cdate3").setAttribute("min", day2);  
+ 
+}
+</script>
 {% endblock %}
 </html>

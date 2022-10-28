@@ -1,0 +1,56 @@
+<doctype html>
+    {% extends 'layout.html' %}
+    {% block body %}
+    <style>
+        input[type='text'] { font-size: 16px; }
+        </style>
+    <br>
+    <a class="btn btn-primary btn-lg" type="submit" href="/project/{{row[0]['pj_id']}}/examine" value="ย้อนกลับ">ย้อนกลับ</a>
+    <br>
+    <br>
+    <div class="jumbotron">
+        <form action="/adddatecontt2" method="post">
+            
+            <div class="row">
+                <div class="col-25">
+                  <label>วันที่เริ่มการทำงาน</label>
+                </div>
+                <div class="col-75">
+                <label><input name="datestart" value="{{row[0]['contt_start']}}" type="date" id="constart" onchange="myFunction()" min="{{rows[0]['date']}}" required></input></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                  <label>วันที่สินสุดการทำงาน</label>
+                </div>
+                <div class="col-75">
+                <label><input name="dateend" value="{{row[0]['contt_end']}}" type="date" id="conend" min="{{rows[0]['date']}}" required></input></label>
+                </div>
+            </div>
+            <input name="contt" value="{{row[0]['contt_id']}}" type="hidden" id="" ></input>
+            <input name="pj_id" value="{{row[0]['pj_id']}}" type="hidden" id="" ></input>
+    <center><input type="submit" class="btn btn-primary btn-lg" value="ยืนยัน" ></center>
+    </div>
+    </form>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script>
+    function myFunction() {
+        var constart = document.getElementById("constart").value;
+        var conend = document.getElementById("conend").value;
+        var day = new Date(constart);
+        var dd = day.getDate() + 1;
+        var mm = day.getMonth() + 1; //January is 0!
+        var yyyy = day.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+          }
+    
+        if (mm < 10) {
+            mm = '0' + mm;
+          }  
+          day = yyyy + '-' + mm + '-' + dd;
+          document.getElementById("conend").setAttribute("min", day);  
+       
+      }
+      </script>
+    {% endblock %}

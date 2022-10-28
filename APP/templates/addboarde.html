@@ -22,10 +22,9 @@
                 </select>
               
         <select name="roleid" id="rid" size="1" required>
-            <option hidden>ตำแหน่ง</option>
+            <option value="0" hidden>ตำแหน่ง</option>
             <option id="mng" value="1">ประธาน<br>
             <option id="boa" value="2">กรรมการ<br>
-            <option id="as" value="3">เลขาธิการ<br>
         </select>
         </div>
         </p>
@@ -35,7 +34,7 @@
         <input name="bophase" value="3" type="hidden">
         <input name="pjid" value="{{row[0]['pj_id']}}" type="hidden">
         <br>
-        <button type="button" class="btn btn-primary"data-bs-toggle="modal" data-bs-target="#myModal">เพิ่มคณะกรรมการ</button>
+        <button type="button" class="btn btn-primary"data-bs-toggle="modal" data-bs-target="#myModal" id="addbo" disabled>เพิ่มคณะกรรมการ</button>
         <div class="modal" id="myModal">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -74,7 +73,7 @@
         <th>ตำแหน่ง</th>
         <th>ลบรายชื่อ</th>
         </tr>
-        {% for result in row %}
+        {% for result in row2 %}
         <tr>
         <td id="usft">{{result['user_fullname']}}</td>
         <td id="usrt">{{result['role_name']}}</td>
@@ -85,12 +84,12 @@
     </table>
     <input id="PMR" value="AS" type="hidden">
     <br><br><center>
-    <a id="finil" href="/project/{{row[0]['pj_id']}}/examine">
+    <a id="finil" href="/project/{{row2[0]['pj_id']}}/examine">
     <input class="btn btn-primary btn-lg" type="button" id="fini" value="เสร็จสิ้น">
     </a>
     </center>
     <div id="addmodal" class="addmodal">
-
+  
         <div class="addmodal-content">
           <label>
           <center>

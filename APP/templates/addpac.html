@@ -12,6 +12,7 @@
 		}
 	</script>
 		<br>
+        <a id="myBtn" onclick="history.back()" class='btn' >ย้อนกลับ</a>
 		<div class="card">
 			<div class="card-header">
                 <div class="row">
@@ -30,7 +31,7 @@
                             </p>
                             <p>
                                 <div class="col-20" align="right"><label>วันที่ประกาศ:</label></div>
-                                <div class="col-75"><input name="pac_date" type="date" required></div>
+                                <div class="col-75"><input name="pac_date" type="date" max="{{pac[0]['today']}}" required></div>
                             </p>
                         </div>
                     </div>
@@ -42,14 +43,14 @@
             <div class="card-body">
 			{% for result in pac %}
                 
-                    <div class="row">
+                    <div class="row" id="pacrow">
                         <div class="col-50">
                             <h6>รายละเอียดประกาศ :</h6>
                             <h6 id="det">{{result['pac_detail']}}</h6>
                         </div>
                         <div class="col-20">
                             <h6>วันที่ประกาศ :</h6>
-                            <h6 id="dat">{{result['pacdate']}}</h6>
+                            <h6 >{{result['pacdate']}}</h6>
                         </div>
                         <div class="col-15" style="padding: 10px;">
                             <a class="btn-outline btn-lg" href="/editpac/{{id}}/{{result['pac_id']}}" style="margin-top: 6px;"> แก้ไข</a>
@@ -66,8 +67,7 @@
         <script>
           var dd = document.getElementById('det').innerHTML
           if (dd == "None"){
-            document.getElementById('det').innerHTML = "-";
-            document.getElementById('dat').innerHTML = "-";
+            document.getElementById('pacrow').style.display = "none";
           }
         </script>
     {% endblock %}

@@ -40,16 +40,8 @@
                         <label>รายละเอียดการตรวจรับ</label>
                       </div>
                       <div class="col-75">
-                        <label><input name="check_detail" value="" type="text" style="width:700px; height: 100px;  " placeholder="" autocomplete="off" required> </p></label>
+                        <label><input name="check_detail" value="" type="text" style="width:700px; height: 100px;  " placeholder="" autocomplete="off" maxlength="300" required> </p></label>
                       </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-25">
-                          <label>วันที่เบิกจ่าย</label>
-                        </div>
-                        <div class="col-75">
-                        <label><input name="ins_date" value="" type="date" id="ndate1" onchange="myFunction()" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
-                        </div>
                     </div>
                     <div class="row">
                       <div class="col-25">
@@ -93,14 +85,6 @@
                     </div>
                   </div>
                   <div class="row">
-                      <div class="col-25">
-                        <label>วันที่เบิกจ่าย</label>
-                      </div>
-                      <div class="col-75">
-                      <label><input name="ins_date1" value="" type="date" id="ndate2" onchange="myFunction()" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
-                      </div>
-                  </div>
-                  <div class="row">
                     <div class="col-25">
                       <label>ยอดที่เบิกจ่าย</label>
                     </div>
@@ -140,14 +124,6 @@
                     <div class="col-75">
                       <label><input name="check_detail2" value="" type="text" style="width:700px; height: 100px;  " placeholder="" autocomplete="off" required> </p></label>
                     </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-25">
-                        <label>วันที่เบิกจ่าย</label>
-                      </div>
-                      <div class="col-75">
-                      <label><input name="ins_date2" value="" type="date" id="ndate3" onchange="myFunction()" max="{{row[0]['contt_end']}}" min="{{row[0]['contt_start']}}"></input></label>
-                      </div>
                   </div>
                   <div class="row">
                     <div class="col-25">
@@ -284,21 +260,59 @@
       })
     </script>
     <script>
-    function myFunction() {
-      var cdate1 = document.getElementById("cdate1").value;
-      var ndate1 = document.getElementById("ndate1").value;
-      var cdate2 = document.getElementById("cdate2").value;
-      var ndate2 = document.getElementById("ndate2").value;
-      var cdate3 = document.getElementById("cdate3").value;
-      var ndate3 = document.getElementById("ndate3").value;
-      var end = document.getElementById("end").value;
-
-      document.getElementById("ndate1").setAttribute("min",cdate1); 
-      document.getElementById("cdate2").setAttribute("min",ndate1); 
-      document.getElementById("ndate2").setAttribute("min",cdate2); 
-      document.getElementById("cdate3").setAttribute("min",ndate2);
-      document.getElementById("ndate3").setAttribute("min",cdate3);  
-    }
-    </script>
+      function myFunction() {
+        var ccdate1 = document.getElementById("cdate1").value;
+        var ccdate2 = document.getElementById("cdate2").value;
+        var ccdate3 = document.getElementById("cdate3").value;
+        var day1 = new Date(ccdate1);
+        var day2 = new Date(ccdate2);
+        var dd = day1.getDate() + 1;
+        var mm = day1.getMonth() + 1; //January is 0!
+        var yyyy = day1.getFullYear();
+        var dd1 = day2.getDate() + 1;
+        var mm1 = day2.getMonth() + 1; //January is 0!
+        var yyyy1 = day2.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+          }
+    
+        if (mm < 10) {
+            mm = '0' + mm;
+          } 
+        if (dd1 < 10) {
+            dd = '0' + dd;
+          }
+    
+        if (mm1 < 10) {
+            mm = '0' + mm;
+          }   
+          day1 = yyyy + '-' + mm + '-' + dd;
+          day2 = yyyy1 + '-' + mm1 + '-' + dd1;
+          document.getElementById("cdate2").setAttribute("min", day1);  
+          document.getElementById("cdate3").setAttribute("min", day2);  
+       
+      }
+      </script>
+      <script>
+        document.getElementById("buy_date").onchange = function() {datecheck()}
+        function datecheck(){
+          var budd = document.getElementById("buy_date").value;
+          var buyday = new Date(budd);
+          var dd = buyday.getDate() + 1;
+          var mm = buyday.getMonth() + 1; //January is 0!
+          var yyyy = buyday.getFullYear();
+    
+          if (dd < 10) {
+            dd = '0' + dd;
+          }
+    
+          if (mm < 10) {
+            mm = '0' + mm;
+          } 
+            
+          buyday = yyyy + '-' + mm + '-' + dd;
+          document.getElementById("prop_date").setAttribute("min", buyday);
+        }
+      </script>
 {% endblock %}
 </html>

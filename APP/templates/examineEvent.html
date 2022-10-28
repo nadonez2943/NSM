@@ -92,7 +92,7 @@
     </head>  
 </head>
 <body>
-<a id="myBtn" href="/project/{{row[0]['pj_id']}}/examine" style="font-size: 18px;width: 100px;" class='btn btn' >ย้อนกลับ</a>
+<a id="myBtn" href="/project/{{row[0]['pj_id']}}/examine" style="font-size: 18px;width: 100px;" class='btn' >ย้อนกลับ</a>
 <br>
 <br>
 <div class="container" style="width: 80%;">
@@ -120,29 +120,12 @@
                 <tr>
                     <td style="width: 10%;" id="rnt">{{result['row_num']}}</td>
                     <td style="width: 20%;" id="evnt">{{result['ev_name']}}</td>
-                    <td style="width: 20%;" id="evet">{{result['ev_detail']}}</td>
+                    <td style="width: 20%;" id="evet"><p style="width: 200px">{{result['ev_detail']}}</p></td>
                     <td style="width: 15%;" id="evdt">{{result['evdate']}}</td>
                     <td style="width: 15%;" id="evtt">{{result['evtime']}} น.</td>
                     <td  style="text-align: center;width: 15%;" id="evedt">
                         <a href="/project/{{result['pj_id']}}/editevent/{{result['ev_phase']}}/{{result['ev_id']}}" style="padding: 5px 5px;font-size: 12px;width: 40px;" class='btn btn' >แก้ไข</a>
-                        <a id="evdlt" class='btn btn-danger' style="background-color: rgb(255, 27, 27);color: white;padding: 5px 5px;font-size: 12px;width: 40px;" data-bs-toggle="modal" data-bs-target="#myModal1" >ลบ</a>
-                        <div class="modal" id="myModal1">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">ยืนยันการลบ</h4>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        คุณต้องการที่จะลบใช่หรือไม่
-                                    </div>
-                                    <div class="modal-footer">
-                                        <a type="submit" class="btn btn-primary"  href="/project/{{result['pj_id']}}/EVENT/{{result['ev_phase']}}/{{result['ev_id']}}" >ใช่</a>
-                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="background-color: red;">ไม่ใช่</button>
-                                    </div>  
-                                </div>
-                            </div>
-                        </div>
+                        <a id="evdlt" class='btn btn-danger' style="background-color: rgb(255, 27, 27);color: white;padding: 5px 5px;font-size: 12px;width: 40px;" href="/project/{{result['pj_id']}}/EVENT/{{result['ev_phase']}}/{{result['ev_id']}}">ลบ</a>
                     </td> 
                 </tr>
                 {% endfor %}

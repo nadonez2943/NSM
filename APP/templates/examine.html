@@ -19,21 +19,28 @@
             
             <progress id="file" value="{{row[0]['stex_percent']}}" max="100"></progress>    
             <br><br>
-            <label  id="sh" for="file">{{row[0]['stex_name']}}</label><p style="color: red;" id="exalert"></p>
+            <label  id="sh" for="file">{{row[0]['stex_name']}}</label>
             <p id="shwoone"></p>
             <form action="/project/{{row[0]['pj_id']}}/examinex" method="post">
+              <input name="check1" id="check1" value="{{row[0]['check_no1']}}" type="hidden">
+              <input name="check2" id="check2" value="{{row[0]['check_no2']}}" type="hidden">
               <input name="std" id="stex" value="{{row[0]['stex_id']}}" type="hidden">
               <input name="PMC" id="pop" value="{{row[0]['examPMcheck']}}" type="hidden">
-              <div align="center"><input type="hidden" id="exambutton" value="ยืนยัน" ></form></div>
+              <div align="center"><input type="hidden" id="exambutton" onclick="return confirm('ยืนยัน')" value="ยืนยัน" ></form></div>
               <input name="userrole" id="userrole1" value="{{role['role']}}" type="hidden">
+              <input name="check3" id="check3" value="{{row[0]['check_no3']}}" type="hidden">
+              <input name="pj_id" id="pj_id" value="{{row[0]['pj_id']}}" type="hidden">
+              <input name="ins1" id="ins1" value="{{check1[0]['ins_amount']}}" type="hidden">
+              <input name="ins2" id="ins2" value="{{check2[0]['ins_amount']}}" type="hidden">
+              <input name="ins3" id="ins3" value="{{check3[0]['ins_amount']}}" type="hidden">
               {% for row in one %}
-              <input name="sd1" id="sd1" value="{{row['daten']}}" type="hidden">
+              <input name="sd1" id="sd1" value="{{row['checkdate']}}" type="hidden">
               {% endfor %}
               {% for row in two %}
-              <input name="sd2" id="sd2" value="{{row['daten']}}" type="hidden">
+              <input name="sd2" id="sd2" value="{{row['checkdate']}}" type="hidden">
               {% endfor %}
               {% for row in three %}
-              <input name="sd3" id="sd3" value="{{row['daten']}}" type="hidden">
+              <input name="sd3" id="sd3" value="{{row['checkdate']}}" type="hidden">
               {% endfor %}
           </div>
         </div>
@@ -53,7 +60,7 @@
               <a id="c3">{{row['check_detail']}}</a><br>
               <a>ยอดเบิกจ่าย :</a>
               <a id="c4">{{row['ins_amount']}}</a><br>
-              <a>เป็นจำนวน:</a><br>
+              <a>%การเบิกจ่าย :</a><br>
               <a id="c5">{{row['ff']}} %</a><br>
                 {% endfor %}
           </div> 
@@ -107,7 +114,7 @@
                   </div>
                   <input id="user" value="{{row['user_fullname']}}" type="hidden">
                   {% endfor %}
-                  <p align="right"><a href="addboarde" id="bea">เพิ่ม</a><a href="addboarde" id="bee"> แก้ไข</a></p>
+                  <p align="right"><a href="addboarde" id="bea">แก้ไขรายชื่อกรรมการ</a><a href="addboarde" id="bee"> แก้ไขรายชื่อกรรมการ</a></p>
                 </div>
               </div>
               <div class="row">
@@ -126,19 +133,34 @@
                   <label>{{row[0]['pj_financeAmount']}} บาท</label>
                 </div>
               </div>
+              <div class="row">
+                <div class="col-25">
+                  <label>วงเงิน</label>
+                </div>
+                <div class="col-75">
+                  <label>{{row[0]['contt_fin']}} บาท</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-25">
+                  <label> ยอดเงินคงเหลือ</label>
+                </div>
+                <div class="col-75">
+                  <input type="text"  id="butjet" style="border: none; border-bottom: 3px rgb(255, 255, 255) double"  name="" value ="{{row[0]['contt_fin']}}" disabled>
+                </div>
+              </div>
         </div>
        </div>
         <div class="card" style="margin-top: 8px;">
           <div class="card-body">
             <h5>ข้อมูลบริษัท</h5><hr>
-            </div><div class="row">
+            <div class="row">
               <div class="col-25">
                 <label>วันที่ประกาศผล</label>
               </div>
               <div class="col-75">
                 <label>{{row[0]['windate']}}</label>
-              </div>
-              <div class="row">
+              </div><div class="row">
               <div class="col-25">
                 <label>บริษัทผู้รับเหมา</label>
               </div>
@@ -159,7 +181,7 @@
               <div class="col-75">
                 <label>{{row[0]['contt_tel']}}</label>
               </div>
-            
+            </div>
             </div><div class="row">
               <div class="col-25">
                 <label>วงเงิน</label>
@@ -168,6 +190,23 @@
                 <label>{{row[0]['contt_fin']}} บาท</label>
               </div>
             </div>
+            <div class="row">
+              <div class="col-25">
+                <label>วันเริ่มการทำงาน</label>
+              </div>
+              <div class="col-75">
+                <label  id ="contt_start">{{row[0]['conttstart']}} </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-25">
+                <label>วันสิ้นสุดการทำงาน</label>
+              </div>
+              <div class="col-75">
+                <div id ="contt_end"><label>{{row[0]['conttend']}} </label></div>
+              </div>
+            </div>
+            <p align="right"><a href="/adddatecontt/{{row[0]['pj_id']}}" id="adddatecontt">เพิ่ม</a><a href="/editdatecontt/{{row[0]['pj_id']}}"  id="editdatecontt"> แก้ไข</a></p>
           </div>
         </div>
       </div>
@@ -205,8 +244,8 @@
           </div>  
         </div>
         <div class="card" style="margin-top: 5px;">
-          <div class="card-body"align="center">
-            <a  href="doc/3">เอกสารโครงการ</a>
+          <div class="card-body">
+            <a align="center" href="doc/3">เอกสารโครงการ</a>
           </div>
         </div>
       </div>
@@ -231,6 +270,14 @@
 
   }
 </script>
+<script>
+  var conttend = document.getElementById("contt_end").innerHTML;
+  var conttstart = document.getElementById("contt_start").innerHTML;
+  if (conttstart == "None"){
+    document.getElementById("contt_start").innerHTML = "-";
+    document.getElementById("contt_end").innerHTML = "-";
+  }
+</script>
 
 <script>
   var fname = document.getElementById("fname").innerHTML;
@@ -240,35 +287,165 @@
     document.getElementById("rname").innerHTML = "-";
   }
 </script>
+<script>
+  var stex = document.getElementById('stex').value;
+  var userrole = document.getElementById('userrole1').value;
+  if ( stex == "1"  && userrole == "manager") {
+  document.getElementById('adddatecontt').style.display= "block";
+  document.getElementById('editdatecontt').style.display= "none";
+  }
+  else if ( stex == "2"  && userrole == "manager") {
+  document.getElementById('editdatecontt').style.display= "block";
+  document.getElementById('adddatecontt').style.display= "none";
+  }
+  
+  else if (stex == "2"  && userrole == "assistant"){
+  document.getElementById('adddatecontt').style.display= "none";
+  document.getElementById('editdatecontt').style.display= "block";
+ }
+ else 
+  document.getElementById('adddatecontt').style.display= "none";
+  document.getElementById('editdatecontt').style.display= "none";
+ 
+ 
+  </script>
 
 <script>
-var stdd = document.getElementById('stex').value;
-var usrole = document.getElementById('userrole1').value;
-var pmc = document.getElementById('pop').value;
-if (stdd == "1" && usrole =="manager"){
-  document.getElementById('exalert').innerHTML = "**โปรดเพิ่มคณะกรรมการ**";
-}
-if (stdd == "2"  && pmc != "wait" && usrole =="manager"){
-  document.getElementById('exalert').innerHTML = "รอเลขาธิการเพิ่มรายละเอียดการตรวจงาน";
-  document.getElementById('exalert').style.color = "gray";
-}
-if (stdd == "2"  && pmc != "wait" && usrole =="assistant"){
-  document.getElementById('exalert').innerHTML = "**โปรดเพิ่มรายละเอียดการตรวจงาน**";
-}
+  var stex = document.getElementById('stex').value;
+  var userrole = document.getElementById('userrole1').value;
+  if ( stex == "2"  && userrole == "manager") {
+  document.getElementById('bea').style.display= "none";
+  document.getElementById('bee').style.display= "block";
+  }
+  else if (stex >= "2" && stex != "1" &&  userrole == "assistant"){
+  document.getElementById('bee').style.display= "block";
+  document.getElementById('bea').style.display= "none";
+  }
+  
+  else if (stex == "1"  && userrole == "manager"){
+  document.getElementById('bee').style.display= "none";
+  document.getElementById('bea').style.display= "block";
+ }
+ else if (stex == "1"  && userrole == "chairman"){
+  document.getElementById('bee').style.display= "none";
+  document.getElementById('bea').style.display= "none";
+ }
+ else{
+  document.getElementById('bea').style.display= "none";
+  document.getElementById('bee').style.display= "none";
+ }
+  </script> 
 
+<script>
+  var userrole = document.getElementById('userrole1').value;
+  var stex = document.getElementById('stex').value;
+  if (userrole == "manager") {
+  document.getElementById('ea').style.display= "none";
+  }
+  else if (userrole == "assistant" && stex == 2 || stex == 1 ){
+  document.getElementById('ea').style.display= "block";
+  }
+  else{
+  document.getElementById('ea').style.display= "none";
+  }
+</script> 
+
+<script>
+  var pd = document.getElementById("pd").innerHTML;
+  if(pd = 'none'){
+    document.getElementById("pd").innerHTML = "-";}
 </script>
 
+
 <script>
+  var userrole1 = document.getElementById("userrole1").value
+  var pj_id = document.getElementById("pj_id").value
+  var PMC = document.getElementById("pop").value
+  var stex = Number(document.getElementById('stex').value);
+  var sd1 = Number(document.getElementById('sd1').value);
+  var sd2 = Number(document.getElementById('sd2').value);
+  var sd3 = Number(document.getElementById('sd3').value);
+  if ( stex == 3 &&  PMC != "wait" && sd1 < 0 ) {
+      window.onload = function() {
+      // similar behavior as clicking on a link
+      window.location.href = ("http://localhost:5000/project/"+pj_id+"/examineauto/"+stex);
+      }
+  }
+  if ( stex == 4 &&  PMC != "wait" && sd2 < 0 ) {
+      window.onload = function() {
+      // similar behavior as clicking on a link
+      window.location.href = ("http://localhost:5000/project/"+pj_id+"/examineauto/"+stex);
+      }
+  }
+</script>
+<script>
+  
+</script>
+<script>
+  var sd1 = Number(document.getElementById("sd1").value);
+  var sd2 = Number(document.getElementById("sd2").value);
+  var sd3 = Number(document.getElementById("sd3").value);
   var stdd = document.getElementById('stex').value;
   var usrole = document.getElementById('userrole1').value;
   var pmc = document.getElementById('pop').value;
+  var check1 = document.getElementById('check1').value;
+  var check2 = document.getElementById('check2').value;
+  if (stdd == "3" && pmc != "wait" && pmc != "prewait" && usrole == "assistant" )  {
+    document.getElementById('exambutton').type = "submit";
+    document.getElementById('exambutton').value = "จ่ายงวดที่1";
+}
+
+  if (stdd == "3" && pmc == "wait" && usrole == "chairman")  {
+    document.getElementById('exambutton').type = "submit";
+    document.getElementById('exambutton').innerHTML  = "อนุมัติ";
+  }
+  if (stdd == "4"  && usrole == "assistant"  && pmc != "wait")   {
+    document.getElementById('exambutton').type = "submit";
+    document.getElementById('exambutton').value = "จ่ายงวดที่2";
+  }
+  if (stdd == "4"  && usrole == "assistant"  && pmc != "wait" &&  check1 == "1")   {
+    document.getElementById('exambutton').type = "submit";
+    document.getElementById('exambutton').value = "จ่ายงวดที่1กับ2";
+  }
+  if (stdd == "4" && pmc == "wait" && usrole == "chairman" )  {
+    document.getElementById('exambutton').type = "submit";
+    document.getElementById('exambutton').innerHTML  = "อนุมัติ";
+  }
+  if (stdd == "5" && usrole == "assistant"   && pmc != "wait")  {
+    document.getElementById('exambutton').type = "submit";
+    document.getElementById('exambutton').value = "จ่ายงวดที่3";
+  
+  }
+  if (stdd == "5" && usrole == "assistant"   && pmc != "wait"  &&  check2 == "1"  )  {
+    document.getElementById('exambutton').type = "submit";
+    document.getElementById('exambutton').value = "จ่ายงวดที่2กับ3";
+  
+  }
+  if (stdd == "5" && usrole == "assistant"   && pmc != "wait"  &&  check2 == "1"  &&  check1 == "1")  {
+    document.getElementById('exambutton').type = "submit";
+    document.getElementById('exambutton').value = "จ่ายงวดที่1กับ2กับ3";
+  
+  }
+  if (stdd == "5" && pmc == "wait" && usrole == "chairman")  {
+    document.getElementById('exambutton').type = "submit";
+    document.getElementById('exambutton').innerHTML  = "อนุมัติ";
+  }
+  if (stdd == "5" && pmc == "wait" && usrole == "manager")  {
+    document.getElementById('exambutton').type = "hidden";
+  }
+</script> 
+
+<script>
+  var stdd = document.getElementById('stex').value;
+  var check1 = document.getElementById('check1').value;
+  var check2 = document.getElementById('check2').value;
+  var pmc = document.getElementById('pop').value;
+
   if (stdd == "3" && pmc != "wait" && pmc != "prewait" )  {
-    document.getElementById('con1').innerHTML  = "ตรวจรับ";
-    document.getElementById('con1').style.background = "gray";
-    document.getElementById('con1').style.color = "white";
+    document.getElementById('con1').innerHTML  = "อยู่ในช่วงเบิกจ่ายงวดที่ 1";
 }
   if (stdd == "3" && pmc == "wait" )  {
-    document.getElementById('con1').innerHTML  = "พร้อมเบิกจ่าย";
+    document.getElementById('con1').innerHTML  = "ตรวจสอบการเบิกจ่ายงวดที่ 1";
     document.getElementById('con1').style.background = "gray";
     document.getElementById('con1').style.color = "white";
     document.getElementById('con1').style.width = "100%";
@@ -276,215 +453,182 @@ if (stdd == "2"  && pmc != "wait" && usrole =="assistant"){
   }
  
   if (stdd == "4" && pmc != "wait" && pmc != "prewait" )  {
-    document.getElementById('con1').innerHTML  = "เบิกจ่ายเสร็จสิ้น";
+    document.getElementById('con1').innerHTML  = "เบิกจ่ายสำเร็จ";
     document.getElementById('con1').style.background = "green";
     document.getElementById('con1').style.color = "white";
     document.getElementById('con1').style.width = "50%";
     document.getElementById('con1').style.marginTop = "20px";
-    document.getElementById('con2').innerHTML  = "ตรวจรับ";
+    document.getElementById('con2').innerHTML  = "อยู่ในช่วงเบิกจ่ายงวดที่ 2";
 }
-  if (stdd == "4" && pmc == "wait" )  {
-    document.getElementById('con1').innerHTML  = "เบิกจ่ายเสร็จสิ้น";
+if (stdd == "4" && pmc != "wait" && pmc != "prewait" && check1 == 1)  {
+    document.getElementById('con1').innerHTML  = "ยังไม่ได้เบิกจ่าย";
+    document.getElementById('con1').style.background = "grey";
+    document.getElementById('con1').style.color = "white";
+    document.getElementById('con1').style.width = "50%";
+    document.getElementById('con1').style.marginTop = "20px";
+    document.getElementById('con2').innerHTML  = "อยู่ในช่วงเบิกจ่ายงวดที่ 2";
+}
+  if (stdd == "4" && pmc == "wait" && check1 != 1)  {
+    document.getElementById('con1').innerHTML  = "เบิกจ่ายสำเร็จ";
     document.getElementById('con1').style.background = "green";
     document.getElementById('con1').style.color = "white";
     document.getElementById('con1').style.width = "50%";
     document.getElementById('con1').style.marginTop = "20px";
-    document.getElementById('con2').innerHTML  = "พร้อมเบิกจ่าย";
+    document.getElementById('con2').innerHTML  = "ตรวจสอบการเบิกจ่ายงวดที่ 2";
+    document.getElementById('con2').style.background = "gray";
+    document.getElementById('con2').style.color = "white";
+    document.getElementById('con2').style.width = "100%";
+    document.getElementById('con2').style.marginTop = "20px";
+  }
+  if (stdd == "4" && pmc == "wait" && check1 == 1)  {
+    document.getElementById('con1').innerHTML  = "ยังไม่ได้เบิกจ่าย";
+    document.getElementById('con1').style.background = "gray";
+    document.getElementById('con1').style.color = "white";
+    document.getElementById('con1').style.width = "50%";
+    document.getElementById('con1').style.marginTop = "20px";
+    document.getElementById('con2').innerHTML  = "ตรวจสอบการเบิกจ่ายงวดที่ 2";
     document.getElementById('con2').style.background = "gray";
     document.getElementById('con2').style.color = "white";
     document.getElementById('con2').style.width = "100%";
     document.getElementById('con2').style.marginTop = "20px";
   }
 
-  if (stdd == "5" && pmc != "wait" && pmc != "prewait" )  {
-    document.getElementById('con1').innerHTML  = "เบิกจ่ายเสร็จสิ้น";
+  if (stdd == "5" && pmc != "wait" && pmc != "prewait" && check2 == 1 && check1 == 1 )  {
+    document.getElementById('con1').innerHTML  = "เบิกจ่ายสำเร็จ";
     document.getElementById('con1').style.background = "green";
     document.getElementById('con1').style.color = "white";
     document.getElementById('con1').style.width = "50%";
     document.getElementById('con1').style.marginTop = "20px";
-    document.getElementById('con2').innerHTML  = "เบิกจ่ายเสร็จสิ้น";
+    document.getElementById('con2').innerHTML  = "เบิกจ่ายสำเร็จ";
     document.getElementById('con2').style.background = "green";
     document.getElementById('con2').style.color = "white";
     document.getElementById('con2').style.width = "50%";
     document.getElementById('con2').style.marginTop = "20px";
-    document.getElementById('con3').innerHTML  = "ตรวจรับ";
+    document.getElementById('con3').innerHTML  = "อยู่ในช่วงเบิกจ่ายงวดที่ 3";
 }
-  if (stdd == "5" && pmc == "wait" )  {
-    document.getElementById('con1').innerHTML  = "เบิกจ่ายเสร็จสิ้น";
+if (stdd == "5" && pmc != "wait" && pmc != "prewait" && check2 == 1)  {
+    document.getElementById('con1').innerHTML  = "เบิกจ่ายสำเร็จ";
     document.getElementById('con1').style.background = "green";
     document.getElementById('con1').style.color = "white";
     document.getElementById('con1').style.width = "50%";
     document.getElementById('con1').style.marginTop = "20px";
-    document.getElementById('con2').innerHTML  = "เบิกจ่ายเสร็จสิ้น";
+    document.getElementById('con2').innerHTML  = "ยังไม่ได้เบิกจ่าย";
+    document.getElementById('con2').style.background = "gray";
+    document.getElementById('con2').style.color = "white";
+    document.getElementById('con2').style.width = "50%";
+    document.getElementById('con2').style.marginTop = "20px";
+    document.getElementById('con3').innerHTML  = "อยู่ในช่วงเบิกจ่ายงวดที่ 3";
+}
+if (stdd == "5" && pmc != "wait" && pmc != "prewait" && check2 == 1 && check1 == 1)  {
+    document.getElementById('con1').innerHTML  = "ยังไม่ได้เบิกจ่าย";
+    document.getElementById('con1').style.background = "gray";
+    document.getElementById('con1').style.color = "white";
+    document.getElementById('con1').style.width = "50%";
+    document.getElementById('con1').style.marginTop = "20px";
+    document.getElementById('con2').innerHTML  = "ยังไม่ได้เบิกจ่าย";
+    document.getElementById('con2').style.background = "gray";
+    document.getElementById('con2').style.color = "white";
+    document.getElementById('con2').style.width = "50%";
+    document.getElementById('con2').style.marginTop = "20px";
+    document.getElementById('con3').innerHTML  = "อยู่ในช่วงเบิกจ่ายงวดที่ 3";
+}
+  if (stdd == "5" && pmc == "wait" && check2 != 1 && check1 != 1 )  {
+    document.getElementById('con1').innerHTML  = "เบิกจ่ายสำเร็จ";
+    document.getElementById('con1').style.background = "green";
+    document.getElementById('con1').style.color = "white";
+    document.getElementById('con1').style.width = "50%";
+    document.getElementById('con1').style.marginTop = "20px";
+    document.getElementById('con2').innerHTML  = "เบิกจ่ายสำเร็จ";
     document.getElementById('con2').style.background = "green";
     document.getElementById('con2').style.color = "white";
     document.getElementById('con2').style.width = "50%";
     document.getElementById('con2').style.marginTop = "20px";
-    document.getElementById('con3').innerHTML  = "พร้อมเบิกจ่าย";
+    document.getElementById('con3').innerHTML  = "ตรวจสอบการเบิกจ่ายงวดที่ 3";
+    document.getElementById('con3').style.background = "gray";
+    document.getElementById('con3').style.color = "white";
+    document.getElementById('con3').style.width = "100%";
+    document.getElementById('con3').style.marginTop = "20px";
+  }
+  if (stdd == "5" && pmc == "wait" && check2 == 1 && check1 == 1 )  {
+    document.getElementById('con1').innerHTML  = "ยังไม่ได้เบิกจ่าย";
+    document.getElementById('con1').style.background = "gray";
+    document.getElementById('con1').style.color = "white";
+    document.getElementById('con1').style.width = "50%";
+    document.getElementById('con1').style.marginTop = "20px";
+    document.getElementById('con2').innerHTML  = "ยังไม่ได้เบิกจ่าย";
+    document.getElementById('con2').style.background = "gray";
+    document.getElementById('con2').style.color = "white";
+    document.getElementById('con2').style.width = "50%";
+    document.getElementById('con2').style.marginTop = "20px";
+    document.getElementById('con3').innerHTML  = "ตรวจสอบการเบิกจ่ายงวดที่ 3";
     document.getElementById('con3').style.background = "gray";
     document.getElementById('con3').style.color = "white";
     document.getElementById('con3').style.width = "100%";
     document.getElementById('con3').style.marginTop = "20px";
   }
   if (stdd == "6"  )  {
-    document.getElementById('con1').innerHTML  = "เบิกจ่ายเสร็จสิ้น";
+    document.getElementById('con1').innerHTML  = "เบิกจ่ายสำเร็จ";
     document.getElementById('con1').style.background = "green";
     document.getElementById('con1').style.color = "white";
     document.getElementById('con1').style.width = "50%";
     document.getElementById('con1').style.marginTop = "20px";
-    document.getElementById('con2').innerHTML  = "เบิกจ่ายเสร็จสิ้น";
+    document.getElementById('con2').innerHTML  = "เบิกจ่ายสำเร็จ";
     document.getElementById('con2').style.background = "green";
     document.getElementById('con2').style.color = "white";
     document.getElementById('con2').style.width = "50%";
     document.getElementById('con2').style.marginTop = "20px";
-    document.getElementById('con3').innerHTML  = "เบิกจ่ายเสร็จสิ้น";
+    document.getElementById('con3').innerHTML  = "เบิกจ่ายสำเร็จ";
     document.getElementById('con3').style.background = "green";
     document.getElementById('con3').style.color = "white";
     document.getElementById('con3').style.width = "50%";
     document.getElementById('con3').style.marginTop = "20px";
   }
-</script>  
+   
+</script> 
+<script> 
+            var stdd = document.getElementById('stex').value;
+            var check1 = document.getElementById('check1').value;
+            var check2 = document.getElementById('check2').value;
+            var pmc = document.getElementById('pop').value;
+            var c1 = Number(document.getElementById("ins1").value);
+            var c2 = Number(document.getElementById("ins2").value);
+            var c3 = Number(document.getElementById("ins3").value);
+            var c4 = Number(document.getElementById("butjet").value);
+            var num1 = parseInt(c4)-parseInt(c1);
+            var num2 = parseInt(c4)-parseInt(c2);
+            var num3 = parseInt(c4)-parseInt(c3);
+            var nnum1 =parseInt(c4)-(parseInt(c1)+parseInt(c2));
+            var nnum2 =parseInt(c4)-(parseInt(c2)+parseInt(c3));
+            var nnum3 =parseInt(c4)-(parseInt(c1)+parseInt(c2)+parseInt(c3));
 
-  <script>
-    var stex = document.getElementById('stex').value;
-    var userrole = document.getElementById('userrole1').value;
-    if (stex != "1"  && userrole == "manager") {
-    document.getElementById('bea').style.display= "none";
-    document.getElementById('bee').style.display= "none";
-    }
-    else if (stex == "2" && stex != "1" &&  userrole == "assistant"){
-    document.getElementById('bee').style.display= "block";
-    document.getElementById('bea').style.display= "none";
-    }
-    else if (stex == "1"  && userrole == "manager"){
-    document.getElementById('bee').style.display= "none";
-    document.getElementById('bea').style.display= "block";
-   }
-   else{
-    document.getElementById('bea').style.display= "none";
-    document.getElementById('bee').style.display= "none";
-   }
-    
-  
-
-    
-    </script> 
-
-  <script>
-    var userrole = document.getElementById('userrole1').value;
-    var stex = document.getElementById('stex').value;
-    if (userrole == "manager") {
-    document.getElementById('ea').style.display= "none";
-    }
-    else if (userrole == "assistant" && stex == 2 || stex == 1 ){
-    document.getElementById('ea').style.display= "block";
-    }
-    else{
-    document.getElementById('ea').style.display= "none";
-    }
-  </script> 
- 
- 
- <script>
-      var sd1 = Number(document.getElementById("sd1").value);
-      var sd2 = Number(document.getElementById("sd2").value);
-      var sd3 = Number(document.getElementById("sd3").value);
-      var stex = Number(document.getElementById("stex").value);
-      var usrole = document.getElementById('userrole1').value;
-      var pmc = document.getElementById('pop').value;
-      if(sd1 == 7 && stex == 3){
-        document.getElementById('shwoone').innerHTML  = "เหลือเวลา 7 วัน";
-        document.getElementById('shwoone').style.background = "green";
-        document.getElementById('shwoone').style.color = "white";
-        document.getElementById('shwoone').style.width = "50%";
-        document.getElementById('shwoone').style.marginTop = "20px";
-        }
-      if(sd2 == 7 && stex == 4){
-        document.getElementById('shwoone').innerHTML  = "เหลือเวลา 7 วัน";
-        document.getElementById('shwoone').style.background = "green";
-        document.getElementById('shwoone').style.color = "white";
-        document.getElementById('shwoone').style.width = "50%";
-        document.getElementById('shwoone').style.marginTop = "20px";
-      }
-      if(sd3 == 7 && stex == 5){
-        document.getElementById('shwoone').innerHTML  = "เหลือเวลา 7 วัน";
-        document.getElementById('shwoone').style.background = "green";
-        document.getElementById('shwoone').style.color = "white";
-        document.getElementById('shwoone').style.width = "50%";
-        document.getElementById('shwoone').style.marginTop = "20px";
-      }
-      if(sd1 == 3 && stex == 3 ){
-        document.getElementById('shwoone').innerHTML  = "เหลือเวลา 3 วัน";
-        document.getElementById('shwoone').style.background = "green";
-        document.getElementById('shwoone').style.color = "white";
-        document.getElementById('shwoone').style.width = "50%";
-        document.getElementById('shwoone').style.marginTop = "20px";
-        }
-      if(sd2 == 3 && stex == 4 ){
-        document.getElementById('shwoone').innerHTML  = "เหลือเวลา 3 วัน";
-        document.getElementById('shwoone').style.background = "green";
-        document.getElementById('shwoone').style.color = "white";
-        document.getElementById('shwoone').style.width = "50%";
-        document.getElementById('shwoone').style.marginTop = "20px";
-      }
-      if(sd3 == 3 && stex == 5 ){
-        document.getElementById('shwoone').innerHTML  = "เหลือเวลา 3 วัน";
-        document.getElementById('shwoone').style.background = "green";
-        document.getElementById('shwoone').style.color = "white";
-        document.getElementById('shwoone').style.width = "50%";
-        document.getElementById('shwoone').style.marginTop = "20px";
-      }
-      if(sd1 <0 && stex == 3 && usrole == 'assistant'){
-        document.getElementById('shwoone').innerHTML  = "**เลยวันตรวจรับงวดที่1 มา"+Math.abs(sd1)+" วัน**";
-        document.getElementById('shwoone').style.background = "red";
-        document.getElementById('shwoone').style.color = "white";
-        document.getElementById('shwoone').style.width = "50%";
-        document.getElementById('shwoone').style.marginTop = "20px";
-        }
-      if(sd2 <0 && stex == 4 && usrole == 'assistant'){
-        document.getElementById('shwoone').innerHTML  = "**เลยวันตรวจรับงวดที่2 มา"+Math.abs(sd2)+" วัน**";
-        document.getElementById('shwoone').style.background = "red";
-        document.getElementById('shwoone').style.color = "white";
-        document.getElementById('shwoone').style.width = "50%";
-        document.getElementById('shwoone').style.marginTop = "20px";
-      }
-      if(sd3 <0 && stex == 5 && usrole == 'assistant'){
-        document.getElementById('shwoone').innerHTML  = "**เลยวันตรวจรับงวดที่3 มา"+Math.abs(sd3)+" วัน**";
-        document.getElementById('shwoone').style.background = "red";
-        document.getElementById('shwoone').style.color = "white";
-        document.getElementById('shwoone').style.width = "50%";
-        document.getElementById('shwoone').style.marginTop = "20px";
-      }
-      if(sd1 == 0 && stex == 3 ){
-        document.getElementById('shwoone').innerHTML  = "วันตรวจรับงวดที่1";
-        document.getElementById('shwoone').style.background = "green";
-        document.getElementById('shwoone').style.color = "white";
-        document.getElementById('shwoone').style.width = "30%";
-        document.getElementById('shwoone').style.marginTop = "10px";
-        }
-      else if(sd2 == 0 && stex == 4 ){
-        document.getElementById('shwoone').innerHTML  = "วันตรวจรับงวดที่2";
-        document.getElementById('shwoone').style.background = "green";
-        document.getElementById('shwoone').style.color = "white";
-        document.getElementById('shwoone').style.width = "30%";
-        document.getElementById('shwoone').style.marginTop = "10px";
-      }
-      else if(sd3 == 0 && stex == 5 ){
-        document.getElementById('shwoone').innerHTML  = "วันตรวจรับงวดที่3";
-        document.getElementById('shwoone').style.background = "green";
-        document.getElementById('shwoone').style.color = "white";
-        document.getElementById('shwoone').style.width = "30%";
-        document.getElementById('shwoone').style.marginTop = "10px";
-      }
-</script>   
-<script>
-  var cev1 = document.getElementById('cev1').value;
-  if (cev1 == "none") {
-    document.getElementById("cev1").innerHTML = "-";
-    document.getElementById("cev2").innerHTML = "-";
-    document.getElementById("cev3").innerHTML = "-";
+  if (stdd == "4"  && check1 != "1" && pmc != "wait" )   {
+    document.getElementById('butjet').value = parseInt(Number(num1))+" บาท";
   }
-</script>
+  else if (stdd == "4"  && check1 != "1" && pmc == "wait" )   {
+    document.getElementById('butjet').value = parseInt(Number(num1))+" บาท";
+  }
+  else if (stdd == "4"  && check1 == "1")   {
+    document.getElementById('butjet').value = parseInt(Number(c4))+" บาท";
+  }
+  else if (stdd == "4"  && check1 == "1" &&  pmc == "wait" )   {
+    document.getElementById('butjet').value = parseInt(Number(c4))+" บาท";
+  }
+  else if (stdd == "5"  && check1 != "1"  && check2 != "1" && pmc != "wait")  {
+    document.getElementById('butjet').value = parseInt(Number(nnum1))+" บาท";
+  }
+  else if (stdd == "5"  && check1 != "1"  && check2 != "1" && pmc == "wait")  {
+    document.getElementById('butjet').value = parseInt(Number(nnum1))+" บาท";
+  }
+  else if (stdd == "5"  && check1 != "1"  && check2 == "1" || pmc != "wait")  {
+    document.getElementById('butjet').value = parseInt(Number(num1))+" บาท";
+  }
+  else if (stdd == "5"  && check1 == "1" && check2 == "1" || pmc == "wait"  )  {
+    document.getElementById('butjet').value = parseInt(Number(c4))+" บาท";
+  }   
+  else if(stdd == 6) {
+    document.getElementById('butjet').value = "hidden";
+  }   
+</script> 
 <script>
   var check = Number(document.getElementById("check").value);
   var userrole = document.getElementById('userrole1').value;
@@ -494,6 +638,10 @@ if (stdd == "2"  && pmc != "wait" && usrole =="assistant"){
   document.getElementById('editcheck').style.display= "none";
   }
   else if (userrole == "manager" ){
+  document.getElementById('addcheck').style.display= "none";
+  document.getElementById('editcheck').style.display= "none";
+  }
+  else if (userrole == "chairman" ){
   document.getElementById('addcheck').style.display= "none";
   document.getElementById('editcheck').style.display= "none";
   }
@@ -507,37 +655,28 @@ if (stdd == "2"  && pmc != "wait" && usrole =="assistant"){
   }
 </script> 
 <script>
-  var sd1 = Number(document.getElementById("sd1").value);
-  var sd2 = Number(document.getElementById("sd2").value);
-  var sd3 = Number(document.getElementById("sd3").value);
-  var stdd = document.getElementById('stex').value;
-  var usrole = document.getElementById('userrole1').value;
-  var pmc = document.getElementById('pop').value;
-
-  if (stdd == "3" && pmc != "wait" && pmc != "prewait" && usrole == "assistant"&& sd1 <= 0)  {
-    document.getElementById('exambutton').type = "submit";
-}
-
-  if (stdd == "3" && pmc == "wait" && usrole == "manager" && sd1 <= 0)  {
-    document.getElementById('exambutton').type = "submit";
-    document.getElementById('exambutton').innerHTML  = "อนุมัติ";
+  var stex = document.getElementById('stex').value;
+  var userrole = document.getElementById('userrole1').value;
+  if ( stex == 1  && userrole == "manager") {
+  document.getElementById('adddatecontt').style.display= "block";
+  document.getElementById('editdatecontt').style.display= "block";
   }
-  if (stdd == "4" && pmc != "wait" && usrole == "assistant" && sd2 <= 0)  {
-    document.getElementById('exambutton').type = "submit";
+  else if (stex == 2  && userrole == "manager"){
+  document.getElementById('adddatecontt').style.display= "none";
+  document.getElementById('editdatecontt').style.display= "block";
   }
-  if (stdd == "4" && pmc == "wait" && usrole == "manager" && sd2 <= 0)  {
-    document.getElementById('exambutton').type = "submit";
-    document.getElementById('exambutton').innerHTML  = "อนุมัติ";
-  }
-  if (stdd == "5" && pmc != "wait" && usrole == "assistant" && sd3 <= 0)  {
-    document.getElementById('exambutton').type = "submit";
   
-  }
-  if (stdd == "5" && pmc == "wait" && usrole == "manager" && sd3 <= 0)  {
-    document.getElementById('exambutton').type = "submit";
-    document.getElementById('exambutton').innerHTML  = "อนุมัติ";
-  }
- 
-</script> 
-
+  else if (stex == 2 &&  userrole == "assistant"){
+  document.getElementById('adddatecontt').style.display= "none";
+  document.getElementById('editdatecontt').style.display= "block"; 
+ }
+ else if (suserrole == "chairman"){
+  document.getElementById('adddatecontt').style.display= "none";
+  document.getElementById('editdatecontt').style.display= "none";
+ }
+ else{
+  document.getElementById('adddatecontt').style.display= "none";
+  document.getElementById('editdatecontt').style.display= "none";
+ }
+  </script> 
   {% endblock %}
