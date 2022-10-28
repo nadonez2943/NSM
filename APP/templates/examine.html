@@ -131,7 +131,14 @@
         <div class="card" style="margin-top: 8px;">
           <div class="card-body">
             <h5>ข้อมูลบริษัท</h5><hr>
-            <div class="row">
+            </div><div class="row">
+              <div class="col-25">
+                <label>วันที่ประกาศผล</label>
+              </div>
+              <div class="col-75">
+                <label>{{row[0]['windate']}}</label>
+              </div>
+              <div class="row">
               <div class="col-25">
                 <label>บริษัทผู้รับเหมา</label>
               </div>
@@ -152,13 +159,7 @@
               <div class="col-75">
                 <label>{{row[0]['contt_tel']}}</label>
               </div>
-            </div><div class="row">
-              <div class="col-25">
-                <label>วันที่ประกาศผล</label>
-              </div>
-              <div class="col-75">
-                <label>{{row[0]['conttdate']}}</label>
-              </div>
+            
             </div><div class="row">
               <div class="col-25">
                 <label>วงเงิน</label>
