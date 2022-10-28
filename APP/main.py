@@ -2252,37 +2252,33 @@ def editdatecontt2():
            cursor.close() 
            conn.close()
 
-@app.route('/project/<int:id>/autoexamine/<int:stex>', methods=['GET','POST'])
-def autoexamine(id,stex):
-    conn = None
-    cursor = None
-    try:
-        stexx = int(stex)
-        if(stexx == 3):
-           stex = 4
-           check1 = 1 
-           sql = "UPDATE process SET stex_id=%s,check1=%s  WHERE pj_id=%s"
-           data = (stex,check1, id)
-           conn = mysql.connect()
-           cursor = conn.cursor()
-           cursor.execute(sql, data)
-           conn.commit()
-           return redirect('/project/'+str(id)+'/examine')
-        elif (stexx == 4):
-           stex = 5 
-           check2 = 1
-           sql = "UPDATE process SET stex_id=%s,check2=%s  WHERE pj_id=%s"
-           data = (stex,check2, id)
-           conn = mysql.connect()
-           cursor = conn.cursor()
-           cursor.execute(sql, data)
-           conn.commit()
-           return redirect('/project/'+str(id)+'/examine')
-    except Exception as e:
-           print(e)
-    finally:
-           cursor.close() 
-           conn.close() 
+@app.route('/project/<int:id>/examineauto/<int:stex>')
+def auto(id,stex):
+    stexx = stex
+    if(stexx == 3):
+        stex = 4
+        examPMcheck = ''
+        check1 = '1' 
+        sql = "UPDATE process SET stex_id=%s,examPMcheck=%s,check_no1=%s WHERE pj_id=%s"
+        data = (stex,examPMcheck,check1,id)
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute(sql, data)
+        conn.commit()
+        return redirect('/project/'+str(id)+'/examine')
+    elif(stexx == 4 ):
+        stex = 5
+        examPMcheck = ''
+        check2 = '1' 
+        sql = "UPDATE process SET stex_id=%s,examPMcheck=%s,check_no2=%s WHERE pj_id=%s"
+        data = (stex,examPMcheck,check2,id)
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute(sql, data)
+        conn.commit()
+        return redirect('/project/'+str(id)+'/examine')
+    return redirect('/project/'+str(id)+'/examine')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
