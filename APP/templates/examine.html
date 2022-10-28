@@ -33,15 +33,13 @@
               <input name="ins1" id="ins1" value="{{check1[0]['ins_amount']}}" type="hidden">
               <input name="ins2" id="ins2" value="{{check2[0]['ins_amount']}}" type="hidden">
               <input name="ins3" id="ins3" value="{{check3[0]['ins_amount']}}" type="hidden">
-              {% for row in one %}
+        
               <input name="sd1" id="sd1" value="{{row['checkdate']}}" type="hidden">
-              {% endfor %}
-              {% for row in two %}
+      
               <input name="sd2" id="sd2" value="{{row['checkdate']}}" type="hidden">
-              {% endfor %}
-              {% for row in three %}
+           
               <input name="sd3" id="sd3" value="{{row['checkdate']}}" type="hidden">
-              {% endfor %}
+           
           </div>
         </div>
         <p></p>
@@ -174,13 +172,6 @@
               </div>
               <div class="col-75">
                 <label>{{row[0]['contt_tel']}}</label>
-              </div>
-            </div><div class="row">
-              <div class="col-25">
-                <label>วันที่ประกาศผล</label>
-              </div>
-              <div class="col-75">
-                <label>{{row[0]['conttdate']}}</label>
               </div>
             </div><div class="row">
               <div class="col-25">
@@ -599,7 +590,10 @@ if (stdd == "5" && pmc != "wait" && pmc != "prewait" && check2 == 1 && check1 ==
             var nnum2 =parseInt(c4)-(parseInt(c2)+parseInt(c3));
             var nnum3 =parseInt(c4)-(parseInt(c1)+parseInt(c2)+parseInt(c3));
 
-  if (stdd == "4"  && check1 != "1" && pmc != "wait" )   {
+  if (stdd < 4 )   {
+    document.getElementById('butjet').value = parseInt(Number(c4))+" บาท";
+  }
+  else if (stdd == "4"  && check1 != "1" && pmc != "wait" )   {
     document.getElementById('butjet').value = parseInt(Number(num1))+" บาท";
   }
   else if (stdd == "4"  && check1 != "1" && pmc == "wait" )   {
@@ -622,10 +616,11 @@ if (stdd == "5" && pmc != "wait" && pmc != "prewait" && check2 == 1 && check1 ==
   }
   else if (stdd == "5"  && check1 == "1" && check2 == "1" || pmc == "wait"  )  {
     document.getElementById('butjet').value = parseInt(Number(c4))+" บาท";
-  }   
-  else if(stdd == 6) {
-    document.getElementById('butjet').value = "hidden";
-  }   
+  }  
+  if (stdd >= 6 )   {
+    document.getElementById('butjet').value = "0 บาท";
+  } 
+  
 </script> 
 <script>
   var check = Number(document.getElementById("check").value);

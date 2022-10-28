@@ -406,11 +406,7 @@
     document.getElementById('exambutton').type = "hidden";
   }
 </script> 
-<script>
-    var stdd = document.getElementById('stex').value;
-   if (stdd == "6" )  {
-    document.getElementById('butjet').type = "hidden";
-  }
+
 </script>
 <script>
   var stdd = document.getElementById('stex').value;
@@ -563,50 +559,52 @@ if (stdd == "5" && pmc != "wait" && pmc != "prewait" && check2 == 1 && check1 ==
    
 </script> 
 <script> 
-            var stdd = document.getElementById('stex').value;
-            var check1 = document.getElementById('check1').value;
-            var check2 = document.getElementById('check2').value;
-            var pmc = document.getElementById('pop').value;
-            var c1 = Number(document.getElementById("ins1").value);
-            var c2 = Number(document.getElementById("ins2").value);
-            var c3 = Number(document.getElementById("ins3").value);
-            var c4 = Number(document.getElementById("butjet").value);
-            var num1 = parseInt(c4)-parseInt(c1);
-            var num2 = parseInt(c4)-parseInt(c2);
-            var num3 = parseInt(c4)-parseInt(c3);
-            var nnum1 =parseInt(c4)-(parseInt(c1)+parseInt(c2));
-            var nnum2 =parseInt(c4)-(parseInt(c2)+parseInt(c3));
-            var nnum3 =parseInt(c4)-(parseInt(c1)+parseInt(c2)+parseInt(c3));
+  var stdd = document.getElementById('stex').value;
+  var check1 = document.getElementById('check1').value;
+  var check2 = document.getElementById('check2').value;
+  var pmc = document.getElementById('pop').value;
+  var c1 = Number(document.getElementById("ins1").value);
+  var c2 = Number(document.getElementById("ins2").value);
+  var c3 = Number(document.getElementById("ins3").value);
+  var c4 = Number(document.getElementById("butjet").value);
+  var num1 = parseInt(c4)-parseInt(c1);
+  var num2 = parseInt(c4)-parseInt(c2);
+  var num3 = parseInt(c4)-parseInt(c3);
+  var nnum1 =parseInt(c4)-(parseInt(c1)+parseInt(c2));
+  var nnum2 =parseInt(c4)-(parseInt(c2)+parseInt(c3));
+  var nnum3 =parseInt(c4)-(parseInt(c1)+parseInt(c2)+parseInt(c3));
 
-  if (stdd == "4"  && check1 != "1" && pmc != "wait" )   {
-    document.getElementById('butjet').value = parseInt(Number(num1))+" บาท";
-  }
-  if (stdd == "4"  && check1 != "1" && pmc == "wait" )   {
-    document.getElementById('butjet').value = parseInt(Number(num1))+" บาท";
-  }
-  if (stdd == "4"  && check1 == "1")   {
-    document.getElementById('butjet').value = parseInt(Number(c4))+" บาท";
-  }
-  if (stdd == "4"  && check1 == "1" && pmc == "wait" )   {
-    document.getElementById('butjet').value = parseInt(Number(c4))+" บาท";
-  }
-  if (stdd == "5"  && check1 != "1"  && check2 != "1" && pmc != "wait")  {
-    document.getElementById('butjet').value = parseInt(Number(nnum1))+" บาท";
-  }
-  if (stdd == "5"  && check1 != "1"  && check2 != "1" && pmc == "wait")  {
-    document.getElementById('butjet').value = parseInt(Number(nnum1))+" บาท";
-  }
-  if (stdd == "5"  && check1 != "1"  && check2 == "1" || pmc != "wait")  {
-    document.getElementById('butjet').value = parseInt(Number(num1))+" บาท";
-  }
-  if (stdd == "5"  && check1 == "1" && check2 == "1" || pmc == "wait"  )  {
-    document.getElementById('butjet').value = parseInt(Number(c4))+" บาท";
-  }
-  
-  if (stdd == "6" )  {
-    document.getElementById('butjet').value = '0'+" บาท";
-  }
-      
+if (stdd < 4 )   {
+document.getElementById('butjet').value = parseInt(Number(c4))+" บาท";
+}
+else if (stdd == "4"  && check1 != "1" && pmc != "wait" )   {
+document.getElementById('butjet').value = parseInt(Number(num1))+" บาท";
+}
+else if (stdd == "4"  && check1 != "1" && pmc == "wait" )   {
+document.getElementById('butjet').value = parseInt(Number(num1))+" บาท";
+}
+else if (stdd == "4"  && check1 == "1")   {
+document.getElementById('butjet').value = parseInt(Number(c4))+" บาท";
+}
+else if (stdd == "4"  && check1 == "1" &&  pmc == "wait" )   {
+document.getElementById('butjet').value = parseInt(Number(c4))+" บาท";
+}
+else if (stdd == "5"  && check1 != "1"  && check2 != "1" && pmc != "wait")  {
+document.getElementById('butjet').value = parseInt(Number(nnum1))+" บาท";
+}
+else if (stdd == "5"  && check1 != "1"  && check2 != "1" && pmc == "wait")  {
+document.getElementById('butjet').value = parseInt(Number(nnum1))+" บาท";
+}
+else if (stdd == "5"  && check1 != "1"  && check2 == "1" || pmc != "wait")  {
+document.getElementById('butjet').value = parseInt(Number(num1))+" บาท";
+}
+else if (stdd == "5"  && check1 == "1" && check2 == "1" || pmc == "wait"  )  {
+document.getElementById('butjet').value = parseInt(Number(c4))+" บาท";
+}  
+if (stdd >= 6 )   {
+document.getElementById('butjet').value = "0 บาท";
+} 
+
 </script> 
 </script> 
 <script>

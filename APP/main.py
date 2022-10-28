@@ -2113,7 +2113,7 @@ def update_stdx(id):
             stex = 5
             examPMcheck = 'wait'
             conNo = 1
-            sql = "UPDATE checks SET ins_date = date(now())  WHERE pj_id = %s not ins_no = %s"
+            sql = "UPDATE checks SET ins_date = date(now())  WHERE pj_id = %s and not ins_no = %s"
             data = (id,conNo)
             conn = mysql.connect()
             cursor = conn.cursor()
