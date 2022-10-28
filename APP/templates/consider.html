@@ -237,6 +237,63 @@
       text-decoration: none;
       cursor: pointer;
     }
+    .floginPopup {
+        position: relative;
+        text-align: center;
+        width: 100%;
+      }
+    .fformPopup {
+        display: none;
+        position: fixed;
+        left: 50%;
+        top: 5%;
+        transform: translate(-50%, 5%);
+        border: 3px solid #999999;
+        z-index: 9;
+      }
+    .fformContainer {
+        max-width: 300px;
+        padding: 20px;
+        background-color: #fff;
+      }
+    .fformContainer input[type=date] {
+        width: 100%;
+        padding: 15px;
+        margin: 5px 0 20px 0;
+        border: none;
+        background: #eee;
+      }
+    .fformContainer input[type=date]:focus {
+        background-color: #ddd;
+        outline: none;
+      }
+      .fformContainer input[type=text] {
+        width: 100%;
+        padding: 15px;
+        margin: 5px 0 20px 0;
+        text-align: center;
+        border: none;
+        background: #eee;
+      }
+    .fformContainer input[type=text]:focus {
+        background-color: #ddd;
+        outline: none;
+      }
+    .fformContainer .btn {
+        padding: 12px 20px;
+        border: none;
+        background-color: #2E4778;
+        color: #fff;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 15px;
+      }
+    .fformContainer .cancel {
+        background-color: grey;
+      }
+    .fformContainer .btn:hover{
+        opacity: 1;
+      }
   </style>
   </head>
   <a id="myBtn" href="/project/{{row[0]['pj_id']}}" class='btn' >ย้อนกลับ</a>
@@ -252,6 +309,9 @@
                   <progress id="file" value="{{row[0]['stcon_percent']}}" max="100"></progress>    
                   <br><br>
                   <label for="file">{{row[0]['stcon_name']}}</label><p style="color: red;" id="addctt"></p>
+                  <div style="display: none;" id="winnerdd"><p style="color: green; " >จะประกาศผู้ชนะในวันที่ {{row[0]['windate']}}</p></div>
+                  <div style="display: none;" id="conappst"><p style="color: green; " >รออุทธรณ์ตั้งแต่วันที่ {{row[0]['windate']}}</p></div>
+                  <div style="display: none;" id="conappend"><p style="color: green; " >จนถึงวันที่ {{row[0]['windate']}}</p></div>
                   <form action="/project/{{row[0]['pj_id']}}/consider" id="updatestcc" method="post">
                     <input name="checkboxdate" id="checkboxdate" value="0" type="hidden">
                         <input name="bdate" value="{{row[0]['buy_date']}}" type="hidden">
@@ -273,7 +333,7 @@
                         <input name="conappd" value="{{row[0]['conapp_date']}}" type="hidden" >
                     <input type="hidden" id="appbottonc" value="ยืนยัน" >
                   </form>
-                  <div align="center"><form action="/project/{{row[0]['pj_id']}}/consider/appeal" method="post"><input type="hidden" id="appbottonc2" onclick="return confirm('ยืนยัน')" value="มีอุทธรณ์" ></form></div>
+                  <div align="center"><form action="/project/{{row[0]['pj_id']}}/consider/appeal" method="post"><input type="hidden" id="appbottonc2" value="มีอุทธรณ์" ></form></div>
                   <div class="openBtn">
                     <button class="openButton" onclick="openForm()" id="openf" style="display: none;"><strong id="formbutton">กรอกวันที่</strong></button>
                   </div>
@@ -293,7 +353,7 @@
                         <label>
                         <strong id="reportd" style="display: none;">วันและเวลาที่ส่งรายงานผล</strong>
                         </label>
-                        <input type="hidden" value="" max="{{row[0]['today']}}T{{row[0]['timenow']}}" name="report_date" id="report_date" required><br>
+                        <input type="hidden" value="" min="{{row[0]['finishcon_date']}}T{{row[0]['timenow']}}" max="{{row[0]['today']}}T{{row[0]['timenow']}}" name="report_date" id="report_date" required><br>
                         <label>
                         <strong id="winnerd" style="display: none;">วันที่ประกาศผู้ชนะ</strong>
                         </label>
@@ -422,7 +482,7 @@
                   <label>วันที่ประกาศผล</label>
                 </div>
                 <div class="col-75">
-                  <label id="cdatet">{{row[0]['conttdate']}}</label>
+                  <label id="cdatet">{{row[0]['windate']}}</label>
                 </div>
               </div>
               <div class="row">
@@ -434,7 +494,7 @@
                 </div>
               </div><div class="row">
                 <div class="col-25">
-                  <label>อีเมล</label>
+                  <label>อีเมล์</label>
                 </div>
                 <div class="col-75">
                   <label id="cemailt">{{row[0]['contt_email']}}</label>
@@ -451,7 +511,7 @@
                   <label>วงเงิน</label>
                 </div>
                 <div class="col-75">
-                  <label id="cfint">{{row[0]['contt_fin']}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;บาท</label>
+                  <label id="cfint">{{row[0]['contt_fin']}}&nbsp;&nbsp;&nbsp;&nbsp;บาท</label>
                 </div>
               </div>
               <input id="conttid" value="{{row[0]['contt_id']}}" type="hidden">
@@ -472,7 +532,30 @@
               <p>วันที่ยื่นคุณสมบัติ:</p><p id="dat2">{{row[0]['propdate']}}</p>
               <p>วันที่ส่งรายงานผล:</p><p id="dat3">{{row[0]['reportdate']}}</p>
               
-              <a align="right" href="considerEvent">แก้ไข</a>
+              <div id="datedit" style="display: none;"><a align="right" onclick="fopenForm()">แก้ไข</a></div>
+              <div class="floginPopup">
+                <div class="fformPopup" id="fpopupForm">
+                  <form action="/project/{{row[0]['pj_id']}}/considerdate" method="post" class="fformContainer">
+                    <input name="userrole" id="userrole" value="{{role['role']}}" type="hidden">
+                    <label>
+                      <strong>วันประกาศซื้อจ้าง</strong>
+                    </label>
+                    <input type="date" value="{{row[0]['buy_date']}}" max="{{row[0]['today']}}" name="buyyd" id="buyyd" required>
+                    <label>
+                    <strong>วันที่ยื่นคุณสมบัติ</strong>
+                    </label>
+                    <input type="date" value="{{row[0]['prop_date']}}" max="{{row[0]['today']}}" name="prod" id="prod" required>
+                    <label>
+                    <strong id="repdd" style="display: none;">วันที่ส่งรายงานผล</strong>
+                    </label>
+                    <input type="hidden" value="{{row[0]['report_date']}}" min="{{row[0]['finishcon_date']}}" max="{{row[0]['today']}}" name="repd" id="repd" required><br>
+                        <input name="CPMC" id="CPMC" value="{{row[0]['conPMcheck']}}" type="hidden">
+                        <input name="stc" id="stc" value="{{row[0]['stcon_id']}}" type="hidden">
+                        <button type="submit" class="btn">เสร็จสิ้น</button>
+                        <button type="button" class="btn cancel" onclick="fcloseForm()">ยกเลิก</button>
+                      </form>
+                    </div>
+                  </div>
             </div>
           </div>
           <p></p>
@@ -526,7 +609,16 @@
     }
     window.onclick = document.getElementById("popupForm").style.display = "none";
   </script>
-
+  <script>
+    var popupForm = document.getElementById("fpopupForm");
+    function fopenForm() {
+      document.getElementById("fpopupForm").style.display = "block";
+    }
+    function fcloseForm() {
+      document.getElementById("fpopupForm").style.display = "none";
+    }
+    window.onclick = document.getElementById("fpopupForm").style.display = "none";
+  </script>
   <script>
     if (document.getElementById('cnamet').innerHTML == "None")  {
         document.getElementById('cdatet').innerHTML = "-";
@@ -536,13 +628,19 @@
         document.getElementById('cfint').innerHTML = "-";
       }
   </script>
-
+  <script>
+    var stcc = Number(document.getElementById('stc').value);
+    if (stcc > 4 ){
+      document.getElementById("repdd").style.display = "block";
+      document.getElementById("repd").type = "date";
+    }
+  </script>
   <script>
     var pjidd = document.getElementById("pjidd").value
     var condif = Number(document.getElementById("condif").value)
     var stcc = Number(document.getElementById('stc').value);
     var cpmc = document.getElementById('CPMC').value;
-    if ( stcc == 6 &&  cpmc != "wait" && condif < 0 ) {
+    if ( stcc == 6 &&  cpmc != "wait" && condif <= 0 ) {
         window.onload = function() {
         window.location.href = ("http://localhost:5000/project/"+pjidd+"/considerauto");
         }
@@ -570,6 +668,27 @@
     }
   </script>
   <script>
+    document.getElementById("buyyd").onchange = function() {datecheck()}
+    function datecheck(){
+      var bud = document.getElementById("buyyd").value;
+      var bu = new Date(bud);
+      var dd = bu.getDate() + 1;
+      var mm = bu.getMonth() + 1; //January is 0!
+      var yyyy = bu.getFullYear();
+
+      if (dd < 10) {
+        dd = '0' + dd;
+      }
+
+      if (mm < 10) {
+        mm = '0' + mm;
+      } 
+        
+      bu = yyyy + '-' + mm + '-' + dd;
+      document.getElementById("prod").setAttribute("min", bu);
+    }
+  </script>
+  <script>
     var dat1 = document.getElementById('dat1').innerHTML
     var dat2 = document.getElementById('dat2').innerHTML
     var dat3 = document.getElementById('dat3').innerHTML
@@ -581,6 +700,14 @@
     }
     if (dat3 == "None"){
       document.getElementById('dat3').innerHTML = "-";
+    }
+  </script>
+  <script>
+    var usrole = document.getElementById('userrole').value
+    var stcc = Number(document.getElementById('stc').value);
+    var cpmc = document.getElementById('CPMC').value;
+    if (usrole == "assistant" && stcc == 2 && cpmc == "wait" || usrole == "assistant" && stcc > 2){
+      document.getElementById('datedit').style.display = "block";
     }
   </script>
   {% endblock %}
