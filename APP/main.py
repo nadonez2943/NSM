@@ -759,7 +759,8 @@ def addeventd(id):
     cursor = conn.cursor(pymysql.cursors.DictCursor)
     cursor.execute("SELECT * FROM nsm_project.projects WHERE nsm_project.projects.pj_id = %s", id)
     row = cursor.fetchall()
-    cursor.execute("SELECT nsm_project.process.start_draft,ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY) AS endproject_date,DATEDIFF(ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY),date(now())) AS diff,nsm_project.process.stdraft_id FROM nsm_project.process WHERE nsm_project.process.pj_id = %s", (id))
+    tformat = '%H:%i'
+    cursor.execute("SELECT nsm_project.process.start_draft,TIME_FORMAT(current_time(), %s) as timenow,ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY) AS endproject_date,DATEDIFF(ADDDATE(nsm_project.process.start_draft, INTERVAL 30 DAY),date(now())) AS diff,nsm_project.process.stdraft_id FROM nsm_project.process WHERE nsm_project.process.pj_id = %s", (tformat,id))
     diff = cursor.fetchall()
     drift = int(diff[0]['diff'])
     std = int(diff[0]['stdraft_id'])

@@ -59,7 +59,7 @@
                         <h5>วันที่และเวลา</h5>
                         </div>
                         <div class="col-md-10">
-                            <input name="evdate" value="" type="datetime-local" min="{{diff[0]['start_draft']}}" max="{{diff[0]['endproject_date']}}"></input>
+                            <input name="evdate" value="" type="datetime-local" min="{{diff[0]['start_draft']}}T{{diff[0]['timenow']}}" max="{{diff[0]['endproject_date']}}" required></input>
                             <input name="evphase" value="1" type="hidden">
                             <input name="pjid" value="{{row[0]['pj_id']}}" type="hidden">
                         </div>
