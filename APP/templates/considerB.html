@@ -237,6 +237,63 @@
       text-decoration: none;
       cursor: pointer;
     }
+    .floginPopup {
+        position: relative;
+        text-align: center;
+        width: 100%;
+      }
+    .fformPopup {
+        display: none;
+        position: fixed;
+        left: 50%;
+        top: 5%;
+        transform: translate(-50%, 5%);
+        border: 3px solid #999999;
+        z-index: 9;
+      }
+    .fformContainer {
+        max-width: 300px;
+        padding: 20px;
+        background-color: #fff;
+      }
+    .fformContainer input[type=date] {
+        width: 100%;
+        padding: 15px;
+        margin: 5px 0 20px 0;
+        border: none;
+        background: #eee;
+      }
+    .fformContainer input[type=date]:focus {
+        background-color: #ddd;
+        outline: none;
+      }
+      .fformContainer input[type=text] {
+        width: 100%;
+        padding: 15px;
+        margin: 5px 0 20px 0;
+        text-align: center;
+        border: none;
+        background: #eee;
+      }
+    .fformContainer input[type=text]:focus {
+        background-color: #ddd;
+        outline: none;
+      }
+    .fformContainer .btn {
+        padding: 12px 20px;
+        border: none;
+        background-color: #2E4778;
+        color: #fff;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 15px;
+      }
+    .fformContainer .cancel {
+        background-color: grey;
+      }
+    .fformContainer .btn:hover{
+        opacity: 1;
+      }
   </style>
   </head>
   <a id="myBtn" href="/project/{{row[0]['pj_id']}}" class='btn' >ย้อนกลับ</a>
@@ -251,10 +308,29 @@
               <div class="card-body" align="center">
                   <progress id="file" value="{{row[0]['stcon_percent']}}" max="100"></progress>    
                   <br><br>
-                  <label for="file">{{row[0]['stcon_name']}}</label>
-                  <input name="windif" id="windif" value="{{row[0]['windiff']}}" type="hidden"> 
+                  <label for="file">{{row[0]['stcon_name']}}</label><p style="color: red;" id="addctt"></p>
+                  <div style="display: none;" id="winnerdd"><p style="color: green; " >จะประกาศผู้ชนะในวันที่ {{row[0]['windate']}}</p></div>
+                  <div style="display: none;" id="conappst"><p style="color: green; " >รออุทธรณ์ตั้งแต่วันที่ {{row[0]['conappdate']}}</p></div>
+                  <div style="display: none;" id="conappend"><p style="color: green; " >จนถึงวันที่ {{row[0]['conappend']}}</p></div>
+                        <input name="bdate" value="{{row[0]['buy_date']}}" type="hidden">
+                        <input name="pdate" value="{{row[0]['prop_date']}}" type="hidden">
+                        <input name="fdate" value="{{row[0]['finishcon_date']}}" type="hidden">
+                        <input name="rdate" value="{{row[0]['report_date']}}" type="hidden">
+                        <input name="rtime" value="{{row[0]['report_time']}}" type="hidden">
+                        <input name="wdate" value="{{row[0]['winner_date']}}" type="hidden">
+                        <input name="CPMC" value="{{row[0]['conPMcheck']}}" type="hidden">
+                        <input name="stc" value="{{row[0]['stcon_id']}}" type="hidden">
+                        <input name="conapp" value="{{row[0]['conapp_status']}}" type="hidden" >
+                        <input name="userrole" value="{{role['role']}}" type="hidden">
+                        <input type="hidden" value="{{row[0]['buy_date']}}" name="buy_date" >
+                        <input type="hidden" value="{{row[0]['prop_date']}}" name="prop_date" >
+                        <input type="hidden" value="{{row[0]['finishcon_date']}}" name="finishcon_date" >
+                        <input type="hidden" value="{{row[0]['report_date']}}" name="report_date" >
+                        <input type="hidden" name="report_time"  value="{{row[0]['report_time']}}">
+                        <input type="hidden" value="{{row[0]['winner_date']}}" name="winner_date" >
+                        <input name="conappd" value="{{row[0]['conapp_date']}}" type="hidden" >
+    
                         <input name="bdate" id="bdate" value="{{row[0]['buy_date']}}" type="hidden">
-                        <input name="idate" id="idate" value="{{row[0]['invite_date']}}" type="hidden">
                         <input name="pdate" id="pdate" value="{{row[0]['prop_date']}}" type="hidden">
                         <input name="fdate" id="fdate" value="{{row[0]['finishcon_date']}}" type="hidden">
                         <input name="rdate" id="rdate" value="{{row[0]['report_date']}}" type="hidden">
@@ -367,7 +443,7 @@
                   <label>วันที่ประกาศผล</label>
                 </div>
                 <div class="col-75">
-                  <label id="cdatet">{{row[0]['conttdate']}}</label>
+                  <label id="cdatet">{{row[0]['windate']}}</label>
                 </div>
               </div>
               <div class="row">
@@ -379,7 +455,7 @@
                 </div>
               </div><div class="row">
                 <div class="col-25">
-                  <label>อีเมล</label>
+                  <label>อีเมล์</label>
                 </div>
                 <div class="col-75">
                   <label id="cemailt">{{row[0]['contt_email']}}</label>
@@ -396,7 +472,7 @@
                   <label>วงเงิน</label>
                 </div>
                 <div class="col-75">
-                  <label id="cfint">{{row[0]['contt_fin']}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;บาท</label>
+                  <label id="cfint">{{row[0]['contt_fin']}} บาท</label>
                 </div>
               </div>
               <input id="conttid" value="{{row[0]['contt_id']}}" type="hidden">
@@ -406,6 +482,18 @@
          
         <div class="rightcolumn" style="background-color:#ffffff;">
           
+          <div class="card">
+            <div class="card-header">
+            <center><h5>วันที่</h5></center>
+            </div>
+            <div class="card-body">
+              
+              <p>วันประกาศซื้อจ้าง:</p><p id="dat1">{{row[0]['buydate']}}</p>
+              <p>วันที่ยื่นคุณสมบัติ:</p><p id="dat2">{{row[0]['propdate']}}</p>
+              <p>วันที่ส่งรายงานผล:</p><p id="dat3">{{row[0]['reportdate']}}</p> 
+            </div>
+          </div>
+          <p></p>
           <div class="card">
             <div class="card-header">
             <center><h5>การนัดหมาย</h5></center>
@@ -419,11 +507,13 @@
               <a align="right" href="considerEvent">ดูเพิ่มเติม</a>
             </div>
           </div>
+          <p></p>
           <div class="card" style="margin-top: 5px;">
             <div class="card-body">
               <a align="center" href="doc/2">เอกสารโครงการ</a>
             </div>
           </div>
+          <p></p>
           <div class="card" style="margin-top:8px;">
             <div class="card-body" align="center">
               <a href="/project/{{row[0]['pj_id']}}/addpacview">เพิ่มประกาศจากกองพัสดุ</a>
@@ -444,18 +534,6 @@
 
   </div>
   <br>
-
-  <script>
-    var popupForm = document.getElementById("popupForm");
-    function openForm() {
-      document.getElementById("popupForm").style.display = "block";
-    }
-    function closeForm() {
-      document.getElementById("popupForm").style.display = "none";
-    }
-    window.onclick = document.getElementById("popupForm").style.display = "none";
-  </script>
-
   <script>
     if (document.getElementById('cnamet').innerHTML == "None")  {
         document.getElementById('cdatet').innerHTML = "-";
@@ -465,17 +543,44 @@
         document.getElementById('cfint').innerHTML = "-";
       }
   </script>
-
+  <script>
+    var stcc = Number(document.getElementById('stc').value);
+    if (stcc > 4 ){
+      document.getElementById("repdd").style.display = "block";
+      document.getElementById("repd").type = "date";
+    }
+  </script>
   <script>
     var pjidd = document.getElementById("pjidd").value
     var condif = Number(document.getElementById("condif").value)
     var stcc = Number(document.getElementById('stc').value);
     var cpmc = document.getElementById('CPMC').value;
-    if ( stcc == 6 &&  cpmc != "wait" && condif < 0 ) {
+    if ( stcc == 6 &&  cpmc != "wait" && condif <= 0 ) {
         window.onload = function() {
         window.location.href = ("http://localhost:5000/project/"+pjidd+"/considerauto");
         }
     }
   </script>
-
+  <script>
+    var dat1 = document.getElementById('dat1').innerHTML
+    var dat2 = document.getElementById('dat2').innerHTML
+    var dat3 = document.getElementById('dat3').innerHTML
+    if (dat1 == "None"){
+      document.getElementById('dat1').innerHTML = "-";
+    }
+    if (dat2 == "None"){
+      document.getElementById('dat2').innerHTML = "-";
+    }
+    if (dat3 == "None"){
+      document.getElementById('dat3').innerHTML = "-";
+    }
+  </script>
+  <script>
+    var usrole = document.getElementById('userrole').value
+    var stcc = Number(document.getElementById('stc').value);
+    var cpmc = document.getElementById('CPMC').value;
+    if (usrole == "assistant" && stcc == 2 && cpmc == "wait" || usrole == "assistant" && stcc > 2){
+      document.getElementById('datedit').style.display = "block";
+    }
+  </script>
   {% endblock %}

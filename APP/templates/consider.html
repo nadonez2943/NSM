@@ -310,8 +310,8 @@
                   <br><br>
                   <label for="file">{{row[0]['stcon_name']}}</label><p style="color: red;" id="addctt"></p>
                   <div style="display: none;" id="winnerdd"><p style="color: green; " >จะประกาศผู้ชนะในวันที่ {{row[0]['windate']}}</p></div>
-                  <div style="display: none;" id="conappst"><p style="color: green; " >รออุทธรณ์ตั้งแต่วันที่ {{row[0]['windate']}}</p></div>
-                  <div style="display: none;" id="conappend"><p style="color: green; " >จนถึงวันที่ {{row[0]['windate']}}</p></div>
+                  <div style="display: none;" id="conappst"><p style="color: green; " >รออุทธรณ์ตั้งแต่วันที่ {{row[0]['conappdate']}}</p></div>
+                  <div style="display: none;" id="conappend"><p style="color: green; " >จนถึงวันที่ {{row[0]['conappend']}}</p></div>
                   <form action="/project/{{row[0]['pj_id']}}/consider" id="updatestcc" method="post">
                     <input name="checkboxdate" id="checkboxdate" value="0" type="hidden">
                         <input name="bdate" value="{{row[0]['buy_date']}}" type="hidden">
