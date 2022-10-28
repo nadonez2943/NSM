@@ -21,11 +21,10 @@
                   {% endfor %}
               </select>
             
-      <select name="roleid" id="rid" size="1">
-          <option hidden>ตำแหน่ง</option>
+      <select name="roleid" id="rid" size="1" required>
+          <option value="0" hidden>ตำแหน่ง</option>
           <option id="mng" value="1">ประธาน<br>
           <option id="boa" value="2">กรรมการ<br>
-          <option id="as" value="3">เลขาธิการ<br>
       </select>
       </div>
       </p>
@@ -35,7 +34,7 @@
       <input name="bophase" value="3" type="hidden">
       <input name="pjid" value="{{row[0]['pj_id']}}" type="hidden">
       <br>
-      <button type="button" class="btn btn-primary"data-bs-toggle="modal" data-bs-target="#myModal">เพิ่มคณะกรรมการ</button>
+      <button type="button" class="btn btn-primary"data-bs-toggle="modal" data-bs-target="#myModal" id="addbo" disabled>เพิ่มคณะกรรมการ</button>
       <div class="modal" id="myModal">
           <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
@@ -74,7 +73,7 @@
       <th>ตำแหน่ง</th>
       <th>ลบรายชื่อ</th>
       </tr>
-      {% for result in row %}
+      {% for result in row2 %}
       <tr>
       <td id="usft">{{result['user_fullname']}}</td>
       <td id="usrt">{{result['role_name']}}</td>
@@ -85,45 +84,21 @@
   </table>
   <input id="PMR" value="AS" type="hidden">
   <br><br><center>
-  <a id="finil" href="/examineup/{{row[0]['pj_id']}}">
+  <a id="finil" href="/project/{{row2[0]['pj_id']}}/examine">
   <input class="btn btn-primary btn-lg" type="button" id="fini" value="เสร็จสิ้น">
   </a>
   </center>
-  <script>
-      var usft = document.getElementById("usft").innerHTML;
-      var usrt = document.getElementById("usrt").innerHTML;
-      var cmng = document.getElementById("cmng").value;
-      var cboa = Number(document.getElementById("cboa").value);
-      var cas = document.getElementById("cas").value;
-      if (usft == "None"){
-        document.getElementById("usft").style.display = "none";
-        document.getElementById("usrt").style.display = "none";
-        document.getElementById("dlt").style.display = "none";
-      }
-      if (cmng == "1"){
-        $("#rid option[value='1']").hide();
-      }
-      if (cas == "1"){
-        $("#rid option[value='3']").hide();
-      }
-      if(cboa % 2 == 0) {
-        document.getElementById("finil").href = "#";
-        document.getElementById("fini").onclick = function() {unfinished()};
-      }
-      if (cmng == "0" || cas == "0" || cboa < 3){
-        document.getElementById("finil").href = "#";
-        document.getElementById("fini").onclick = function() {unfinishedAll()};
-      }
-      else if (document.getElementById("PMR").value == "PM" ){
-        document.getElementById("finished").type = "submit";
-        document.getElementById("fini").type = "hidden";
-      }
-      function unfinished() {
-        alert("จำนวนกรรมการต้องเป็นจำนวนคี่")
-      }
-      function unfinishedAll() {
-        alert("คณะกรรมการยังไม่ครบ")
-      }
-      </script>
+  <div id="addmodal" class="addmodal">
 
+      <div class="addmodal-content">
+        <label>
+        <center>
+        <input type="text" id="addnoti" value="" disabled="disabled"/>
+        </center>
+        <br>
+        <input type="button" id="closing" class="btn" onclick="closemod()" value="รับทราบ">
+        </label>
+      </div>
+    
+    </div>
   {% endblock %}
