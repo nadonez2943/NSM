@@ -296,19 +296,23 @@
 
 
 <script>
+  var userrole1 = document.getElementById("userrole1").value
   var pj_id = document.getElementById("pj_id").value
-  var sd1 = Number(document.getElementById("sd1").value);
-  var sd2 = Number(document.getElementById("sd2").value);
+  var PMC = document.getElementById("pop").value
   var stex = Number(document.getElementById('stex').value);
-  var CMP = Number(document.getElementById('pop').value);
-  if ( stex == 3 &&  CMP != "wait" && sd1 < 0 ) {
+  var sd1 = Number(document.getElementById('sd1').value);
+  var sd2 = Number(document.getElementById('sd2').value);
+  var sd3 = Number(document.getElementById('sd3').value);
+  if ( stex == 3 &&  PMC != "wait" && sd1 < 0 ) {
       window.onload = function() {
-      window.location.href = ("http://localhost:5000/project/"+pj_id+"/autoexamine/"+stex);
+      // similar behavior as clicking on a link
+      window.location.href = ("http://localhost:5000/project/"+pj_id+"/examineauto/"+stex);
       }
   }
-  if ( stex == 4 &&  CMP != "wait" && sd2 < 0 ) {
+  if ( stex == 4 &&  PMC != "wait" && sd2 < 0 ) {
       window.onload = function() {
-      window.location.href = ("http://localhost:5000/project/"+pj_id+"/autoexamine/"+stex);
+      // similar behavior as clicking on a link
+      window.location.href = ("http://localhost:5000/project/"+pj_id+"/examineauto/"+stex);
       }
   }
 </script>
