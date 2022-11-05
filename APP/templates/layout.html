@@ -138,11 +138,8 @@ if (usrole != "chairman")  {
   var stcc = Number(document.getElementById('stc').value);
   var cpmc = document.getElementById('CPMC').value;
   var condif = Number(document.getElementById('condif').value);
+  var windiff = Number(document.getElementById('windiff').value);
   if (stcc == 2 && cpmc != "wait" && usrole == "manager") {
-    document.getElementById('addctt').innerHTML = "รอเลขานุการกรอกวันที่";
-    document.getElementById('addctt').style.color = "gray";
-  }
-  if (stcc == 2 && cpmc == "wait" && usrole == "manager") {
     document.getElementById('addctt').innerHTML = "รอเลขานุการกรอกวันที่";
     document.getElementById('addctt').style.color = "gray";
   }
@@ -176,18 +173,30 @@ if (usrole != "chairman")  {
     document.getElementById('openf').style.display = "block";
     document.getElementById('winnerd').style.display = "block";
     document.getElementById('winner_date').type = "date";
-    document.getElementById('noinfo').style.display = "none";
+    document.getElementById('noinfo').style.display = "none";  
   }
-  if (stcc == 6 && cpmc != "wait" && usrole == "assistant") {
+  if (stcc == 5 && cpmc == "wait" && windiff > 0) {
+  document.getElementById('winnerdd').style.display = "block";
+  }
+  if ( stcc == 6 &&  cpmc != "wait" && condif <= 0 ) {
+    document.getElementById('consta').type = "hidden";
+    document.getElementById('condif').type = "hidden";
+    document.getElementById('conday').type = "hidden";
+    document.getElementById('appbottonc').type = "hidden";
+    document.getElementById('appbottonc2').type = "hidden";
+  }
+  if (stcc == 6 && cpmc != "wait" && usrole == "assistant" && condif > 0) {
     document.getElementById('appbottonc').type = "submit";
     document.getElementById('appbottonc').value = "พ้นอุทธรณ์";
     document.getElementById('appbottonc2').type = "submit";
   }
-  
   if (stcc == 6 && cpmc == "wait" && usrole == "chairman") {
     document.getElementById('appbottonc').type = "submit";
   }
-
+  if (stcc == 6 && cpmc != "wait" && condif > 0) {
+    document.getElementById('conappst').style.display = "block";
+    document.getElementById('conappend').style.display = "block";
+  }
   function handleChange(checkbox) {
     if(checkbox.checked == true){
       document.getElementById('buyd').style.display = "none";
@@ -415,6 +424,7 @@ if (usrole != "chairman")  {
   var cpmc = document.getElementById('CPMC').value;
   var conapp = document.getElementById('conapp').value;
   var difc = Number(document.getElementById('mdiffc').value);
+  var condif = Number(document.getElementById('condif').value);
   if (stcc == 1){
     document.getElementById('statuscon').value = "รอกำหนดคณะกรรมการ";
     document.getElementById('statuscon').type = "text";
@@ -483,7 +493,7 @@ if (usrole != "chairman")  {
     document.getElementById('statuscon').style.width = "40%";
     document.getElementById('statuscon').style.marginTop = "20px";
   }
-  if (stcc == 6 && conapp != "yes" && conapp != "no" && cpmc != "wait"){
+  if (stcc == 6 && conapp != "yes" && conapp != "no" && cpmc != "wait" && condif > 0){
     document.getElementById('consta').type = "text";
     document.getElementById('condif').type = "text";
     document.getElementById('conday').type = "text";

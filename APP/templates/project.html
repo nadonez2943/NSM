@@ -293,7 +293,7 @@
   if (stdd == 1 && usrole == "manager"){
     document.getElementById('editpj').style.display = "block";
   }
-  if ( stcc == 6 &&  cpmc != "wait" && condif < 0 ) {
+  if ( stcc == 6 &&  cpmc != "wait" && condif <= 0 ) {
       window.onload = function() {
       // similar behavior as clicking on a link
       window.location.href = ("http://localhost:5000/project/"+pjidd+"/conauto");
